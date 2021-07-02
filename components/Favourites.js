@@ -25,7 +25,7 @@ const Item = props => (
     }}>
     <Card.Cover
       source={{
-        uri: `${props.pictureURL}`
+        uri: `${props.pictureURL}`,
       }}
     />
     <Card.Actions style={{flexDirection: 'column'}}>
@@ -59,6 +59,7 @@ const Item = props => (
         </View>
         <View>
           <TouchableOpacity
+            onPress={() => navigation.navigate('Masjid Info')}
             style={{
               paddingVertical: 5,
               width: 160,
@@ -185,7 +186,7 @@ const Favourites = ({navigation}) => {
         data={masjidData}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        style={{marginBottom:140}}
+        style={{marginBottom: 140}}
       />
     </View>
   );
