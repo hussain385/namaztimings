@@ -1,6 +1,4 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
-import firestore from '@react-native-firebase/firestore';
 import {
     ActivityIndicator,
     Alert,
@@ -237,7 +235,7 @@ function HomeScreen({navigation}) {
             />
             <>
                 {error && <strong>Error: {JSON.stringify(error)}</strong>}
-                {loading && <ActivityIndicator size="small" color="#1F441E"/>}
+                {loading && <ActivityIndicator color="#1F441E"/>}
                 {masjidData !== null && (
                     <SafeAreaView style={styles.container}>
                         <ScrollView style={styles.scrollView}>
@@ -464,7 +462,7 @@ function HomeScreen({navigation}) {
                                             width: 160,
                                             marginHorizontal: 10,
                                         }}
-                                        onPress={() => Alert.alert('Simple Button pressed')}>
+                                        onPress={() => navigation.navigate('More Info')}>
                                         <Text style={{color: '#ffff'}}>More Info</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
@@ -476,7 +474,7 @@ function HomeScreen({navigation}) {
                                             width: 160,
                                             marginHorizontal: 10,
                                         }}
-                                        onPress={() => Alert.alert('Simple Button pressed')}>
+                                        onPress={() => navigation.navigate('Notifications')}>
                                         <Text style={{color: '#1F441E'}}>News & Announcment</Text>
                                     </TouchableOpacity>
                                 </View>

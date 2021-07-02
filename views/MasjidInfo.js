@@ -1,9 +1,10 @@
 import * as React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Text, View,TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {NavigationContainer} from '@react-navigation/native';
 import {Header} from 'react-native-elements';
 
-const Admin = ({navigation}) => {
+const MasjidInfo = ({ navigation }) => {
 
     return (
         <View>
@@ -14,13 +15,13 @@ const Admin = ({navigation}) => {
                 }}
                 leftComponent={
                     <TouchableOpacity onPress={() => navigation.openDrawer()}>
-                        <Icon
-                            name="bars"
-                            color="#ffff"
-                            size={26}
-                            style={{paddingLeft: 10}}
-                        />
-                    </TouchableOpacity>
+            <Icon
+              name="bars"
+              color="#ffff"
+              size={26}
+              style={{paddingLeft: 10}}
+            />
+          </TouchableOpacity>
                 }
                 centerComponent={
                     <View style={{textAlign: 'center'}}>
@@ -32,7 +33,7 @@ const Admin = ({navigation}) => {
                                 marginTop: 5,
                                 textAlign: 'center',
                             }}>
-                            Admin
+                            MasjidInfo
                         </Text>
                     </View>
                 }
@@ -50,4 +51,4 @@ const Admin = ({navigation}) => {
     );
 };
 
-export default Admin;
+export default MasjidInfo;
