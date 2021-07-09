@@ -13,7 +13,14 @@ const Login = ({navigation}) => {
           elevation: 50,
         }}
         leftComponent={
-          <Icon name="bars" color="#ffff" size={26} style={{paddingLeft: 10}} />
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon
+              name="arrow-left"
+              color="#ffff"
+              size={26}
+              style={{paddingLeft: 10}}
+            />
+          </TouchableOpacity>
         }
         centerComponent={
           <View style={{textAlign: 'center'}}>
