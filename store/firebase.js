@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import firestore from '@react-native-firebase/firestore';
+import Geolocation from 'react-native-geolocation-service'
+import haversine from 'haversine'
 
 export function GetMasjidData() {
     const [loading, setLoading] = useState(true);
@@ -26,11 +28,12 @@ export function GetMasjidData() {
                 snapshot.forEach(docSnapshot => {
                     masjids.push({
                         ...docSnapshot.data(),
+                        'distance': haversine(location != null ? location : docSnapshot.data().location, docSnapshot.data().location),
                         key: docSnapshot.id,
-                        'distance': haversine(location, docSnapshot.data().location)
+
                     });
                 });
-
+                console.log(masjids)
                 setMasjid(masjids);
                 setLoading(false);
 
