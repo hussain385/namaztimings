@@ -14,7 +14,6 @@ import {
 // import {Divider} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
-import {GetMasjidData} from '../store/firebase';
 
 function HomeScreen({navigation}) {
   const [masjidData, loading, error] = GetMasjidData();
