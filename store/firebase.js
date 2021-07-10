@@ -5,8 +5,19 @@ export function GetMasjidData() {
     const [loading, setLoading] = useState(true);
     const [masjid, setMasjid] = useState(null);
     const [error, setError] = useState(null);
+    const [location, setLocation] = useState(null)
 
     useEffect(() => {
+        Geolocation.getCurrentPosition((position) => {
+                setLocation(position.coords)
+                console.log(position.coords)
+            }, (err) => console.log(err), {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 10000
+            }
+        )
+
         const subs = firestore()
             .collection('Masjid')
             .onSnapshot(snapshot => {
@@ -16,6 +27,7 @@ export function GetMasjidData() {
                     masjids.push({
                         ...docSnapshot.data(),
                         key: docSnapshot.id,
+                        'distance': haversine(location, docSnapshot.data().location)
                     });
                 });
 
