@@ -45,7 +45,7 @@ const Item = props => (
             <Text style={{fontSize: 17}}>{props.title}</Text>
           </View>
           <View>
-            <Text style={{color: 'red'}}>0 km</Text>
+            <Text style={{color: 'red'}}>${props.distance}</Text>
           </View>
         </View>
         <View style={{flexDirection: 'row', marginTop: 10}}>

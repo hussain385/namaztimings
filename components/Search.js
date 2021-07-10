@@ -19,7 +19,7 @@ const Item = props => (
       margin: 10,
       shadowOpacity: 10,
       elevation: 20,
-    }}>
+    }} key={props.key}>
     <Card.Cover
       source={{
         uri: `${props.url}`,
@@ -31,7 +31,7 @@ const Item = props => (
           <Text style={{fontSize: 17}}>{props.title}</Text>
         </View>
         <View>
-          <Text style={{color: '#900000'}}>0 KM AWAY</Text>
+          <Text style={{color: '#900000'}}>{props.distance} AWAY</Text>
         </View>
       </View>
       <View
@@ -106,6 +106,8 @@ const Seacrh = ({navigation}) => {
       url={item.pictureURL}
       timings={item.timing}
       nav={navigation}
+      distance={item.distance}
+      key={item.key}
     />
   );
   return (
@@ -167,7 +169,7 @@ const Seacrh = ({navigation}) => {
       <FlatList
         data={masjidData}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={masjidData => masjidData.key}
         style={{marginBottom: 140}}
       />
       {!loading && (

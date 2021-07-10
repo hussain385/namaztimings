@@ -21,6 +21,7 @@ const MasjidInfo = ({route, navigation}) => {
   const {zohar} = route.params;
   const {asar} = route.params;
   const {magrib} = route.params;
+  const {distance} = route.params;
 
   return (
     <>
@@ -123,7 +124,7 @@ const MasjidInfo = ({route, navigation}) => {
                     fontSize: 18,
                     marginRight: 12,
                   }}>
-                  0 KM
+                  ${distance}
                 </Text>
               </View>
             </View>
