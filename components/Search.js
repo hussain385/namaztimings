@@ -1,18 +1,16 @@
 import * as React from 'react';
-import {useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  StyleSheet,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
-import {Card} from 'react-native-paper';
-import {GetMasjidData} from '../store/firebase';
-import CountrySelectDropdown from 'react-native-searchable-country-dropdown';
+import {Card, TextInput} from 'react-native-paper';
+import {GetAllMasjidData} from '../store/firebase';
 
 const Item = props => (
   <Card
@@ -21,8 +19,7 @@ const Item = props => (
       margin: 10,
       shadowOpacity: 10,
       elevation: 20,
-    }}
-    key={props.key}>
+    }} key={props.key}>
     <Card.Cover
       source={{
         uri: `${props.url}`,
@@ -100,8 +97,6 @@ const Item = props => (
 );
 
 const Seacrh = ({navigation}) => {
-  const {getCode, getName} = require('country-list');
-  const {CountryCode, setCountryCode} = useState('');
   const [masjidData, loading, error] = GetAllMasjidData();
 
   const renderItem = ({item}) => (
@@ -155,15 +150,6 @@ const Seacrh = ({navigation}) => {
         }
         backgroundColor="#1F441E"
       />
-      <View style={{marginTop: 10, marginHorizontal: 30}}>
-        <CountrySelectDropdown
-          countrySelect={setCountryCode}
-          error="No Country Found"
-          fontFamily={'Nunito-Regular'}
-          textColor={'#000000'}
-        />
-      </View>
-
       {loading && <ActivityIndicator color="#1F441E" size="large" />}
       {/* <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollView}>
@@ -179,15 +165,13 @@ const Seacrh = ({navigation}) => {
           </View>
         </ScrollView>
       </SafeAreaView> */}
-      <View style={{marginTop: 50}}>
-        <FlatList
-          data={masjidData}
-          renderItem={renderItem}
-          keyExtractor={masjidData => masjidData.key}
-          style={{marginBottom: 140}}
-        />
-      </View>
 
+      <FlatList
+        data={masjidData}
+        renderItem={renderItem}
+        keyExtractor={masjidData => masjidData.key}
+        style={{marginBottom: 140}}
+      />
       {!loading && (
         <View
           style={{

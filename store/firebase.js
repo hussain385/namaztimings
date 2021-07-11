@@ -12,12 +12,13 @@ export function GetAllMasjidData() {
     const [error, setError] = useState(null);
     const [location, setLocation] = useState(null);
 
-    // function setlocation(pos) {
-    //     setLocation({
-    //         'longitude': pos.coords.longitude,
-    //         'latitude': pos.coords.latitude,
-    //     });
-    // }
+    function setlocation(pos) {
+        setLocation({
+            'longitude': pos.coords.longitude,
+            'latitude': pos.coords.latitude,
+        });
+    }
+
     Geolocation.getCurrentPosition((position) => {
             console.log('in the function');
             setlocation(position.coords);
@@ -28,7 +29,7 @@ export function GetAllMasjidData() {
             // maximumAge: 10000,
         },
     );
-  
+
     function toRad(x) {
         return x * Math.PI / 180;
     }
@@ -63,7 +64,7 @@ export function GetAllMasjidData() {
                 setLoading(false);
             });
         return () => subs();
-    }, []);
+    }, [location]);
     return [masjid, loading, error];
 }
 
