@@ -100,9 +100,9 @@ const Item = props => (
 );
 
 const Seacrh = ({navigation}) => {
-  const [masjidData, loading, error] = GetMasjidData();
   const {getCode, getName} = require('country-list');
   const {CountryCode, setCountryCode} = useState('');
+  const [masjidData, loading, error] = GetAllMasjidData();
 
   const renderItem = ({item}) => (
     <Item

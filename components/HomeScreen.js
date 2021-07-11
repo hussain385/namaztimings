@@ -13,32 +13,33 @@ import {
 // import {Divider} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
-import {GetMasjidData} from '../store/firebase';
+import {GetAllMasjidData} from '../store/firebase';
 
 function HomeScreen({navigation}) {
-  const [masjidData, loading, error] = GetMasjidData();
-  // React.useEffect(() => {
-  //     const fetchMasjidData = async () => {
-  //         const masjids = await firestore()
-  //             .collection('Masjid')
-  //             .get()
-  //             .then(querySnapshot => {
-  //                 console.log('Total users: ', querySnapshot.size);
-  //                 let data = [];
-  //                 querySnapshot.forEach(documentSnapshot => {
-  //                     console.log(
-  //                         'User ID: ',
-  //                         documentSnapshot.id,
-  //                         documentSnapshot.data(),
-  //                     );
-  //                     data.push({id: documentSnapshot.id, ...documentSnapshot.data()});
-  //                 });
-  //                 return data;
-  //             });
-  //         setmasjidData(masjids);
-  //     };
-  //     return () => fetchMasjidData();
-  // }, []);
+
+    const [masjidData, loading, error] = GetAllMasjidData();
+    // React.useEffect(() => {
+    //     const fetchMasjidData = async () => {
+    //         const masjids = await firestore()
+    //             .collection('Masjid')
+    //             .get()
+    //             .then(querySnapshot => {
+    //                 console.log('Total users: ', querySnapshot.size);
+    //                 let data = [];
+    //                 querySnapshot.forEach(documentSnapshot => {
+    //                     console.log(
+    //                         'User ID: ',
+    //                         documentSnapshot.id,
+    //                         documentSnapshot.data(),
+    //                     );
+    //                     data.push({id: documentSnapshot.id, ...documentSnapshot.data()});
+    //                 });
+    //                 return data;
+    //             });
+    //         setmasjidData(masjids);
+    //     };
+    //     return () => fetchMasjidData();
+    // }, []);
 
   const navigationView = () => (
     <View style={[styles.mncontainer, styles.navigationContainer]}>

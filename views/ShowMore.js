@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
 import {Card} from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
-import {GetMasjidData} from '../store/firebase';
+import {GetAllMasjidData} from '../store/firebase';
 
 const Item = props => (
   <TouchableOpacity
@@ -86,7 +86,7 @@ const Item = props => (
 );
 
 const ShowMore = ({navigation}) => {
-  const [masjidData, loading, error] = GetMasjidData();
+  const [masjidData, loading, error] = GetAllMasjidData();
 
   const renderItem = ({item}) => (
     <Item
