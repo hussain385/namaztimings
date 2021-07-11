@@ -1816,6 +1816,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/geojson@npm:^7946.0.7":
+  version: 7946.0.8
+  resolution: "@types/geojson@npm:7946.0.8"
+  checksum: 2d9628afd0caac21dd927c90a5be0a361634a2d3b55c78752a9f1754874cf3802aa5cf2248489ace40e97b29a25d718b0d10689ca8e1b42df350222c282a8ef0
+  languageName: node
+  linkType: hard
+
 "@types/graceful-fs@npm:^4.1.2":
   version: 4.1.5
   resolution: "@types/graceful-fs@npm:4.1.5"
@@ -3317,6 +3324,13 @@ __metadata:
     js-yaml: ^3.13.1
     parse-json: ^4.0.0
   checksum: 02d51fb28871d1e6114333f1109e47714e280d60ee8f05cf03bd5a0b9d0954f3d1a99b01edb3ea8147e743b2c9caa3738f745157ebddd5b93efeac324d3d5239
+  languageName: node
+  linkType: hard
+
+"country-list@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "country-list@npm:2.2.0"
+  checksum: c887206bd36adea7e869fd3832b755008a739a729020fa3687f4f5f4ce74fe224a2ccf9e3b49f5ce59fb52d1201c4d6383aa6ac2431130877ad3acb83179992d
   languageName: node
   linkType: hard
 
@@ -7172,6 +7186,7 @@ __metadata:
     "@react-navigation/native": ^5.9.4
     "@react-navigation/stack": ^5.14.5
     babel-jest: ^27.0.5
+    country-list: ^2.2.0
     eslint: ^7.29.0
     fuse: ^0.4.0
     geofire-common: ^5.2.0
@@ -7182,12 +7197,17 @@ __metadata:
     react: 17.0.1
     react-native: 0.64.2
     react-native-elements: ^3.4.2
+    react-native-flags: ^1.0.0
+    react-native-geolocation-service: ^5.3.0-beta.1
+    react-native-gesture-handler: ^1.10.3
+    react-native-maps: 0.28.0
     react-native-geolocation-service: ^5.3.0-beta.1
     react-native-gesture-handler: ^1.10.3
     react-native-paper: ^4.9.2
     react-native-reanimated: ^2.2.0
     react-native-safe-area-context: ^3.2.0
     react-native-screens: ^3.4.0
+    react-native-searchable-country-dropdown: ^1.0.1
     react-native-vector-icons: ^8.1.0
     react-test-renderer: 17.0.1
   languageName: unknown
@@ -8063,6 +8083,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-flags@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "react-native-flags@npm:1.0.0"
+  checksum: 632e11e399c28fd0e81c04d945eda1e558723bf75ed2c18b9fea0f309efc2867cfd84f27da1244b894e237c10ba4c06b665b883fb18107168b752aaf1badb772
+  languageName: node
+  linkType: hard
+
 "react-native-geolocation-service@npm:^5.3.0-beta.1":
   version: 5.3.0-beta.1
   resolution: "react-native-geolocation-service@npm:5.3.0-beta.1"
@@ -8089,6 +8116,19 @@ __metadata:
   peerDependencies:
     react-native: ">=0.42.0"
   checksum: b9b39097d3a635bd34d6cb2b9ab188ac718e7c0124ddaf999625dea70a977929db9ab5677f73e2637a1ff31f90569075e8bbef08ced5a4a3005e65bdda26319c
+  languageName: node
+  linkType: hard
+
+"react-native-maps@npm:0.28.0":
+  version: 0.28.0
+  resolution: "react-native-maps@npm:0.28.0"
+  dependencies:
+    "@types/geojson": ^7946.0.7
+  peerDependencies:
+    react: ">= 16.0 || < 17.0"
+    react-native: ">= 0.51"
+    react-native-web: ^0.11
+  checksum: 4dc7c8f315b4ef1e355f5e65dc9ea1c57fa6c8939512e26066b12b1b7261eca60d15b493036d4a24c1e75bb2dd8812710b82859187e2cf0a24b8340d79ded5ba
   languageName: node
   linkType: hard
 
@@ -8154,6 +8194,16 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 89294a13c7c52ee7eed1840b551e5a7f9ba6cf1dfad8a2418a1a0988b39e05adcc1f1858ed8e0f8c11e0ad54a5693fb4985f0804858cf44d4f7e6d6c4d508f1c
+  languageName: node
+  linkType: hard
+
+"react-native-searchable-country-dropdown@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "react-native-searchable-country-dropdown@npm:1.0.1"
+  dependencies:
+    country-list: ^2.2.0
+    react-native-flags: ^1.0.0
+  checksum: 3420b00a79caae3c58cb9389a084ad0bd4484577bc08167d5273a6dc0fa46f93a71713c5aaf1bd419cfa80ff8af1791204d169e9b2aaa1274d09b6df85677267
   languageName: node
   linkType: hard
 

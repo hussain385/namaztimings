@@ -18,6 +18,7 @@ import '@react-native-firebase/app';
 import MasjidInfo from './views/MasjidInfo';
 import Seacrh from './components/Search';
 import ShowMore from './views/ShowMore';
+import Map from './views/Map';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -125,6 +126,13 @@ const HomeStackScreen = ({navigation}) => (
             <Icon name="arrow-left" color="#ffff" size={20} />
           </TouchableOpacity>
         ),
+      }}
+    />
+    <HomeStack.Screen
+      name="Map"
+      component={Map}
+      options={{
+        title: 'Map',
       }}
     />
     <HomeStack.Screen
