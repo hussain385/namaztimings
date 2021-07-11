@@ -10,7 +10,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
 import {Card, TextInput} from 'react-native-paper';
-import {GetMasjidData} from '../store/firebase';
+import {GetAllMasjidData} from '../store/firebase';
 
 const Item = props => (
   <Card
@@ -97,7 +97,7 @@ const Item = props => (
 );
 
 const Seacrh = ({navigation}) => {
-  const [masjidData, loading, error] = GetMasjidData();
+  const [masjidData, loading, error] = GetAllMasjidData();
 
   const renderItem = ({item}) => (
     <Item
