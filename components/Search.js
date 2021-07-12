@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import * as React from 'react';
 import {useState} from 'react';
 import {
@@ -11,7 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
 import {Card} from 'react-native-paper';
-import {GetMasjidData} from '../store/firebase';
+import {GetAllMasjidData} from '../store/firebase';
 import CountrySelectDropdown from 'react-native-searchable-country-dropdown';
 
 const Item = props => (

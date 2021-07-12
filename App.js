@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import * as React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
