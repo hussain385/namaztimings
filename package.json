@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.15.5",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-firebase/app": "^12.1.0",
@@ -18,20 +19,27 @@
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",
+    "country-list": "^2.2.0",
     "fuse": "^0.4.0",
     "geofire-common": "^5.2.0",
+    "geofirestore": "^4.4.2",
     "haversine": "^1.1.1",
     "lodash": "^4.17.21",
+    "ngeohash": "^0.6.3",
     "react": "17.0.1",
     "react-native": "0.64.2",
     "react-native-elements": "^3.4.2",
+    "react-native-flags": "^1.0.0",
     "react-native-geolocation-service": "^5.3.0-beta.1",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-maps": "0.28.0",
     "react-native-paper": "^4.9.2",
     "react-native-reanimated": "^2.2.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.4.0",
-    "react-native-vector-icons": "^8.1.0"
+    "react-native-searchable-country-dropdown": "^1.0.1",
+    "react-native-vector-icons": "^8.1.0",
+    "rxjs": "^7.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",

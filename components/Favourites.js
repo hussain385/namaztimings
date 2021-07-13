@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator, FlatList, ImageBackground, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
-import {GetAllMasjidData, GetRadMasjidData} from '../store/firebase';
+import {GetRadMasjidData} from '../store/firebase';
 
 const Item = props => (
     <View
@@ -51,7 +51,7 @@ const Item = props => (
                     <Text style={{fontSize: 17}}>{props.title}</Text>
                 </View>
                 <View>
-                    <Text style={{color: '#900000'}}>{props.distance} AWAY</Text>
+                    <Text style={{color: '#900000'}}>{props.distance}KM AWAY</Text>
                 </View>
             </View>
             <View
@@ -195,12 +195,15 @@ const Favourites = ({navigation}) => {
           </View>
         </ScrollView>
       </SafeAreaView> */}
-            <FlatList
-                data={masjidData}
-                renderItem={renderItem}
-                keyExtractor={masjidData => masjidData.key}
-                style={{marginBottom: 140}}
-            />
+            {
+                loading ? <ActivityIndicator color="#1F441E" size="large"/> : <FlatList
+                    data={masjidData}
+                    renderItem={renderItem}
+                    keyExtractor={masjidData => masjidData.key}
+                    style={{marginBottom: 140}}
+                />
+            }
+
         </View>
     );
 };
