@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
-import * as React from 'react';
-import {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -8,12 +7,16 @@ import {
   TouchableOpacity,
   View,
   StyleSheet,
+  TextInput,
 } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
 import {Card} from 'react-native-paper';
 import {GetAllMasjidData} from '../store/firebase';
-import CountrySelectDropdown from 'react-native-searchable-country-dropdown';
+// import CountrySelectDropdown from 'react-native-searchable-country-dropdown';
+import Fuse from 'fuse.js';
+import {SafeAreaView} from 'react-native';
 
 const Item = props => (
   <Card
@@ -101,9 +104,40 @@ const Item = props => (
 );
 
 const Seacrh = ({navigation}) => {
-  const {getCode, getName} = require('country-list');
-  const {CountryCode, setCountryCode} = useState('');
   const [masjidData, loading, error] = GetAllMasjidData();
+  // const fuse = new Fuse(masjidData, {keys: ['name', 'address']});
+  const [textSearch, setTextSearch] = useState('');
+  const [location, setLocation] = useState();
+  const [result, setResult] = useState(null);
+
+  function getCurrentLocation() {
+    return new Promise((resolve, reject) =>
+      Geolocation.getCurrentPosition(resolve, reject, {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 10000,
+      }),
+    );
+  }
+
+  function onChangeSearch(text) {
+    const fuse = new Fuse(masjidData, {keys: ['address']});
+    const resultf = fuse.search(text);
+    setTextSearch(text);
+    setResult(resultf);
+    console.log(text);
+  }
+
+  useEffect(() => {
+    getCurrentLocation()
+      .then(loc => {
+        setLocation(loc);
+        console.log(loc.coords.longitude, '<========== location ');
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }, []);
 
   const renderItem = ({item}) => (
     <Item
@@ -116,13 +150,20 @@ const Seacrh = ({navigation}) => {
       key={item.key}
     />
   );
+  const renderItem1 = ({item}) => (
+    <Item
+      title={item.item.name}
+      address={item.item.address}
+      url={item.item.pictureURL}
+      timings={item.item.timing}
+      nav={navigation}
+      distance={item.item.distance}
+      key={item.item.key}
+    />
+  );
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Header
-        containerStyle={{
-          shadowOpacity: 50,
-          elevation: 50,
-        }}
         leftComponent={
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon
@@ -144,51 +185,71 @@ const Seacrh = ({navigation}) => {
               }}>
               Search
             </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignSelf: 'center',
+                width: '200%',
+                marginTop: 10,
+              }}>
+              <TextInput
+                onChangeText={onChangeSearch}
+                value={textSearch}
+                placeholder="Enter Masjid Address..."
+                style={{
+                  backgroundColor: '#eeee',
+                  width: '80%',
+                  borderRadius: 10,
+                  alignContent: 'center',
+                  height: 40,
+                }}
+              />
+            </View>
           </View>
         }
         rightComponent={
-          <Icon
-            name="map-marker-alt"
-            color="#ffff"
-            size={26}
-            style={{paddingRight: 10}}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Map', {
+                latitude: location.coords.latitude || 0.0,
+                longitude: location.coords.longitude || 0.0,
+              })
+            }>
+            <Icon
+              name="map-marker-alt"
+              color="#ffff"
+              size={26}
+              style={{paddingRight: 10, marginTop: 3}}
+            />
+          </TouchableOpacity>
         }
-        backgroundColor="#1F441E"
-      />
-      <View style={{marginTop: 10, marginHorizontal: 30}}>
-        <CountrySelectDropdown
-          countrySelect={setCountryCode}
-          error="No Country Found"
-          fontFamily={'Nunito-Regular'}
-          textColor={'#000000'}
-        />
-      </View>
+        backgroundColor="#1F441E"></Header>
+      {/* <View>
+        
+      </View> */}
 
       {loading && <ActivityIndicator color="#1F441E" size="large" />}
-      {/* <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-          <View>
-            {masjidData !== null ? (
-              masjidData.map((masjid, id) => (
-
-              ))
-            ) : (
-              <ActivityIndicator size="small" color="#1F441E" />
-            )}
-
-          </View>
-        </ScrollView>
-      </SafeAreaView> */}
-      <View style={{marginTop: 50}}>
-        <FlatList
-          data={masjidData}
-          renderItem={renderItem}
-          keyExtractor={masjidData => masjidData.key}
-          style={{marginBottom: 140}}
-        />
-      </View>
-
+      {(() => {
+        if (result === null) {
+          return (
+            <FlatList
+              data={masjidData}
+              renderItem={renderItem}
+              keyExtractor={masjidData => masjidData.key}
+              style={{marginBottom: 140}}
+            />
+          );
+        } else {
+          return (
+            <FlatList
+              data={result}
+              renderItem={renderItem1}
+              keyExtractor={result => result.key}
+              style={{marginBottom: 140}}
+            />
+          );
+        }
+      })()}
       {!loading && (
         <View
           style={{
@@ -211,13 +272,14 @@ const Seacrh = ({navigation}) => {
           </TouchableOpacity>
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 50,
+    // marginBottom: 100,
+    height: '105%',
   },
   mncontainer: {
     flex: 1,

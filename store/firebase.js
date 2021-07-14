@@ -24,19 +24,20 @@ export function GetAllMasjidData() {
   const [loading, setLoading] = useState(true);
   const [masjid, setMasjid] = useState(null);
   const [error, setError] = useState(null);
+  
 
   useEffect(() => {
     const subs = firestore().collection('Masjid');
     getCurrentLocation()
       .then(loc => {
-        console.log(loc,'<========== location ');
+        // console.log(loc,'<========== location ');
         subs.onSnapshot(snapshot => {
           const masjids = [];
-          console.log('after the function GetAllMasjidData');
+          // console.log('after the function GetAllMasjidData');
           snapshot.forEach(docSnapshot => {
             const loc1 = docSnapshot.data().g;
             const d = haversine(loc1, loc.coords);
-            console.log(d);
+            // console.log(d);
             masjids.push({
               ...docSnapshot.data(),
               distance: Number(d.toFixed(2)),
@@ -44,18 +45,18 @@ export function GetAllMasjidData() {
             });
           });
           const masjids1 = _.sortBy(masjids, 'distance');
-          console.log(masjids1);
+          // console.log(masjids1);
           setMasjid(masjids1);
           setLoading(false);
         })
         .catch(e => {
           setError(e);
-          console.log(e);
+          // console.log(e);
         });
       })
       .catch(e => {
         setError(e);
-        console.log(e);
+        // console.log(e);
       });
 
     return () => subs();

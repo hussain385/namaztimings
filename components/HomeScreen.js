@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -10,150 +10,43 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
 // import {NavigationContainer} from '@react-navigation/native';
 // import {Divider} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
 import {GetRadMasjidData} from '../store/firebase';
+import Geocoder from 'react-native-geocoding';
 
 function HomeScreen({navigation}) {
-
-    const [masjidData, loading, error] = GetRadMasjidData();
-
-  const navigationView = () => (
-    <View style={[styles.mncontainer, styles.navigationContainer]}>
-      <Text style={{fontSize: 70, color: '#ffff', paddingLeft: 50}}>LOGO</Text>
-      <View
-        style={{
-          margin: 15,
-          borderBottomColor: '#C4C4C4',
-          borderBottomWidth: 1,
-        }}
-      />
-      <View style={{paddingLeft: 30}}>
-        <View style={{flexDirection: 'row', paddingLeft: 10, paddingTop: 14}}>
-          <Icon
-            name="mosque"
-            color="#ffff"
-            size={16}
-            style={{marginTop: 3, paddingRight: 10}}
-          />
-          <Text
-            style={{
-              color: '#ffff',
-              fontSize: 17,
-            }}>
-            Find Masid
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row', paddingLeft: 10, paddingTop: 14}}>
-          <Icon
-            name="star"
-            color="#ffff"
-            size={16}
-            style={{marginTop: 3, paddingRight: 10}}
-          />
-          <Text
-            style={{
-              color: '#ffff',
-              fontSize: 17,
-            }}>
-            Favourites
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row', paddingLeft: 10, paddingTop: 14}}>
-          <Icon
-            name="clipboard-list"
-            color="#ffff"
-            size={16}
-            style={{marginTop: 3, paddingRight: 10}}
-          />
-          <Text
-            style={{
-              color: '#ffff',
-              fontSize: 17,
-            }}>
-            Notifications
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row', paddingLeft: 10, paddingTop: 14}}>
-          <Icon
-            name="share"
-            color="#ffff"
-            size={16}
-            style={{marginTop: 3, paddingRight: 10}}
-          />
-          <Text
-            style={{
-              color: '#ffff',
-              fontSize: 17,
-            }}>
-            Invite Your Friends
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row', paddingLeft: 10, paddingTop: 14}}>
-          <Icon
-            name="info-circle"
-            color="#ffff"
-            size={16}
-            style={{marginTop: 3, paddingRight: 10}}
-          />
-          <Text
-            style={{
-              color: '#ffff',
-              fontSize: 17,
-            }}>
-            Contact Us
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row', paddingLeft: 10, paddingTop: 14}}>
-          <Icon
-            name="newspaper"
-            color="#ffff"
-            size={16}
-            style={{marginTop: 3, paddingRight: 10}}
-          />
-          <Text
-            style={{
-              color: '#ffff',
-              fontSize: 17,
-            }}>
-            Terms & Conditions
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row', paddingLeft: 10, paddingTop: 14}}>
-          <Icon
-            name="street-view"
-            color="#ffff"
-            size={16}
-            style={{marginTop: 3, paddingRight: 10}}
-          />
-          <Text
-            style={{
-              color: '#ffff',
-              fontSize: 17,
-            }}>
-            Admin View
-          </Text>
-        </View>
-        <View style={{flexDirection: 'row', paddingLeft: 10, paddingTop: 14}}>
-          <Icon
-            name="user-circle"
-            color="#ffff"
-            size={16}
-            style={{marginTop: 3, paddingRight: 10}}
-          />
-          <Text
-            style={{
-              color: '#ffff',
-              fontSize: 17,
-            }}>
-            Login
-          </Text>
-        </View>
-      </View>
-    </View>
-  );
+  const [masjidData, loading, error] = GetRadMasjidData();
+  const [location, setLocation] = useState();
+  function getCurrentLocation() {
+    return new Promise((resolve, reject) =>
+      Geolocation.getCurrentPosition(resolve, reject, {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 10000,
+      }),
+    );
+  }
+  Geocoder.init('AIzaSyCrsNBX-pWunuPeL-ziP99aXhetdZL2VKs');
+  useEffect(() => {
+    getCurrentLocation()
+      .then(loc => {
+        setLocation(loc);
+        console.log(loc.coords.longitude, '<========== location ');
+        Geocoder.from(loc.coords.longitude, loc.coords.latitude)
+          .then(json => {
+            var addressComponent = json.results[0].address_components[0];
+            console.log(addressComponent);
+          })
+          .catch(error => console.warn(error));
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }, []);
   return (
     <>
       <Header
@@ -202,7 +95,13 @@ function HomeScreen({navigation}) {
           </View>
         }
         rightComponent={
-          <TouchableOpacity onPress={() => navigation.navigate('Map')}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Map', {
+                latitude: location.coords.latitude || 0.0,
+                longitude: location.coords.longitude || 0.0,
+              })
+            }>
             <Icon
               name="bell"
               color="#ffff"
@@ -215,8 +114,9 @@ function HomeScreen({navigation}) {
       />
       <>
         {error && <strong>Error: {JSON.stringify(error)}</strong>}
-        {loading && <ActivityIndicator color="#1F441E" size="large" />}
-        {masjidData !== null && (
+        {loading ? (
+          <ActivityIndicator color="#1F441E" size="large" />
+        ) : (
           <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scrollView}>
               <View>

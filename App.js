@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import * as React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, TextInput, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -96,25 +96,18 @@ const SearchStackScreen = ({navigation}) => (
 );
 
 const HomeStackScreen = ({navigation}) => (
-  <HomeStack.Navigator
-    screenOptions={{
-      headerShown: false,
-    }}>
+  <HomeStack.Navigator>
     <HomeStack.Screen
       name="Home"
       component={MyTabs}
-      options={{title: 'Prayer Time'}}
+      options={{title: 'Prayer Time', headerShown: false}}
     />
     <HomeStack.Screen
       name="Prayer Time"
       component={HomeScreen}
       options={{
         title: 'Prayer Time',
-        headerLeft: () => (
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <Icon name="bars" color="#ffff" size={20} />
-          </TouchableOpacity>
-        ),
+        headerShown: false,
       }}
     />
     <HomeStack.Screen
@@ -122,18 +115,42 @@ const HomeStackScreen = ({navigation}) => (
       component={MasjidInfo}
       options={{
         title: 'Prayer Time',
-        headerLeft: () => (
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name="arrow-left" color="#ffff" size={20} />
-          </TouchableOpacity>
-        ),
+        headerShown: false,
       }}
     />
     <HomeStack.Screen
       name="Map"
       component={Map}
       options={{
-        title: 'Map',
+        headerTransparent: true,
+        title: '',
+        headerLeft: () => (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignSelf: 'center',
+              width: '100%',
+              marginTop: 10,
+            }}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{marginHorizontal: 15, marginTop:5}}>
+              <Icon name="arrow-left" color="#ffff" size={25} />
+            </TouchableOpacity>
+            <TextInput
+              // onChangeText={onChangeSearch}
+              // value={textSearch}
+              placeholder="Enter Masjid Address..."
+              style={{
+                backgroundColor: '#eeee',
+                width: '100%',
+                borderRadius: 10,
+                alignContent: 'center',
+                height: 40,
+              }}
+            />
+          </View>
+        ),
       }}
     />
     <HomeStack.Screen
@@ -141,11 +158,7 @@ const HomeStackScreen = ({navigation}) => (
       component={ShowMore}
       options={{
         title: 'Show more',
-        headerLeft: () => (
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name="arrow-left" color="#ffff" size={20} />
-          </TouchableOpacity>
-        ),
+        headerShown: false,
       }}
     />
   </HomeStack.Navigator>
