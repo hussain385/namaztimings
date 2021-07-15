@@ -9,12 +9,10 @@ import {
   StyleSheet,
   TextInput,
 } from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
 import {Card} from 'react-native-paper';
-import {GetAllMasjidData} from '../store/firebase';
-// import CountrySelectDropdown from 'react-native-searchable-country-dropdown';
+import {GetAllMasjidData, getCurrentLocation} from '../store/firebase';
 import Fuse from 'fuse.js';
 import {SafeAreaView} from 'react-native';
 
@@ -109,16 +107,6 @@ const Seacrh = ({navigation}) => {
   const [textSearch, setTextSearch] = useState('');
   const [location, setLocation] = useState();
   const [result, setResult] = useState(null);
-
-  function getCurrentLocation() {
-    return new Promise((resolve, reject) =>
-      Geolocation.getCurrentPosition(resolve, reject, {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 10000,
-      }),
-    );
-  }
 
   function onChangeSearch(text) {
     const fuse = new Fuse(masjidData, {keys: ['address']});

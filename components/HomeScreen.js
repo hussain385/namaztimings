@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Image,
+  RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -10,43 +11,37 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
 // import {NavigationContainer} from '@react-navigation/native';
 // import {Divider} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
-import {GetRadMasjidData} from '../store/firebase';
+import {GetRadMasjidData1} from '../store/firebase';
 import Geocoder from 'react-native-geocoding';
 
 function HomeScreen({navigation}) {
-  const [masjidData, loading, error] = GetRadMasjidData();
-  const [location, setLocation] = useState();
-  function getCurrentLocation() {
-    return new Promise((resolve, reject) =>
-      Geolocation.getCurrentPosition(resolve, reject, {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 10000,
-      }),
-    );
-  }
+  const [masjidData, loading, location, error, getLocation, GetData] =
+    new GetRadMasjidData1();
+  const [refreshing, setRefreshing] = useState(false);
   Geocoder.init('AIzaSyCrsNBX-pWunuPeL-ziP99aXhetdZL2VKs');
+
   useEffect(() => {
-    getCurrentLocation()
-      .then(loc => {
-        setLocation(loc);
-        console.log(loc.coords.longitude, '<========== location ');
-        Geocoder.from(loc.coords.longitude, loc.coords.latitude)
-          .then(json => {
-            var addressComponent = json.results[0].address_components[0];
-            console.log(addressComponent);
-          })
-          .catch(error => console.warn(error));
+    onRefresh();
+    console.log(location.coords.longitude, '<========== location ');
+    Geocoder.from(location.coords.longitude, location.coords.latitude)
+      .then(json => {
+        var addressComponent = json.results[0].address_components[0];
+        console.log(addressComponent);
       })
-      .catch(e => {
-        console.log(e);
-      });
-  }, []);
+      .catch(error1 => console.warn(error1));
+  }, [location.coords.latitude, location.coords.longitude]);
+
+  function onRefresh() {
+    setRefreshing(true);
+    getLocation();
+    GetData();
+    setRefreshing(false);
+  }
+
   return (
     <>
       <Header
@@ -113,12 +108,20 @@ function HomeScreen({navigation}) {
         backgroundColor="#1F441E"
       />
       <>
-        {error && <strong>Error: {JSON.stringify(error)}</strong>}
+        {error.message.trim().isEmpty && (
+          <View>
+            <strong>Error: {JSON.stringify(error)}</strong>
+          </View>
+        )}
         {loading ? (
           <ActivityIndicator color="#1F441E" size="large" />
-        ) : (
+        ) : masjidData.length !== 0 ? (
           <SafeAreaView style={styles.container}>
-            <ScrollView style={styles.scrollView}>
+            <ScrollView
+              style={styles.scrollView}
+              refreshControl={
+                <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+              }>
               <View>
                 <View>
                   <Text
@@ -157,7 +160,11 @@ function HomeScreen({navigation}) {
                       name="map-marker-alt"
                       color="#5C5C5C"
                       size={20}
-                      style={{paddingRight: 10, paddingLeft: 13, marginTop: 5}}
+                      style={{
+                        paddingRight: 10,
+                        paddingLeft: 13,
+                        marginTop: 5,
+                      }}
                     />
                     <Text style={{maxWidth: 280, marginTop: 5}}>
                       {masjidData[0].address}
@@ -176,7 +183,7 @@ function HomeScreen({navigation}) {
                         fontSize: 18,
                         marginRight: 12,
                       }}>
-                      {masjidData[0].distance}
+                      {masjidData[0].distance} KM Away
                     </Text>
                   </View>
                 </View>
@@ -399,6 +406,29 @@ function HomeScreen({navigation}) {
                   </TouchableOpacity>
                 </View>
               </View>
+            </ScrollView>
+          </SafeAreaView>
+        ) : (
+          <SafeAreaView>
+            <ScrollView
+              refreshControl={
+                <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+              }>
+              <Text>Data not found try refreshing</Text>
+              <Text>Data not found try refreshing</Text>
+              <Text>Data not found try refreshing</Text>
+              <Text>Data not found try refreshing</Text>
+              <Text>Data not found try refreshing</Text>
+              <Text>Data not found try refreshing</Text>
+              <Text>Data not found try refreshing</Text>
+              <Text>Data not found try refreshing</Text>
+              <Text>Data not found try refreshing</Text>
+              <Text>Data not found try refreshing</Text>
+              <Text>Data not found try refreshing</Text>
+              <Text>Data not found try refreshing</Text>
+              <Text>Data not found try refreshing</Text>
+              <Text>Data not found try refreshing</Text>
+              <Text>Data not found try refreshing</Text>
             </ScrollView>
           </SafeAreaView>
         )}

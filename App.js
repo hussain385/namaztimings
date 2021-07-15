@@ -134,7 +134,7 @@ const HomeStackScreen = ({navigation}) => (
             }}>
             <TouchableOpacity
               onPress={() => navigation.goBack()}
-              style={{marginHorizontal: 15, marginTop:5}}>
+              style={{marginHorizontal: 15, marginTop: 5}}>
               <Icon name="arrow-left" color="#ffff" size={25} />
             </TouchableOpacity>
             <TextInput
