@@ -45,7 +45,7 @@ const Item = props => (
             <Text style={{fontSize: 17}}>{props.title}</Text>
           </View>
           <View>
-            <Text style={{color: 'red'}}>${props.distance}</Text>
+            <Text style={{color: "#8D2828"}}>{props.distance} Km Away</Text>
           </View>
         </View>
         <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -95,6 +95,7 @@ const ShowMore = ({navigation}) => {
       url={item.pictureURL}
       timings={item.timing}
       nav={navigation}
+      distance={item.distance}
     />
   );
   return (

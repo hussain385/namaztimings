@@ -12,6 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
 import {GetRadMasjidData, GetFavMasjidData} from '../store/firebase';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Item = props => (
   <View
@@ -129,17 +130,6 @@ const Favourites = ({navigation}) => {
   //   const [masjidData, loading, error] = GetRadMasjidData();
   const [masjidData, loading, error] = GetFavMasjidData();
 
-  const FlatListItemSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 1,
-          width: '100%',
-          backgroundColor: '#000',
-        }}
-      />
-    );
-  };
   const renderItem = ({item}) => (
     <Item
       title={item.name}
@@ -205,16 +195,30 @@ const Favourites = ({navigation}) => {
           </View>
         </ScrollView>
       </SafeAreaView> */}
-      {loading ? (
+      {/* {loading ? (
         <ActivityIndicator color="#1F441E" size="large" />
-      ) : (
-        <FlatList
-          data={masjidData}
-          renderItem={renderItem}
-          keyExtractor={masjidData => masjidData.key}
-          style={{marginBottom: 140}}
-        />
-      )}
+      ) : ( */}
+      <SafeAreaView>
+        {(() => {
+          if (masjidData !== null) {
+            return (
+              <FlatList
+                data={masjidData}
+                renderItem={renderItem}
+                keyExtractor={masjidData => masjidData.key}
+                style={{marginBottom: 140}}
+              />
+            );
+          } else {
+            return (
+              <Text style={{textAlign: 'center', alignItems: 'center'}}>
+                No Favourites
+              </Text>
+            );
+          }
+        })()}
+      </SafeAreaView>
+      {/* )} */}
     </View>
   );
 };

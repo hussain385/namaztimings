@@ -8,6 +8,7 @@ import {
   View,
   StyleSheet,
   TextInput,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
@@ -51,6 +52,7 @@ const Item = props => (
               props.nav.navigate('More Info', {
                 name: props.title,
                 url: props.url,
+                distance: props.distance,
                 address: props.address,
                 isha: props.timings.isha,
                 fajar: props.timings.fajar,
@@ -153,7 +155,7 @@ const Seacrh = ({navigation}) => {
     <SafeAreaView style={styles.container}>
       <Header
         leftComponent={
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.goBack()} style={{zIndex: 1}}>
             <Icon
               name="arrow-left"
               color="#ffff"
@@ -229,16 +231,33 @@ const Seacrh = ({navigation}) => {
           );
         } else {
           return (
-            <FlatList
-              data={result}
-              renderItem={renderItem1}
-              keyExtractor={result => result.key}
-              style={{marginBottom: 140}}
-            />
+            <View>
+              {(() => {
+                if (textSearch !== '') {
+                  return (
+                    <FlatList
+                      data={result}
+                      renderItem={renderItem1}
+                      keyExtractor={result => result.key}
+                      style={{height: Dimensions.get('window').height - 240}}
+                    />
+                  );
+                } else {
+                  return (
+                    <FlatList
+                      data={masjidData}
+                      renderItem={renderItem}
+                      keyExtractor={masjidData => masjidData.key}
+                      style={{height: Dimensions.get('window').height - 240}}
+                    />
+                  );
+                }
+              })()}
+            </View>
           );
         }
       })()}
-      {!loading && (
+      {!loading &&(
         <View
           style={{
             alignSelf: 'center',
@@ -267,7 +286,7 @@ const Seacrh = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     // marginBottom: 100,
-    height: '105%',
+    height: Dimensions.get('window').height + 30,
   },
   mncontainer: {
     flex: 1,

@@ -15,13 +15,7 @@ const Map = ({route}) => {
     <SafeAreaView>
       <MapView
         style={{width: '100%', height: '100%'}}
-        provider={PROVIDER_GOOGLE}
-        initialRegion={{
-          latitude: 24.859707033731326,
-          longitude: 67.03126142490119,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}>
+        provider={PROVIDER_GOOGLE}>
         {masjidData !== null ? (
           masjidData.map((masjid, id) => (
             <>

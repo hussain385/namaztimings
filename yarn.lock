@@ -2559,6 +2559,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@voximplant/react-native-foreground-service@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@voximplant/react-native-foreground-service@npm:2.0.0"
+  peerDependencies:
+    react-native: ">= 0.41.2"
+  checksum: fb236a4baa785d992e9a4941da53be3a30fb319ed883fd76cd66746de175dee5b6dd59e44cce1aae03657854394b1ae6c102862327a044ac63d90ce37eaeddf6
+  languageName: node
+  linkType: hard
+
 "abab@npm:^2.0.3, abab@npm:^2.0.5":
   version: 2.0.5
   resolution: "abab@npm:2.0.5"
@@ -4333,17 +4342,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"escape-string-regexp@npm:2.0.0, escape-string-regexp@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "escape-string-regexp@npm:2.0.0"
+  checksum: f3500f264e864aef0c336a2efb3adb1cee9ba1abbe15d69f0d9dab423607cac91aa009b23011b4e6cfd6d6b79888873e21dad1882047aa2e1555dd307428c51d
+  languageName: node
+  linkType: hard
+
 "escape-string-regexp@npm:^1.0.5":
   version: 1.0.5
   resolution: "escape-string-regexp@npm:1.0.5"
   checksum: f9484b8b4c8827d816e0fd905c25ed4b561376a9c220e1430403ea84619bf680c76a883a48cff8b8e091daf55d6a497e37479f9787b9f15f3c421b6054289744
-  languageName: node
-  linkType: hard
-
-"escape-string-regexp@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "escape-string-regexp@npm:2.0.0"
-  checksum: f3500f264e864aef0c336a2efb3adb1cee9ba1abbe15d69f0d9dab423607cac91aa009b23011b4e6cfd6d6b79888873e21dad1882047aa2e1555dd307428c51d
   languageName: node
   linkType: hard
 
@@ -5717,7 +5726,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"invariant@npm:^2.2.4":
+"invariant@npm:2.2.4, invariant@npm:^2.2.4":
   version: 2.2.4
   resolution: "invariant@npm:2.2.4"
   dependencies:
@@ -7932,6 +7941,7 @@ __metadata:
     "@react-navigation/drawer": ^5.12.5
     "@react-navigation/native": ^5.9.4
     "@react-navigation/stack": ^5.14.5
+    "@voximplant/react-native-foreground-service": ^2.0.0
     babel-jest: ^27.0.5
     country-list: ^2.2.0
     eslint: ^7.29.0
@@ -7951,6 +7961,7 @@ __metadata:
     react-native-geolocation-service: ^5.3.0-beta.1
     react-native-gesture-handler: ^1.10.3
     react-native-get-location: ^2.1.1
+    react-native-google-places-autocomplete: ^2.2.0
     react-native-maps: 0.28.0
     react-native-paper: ^4.9.2
     react-native-reanimated: ^2.2.0
@@ -7958,6 +7969,7 @@ __metadata:
     react-native-screens: ^3.4.0
     react-native-searchable-country-dropdown: ^1.0.1
     react-native-vector-icons: ^8.1.0
+    react-native-webview: ^11.6.5
     react-test-renderer: 17.0.1
     rxjs: ^7.2.0
   languageName: unknown
@@ -8795,6 +8807,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"qs@npm:~6.9.1":
+  version: 6.9.6
+  resolution: "qs@npm:6.9.6"
+  checksum: 853715ab6d685aad829c984997f4c7dc90665a8b652478d2e3c06be6968846e5d04adaf1eb2f4977ef544a194a376f0fa65734ee27a4d535e1ed8cb205bf5cce
+  languageName: node
+  linkType: hard
+
 "query-string@npm:^6.13.6":
   version: 6.14.1
   resolution: "query-string@npm:6.14.1"
@@ -8915,6 +8934,19 @@ __metadata:
   peerDependencies:
     react-native: ">=0.44"
   checksum: f8c3ad22c709ab995d40b73c4e93761a1133811f2c98177e17ef35a6a0c73cae10bc968d5e498d2aaeace0ea9e173deddb166b7a51a08ecf5fb4a81f1da05483
+  languageName: node
+  linkType: hard
+
+"react-native-google-places-autocomplete@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "react-native-google-places-autocomplete@npm:2.2.0"
+  dependencies:
+    lodash.debounce: ^4.0.8
+    prop-types: ^15.7.2
+    qs: ~6.9.1
+  peerDependencies:
+    react-native: ">= 0.59"
+  checksum: 79f9cd0fd960a35e8c3690ff670f0dc26d3441ef6cdd7143e340b02822d9e387e66228dae845cf1555a0f658b2244b2c2dbe642a0eb04f4739b816b17ab0a793
   languageName: node
   linkType: hard
 
@@ -9040,6 +9072,18 @@ __metadata:
     fa5-upgrade: bin/fa5-upgrade.sh
     generate-icon: bin/generate-icon.js
   checksum: 20e7a9a7f8e717f2ae1f14e2399ff8200c91df04e59783868765483f228547f100212822298e6845c792c34bc9cd5c3495a83b4c6a3dce72e12144d6596c1626
+  languageName: node
+  linkType: hard
+
+"react-native-webview@npm:^11.6.5":
+  version: 11.6.5
+  resolution: "react-native-webview@npm:11.6.5"
+  dependencies:
+    escape-string-regexp: 2.0.0
+    invariant: 2.2.4
+  peerDependencies:
+    react-native: ">=0.60 <=0.64"
+  checksum: 6d3cbc71916cf5907dcdd166dac79b385cae59edc766c43a2441bcd72c2e97b0e0e1868548d1ed6adaa339d0cc69f582dfe54f596b5286b878929112c152b744
   languageName: node
   linkType: hard
 

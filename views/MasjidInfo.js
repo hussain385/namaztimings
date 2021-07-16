@@ -109,7 +109,7 @@ const MasjidInfo = ({route, navigation}) => {
                   size={20}
                   style={{paddingRight: 10, paddingLeft: 13}}
                 />
-                <Text style={{maxWidth: 280}}>{address}</Text>
+                <Text style={{maxWidth: '56%'}}>{address}</Text>
               </View>
               <View style={{flexDirection: 'row', marginTop: 5}}>
                 <Icon
@@ -121,10 +121,10 @@ const MasjidInfo = ({route, navigation}) => {
                 <Text
                   style={{
                     color: '#900000',
-                    fontSize: 18,
+                    fontSize: 16,
                     marginRight: 12,
                   }}>
-                  ${distance}
+                  {distance} Km Away
                 </Text>
               </View>
             </View>
@@ -157,7 +157,7 @@ const MasjidInfo = ({route, navigation}) => {
                   style={{
                     width: 141,
                     height: 76,
-                    marginTop: -20,
+                    marginTop: -50,
                     marginRight: 10,
                     borderRadius: 10,
                   }}
@@ -171,49 +171,44 @@ const MasjidInfo = ({route, navigation}) => {
                 paddingHorizontal: 15,
                 paddingTop: 10,
               }}>
-              <View style={{flexGrow: 1}}>
-                <TouchableOpacity
-                  style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 0,
-                      height: 5,
-                    },
-                    shadowOpacity: 0.34,
-                    shadowRadius: 6.27,
-                    elevation: 5,
-                    alignItems: 'center',
-                    backgroundColor: '#ffff',
-                    padding: 10,
-                    borderRadius: 5,
-                    width: 160,
-                    marginHorizontal: 10,
-                  }}
-                  onPress={() => navigation.navigate('More Info')}>
-                  <Text style={{color: '#364547'}}>More Info</Text>
-                </TouchableOpacity>
-              </View>
-              <View>
-                <TouchableOpacity
-                  style={{
-                    shadowColor: '#000',
-                    shadowOffset: {
-                      width: 0,
-                      height: 5,
-                    },
-                    shadowOpacity: 0.34,
-                    shadowRadius: 6.27,
-                    elevation: 5,
-                    alignItems: 'center',
-                    backgroundColor: '#ffff',
-                    padding: 10,
-                    borderRadius: 5,
-                    width: 160,
-                    marginHorizontal: 10,
-                  }}>
-                  <Text style={{color: '#1F441E'}}>News & Announcment</Text>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                style={{
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 5,
+                  },
+                  shadowOpacity: 0.34,
+                  shadowRadius: 6.27,
+                  elevation: 5,
+                  alignItems: 'center',
+                  backgroundColor: '#ffff',
+                  padding: 10,
+                  borderRadius: 5,
+                  width: '45%',
+                  marginHorizontal: 10,
+                }}>
+                <Text style={{color: '#364547'}}>Notification</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 5,
+                  },
+                  shadowOpacity: 0.34,
+                  shadowRadius: 6.27,
+                  elevation: 5,
+                  alignItems: 'center',
+                  backgroundColor: '#ffff',
+                  padding: 10,
+                  borderRadius: 5,
+                  width: '45%',
+                  marginHorizontal: 10,
+                }}>
+                <Text style={{color: '#1F441E'}}>Donation</Text>
+              </TouchableOpacity>
             </View>
             <View style={{flexDirection: 'row', marginTop: 10}}>
               <View

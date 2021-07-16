@@ -245,6 +245,18 @@ export function GetRadMasjidData1(radius = 500) {
   return [masjid, loading, location, error, getLocation, GetData];
 }
 
+export async function setFavStore(value) {
+  const [error, setError] = useState(null);
+  try {
+    const jsonValue = JSON.stringify(value);
+    console.log(jsonValue);
+    await AsyncStorage.setItem('favorites', jsonValue);
+  } catch (e) {
+    setError(e);
+    console.log(e);
+  }
+}
+
 export function GetFavMasjidData() {
   const [loading, setLoading] = useState(true);
   const [masjid, setMasjid] = useState(null);
@@ -258,16 +270,6 @@ export function GetFavMasjidData() {
       } else {
         return null;
       }
-    } catch (e) {
-      setError(e);
-      console.log(e);
-    }
-  }
-
-  async function setFavStore(value) {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem('favorites', jsonValue);
     } catch (e) {
       setError(e);
       console.log(e);

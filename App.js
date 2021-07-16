@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import * as React from 'react';
-import {Text, TouchableOpacity, TextInput, View} from 'react-native';
+import {Text, TouchableOpacity, Dimensions, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -20,6 +20,7 @@ import MasjidInfo from './views/MasjidInfo';
 import Seacrh from './components/Search';
 import ShowMore from './views/ShowMore';
 import Map from './views/Map';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -130,23 +131,32 @@ const HomeStackScreen = ({navigation}) => (
               flexDirection: 'row',
               alignSelf: 'center',
               width: '100%',
-              marginTop: 10,
+              marginTop: 20,
             }}>
             <TouchableOpacity
               onPress={() => navigation.goBack()}
-              style={{marginHorizontal: 15, marginTop: 5}}>
+              style={{marginHorizontal: 15, marginTop: 7}}>
               <Icon name="arrow-left" color="#ffff" size={25} />
             </TouchableOpacity>
-            <TextInput
-              // onChangeText={onChangeSearch}
-              // value={textSearch}
-              placeholder="Enter Masjid Address..."
-              style={{
-                backgroundColor: '#eeee',
-                width: '100%',
-                borderRadius: 10,
-                alignContent: 'center',
-                height: 40,
+            <GooglePlacesAutocomplete
+              styles={{
+                textInput: {
+                  width: Dimensions.get('window').width - 90,
+                  color: '#5d5d5d',
+                  fontSize: 16,
+                  zIndex: 1,
+                },
+              }}
+              placeholder="Search"
+              onPress={(data, details = null) => {
+                // 'details' is provided when fetchDetails = true
+                console.log(data, details);
+              }}
+              onFail={error => console.error(error)}
+              query={{
+                key: 'AIzaSyCrsNBX-pWunuPeL-ziP99aXhetdZL2VKs',
+                language: 'en',
+                types: '(cities)',
               }}
             />
           </View>
