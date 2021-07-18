@@ -62,12 +62,13 @@ const Admin = ({navigation}) => {
         </View>
       )}
       {loading && <ActivityIndicator color="#1F441E" size="large" />}
-      {!loading && (
+      {snapshot ? (
         <View>
-          <Text>{snapshot[0].name}</Text>
-          <Text>{snapshot[0].address}</Text>
+          {snapshot.docs.map(doc => (
+            <Text key={doc.id}>{JSON.stringify(doc.data())}</Text>
+          ))}
         </View>
-      )}
+      ) : null}
     </SafeAreaView>
   );
 };

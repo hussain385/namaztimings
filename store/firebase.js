@@ -135,13 +135,8 @@ export function GetRadMasjidData(radius = 500) {
               });
 
               const masjids1 = _.sortBy(masjids, 'distance');
-              console.log(
-                masjids1,
-                masjids1 === [],
-                masjids1 === null,
-                masjids1.length === 0,
-                '<=========== GetRadMasjidData',
-              );
+              console.table(masjids1);
+              console.log('<========== From GetRadMasjidData');
               setMasjid(masjids1);
               setLoading(false);
             })
@@ -231,7 +226,8 @@ export function GetRadMasjidData1(radius = 500) {
         });
 
         const masjids1 = _.sortBy(masjids, 'distance');
-        console.log(masjids1, '<======== from GetRadData');
+        console.table(masjids1);
+        console.log('<======== from GetRadData');
         setMasjid(masjids1);
         setLoading(false);
       })
@@ -245,17 +241,17 @@ export function GetRadMasjidData1(radius = 500) {
   return [masjid, loading, location, error, getLocation, GetData];
 }
 
-export async function setFavStore(value) {
-  const [error, setError] = useState(null);
-  try {
-    const jsonValue = JSON.stringify(value);
-    console.log(jsonValue);
-    await AsyncStorage.setItem('favorites', jsonValue);
-  } catch (e) {
-    setError(e);
-    console.log(e);
-  }
-}
+// export async function setFavStore(value) {
+//   const [error, setError] = React.useState(null);
+//   try {
+//     const jsonValue = JSON.stringify(value);
+//     console.log(jsonValue);
+//     await AsyncStorage.setItem('favorites', jsonValue);
+//   } catch (e) {
+//     setError(e);
+//     console.log(e);
+//   }
+// }
 
 export function GetFavMasjidData() {
   const [loading, setLoading] = useState(true);

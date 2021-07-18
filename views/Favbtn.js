@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
@@ -17,10 +18,12 @@ const Favbtn = ({favId}) => {
     const favCollection = [];
     const value1 = JSON.parse(value);
 
-    value1.forEach(e => {
-      console.log(e, typeof e);
-      favCollection.push(e);
-    });
+    if (value1 != null) {
+      value1.forEach(e => {
+        console.log(e, typeof e);
+        favCollection.push(e);
+      });
+    }
 
     console.log(isFav, isFound, '<=========== testing');
 

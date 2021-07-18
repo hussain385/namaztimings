@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
@@ -155,7 +156,9 @@ const Seacrh = ({navigation}) => {
     <SafeAreaView style={styles.container}>
       <Header
         leftComponent={
-          <TouchableOpacity onPress={() => navigation.goBack()} style={{zIndex: 1}}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{zIndex: 1}}>
             <Icon
               name="arrow-left"
               color="#ffff"
@@ -213,9 +216,9 @@ const Seacrh = ({navigation}) => {
             />
           </TouchableOpacity>
         }
-        backgroundColor="#1F441E"></Header>
+        backgroundColor="#1F441E"
+      />
       {/* <View>
-        
       </View> */}
 
       {loading && <ActivityIndicator color="#1F441E" size="large" />}
@@ -225,7 +228,7 @@ const Seacrh = ({navigation}) => {
             <FlatList
               data={masjidData}
               renderItem={renderItem}
-              keyExtractor={masjidData => masjidData.key}
+              keyExtractor={() => masjidData.key}
               style={{marginBottom: 140}}
             />
           );
@@ -238,7 +241,7 @@ const Seacrh = ({navigation}) => {
                     <FlatList
                       data={result}
                       renderItem={renderItem1}
-                      keyExtractor={result => result.key}
+                      keyExtractor={() => result.key}
                       style={{height: Dimensions.get('window').height - 240}}
                     />
                   );
@@ -247,7 +250,7 @@ const Seacrh = ({navigation}) => {
                     <FlatList
                       data={masjidData}
                       renderItem={renderItem}
-                      keyExtractor={masjidData => masjidData.key}
+                      keyExtractor={() => masjidData.key}
                       style={{height: Dimensions.get('window').height - 240}}
                     />
                   );
@@ -257,7 +260,7 @@ const Seacrh = ({navigation}) => {
           );
         }
       })()}
-      {!loading &&(
+      {!loading && (
         <View
           style={{
             alignSelf: 'center',

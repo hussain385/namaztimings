@@ -1,11 +1,10 @@
-/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import React, {useState, useEffect} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
   ImageBackground,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
