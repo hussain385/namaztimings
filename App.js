@@ -21,6 +21,7 @@ import Seacrh from './components/Search';
 import ShowMore from './views/ShowMore';
 import Map from './views/Map';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {AuthContext, AuthContextProvider} from './store/fireAuth';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -175,6 +176,8 @@ const HomeStackScreen = ({navigation}) => (
 );
 
 function MyDrawer() {
+  const user = React.useContext(AuthContext);
+  console.log(user,'<============= user');
   return (
     <Drawer.Navigator
       drawerContentOptions={{
@@ -289,7 +292,11 @@ function MyDrawer() {
       <Drawer.Screen name="Contact Us" component={ContactUS} />
       <Drawer.Screen name="Terms & Conditions" component={Terms} />
       <Drawer.Screen name="Admin view" component={Admin} />
-      <Drawer.Screen name="Login" component={Login} />
+      {user ? (
+        <Drawer.Screen name="Login" component={Login} />
+      ) : (
+        <Drawer.Screen name="Login" component={Login} />
+      )}
     </Drawer.Navigator>
   );
 }
@@ -374,8 +381,10 @@ function MyTabs() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <RootStackScreen />
-    </NavigationContainer>
+    <AuthContextProvider>
+      <NavigationContainer>
+        <RootStackScreen />
+      </NavigationContainer>
+    </AuthContextProvider>
   );
 }

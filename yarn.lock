@@ -2099,6 +2099,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-firebase/auth@npm:^12.2.0":
+  version: 12.2.0
+  resolution: "@react-native-firebase/auth@npm:12.2.0"
+  peerDependencies:
+    "@react-native-firebase/app": 12.2.0
+  checksum: 6312564afdb248b408a7f597cf0b30ed724890204607c31bd1bba6ed6a1e542105a2911901ad2ef6836612a8e86e52206f353dc1c5ba4b551a34bfa0e7aa151e
+  languageName: node
+  linkType: hard
+
 "@react-native-firebase/firestore@npm:^12.1.0":
   version: 12.1.0
   resolution: "@react-native-firebase/firestore@npm:12.1.0"
@@ -7936,6 +7945,7 @@ __metadata:
     "@react-native-community/geolocation": ^2.0.2
     "@react-native-community/masked-view": ^0.1.11
     "@react-native-firebase/app": ^12.1.0
+    "@react-native-firebase/auth": ^12.2.0
     "@react-native-firebase/firestore": ^12.1.0
     "@react-navigation/bottom-tabs": ^5.11.11
     "@react-navigation/drawer": ^5.12.5
@@ -7954,6 +7964,7 @@ __metadata:
     metro-react-native-babel-preset: ^0.66.0
     ngeohash: ^0.6.3
     react: 17.0.1
+    react-firebase-hooks: ^3.0.4
     react-native: 0.64.2
     react-native-elements: ^3.4.2
     react-native-flags: ^1.0.0
@@ -8847,6 +8858,16 @@ __metadata:
     shell-quote: ^1.6.1
     ws: ^7
   checksum: 94785c1506a4eb5be591becbc39b335dd84307c240e682109ec08cdc95dce601ca90532dec395585731be89ad4277b4fc0ef3f46978d07f61928987b4b9d893e
+  languageName: node
+  linkType: hard
+
+"react-firebase-hooks@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "react-firebase-hooks@npm:3.0.4"
+  peerDependencies:
+    firebase: ">= 8.0.0"
+    react: ">= 16.8.0"
+  checksum: e1a1207062443cd60d0bf74651faea73a4680e91f01306f7be975cc029317daf85deeea07e85f486c9f6973085f7c6e5463300e4afa4305623d080b526c0388e
   languageName: node
   linkType: hard
 

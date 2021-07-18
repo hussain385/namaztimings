@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -11,8 +12,9 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
-import {GetRadMasjidData, GetFavMasjidData} from '../store/firebase';
+import {GetFavMasjidData} from '../store/firebase';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import Favbtn from '../views/Favbtn';
 
 const Item = props => (
   <View
@@ -40,17 +42,9 @@ const Item = props => (
           height: 200,
         }}>
         <View style={{flexDirection: 'row'}}>
-          <View style={{flexGrow: 1}}></View>
-          <View
-            style={{
-              backgroundColor: '#e1e1e1bd',
-              borderRadius: 100,
-              textAlign: 'center',
-              padding: 15,
-              top: -70,
-              margin: 5,
-            }}>
-            <Icon name="star" color="#5C5C5C" size={20} />
+          <View style={{flexGrow: 1}} />
+          <View style={{top: -50}}>
+            <Favbtn />
           </View>
         </View>
       </ImageBackground>
@@ -127,8 +121,15 @@ const Item = props => (
 );
 
 const Favourites = ({navigation}) => {
+  const [refreshing, setRefreshing] = useState(false);
   //   const [masjidData, loading, error] = GetRadMasjidData();
   const [masjidData, loading, error] = GetFavMasjidData();
+
+  // function onRefresh() {
+  //   setRefreshing(true);
+  //   GetFavMasjidData();
+  //   setRefreshing(false);
+  // }
 
   const renderItem = ({item}) => (
     <Item
@@ -205,8 +206,10 @@ const Favourites = ({navigation}) => {
               <FlatList
                 data={masjidData}
                 renderItem={renderItem}
-                keyExtractor={masjidData => masjidData.key}
+                keyExtractor={masjidData.key}
                 style={{marginBottom: 140}}
+                // onRefresh={() => onRefresh()}
+                refreshing={refreshing}
               />
             );
           } else {
@@ -223,23 +226,23 @@ const Favourites = ({navigation}) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginBottom: 60,
-  },
-  mncontainer: {
-    flex: 1,
-    marginTop: 30,
-  },
-  navigationContainer: {
-    backgroundColor: '#1F441E',
-  },
-  paragraph: {
-    padding: 16,
-    fontSize: 15,
-    textAlign: 'center',
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     marginBottom: 60,
+//   },
+//   mncontainer: {
+//     flex: 1,
+//     marginTop: 30,
+//   },
+//   navigationContainer: {
+//     backgroundColor: '#1F441E',
+//   },
+//   paragraph: {
+//     padding: 16,
+//     fontSize: 15,
+//     textAlign: 'center',
+//   },
+// });
 
 export default Favourites;

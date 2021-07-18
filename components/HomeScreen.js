@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -14,16 +15,16 @@ import {
 // import {NavigationContainer} from '@react-navigation/native';
 // import {Divider} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Entypo from 'react-native-vector-icons/Entypo';
+// import Entypo from 'react-native-vector-icons/Entypo';
 import {Header} from 'react-native-elements';
 import {GetRadMasjidData1} from '../store/firebase';
-import Geocoder from 'react-native-geocoding';
+// import Geocoder from 'react-native-geocoding';
+import Favbtn from '../views/Favbtn';
 
 function HomeScreen({navigation}) {
   const [masjidData, loading, location, error, getLocation, GetData] =
     new GetRadMasjidData1();
   const [refreshing, setRefreshing] = useState(false);
-  const [color, setColor] = useState('#8D2828');
   // Geocoder.init('AIzaSyCrsNBX-pWunuPeL-ziP99aXhetdZL2VKs');
 
   useEffect(() => {
@@ -43,16 +44,6 @@ function HomeScreen({navigation}) {
     GetData();
     setRefreshing(false);
   }
-
-  const handleFavourite = props => {
-    if (color === '#5C5C5C') {
-      setColor('#8D2828');
-    }
-    if (color === '#8D2828') {
-      setColor('#5C5C5C');
-    }
-    console.log(props);
-  };
 
   return (
     <>
@@ -154,29 +145,7 @@ function HomeScreen({navigation}) {
                       {masjidData[0].name}
                     </Text>
                   </View>
-                  <TouchableOpacity
-                    onPress={() =>
-                      handleFavourite({
-                        name: masjidData[0].name,
-                        url: masjidData[0].pictureURL,
-                        address: masjidData[0].address,
-                        isha: masjidData[0].timing.isha,
-                        fajar: masjidData[0].timing.fajar,
-                        zohar: masjidData[0].timing.zohar,
-                        asar: masjidData[0].timing.asar,
-                        magrib: masjidData[0].timing.magrib,
-                      })
-                    }
-                    style={{
-                      backgroundColor: '#E1E1E1',
-                      borderRadius: 100,
-                      marginRight: 10,
-                      textAlign: 'center',
-                      padding: 15,
-                      marginTop: -20,
-                    }}>
-                    <Entypo name="star" color={color} size={25} />
-                  </TouchableOpacity>
+                  <Favbtn favId={masjidData[0].key} />
                 </View>
                 <View style={{flexDirection: 'row'}}>
                   <View style={{flexGrow: 1, flexDirection: 'row'}}>
@@ -375,55 +344,55 @@ function HomeScreen({navigation}) {
                     justifyContent: 'center',
                     paddingHorizontal: 5,
                   }}>
-                    <TouchableOpacity
-                      onPress={() =>
-                        navigation.navigate('More Info', {
-                          name: masjidData[0].name,
-                          url: masjidData[0].pictureURL,
-                          address: masjidData[0].address,
-                          isha: masjidData[0].timing.isha,
-                          fajar: masjidData[0].timing.fajar,
-                          zohar: masjidData[0].timing.zohar,
-                          asar: masjidData[0].timing.asar,
-                          magrib: masjidData[0].timing.magrib,
-                        })
-                      }
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate('More Info', {
+                        name: masjidData[0].name,
+                        url: masjidData[0].pictureURL,
+                        address: masjidData[0].address,
+                        isha: masjidData[0].timing.isha,
+                        fajar: masjidData[0].timing.fajar,
+                        zohar: masjidData[0].timing.zohar,
+                        asar: masjidData[0].timing.asar,
+                        magrib: masjidData[0].timing.magrib,
+                      })
+                    }
+                    style={{
+                      paddingVertical: 5,
+                      width: '40%',
+                      marginRight: 10,
+                      marginVertical: 10,
+                      borderRadius: 5,
+                      backgroundColor: '#364547',
+                    }}>
+                    <Text
                       style={{
-                        paddingVertical: 5,
-                        width: '40%',
-                        marginRight:10,
-                        marginVertical: 10,
-                        borderRadius: 5,
-                        backgroundColor: '#364547',
+                        textAlign: 'center',
+                        fontSize: 20,
+                        color: '#ffff',
                       }}>
-                      <Text
-                        style={{
-                          textAlign: 'center',
-                          fontSize: 20,
-                          color: '#ffff',
-                        }}>
-                        More Info
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => props.nav.navigate('Find Masjid')}
+                      More Info
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Notifications')}
+                    style={{
+                      paddingVertical: 5,
+                      width: '40%',
+                      marginLeft: 10,
+                      marginVertical: 10,
+                      borderRadius: 5,
+                      backgroundColor: '#CEE6B4',
+                    }}>
+                    <Text
                       style={{
-                        paddingVertical: 5,
-                        width: '40%',
-                        marginLeft:10,
-                        marginVertical: 10,
-                        borderRadius: 5,
-                        backgroundColor: '#CEE6B4',
+                        textAlign: 'center',
+                        fontSize: 16,
+                        color: '#1F441E',
                       }}>
-                      <Text
-                        style={{
-                          textAlign: 'center',
-                          fontSize: 16,
-                          color: '#1F441E',
-                        }}>
-                        New & Annoucment
-                      </Text>
-                    </TouchableOpacity>
+                      New & Annoucment
+                    </Text>
+                  </TouchableOpacity>
                 </View>
                 <View
                   style={{
