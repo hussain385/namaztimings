@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
@@ -10,7 +11,9 @@ const Favbtn = ({favId}) => {
   const [isFound, setIsFound] = useState(false); // is Fav already exist in storage?
 
   const handleFavourite = async key => {
+    console.log(key);
     const value = await AsyncStorage.getItem('favorites');
+    console.log(value);
     const favCollection = [];
     const value1 = JSON.parse(value);
 

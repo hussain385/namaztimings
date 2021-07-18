@@ -44,7 +44,7 @@ const Item = props => (
         <View style={{flexDirection: 'row'}}>
           <View style={{flexGrow: 1}} />
           <View style={{top: -50}}>
-            <Favbtn />
+            <Favbtn favId={props.key}/>
           </View>
         </View>
       </ImageBackground>
