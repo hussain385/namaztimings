@@ -1,5 +1,4 @@
-/* eslint-disable prettier/prettier */
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {
   Alert,
   Linking,
@@ -147,7 +146,7 @@ export function GetRadMasjidData(radius = 500) {
         })
         .catch(e => {
           setError(e);
-          console.log(e);
+          console.error(e);
         });
     }
   }, [radius, error, location.coords]);
@@ -257,6 +256,7 @@ export function GetFavMasjidData() {
   const [loading, setLoading] = useState(true);
   const [masjid, setMasjid] = useState(null);
   const [error, setError] = useState(null);
+  const subs = firestore().collection('Masjid');
 
   async function getFavStore() {
     try {
@@ -272,50 +272,41 @@ export function GetFavMasjidData() {
     }
   }
 
-  useEffect(() => {
-    const subs = firestore().collection('Masjid');
-    getFavStore().then(favorites => {
-      console.log(favorites);
-      if (favorites === null) {
-        console.log('No Favorites Found in the storage');
-        return;
-      }
-      const collections = [];
-      favorites.forEach(fav => {
+  async function GetData() {
+    setLoading(true);
+    console.log('%c trigered the GetData from Favs', 'color: #bada55');
+    const favorites = await getFavStore();
+    console.log(favorites);
+    if (_.isNull(favorites)) {
+      console.log('No Favorites Found in the storage');
+      return;
+    }
+    const collections = [];
+    favorites.forEach(fav => {
+      if (!_.isNull(fav) && !_.isUndefined(fav)) {
         collections.push(subs.doc(fav).get());
-        console.log(fav, '<======= favs');
-      });
-      getCurrentLocation()
-        .then(pos => {
-          Promise.all(collections)
-            .then(doc => {
-              const masjids = [];
-              doc.forEach(docSnapshot => {
-                const loc1 = docSnapshot.data().g;
-                const d = haversine(loc1, pos.coords);
-
-                console.log(d);
-                masjids.push({
-                  ...docSnapshot.data(),
-                  distance: Number(d.toFixed(2)),
-                  key: docSnapshot.id,
-                });
-              });
-              setMasjid(_.sortBy(masjids, 'distance'));
-              setLoading(false);
-            })
-            .catch(e => {
-              setError(e);
-              console.log(e);
-            });
-        })
-        .catch(e => {
-          setError(e);
-          console.log(e);
-        });
+        console.log(fav, '<======= favs from getfavData');
+      }
     });
-  }, [error]);
-  return [masjid, loading, error];
+    const pos = await getCurrentLocation();
+    const doc = await Promise.all(collections);
+    const masjids = [];
+    doc.forEach(docSnapshot => {
+      const loc1 = docSnapshot.data().g;
+      const d = haversine(loc1, pos.coords);
+
+      console.log(d);
+      masjids.push({
+        ...docSnapshot.data(),
+        distance: Number(d.toFixed(2)),
+        key: docSnapshot.id,
+      });
+    });
+    setMasjid(_.sortBy(masjids, 'distance'));
+    setLoading(false);
+  }
+
+  return [masjid, loading, error, GetData];
 }
 
 const hasPermissionIOS = async () => {

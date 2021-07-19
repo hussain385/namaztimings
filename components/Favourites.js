@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
@@ -14,8 +13,18 @@ import {Header} from 'react-native-elements';
 import {GetFavMasjidData} from '../store/firebase';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Favbtn from '../views/Favbtn';
+import _ from 'lodash';
 
-const Item = props => (
+const Item = ({
+  url,
+  title,
+  distance,
+  favId,
+  address,
+  timings,
+  nav,
+  onRefresh,
+}) => (
   <View
     style={{
       margin: 10,
@@ -32,7 +41,7 @@ const Item = props => (
     }}>
     <View>
       <ImageBackground
-        source={{uri: `${props.url}`}}
+        source={{uri: `${url}`}}
         style={{
           flex: 1,
           resizeMode: 'cover',
@@ -43,7 +52,7 @@ const Item = props => (
         <View style={{flexDirection: 'row'}}>
           <View style={{flexGrow: 1}} />
           <View style={{top: -50}}>
-            <Favbtn favId={props.key}/>
+            <Favbtn favId={favId} onRefresh={onRefresh} />
           </View>
         </View>
       </ImageBackground>
@@ -51,10 +60,10 @@ const Item = props => (
     <View style={{padding: 5}}>
       <View style={{flexDirection: 'row', margin: 5}}>
         <View style={{flexGrow: 1}}>
-          <Text style={{fontSize: 17}}>{props.title}</Text>
+          <Text style={{fontSize: 17}}>{title}</Text>
         </View>
         <View>
-          <Text style={{color: '#900000'}}>{props.distance}KM AWAY</Text>
+          <Text style={{color: '#900000'}}>{distance}KM AWAY</Text>
         </View>
       </View>
       <View
@@ -66,15 +75,15 @@ const Item = props => (
         <View style={{flexGrow: 1}}>
           <TouchableOpacity
             onPress={() =>
-              props.nav.navigate('More Info', {
-                name: props.title,
-                url: props.url,
-                address: props.address,
-                isha: props.timings.isha,
-                fajar: props.timings.fajar,
-                zohar: props.timings.zohar,
-                asar: props.timings.asar,
-                magrib: props.timings.magrib,
+              nav.navigate('More Info', {
+                name: title,
+                url: url,
+                address: address,
+                isha: timings.isha,
+                fajar: timings.fajar,
+                zohar: timings.zohar,
+                asar: timings.asar,
+                magrib: timings.magrib,
               })
             }
             style={{
@@ -96,7 +105,7 @@ const Item = props => (
         </View>
         <View>
           <TouchableOpacity
-            onPress={() => props.nav.navigate('Find Masjid')}
+            onPress={() => nav.navigate('Find Masjid')}
             style={{
               paddingVertical: 5,
               width: 160,
@@ -122,13 +131,17 @@ const Item = props => (
 const Favourites = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
   //   const [masjidData, loading, error] = GetRadMasjidData();
-  const [masjidData, loading, error] = GetFavMasjidData();
+  const [masjidData, loading, error, GetData] = GetFavMasjidData();
 
-  // function onRefresh() {
-  //   setRefreshing(true);
-  //   GetFavMasjidData();
-  //   setRefreshing(false);
-  // }
+  function onRefresh() {
+    setRefreshing(true);
+    GetData();
+    setRefreshing(false);
+  }
+
+  React.useEffect(() => {
+    GetData();
+  }, []);
 
   const renderItem = ({item}) => (
     <Item
@@ -138,6 +151,8 @@ const Favourites = ({navigation}) => {
       timings={item.timing}
       nav={navigation}
       distance={item.distance}
+      favId={item.key}
+      onRefresh={onRefresh}
     />
   );
   return (
@@ -200,23 +215,27 @@ const Favourites = ({navigation}) => {
       ) : ( */}
       <SafeAreaView>
         {(() => {
-          if (masjidData !== null) {
-            return (
-              <FlatList
-                data={masjidData}
-                renderItem={renderItem}
-                keyExtractor={masjidData.key}
-                style={{marginBottom: 140}}
-                // onRefresh={() => onRefresh()}
-                refreshing={refreshing}
-              />
-            );
+          if (!loading) {
+            if (!_.isNull(masjidData) && !_.isEmpty(masjidData)) {
+              return (
+                <FlatList
+                  data={masjidData}
+                  renderItem={renderItem}
+                  keyExtractor={x => x.key}
+                  style={{marginBottom: 140}}
+                  onRefresh={() => onRefresh()}
+                  refreshing={refreshing}
+                />
+              );
+            } else {
+              return (
+                <Text style={{textAlign: 'center', alignItems: 'center'}}>
+                  No Favourites
+                </Text>
+              );
+            }
           } else {
-            return (
-              <Text style={{textAlign: 'center', alignItems: 'center'}}>
-                No Favourites
-              </Text>
-            );
+            return <ActivityIndicator color="#1F441E" size="large" />;
           }
         })()}
       </SafeAreaView>

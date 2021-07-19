@@ -228,7 +228,7 @@ const Seacrh = ({navigation}) => {
             <FlatList
               data={masjidData}
               renderItem={renderItem}
-              keyExtractor={() => masjidData.key}
+              keyExtractor={x => x.key}
               style={{marginBottom: 140}}
             />
           );
@@ -241,7 +241,7 @@ const Seacrh = ({navigation}) => {
                     <FlatList
                       data={result}
                       renderItem={renderItem1}
-                      keyExtractor={() => result.key}
+                      keyExtractor={x => x.key}
                       style={{height: Dimensions.get('window').height - 240}}
                     />
                   );
@@ -250,7 +250,7 @@ const Seacrh = ({navigation}) => {
                     <FlatList
                       data={masjidData}
                       renderItem={renderItem}
-                      keyExtractor={() => masjidData.key}
+                      keyExtractor={x => x.key}
                       style={{height: Dimensions.get('window').height - 240}}
                     />
                   );

@@ -45,7 +45,7 @@ const Item = props => (
             <Text style={{fontSize: 17}}>{props.title}</Text>
           </View>
           <View>
-            <Text style={{color: "#8D2828"}}>{props.distance} Km Away</Text>
+            <Text style={{color: '#8D2828'}}>{props.distance} Km Away</Text>
           </View>
         </View>
         <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -164,6 +164,5 @@ const ShowMore = ({navigation}) => {
     </View>
   );
 };
-
 
 export default ShowMore;

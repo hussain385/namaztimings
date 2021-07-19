@@ -1,45 +1,47 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable prettier/prettier */
 import React, {useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import _ from 'lodash';
 
-const Favbtn = ({favId}) => {
+const Favbtn = ({favId, onRefresh}) => {
   const [isFav, setIsFav] = useState(false); // is Fav contains?
   const [isFound, setIsFound] = useState(false); // is Fav already exist in storage?
 
   const handleFavourite = async key => {
-    console.log(key);
+    console.log(key, '<========= the Fav Key');
     const value = await AsyncStorage.getItem('favorites');
     console.log(value);
     const favCollection = [];
     const value1 = JSON.parse(value);
 
+    if (_.isNull(key) || _.isUndefined(key)) {
+      console.error('Fav key is null or undefined');
+      return;
+    }
+
     if (value1 != null) {
       value1.forEach(e => {
-        console.log(e, typeof e);
-        favCollection.push(e);
+        if (!_.isNull(e) && !_.isUndefined(e)) {
+          console.log(e, _.isNull(e), typeof e);
+          favCollection.push(e);
+        }
       });
     }
 
-    console.log(isFav, isFound, '<=========== testing');
+    console.log(isFav, isFound, favCollection, '<=========== testing');
 
     if (!isFav && !isFound) {
       setIsFound(true);
-      return await AsyncStorage.setItem('favorites', JSON.stringify([favId]));
+      await AsyncStorage.setItem('favorites', JSON.stringify([favId]));
     }
 
     if (isFav && !isFound) {
       favCollection.push(favId);
       console.log(favCollection, '<======= added in favs');
       setIsFound(true);
-      return await AsyncStorage.setItem(
-        'favorites',
-        JSON.stringify(favCollection),
-      );
+      await AsyncStorage.setItem('favorites', JSON.stringify(favCollection));
     }
 
     if (isFav && isFound) {
@@ -48,13 +50,13 @@ const Favbtn = ({favId}) => {
       });
       console.log(favCollection, '<=========== removed from favs');
       setIsFound(false);
-      return await AsyncStorage.setItem(
-        'favorites',
-        JSON.stringify(favCollection),
-      );
+      await AsyncStorage.setItem('favorites', JSON.stringify(favCollection));
     }
-
-    return null;
+    if (_.isUndefined(onRefresh)) {
+      return null;
+    } else {
+      onRefresh();
+    }
   };
 
   useEffect(() => {
