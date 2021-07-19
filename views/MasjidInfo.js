@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {
   Image,
@@ -11,6 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {NavigationContainer} from '@react-navigation/native';
 import {Header} from 'react-native-elements';
+import Favbtn from './Favbtn';
 
 const MasjidInfo = ({route, navigation}) => {
   const {name} = route.params;
@@ -22,6 +24,9 @@ const MasjidInfo = ({route, navigation}) => {
   const {asar} = route.params;
   const {magrib} = route.params;
   const {distance} = route.params;
+  const {favId} = route.params;
+
+  console.log(favId);
 
   return (
     <>
@@ -89,17 +94,7 @@ const MasjidInfo = ({route, navigation}) => {
                   {name}
                 </Text>
               </View>
-              <View
-                style={{
-                  backgroundColor: '#E1E1E1',
-                  borderRadius: 100,
-                  marginRight: 10,
-                  textAlign: 'center',
-                  padding: 15,
-                  marginTop: -20,
-                }}>
-                <Icon name="star" color="#5C5C5C" size={20} />
-              </View>
+              <Favbtn favId={favId} />
             </View>
             <View style={{flexDirection: 'row', marginTop: 10}}>
               <View style={{flexGrow: 1, flexDirection: 'row'}}>

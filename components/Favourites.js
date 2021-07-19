@@ -6,6 +6,7 @@ import {
   ImageBackground,
   Text,
   TouchableOpacity,
+  Image,
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -140,7 +141,11 @@ const Favourites = ({navigation}) => {
   }
 
   React.useEffect(() => {
-    GetData();
+    onRefresh();
+    const willFocusSubscription = navigation.addListener('focus', () => {
+      onRefresh();
+    });
+    return willFocusSubscription;
   }, []);
 
   const renderItem = ({item}) => (
@@ -156,11 +161,11 @@ const Favourites = ({navigation}) => {
     />
   );
   return (
-    <View>
+    <>
       <Header
         containerStyle={{
-          shadowOpacity: 50,
-          elevation: 50,
+          shadowOpacity: 30,
+          elevation: 10,
         }}
         leftComponent={
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -229,9 +234,26 @@ const Favourites = ({navigation}) => {
               );
             } else {
               return (
-                <Text style={{textAlign: 'center', alignItems: 'center'}}>
-                  No Favourites
-                </Text>
+                <View
+                  style={{
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Image
+                    source={{
+                      uri: '../components/folder.png',
+                    }}
+                    style={{
+                      width: 141,
+                      height: 76,
+                      marginTop: 20,
+                      marginRight: 10,
+                      borderRadius: 8,
+                    }}
+                  />
+                  <Text>No Favourites</Text>
+                </View>
               );
             }
           } else {
@@ -239,8 +261,7 @@ const Favourites = ({navigation}) => {
           }
         })()}
       </SafeAreaView>
-      {/* )} */}
-    </View>
+    </>
   );
 };
 

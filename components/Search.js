@@ -10,35 +10,64 @@ import {
   StyleSheet,
   TextInput,
   Dimensions,
+  ImageBackground,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
-import {Card} from 'react-native-paper';
 import {GetAllMasjidData, getCurrentLocation} from '../store/firebase';
 import Fuse from 'fuse.js';
 import {SafeAreaView} from 'react-native';
+import Favbtn from '../views/Favbtn';
 
-const Item = props => (
-  <Card
+const Item = ({
+  url,
+  title,
+  distance,
+  favId,
+  address,
+  timings,
+  nav,
+  onRefresh,
+}) => (
+  <View
     style={{
-      borderRadius: 5,
       margin: 10,
-      shadowOpacity: 10,
-      elevation: 20,
-    }}
-    key={props.key}>
-    <Card.Cover
-      source={{
-        uri: `${props.url}`,
-      }}
-    />
-    <Card.Actions style={{flexDirection: 'column'}}>
+      backgroundColor: '#ffff',
+      borderRadius: 5,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 5,
+      },
+      shadowOpacity: 0.34,
+      shadowRadius: 6.27,
+      elevation: 5,
+    }}>
+    <View>
+      <ImageBackground
+        source={{uri: `${url}`}}
+        style={{
+          flex: 1,
+          resizeMode: 'cover',
+          justifyContent: 'center',
+          width: 391,
+          height: 200,
+        }}>
+        <View style={{flexDirection: 'row'}}>
+          <View style={{flexGrow: 1}} />
+          <View style={{top: -50}}>
+            <Favbtn favId={favId} onRefresh={onRefresh} />
+          </View>
+        </View>
+      </ImageBackground>
+    </View>
+    <View style={{padding: 5}}>
       <View style={{flexDirection: 'row', margin: 5}}>
         <View style={{flexGrow: 1}}>
-          <Text style={{fontSize: 17}}>{props.title}</Text>
+          <Text style={{fontSize: 17}}>{title}</Text>
         </View>
         <View>
-          <Text style={{color: '#900000'}}>{props.distance} AWAY</Text>
+          <Text style={{color: '#900000'}}>{distance}KM AWAY</Text>
         </View>
       </View>
       <View
@@ -50,16 +79,15 @@ const Item = props => (
         <View style={{flexGrow: 1}}>
           <TouchableOpacity
             onPress={() =>
-              props.nav.navigate('More Info', {
-                name: props.title,
-                url: props.url,
-                distance: props.distance,
-                address: props.address,
-                isha: props.timings.isha,
-                fajar: props.timings.fajar,
-                zohar: props.timings.zohar,
-                asar: props.timings.asar,
-                magrib: props.timings.magrib,
+              nav.navigate('More Info', {
+                name: title,
+                url: url,
+                address: address,
+                isha: timings.isha,
+                fajar: timings.fajar,
+                zohar: timings.zohar,
+                asar: timings.asar,
+                magrib: timings.magrib,
               })
             }
             style={{
@@ -81,7 +109,7 @@ const Item = props => (
         </View>
         <View>
           <TouchableOpacity
-            onPress={() => props.nav.navigate('Find Masjid')}
+            onPress={() => nav.navigate('Find Masjid')}
             style={{
               paddingVertical: 5,
               width: 160,
@@ -95,13 +123,13 @@ const Item = props => (
                 fontSize: 20,
                 color: '#1F441E',
               }}>
-              Location
+              Locations
             </Text>
           </TouchableOpacity>
         </View>
       </View>
-    </Card.Actions>
-  </Card>
+    </View>
+  </View>
 );
 
 const Seacrh = ({navigation}) => {
@@ -110,6 +138,8 @@ const Seacrh = ({navigation}) => {
   const [textSearch, setTextSearch] = useState('');
   const [location, setLocation] = useState();
   const [result, setResult] = useState(null);
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   function onChangeSearch(text) {
     const fuse = new Fuse(masjidData, {keys: ['address']});
@@ -138,7 +168,7 @@ const Seacrh = ({navigation}) => {
       timings={item.timing}
       nav={navigation}
       distance={item.distance}
-      key={item.key}
+      favId={item.key}
     />
   );
   const renderItem1 = ({item}) => (
@@ -149,7 +179,7 @@ const Seacrh = ({navigation}) => {
       timings={item.item.timing}
       nav={navigation}
       distance={item.item.distance}
-      key={item.item.key}
+      favId={item.item.key}
     />
   );
   return (
@@ -228,7 +258,7 @@ const Seacrh = ({navigation}) => {
             <FlatList
               data={masjidData}
               renderItem={renderItem}
-              keyExtractor={x => x.key}
+              keyExtractor={() => masjidData.key}
               style={{marginBottom: 140}}
             />
           );
@@ -241,7 +271,7 @@ const Seacrh = ({navigation}) => {
                     <FlatList
                       data={result}
                       renderItem={renderItem1}
-                      keyExtractor={x => x.key}
+                      keyExtractor={result.key}
                       style={{height: Dimensions.get('window').height - 240}}
                     />
                   );
@@ -250,7 +280,7 @@ const Seacrh = ({navigation}) => {
                     <FlatList
                       data={masjidData}
                       renderItem={renderItem}
-                      keyExtractor={x => x.key}
+                      keyExtractor={masjidData.key}
                       style={{height: Dimensions.get('window').height - 240}}
                     />
                   );
@@ -270,6 +300,7 @@ const Seacrh = ({navigation}) => {
             height: 50,
           }}>
           <TouchableOpacity
+            onPress={() => setModalVisible(true)}
             style={{
               alignItems: 'center',
               backgroundColor: '#1F441E',

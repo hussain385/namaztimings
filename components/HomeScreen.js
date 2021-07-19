@@ -28,6 +28,10 @@ function HomeScreen({navigation}) {
 
   useEffect(() => {
     onRefresh();
+    const willFocusSubscription = navigation.addListener('focus', () => {
+      onRefresh();
+    });
+
     console.log(location.coords.longitude, '<========== location ');
     // Geocoder.from(location.coords.longitude, location.coords.latitude)
     //   .then(json => {
@@ -35,6 +39,7 @@ function HomeScreen({navigation}) {
     //     console.log(addressComponent);
     //   })
     //   .catch(error1 => console.warn(error1));
+    return willFocusSubscription;
   }, [location.coords.latitude, location.coords.longitude]);
   // #E1E1E1
   function onRefresh() {
@@ -421,20 +426,6 @@ function HomeScreen({navigation}) {
               refreshControl={
                 <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
               }>
-              <Text>Data not found try refreshing</Text>
-              <Text>Data not found try refreshing</Text>
-              <Text>Data not found try refreshing</Text>
-              <Text>Data not found try refreshing</Text>
-              <Text>Data not found try refreshing</Text>
-              <Text>Data not found try refreshing</Text>
-              <Text>Data not found try refreshing</Text>
-              <Text>Data not found try refreshing</Text>
-              <Text>Data not found try refreshing</Text>
-              <Text>Data not found try refreshing</Text>
-              <Text>Data not found try refreshing</Text>
-              <Text>Data not found try refreshing</Text>
-              <Text>Data not found try refreshing</Text>
-              <Text>Data not found try refreshing</Text>
               <Text>Data not found try refreshing</Text>
             </ScrollView>
           </SafeAreaView>
