@@ -30,6 +30,7 @@ const Item = ({
   onRefresh,
 }) => (
   <View
+    key={favId}
     style={{
       margin: 10,
       backgroundColor: '#ffff',
@@ -88,6 +89,8 @@ const Item = ({
                 zohar: timings.zohar,
                 asar: timings.asar,
                 magrib: timings.magrib,
+                favId: favId,
+                distance: distance,
               })
             }
             style={{
@@ -218,13 +221,14 @@ const Seacrh = ({navigation}) => {
               <TextInput
                 onChangeText={onChangeSearch}
                 value={textSearch}
-                placeholder="Enter Masjid Address..."
+                placeholder="Enter City/Area e.g Karachi/Nazimabad..."
                 style={{
                   backgroundColor: '#eeee',
                   width: '80%',
                   borderRadius: 10,
                   alignContent: 'center',
                   height: 40,
+                  color: '#0000',
                 }}
               />
             </View>

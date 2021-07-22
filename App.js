@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import * as React from 'react';
 import {Text, TouchableOpacity, Dimensions, View} from 'react-native';
@@ -17,11 +18,11 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import '@react-native-firebase/app';
 import MasjidInfo from './views/MasjidInfo';
-import Seacrh from './components/Search';
 import ShowMore from './views/ShowMore';
 import Map from './views/Map';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {AuthContext, AuthContextProvider} from './store/fireAuth';
+import CustomDrawerContent from './views/CustomDrawerContent';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -49,11 +50,6 @@ const FavouriteStackScreen = ({navigation}) => (
     }}
     initialRouteName="Favourite">
     <FavouriteStack.Screen
-      name="Home"
-      component={MyTabs}
-      options={{title: 'Prayer Time'}}
-    />
-    <FavouriteStack.Screen
       name="Favourite"
       component={Favourites}
       options={{
@@ -76,13 +72,8 @@ const SearchStackScreen = ({navigation}) => (
     }}
     initialRouteName="Find Masjid">
     <SearchStack.Screen
-      name="Home"
-      component={MyTabs}
-      options={{title: 'Prayer Time'}}
-    />
-    <SearchStack.Screen
       name="Find Masjid"
-      component={Seacrh}
+      component={Search}
       options={{
         title: 'Prayer Time',
       }}
@@ -177,7 +168,7 @@ const HomeStackScreen = ({navigation}) => (
 
 function MyDrawer() {
   const user = React.useContext(AuthContext);
-  console.log(user,'<============= user');
+  console.log(user, '<============= user');
   return (
     <Drawer.Navigator
       drawerContentOptions={{
@@ -185,13 +176,12 @@ function MyDrawer() {
         itemStyle: {backgroundColor: '#CEE6B4'},
         labelStyle: {color: '#1F441E'},
       }}
+      drawerContent={props => <CustomDrawerContent {...props} />}
       drawerStyle={{
         backgroundColor: '#CEE6B4',
       }}
       screenOptions={({route}) => ({
         drawerIcon: ({focused, color, size}) => {
-          let iconName;
-
           if (route.name === 'Home') {
             return (
               <Icon
@@ -292,11 +282,7 @@ function MyDrawer() {
       <Drawer.Screen name="Contact Us" component={ContactUS} />
       <Drawer.Screen name="Terms & Conditions" component={Terms} />
       <Drawer.Screen name="Admin view" component={Admin} />
-      {user ? (
-        <Drawer.Screen name="Login" component={Login} />
-      ) : (
-        <Drawer.Screen name="Login" component={Login} />
-      )}
+      <Drawer.Screen name="login" component={Login} />
     </Drawer.Navigator>
   );
 }
@@ -306,7 +292,6 @@ function MyTabs() {
     <Tab.Navigator
       initialRouteName="Home"
       tabBarOptions={{
-        initialRouteName: 'Home',
         style: {
           height: '8%',
           backgroundColor: '#ffff',
@@ -318,8 +303,8 @@ function MyTabs() {
         activeTintColor: '#000000',
       }}>
       <Tab.Screen
-        name="Favourites"
-        component={Favourites}
+        name="FavouriteStackScreen"
+        component={FavouriteStackScreen}
         options={{
           tabBarLabel: ({focused, color}) => (
             <Text
@@ -354,8 +339,8 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="Find Masjid"
-        component={Seacrh}
+        name="SearchStackScreen"
+        component={SearchStackScreen}
         options={{
           tabBarLabel: ({focused, color}) => (
             <Text

@@ -2,6 +2,7 @@
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Image,
   RefreshControl,
   SafeAreaView,
@@ -9,6 +10,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableOpacityBase,
   View,
 } from 'react-native';
 // import {NavigationContainer} from '@react-navigation/native';
@@ -16,9 +18,12 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 // import Entypo from 'react-native-vector-icons/Entypo';
 import {Header} from 'react-native-elements';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {GetRadMasjidData1} from '../store/firebase';
 // import Geocoder from 'react-native-geocoding';
 import Favbtn from '../views/Favbtn';
+import {headerStyles, textStyles} from '../theme/styles/Base';
+import CoText from '../views/Text/Text';
 
 function HomeScreen({navigation}) {
   const [masjidData, loading, location, error, getLocation, GetData] =
@@ -77,39 +82,50 @@ function HomeScreen({navigation}) {
               }}>
               Prayer Time
             </Text>
-            <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-              <Icon
-                name="map-marker-alt"
-                color="#ffff"
-                size={16}
-                style={{paddingRight: 10}}
-              />
-              <Text
-                style={{
-                  color: '#ffff',
-                  fontSize: 17,
-                  textDecorationLine: 'underline',
-                  marginTop: -4,
-                }}>
-                Zainee Manzil, Saddar...
-              </Text>
-            </View>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Map', {
+                  latitude: location.coords.latitude || 0.0,
+                  longitude: location.coords.longitude || 0.0,
+                })
+              }>
+              <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                <Icon
+                  name="map-marker-alt"
+                  color="#ffff"
+                  size={16}
+                  style={{paddingRight: 10}}
+                />
+                <Text
+                  style={{
+                    color: '#ffff',
+                    fontSize: 17,
+                    textDecorationLine: 'underline',
+                    marginTop: -4,
+                  }}>
+                  Zainee Manzil, Saddar...
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
         }
         rightComponent={
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Map', {
-                latitude: location.coords.latitude || 0.0,
-                longitude: location.coords.longitude || 0.0,
-              })
-            }>
-            <Icon
-              name="bell"
-              color="#ffff"
-              size={26}
-              style={{paddingRight: 10, marginTop: 3}}
-            />
+            style={{
+              paddingRight: 10,
+            }}>
+            <View>
+              <View style={headerStyles.cartTxt}>
+                <CoText
+                  textStyles={[
+                    textStyles.simple,
+                    {fontSize: 10, color: '#1F441E'},
+                  ]}
+                  text="0"
+                />
+              </View>
+              <MaterialIcons name="bell" size={28} color="white" />
+            </View>
           </TouchableOpacity>
         }
         backgroundColor="#1F441E"
@@ -117,7 +133,7 @@ function HomeScreen({navigation}) {
       <>
         {error.message.trim().isEmpty && (
           <View>
-            <strong>Error: {JSON.stringify(error)}</strong>
+            <Alert>Error: {JSON.stringify(error)}</Alert>
           </View>
         )}
         {loading ? (
@@ -359,6 +375,8 @@ function HomeScreen({navigation}) {
                         zohar: masjidData[0].timing.zohar,
                         asar: masjidData[0].timing.asar,
                         magrib: masjidData[0].timing.magrib,
+                        distance: masjidData[0].distance,
+                        favId: masjidData[0].key,
                       })
                     }
                     style={{
@@ -414,7 +432,7 @@ function HomeScreen({navigation}) {
                       marginHorizontal: 10,
                     }}
                     onPress={() => navigation.navigate('Show More')}>
-                    <Text style={{color: '#CEE6B4'}}>Show More</Text>
+                    <Text style={{color: '#CEE6B4'}}>Show More Masjid</Text>
                   </TouchableOpacity>
                 </View>
               </View>

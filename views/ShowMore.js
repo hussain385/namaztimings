@@ -1,8 +1,9 @@
+/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  StyleSheet,
+  // StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -10,11 +11,11 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
 import {Card} from 'react-native-paper';
-import firestore from '@react-native-firebase/firestore';
-import {GetAllMasjidData} from '../store/firebase';
+import {GetAllMasjidData, getCurrentLocation} from '../store/firebase';
 
 const Item = props => (
   <TouchableOpacity
+    key={props.favId}
     onPress={() =>
       props.nav.navigate('More Info', {
         name: props.title,
@@ -25,6 +26,8 @@ const Item = props => (
         zohar: props.timings.zohar,
         asar: props.timings.asar,
         magrib: props.timings.magrib,
+        favId: props.favId,
+        distance: props.distance,
       })
     }>
     <Card
@@ -86,7 +89,19 @@ const Item = props => (
 );
 
 const ShowMore = ({navigation}) => {
-  const [masjidData, loading, error] = GetAllMasjidData();
+  const [masjidData, loading] = GetAllMasjidData();
+  const [location, setLocation] = React.useState();
+
+  React.useEffect(() => {
+    getCurrentLocation()
+      .then(loc => {
+        setLocation(loc);
+        console.log(loc.coords.longitude, '<========== location ');
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }, []);
 
   const renderItem = ({item}) => (
     <Item
@@ -96,6 +111,7 @@ const ShowMore = ({navigation}) => {
       timings={item.timing}
       nav={navigation}
       distance={item.distance}
+      favId={item.key}
     />
   );
   return (
@@ -130,12 +146,20 @@ const ShowMore = ({navigation}) => {
           </View>
         }
         rightComponent={
-          <Icon
-            name="map-marker-alt"
-            color="#ffff"
-            size={26}
-            style={{paddingRight: 10}}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Map', {
+                latitude: location.coords.latitude || 0.0,
+                longitude: location.coords.longitude || 0.0,
+              })
+            }>
+            <Icon
+              name="map-marker-alt"
+              color="#ffff"
+              size={26}
+              style={{paddingRight: 10, marginTop: 3}}
+            />
+          </TouchableOpacity>
         }
         backgroundColor="#1F441E"
       />

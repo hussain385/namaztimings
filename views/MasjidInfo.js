@@ -106,7 +106,7 @@ const MasjidInfo = ({route, navigation}) => {
                 />
                 <Text style={{maxWidth: '56%'}}>{address}</Text>
               </View>
-              <View style={{flexDirection: 'row', marginTop: 5}}>
+              <View style={{flexDirection: 'row'}}>
                 <Icon
                   name="directions"
                   color="#900000"
@@ -152,7 +152,7 @@ const MasjidInfo = ({route, navigation}) => {
                   style={{
                     width: 141,
                     height: 76,
-                    marginTop: -50,
+                    marginTop: -40,
                     marginRight: 10,
                     borderRadius: 10,
                   }}
@@ -183,7 +183,7 @@ const MasjidInfo = ({route, navigation}) => {
                   width: '45%',
                   marginHorizontal: 10,
                 }}>
-                <Text style={{color: '#364547'}}>Notification</Text>
+                <Text style={{color: '#364547'}}>News & Annoucement</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
