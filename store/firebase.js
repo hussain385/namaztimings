@@ -215,17 +215,34 @@ export function GetRadMasjidData1(radius = 500) {
         snapshot.forEach(docSnapshot => {
           const loc1 = docSnapshot.data().g;
           const d = haversine(loc1, {latitude, longitude});
-
           console.log(d);
-          masjids.push({
-            ...docSnapshot.data(),
-            distance: Number(d.toFixed(2)),
-            key: docSnapshot.id,
-          });
+          if (_.isEmpty(docSnapshot.data().adminId)) {
+            masjids.push({
+              ...docSnapshot.data(),
+              distance: Number(d.toFixed(2)),
+              key: docSnapshot.id,
+              user: {
+                name: 'No Admin',
+                phone: '**********',
+              },
+            });
+          } else {
+            firestore()
+              .collection('users')
+              .doc(docSnapshot.data().adminId)
+              .get()
+              .then(u => {
+                masjids.push({
+                  ...docSnapshot.dta(),
+                  user: {...u},
+                  distance: Number(d.toFixed(2)),
+                  key: docSnapshot.id,
+                });
+              });
+          }
         });
-
         const masjids1 = _.sortBy(masjids, 'distance');
-        console.table(masjids1);
+        console.log(masjids1);
         console.log('<======== from GetRadData');
         setMasjid(masjids1);
         setLoading(false);

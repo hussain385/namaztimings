@@ -13,6 +13,7 @@ import ContactUS from './components/ContactUs';
 import Login from './components/Login';
 import Notifications from './components/Notifications';
 import Terms from './components/Terms';
+import Entypo from 'react-native-vector-icons/Entypo';
 import Admin from './components/Admin';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -133,7 +134,7 @@ const HomeStackScreen = ({navigation}) => (
             <GooglePlacesAutocomplete
               styles={{
                 textInput: {
-                  width: Dimensions.get('window').width - 90,
+                  width: Dimensions.get('window').width - 60,
                   color: '#5d5d5d',
                   fontSize: 16,
                   zIndex: 1,
@@ -309,14 +310,18 @@ function MyTabs() {
           tabBarLabel: ({focused, color}) => (
             <Text
               style={{
-                color: focused ? '#1F441E' : 'grey',
+                color: focused ? '#1F441E' : '#5C5C5C',
                 marginBottom: 5,
               }}>
               FAVOURITES
             </Text>
           ),
           tabBarIcon: ({focused, color}) => (
-            <Icon name="star" color={focused ? '#1F441E' : 'grey'} size={20} />
+            <Entypo
+              name="star"
+              color={focused ? '#1F441E' : '#5C5C5C'}
+              size={24}
+            />
           ),
         }}
       />
@@ -327,14 +332,14 @@ function MyTabs() {
           tabBarLabel: ({focused, color}) => (
             <Text
               style={{
-                color: focused ? '#1F441E' : 'grey',
+                color: focused ? '#1F441E' : '#5C5C5C',
                 marginBottom: 5,
               }}>
               HOME
             </Text>
           ),
           tabBarIcon: ({focused, color}) => (
-            <Icon name="home" color={focused ? '#1F441E' : 'grey'} size={20} />
+            <Icon name="home" color={focused ? '#1F441E' : '#5C5C5C'} size={20} />
           ),
         }}
       />
@@ -345,7 +350,7 @@ function MyTabs() {
           tabBarLabel: ({focused, color}) => (
             <Text
               style={{
-                color: focused ? '#1F441E' : 'grey',
+                color: focused ? '#1F441E' : '#5C5C5C',
                 marginBottom: 5,
               }}>
               SEARCH
@@ -354,7 +359,7 @@ function MyTabs() {
           tabBarIcon: ({focused, color}) => (
             <Icon
               name="search"
-              color={focused ? '#1F441E' : 'grey'}
+              color={focused ? '#1F441E' : '#5C5C5C'}
               size={20}
             />
           ),

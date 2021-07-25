@@ -11,6 +11,7 @@ import {
   Text,
   TouchableOpacity,
   TouchableOpacityBase,
+  Linking,
   View,
 } from 'react-native';
 // import {NavigationContainer} from '@react-navigation/native';
@@ -191,6 +192,11 @@ function HomeScreen({navigation}) {
                       style={{paddingRight: 10, paddingLeft: 10}}
                     />
                     <Text
+                      onPress={() => {
+                        Linking.openURL(
+                          `https://maps.google.com/?q=${masjidData[0].g.latitude},${masjidData[0].g.longitude}`,
+                        );
+                      }}
                       style={{
                         color: '#900000',
                         fontSize: 18,
@@ -209,7 +215,7 @@ function HomeScreen({navigation}) {
                       style={{paddingRight: 10, paddingLeft: 10}}
                     />
                     <Text style={{maxWidth: 280, marginTop: 2}}>
-                      Moulana Tariq
+                      {masjidData[0].user.name}
                     </Text>
                   </View>
                 </View>
@@ -221,8 +227,12 @@ function HomeScreen({navigation}) {
                       size={20}
                       style={{paddingRight: 10, paddingLeft: 10}}
                     />
-                    <Text style={{maxWidth: 280, marginTop: 0}}>
-                      +92 323 0000000
+                    <Text
+                      style={{maxWidth: 280, marginTop: 0}}
+                      onPress={() => {
+                        Linking.openURL('tel:+92 323 0000000');
+                      }}>
+                      {masjidData[0].user.phone}
                     </Text>
                   </View>
                   <View>
@@ -377,6 +387,8 @@ function HomeScreen({navigation}) {
                         magrib: masjidData[0].timing.magrib,
                         distance: masjidData[0].distance,
                         favId: masjidData[0].key,
+                        latitude: masjidData[0].g.latitude,
+                        longitude: masjidData[0].g.longitude,
                       })
                     }
                     style={{

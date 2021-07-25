@@ -1,0 +1,297 @@
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState} from 'react';
+import {
+  Modal,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Pressable,
+  Alert,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import firestore from '@react-native-firebase/firestore';
+import _ from 'lodash';
+import moment from 'moment';
+
+const Edit = ({isha, fajar, zohar, asar, magrib, uid}) => {
+  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [namazTime, setNamazTime] = useState('');
+  const [time, setTime] = useState({
+    isha: isha,
+    fajar: fajar,
+    zohar: zohar,
+    asar: asar,
+    magrib: magrib,
+  });
+
+  // const [timeFajar, setTimeFajar] = useState({fajar});
+  // const [timeZohar, setTimeZohar] = useState({zohar});
+  // const [timeAsar, setTimeAsar] = useState({asar});
+  // const [timeMagrib, setTimeMagrib] = useState({magrib});
+
+  const showTimePicker = namazName => {
+    setTimePickerVisibility(true);
+    setNamazTime(namazName);
+  };
+
+  async function submitRequest() {
+    const prevTime = {
+      isha: isha,
+      fajar: fajar,
+      zohar: zohar,
+      asar: asar,
+      magrib: magrib,
+    };
+    if (_.isEqual(time, prevTime)) {
+      Alert.alert('Alert Title', 'My Alert Msg');
+    }
+    console.log(uid);
+    await firestore()
+      .collection('Masjid')
+      .doc(uid)
+      .collection('requests')
+      .add(time)
+      .then(a => {
+        Alert.alert('Alert Title', 'Request has been forwarded to the admin');
+      });
+    setTimePickerVisibility(false);
+  }
+
+  const hideTimePicker = () => {
+    setTimePickerVisibility(false);
+  };
+
+  const handleConfirm = newTime => {
+    // newTime = new Date(newTime);
+    const timeString = moment(newTime).format('hh:mm A');
+    console.log(timeString);
+    // const timeString =
+    //   newTime.getHours() >= 12
+    //     ? `${'0' + String(newTime.getHours() - 12)}:${newTime.getMinutes()} PM`
+    //     : `${'0' + String(newTime.getHours())}:${newTime.getMinutes()} AM`;
+    if (namazTime === 'Magrib') {
+      setTime(pre => {
+        return {
+          ...pre,
+          magrib: timeString,
+        };
+      });
+    }
+    if (namazTime === 'Fajr') {
+      setTime(pre => {
+        return {
+          ...pre,
+          fajar: timeString,
+        };
+      });
+    }
+    if (namazTime === 'Zohr') {
+      setTime(pre => {
+        return {
+          ...pre,
+          zohar: timeString,
+        };
+      });
+    }
+    if (namazTime === 'Asar') {
+      setTime(pre => {
+        return {
+          ...pre,
+          asar: timeString,
+        };
+      });
+    }
+    if (namazTime === 'Isha') {
+      setTime(pre => {
+        return {
+          ...pre,
+          isha: timeString,
+        };
+      });
+    }
+    console.log('A Time has been picked: ', timeString);
+    hideTimePicker();
+  };
+
+  return (
+    <SafeAreaView>
+      <TouchableOpacity
+        style={{flexDirection: 'row', paddingRight: 10}}
+        onPress={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <Text style={{fontSize: 20, fontWeight: '200'}}>Edit</Text>
+        <Icon name="square-edit-outline" size={24} style={{marginTop: 1}} />
+      </TouchableOpacity>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Namaz Timings</Text>
+            <View style={{flexDirection: 'row', marginTop: 10}}>
+              <View
+                style={{
+                  flexGrow: 1,
+                  paddingLeft: 10,
+                }}>
+                <Text style={{fontSize: 17}}>Fajr :</Text>
+              </View>
+              <View style={styles.editTime}>
+                <Pressable onPress={() => showTimePicker('Fajr')}>
+                  <Text style={{fontSize: 17}}>{time.fajar}</Text>
+                </Pressable>
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', marginTop: 10}}>
+              <View
+                style={{
+                  flexGrow: 1,
+                  paddingLeft: 10,
+                }}>
+                <Text style={{fontSize: 17}}>Zohr :</Text>
+              </View>
+              <View style={styles.editTime}>
+                <Pressable onPress={() => showTimePicker('Zohr')}>
+                  <Text style={{fontSize: 17}}>{time.zohar}</Text>
+                </Pressable>
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', marginTop: 10}}>
+              <View
+                style={{
+                  flexGrow: 1,
+                  paddingLeft: 10,
+                }}>
+                <Text style={{fontSize: 17}}>Asar :</Text>
+              </View>
+              <View style={styles.editTime}>
+                <Pressable onPress={() => showTimePicker('Asar')}>
+                  <Text style={{fontSize: 17}}>{time.asar}</Text>
+                </Pressable>
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', marginTop: 10}}>
+              <View
+                style={{
+                  flexGrow: 1,
+                  paddingLeft: 10,
+                }}>
+                <Text style={{fontSize: 17}}>Magrib :</Text>
+              </View>
+              <View style={styles.editTime}>
+                <Pressable onPress={() => showTimePicker('Magrib')}>
+                  <Text style={{fontSize: 17}}>{time.magrib}</Text>
+                </Pressable>
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', marginTop: 10}}>
+              <View
+                style={{
+                  flexGrow: 1,
+                  paddingLeft: 10,
+                }}>
+                <Text style={{fontSize: 17}}>Isha :</Text>
+              </View>
+              <View style={styles.editTime}>
+                <Pressable onPress={() => showTimePicker('Isha')}>
+                  <Text style={{fontSize: 17}}>{time.isha}</Text>
+                </Pressable>
+              </View>
+            </View>
+            <View
+              style={{
+                margin: 15,
+                borderBottomColor: '#C4C4C4',
+                borderBottomWidth: 1,
+              }}
+            />
+            <View style={{flexDirection: 'row'}}>
+              <Pressable
+                style={[styles.button, styles.buttonOpen]}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}>
+                <Text style={styles.textStyle}>Cancel</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={submitRequest}>
+                <Text style={styles.textStyle1}>Request</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+      <DateTimePickerModal
+        isVisible={isTimePickerVisible}
+        mode="time"
+        onConfirm={handleConfirm}
+        onCancel={hideTimePicker}
+      />
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  editTime: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    backgroundColor: '#dddd',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    width: '30%',
+  },
+  buttonOpen: {
+    backgroundColor: '#5C5C5C',
+    marginRight: 15,
+  },
+  buttonClose: {
+    backgroundColor: '#1F441E',
+    marginLeft: 15,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  textStyle1: {
+    color: '#CEE6B4',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    fontSize: 20,
+    textAlign: 'center',
+  },
+});
+
+export default Edit;

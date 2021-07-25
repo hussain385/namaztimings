@@ -11,6 +11,7 @@ import {
   TextInput,
   Dimensions,
   ImageBackground,
+  Linking,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
@@ -28,6 +29,8 @@ const Item = ({
   timings,
   nav,
   onRefresh,
+  latitude,
+  longitude,
 }) => (
   <View
     key={favId}
@@ -91,6 +94,8 @@ const Item = ({
                 magrib: timings.magrib,
                 favId: favId,
                 distance: distance,
+                latitude: latitude,
+                longitude: longitude,
               })
             }
             style={{
@@ -112,7 +117,11 @@ const Item = ({
         </View>
         <View>
           <TouchableOpacity
-            onPress={() => nav.navigate('Find Masjid')}
+            onPress={() => {
+              Linking.openURL(
+                `https://maps.google.com/?q=${latitude},${longitude}`,
+              );
+            }}
             style={{
               paddingVertical: 5,
               width: 160,
@@ -145,11 +154,11 @@ const Seacrh = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   function onChangeSearch(text) {
-    const fuse = new Fuse(masjidData, {keys: ['address']});
+    const fuse = new Fuse(masjidData, {keys: ['address'], distance: 400});
     const resultf = fuse.search(text);
     setTextSearch(text);
     setResult(resultf);
-    console.log(text);
+    console.log(resultf, text);
   }
 
   useEffect(() => {
@@ -172,6 +181,8 @@ const Seacrh = ({navigation}) => {
       nav={navigation}
       distance={item.distance}
       favId={item.key}
+      latitude={item.g.latitude}
+      longitude={item.g.longitude}
     />
   );
   const renderItem1 = ({item}) => (
@@ -183,6 +194,8 @@ const Seacrh = ({navigation}) => {
       nav={navigation}
       distance={item.item.distance}
       favId={item.item.key}
+      latitude={item.item.g.latitude}
+      longitude={item.item.g.longitude}
     />
   );
   return (
@@ -221,7 +234,7 @@ const Seacrh = ({navigation}) => {
               <TextInput
                 onChangeText={onChangeSearch}
                 value={textSearch}
-                placeholder="Enter City/Area e.g Karachi/Nazimabad..."
+                placeholder="  Enter City/Area e.g Karachi/Nazimabad..."
                 style={{
                   backgroundColor: '#eeee',
                   width: '80%',

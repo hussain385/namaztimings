@@ -8,11 +8,13 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Linking,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {NavigationContainer} from '@react-navigation/native';
 import {Header} from 'react-native-elements';
 import Favbtn from './Favbtn';
+import Edit from './Edit';
 
 const MasjidInfo = ({route, navigation}) => {
   const {name} = route.params;
@@ -25,8 +27,10 @@ const MasjidInfo = ({route, navigation}) => {
   const {magrib} = route.params;
   const {distance} = route.params;
   const {favId} = route.params;
+  const {latitude} = route.params;
+  const {longitude} = route.params;
 
-  console.log(favId);
+  console.log(latitude, longitude);
 
   return (
     <>
@@ -114,6 +118,11 @@ const MasjidInfo = ({route, navigation}) => {
                   style={{paddingRight: 10, paddingLeft: 10}}
                 />
                 <Text
+                  onPress={() => {
+                    Linking.openURL(
+                      `https://maps.google.com/?q=${latitude},${longitude}`,
+                    );
+                  }}
                   style={{
                     color: '#900000',
                     fontSize: 16,
@@ -225,10 +234,19 @@ const MasjidInfo = ({route, navigation}) => {
                   flexGrow: 1,
                   flexDirection: 'row',
                   paddingLeft: 10,
+                  justifyContent: 'space-between',
                 }}>
                 <Text style={{fontSize: 20, fontWeight: 'bold'}}>
                   Namaz Timings
                 </Text>
+                <Edit
+                  fajar={fajar}
+                  zohar={zohar}
+                  asar={asar}
+                  magrib={magrib}
+                  isha={isha}
+                  uid={favId}
+                />
               </View>
             </View>
             <View style={{flexDirection: 'row', marginTop: 10}}>

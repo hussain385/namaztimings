@@ -20,11 +20,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 const CustomDrawerContent = ({navigation}) => {
   const user = useContext(AuthContext);
 
-  function handleSignOut() {
-    auth().signOut();
-    if (_.isNull(user)) {
-      navigation.navigate('Home');
-    }
+  async function handleSignOut() {
+    await auth().signOut();
+
+    navigation.navigate('Home');
   }
 
   return (

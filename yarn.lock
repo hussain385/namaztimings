@@ -2036,6 +2036,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/datetimepicker@npm:^3.5.2":
+  version: 3.5.2
+  resolution: "@react-native-community/datetimepicker@npm:3.5.2"
+  dependencies:
+    invariant: ^2.2.4
+  checksum: fd9665656dce87adb46694cb7b7edb49910e77c643c27cfab5ae25dd578aa08495e8d974f2df967a3f3f8d7a789ccce66b453709bb2b77ec3435ce47d32de002
+  languageName: node
+  linkType: hard
+
 "@react-native-community/eslint-config@npm:^3.0.0":
   version: 3.0.0
   resolution: "@react-native-community/eslint-config@npm:3.0.0"
@@ -7906,6 +7915,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"moment@npm:^2.29.1":
+  version: 2.29.1
+  resolution: "moment@npm:2.29.1"
+  checksum: 86729013febf7160de5b93da69273dd304d674b0224f9544b3abd09a87671ddd2cdd57598261ce57588910d63747ffd5590965e83c790d8bf327083c0e0a06e0
+  languageName: node
+  linkType: hard
+
 "ms@npm:2.0.0":
   version: 2.0.0
   resolution: "ms@npm:2.0.0"
@@ -7941,6 +7957,7 @@ __metadata:
     "@babel/core": ^7.14.6
     "@babel/runtime": ^7.14.6
     "@react-native-async-storage/async-storage": ^1.15.5
+    "@react-native-community/datetimepicker": ^3.5.2
     "@react-native-community/eslint-config": ^3.0.0
     "@react-native-community/geolocation": ^2.0.2
     "@react-native-community/masked-view": ^0.1.11
@@ -7963,6 +7980,7 @@ __metadata:
     jest: ^27.0.5
     lodash: ^4.17.21
     metro-react-native-babel-preset: ^0.66.0
+    moment: ^2.29.1
     ngeohash: ^0.6.3
     react: 17.0.1
     react-firebase-hooks: ^3.0.4
@@ -7975,6 +7993,7 @@ __metadata:
     react-native-get-location: ^2.1.1
     react-native-google-places-autocomplete: ^2.2.0
     react-native-maps: 0.28.0
+    react-native-modal-datetime-picker: ^10.2.0
     react-native-paper: ^4.9.2
     react-native-reanimated: ^2.2.0
     react-native-safe-area-context: ^3.2.0
@@ -8991,6 +9010,17 @@ __metadata:
     react-native: ">= 0.51"
     react-native-web: ^0.11
   checksum: 4dc7c8f315b4ef1e355f5e65dc9ea1c57fa6c8939512e26066b12b1b7261eca60d15b493036d4a24c1e75bb2dd8812710b82859187e2cf0a24b8340d79ded5ba
+  languageName: node
+  linkType: hard
+
+"react-native-modal-datetime-picker@npm:^10.2.0":
+  version: 10.2.0
+  resolution: "react-native-modal-datetime-picker@npm:10.2.0"
+  dependencies:
+    prop-types: ^15.7.2
+  peerDependencies:
+    "@react-native-community/datetimepicker": ">=3.0.0"
+  checksum: 4931cc9b0066792f7a447b94e7095f6fa10470f4664fb03c8e0344acee7ad5d43700a9dff8df32cd782c56c6bdae18c042be88bae5c3fe37ca6075bc0d308b82
   languageName: node
   linkType: hard
 

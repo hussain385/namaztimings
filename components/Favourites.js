@@ -7,9 +7,11 @@ import {
   Text,
   TouchableOpacity,
   Image,
+  Linking,
   View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Header} from 'react-native-elements';
 import {GetFavMasjidData} from '../store/firebase';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -25,6 +27,8 @@ const Item = ({
   timings,
   nav,
   onRefresh,
+  latitude,
+  longitude,
 }) => (
   <View
     style={{
@@ -85,6 +89,10 @@ const Item = ({
                 zohar: timings.zohar,
                 asar: timings.asar,
                 magrib: timings.magrib,
+                favId: favId,
+                distance: distance,
+                latitude: latitude,
+                longitude: longitude,
               })
             }
             style={{
@@ -106,7 +114,11 @@ const Item = ({
         </View>
         <View>
           <TouchableOpacity
-            onPress={() => nav.navigate('Find Masjid')}
+            onPress={() => {
+              Linking.openURL(
+                `https://maps.google.com/?q=${latitude},${longitude}`,
+              );
+            }}
             style={{
               paddingVertical: 5,
               width: 160,
@@ -158,6 +170,8 @@ const Favourites = ({navigation}) => {
       distance={item.distance}
       favId={item.key}
       onRefresh={onRefresh}
+      longitude={item.g.longitude}
+      latitude={item.g.latitude}
     />
   );
   return (
@@ -190,14 +204,6 @@ const Favourites = ({navigation}) => {
               Favourites
             </Text>
           </View>
-        }
-        rightComponent={
-          <Icon
-            name="bell"
-            color="#ffff"
-            size={26}
-            style={{paddingRight: 10}}
-          />
         }
         backgroundColor="#1F441E"
       />
@@ -236,22 +242,10 @@ const Favourites = ({navigation}) => {
               return (
                 <View
                   style={{
-                    flexDirection: 'column',
-                    justifyContent: 'center',
                     alignItems: 'center',
+                    marginVertical: '50%',
                   }}>
-                  <Image
-                    source={{
-                      uri: '../components/folder.png',
-                    }}
-                    style={{
-                      width: 141,
-                      height: 76,
-                      marginTop: 20,
-                      marginRight: 10,
-                      borderRadius: 8,
-                    }}
-                  />
+                  <AntDesign name="folder1" size={50} />
                   <Text>No Favourites</Text>
                 </View>
               );

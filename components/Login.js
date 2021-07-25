@@ -43,12 +43,14 @@ const Login = ({navigation}) => {
   function onChangePassword(text) {
     setPassword(text);
   }
-  function submitLogin() {
+  async function submitLogin() {
     signInWithEmailAndPassword(email, password);
     console.log('Logged in as :', user);
-    if (!_.isNull(user)) {
-      navigation.navigate('Admin view');
-    }
+  }
+
+  if (user) {
+    console.log('the current user:',user);
+    navigation.navigate('Admin view');
   }
 
   return (
