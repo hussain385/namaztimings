@@ -114,7 +114,7 @@ const MasjidInfo = ({route, navigation}) => {
                   name="map-marker-alt"
                   color="#5C5C5C"
                   size={20}
-                  style={{paddingRight: 10, paddingLeft: 13}}
+                  style={{paddingRight: 18, paddingLeft: 13}}
                 />
                 <Text style={{maxWidth: 200}}>{address}</Text>
               </View>
@@ -123,7 +123,7 @@ const MasjidInfo = ({route, navigation}) => {
                   name="directions"
                   color="#900000"
                   size={20}
-                  style={{paddingRight: 10, paddingLeft: 10}}
+                  style={{paddingRight: 18, paddingLeft: 10}}
                 />
                 <Text
                   onPress={() => {
@@ -151,7 +151,7 @@ const MasjidInfo = ({route, navigation}) => {
                   name="user-alt"
                   color="#5C5C5C"
                   size={20}
-                  style={{paddingRight: 10, paddingLeft: 10}}
+                  style={{paddingRight: 18, paddingLeft: 10}}
                 />
                 <Text style={{maxWidth: 280}}>{user.name}</Text>
               </View>
@@ -167,7 +167,7 @@ const MasjidInfo = ({route, navigation}) => {
                   name="phone-alt"
                   color="#5C5C5C"
                   size={20}
-                  style={{paddingRight: 10, paddingLeft: 10}}
+                  style={{paddingRight: 18, paddingLeft: 10}}
                 />
                 <Text style={{maxWidth: 280}}>{user.phone}</Text>
               </View>

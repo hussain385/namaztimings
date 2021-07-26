@@ -132,7 +132,11 @@ const Admin = ({navigation}) => {
                         style={{paddingRight: 10, paddingLeft: 10}}
                       />
                       <Text
-                        style={{fontSize: 24, color: '#5C5C5C', marginTop: -5}}>
+                        style={{
+                          fontSize: 17,
+                          color: '#5C5C5C',
+                          fontWeight: 'bold',
+                        }}>
                         {doc.data().name}
                       </Text>
                     </View>
@@ -144,7 +148,7 @@ const Admin = ({navigation}) => {
                         color="#5C5C5C"
                         size={20}
                         style={{
-                          paddingRight: 10,
+                          paddingRight: 18,
                           paddingLeft: 13,
                           marginTop: 5,
                         }}
@@ -160,7 +164,7 @@ const Admin = ({navigation}) => {
                         name="user-alt"
                         color="#5C5C5C"
                         size={20}
-                        style={{paddingRight: 10, paddingLeft: 10}}
+                        style={{paddingRight: 18, paddingLeft: 10}}
                       />
                       <Text style={{maxWidth: 280, marginTop: 2}}>
                         Moulana Tariq
@@ -173,7 +177,7 @@ const Admin = ({navigation}) => {
                         name="phone-alt"
                         color="#5C5C5C"
                         size={20}
-                        style={{paddingRight: 10, paddingLeft: 10}}
+                        style={{paddingRight: 18, paddingLeft: 10}}
                       />
                       <Text style={{maxWidth: 280, marginTop: 0}}>
                         +92 323 0000000

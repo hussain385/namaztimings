@@ -33,7 +33,6 @@ function HomeScreen({navigation}) {
   // Geocoder.init('AIzaSyCrsNBX-pWunuPeL-ziP99aXhetdZL2VKs');
 
   useEffect(() => {
-    onRefresh();
     const willFocusSubscription = navigation.addListener('focus', () => {
       onRefresh();
     });
@@ -187,7 +186,7 @@ function HomeScreen({navigation}) {
                       color="#5C5C5C"
                       size={20}
                       style={{
-                        paddingRight: 10,
+                        paddingRight: 18,
                         paddingLeft: 13,
                         marginTop: 5,
                       }}
@@ -201,7 +200,7 @@ function HomeScreen({navigation}) {
                       name="directions"
                       color="#900000"
                       size={20}
-                      style={{paddingRight: 10, paddingLeft: 10}}
+                      style={{paddingRight: 18, paddingLeft: 10}}
                     />
                     <Text
                       onPress={() => {
@@ -232,7 +231,7 @@ function HomeScreen({navigation}) {
                       name="user-alt"
                       color="#5C5C5C"
                       size={20}
-                      style={{paddingRight: 10, paddingLeft: 10}}
+                      style={{paddingRight: 18, paddingLeft: 10}}
                     />
                     <Text style={{maxWidth: 280, marginTop: 2}}>
                       {masjidData[0].user.name}
@@ -250,7 +249,7 @@ function HomeScreen({navigation}) {
                       name="phone-alt"
                       color="#5C5C5C"
                       size={20}
-                      style={{paddingRight: 10, paddingLeft: 10}}
+                      style={{paddingRight: 18, paddingLeft: 10}}
                     />
                     <Text
                       style={{maxWidth: 280, marginTop: 0}}

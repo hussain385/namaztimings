@@ -155,7 +155,6 @@ const Favourites = ({navigation}) => {
   }
 
   React.useEffect(() => {
-    onRefresh();
     const willFocusSubscription = navigation.addListener('focus', () => {
       onRefresh();
     });

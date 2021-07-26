@@ -38,7 +38,7 @@ const CustomDrawerContent = ({navigation}) => {
           marginBottom: 30,
         }}>
         <CoText
-          textStyles={[{color: 'grey', fontSize: 30, TextAlign: 'cenetr'}]}
+          textStyles={[{color: 'grey', fontSize: 30, TextAlign: 'center'}]}
           text="LOGO"
         />
       </TouchableOpacity>

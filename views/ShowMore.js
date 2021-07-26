@@ -30,6 +30,7 @@ const Item = props => (
         distance: props.distance,
         latitude: props.latitude,
         longitude: props.longitude,
+        user: props.user,
       })
     }>
     <Card
@@ -116,6 +117,7 @@ const ShowMore = ({navigation}) => {
       favId={item.key}
       longitude={item.g.longitude}
       latitude={item.g.latitude}
+      user={item.user}
     />
   );
   return (
