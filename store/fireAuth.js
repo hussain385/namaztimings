@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
-import React, { useState, useEffect, createContext, useContext } from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import auth from '@react-native-firebase/auth';
+import _ from 'lodash'
 
 export const AuthContext = createContext();
 
@@ -8,8 +9,7 @@ export function AuthContextProvider({children}) {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const subscriber  = auth().onAuthStateChanged(setUser);
-        return subscriber;
+        return auth().onAuthStateChanged(setUser);
     }, []);
 
     return (
@@ -21,10 +21,10 @@ export function AuthContextProvider({children}) {
 
 export function useFirebaseAuth() {
     const context = useContext(AuthContext);
-    if (context === undefined) {
-      throw new Error(
-        'useFirebaseAuth must be used within a FirebaseAuthProvider'
-      );
+    if (_.isUndefined(context)) {
+        throw new Error(
+            'useFirebaseAuth must be used within a FirebaseAuthProvider'
+        );
     }
     return context.user;
-  }
+}
