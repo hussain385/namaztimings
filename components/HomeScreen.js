@@ -192,7 +192,7 @@ function HomeScreen({navigation}) {
                         marginTop: 5,
                       }}
                     />
-                    <Text style={{maxWidth: 280, marginTop: 5}}>
+                    <Text style={{maxWidth: 200, marginTop: 5}}>
                       {masjidData[0].address}
                     </Text>
                   </View>

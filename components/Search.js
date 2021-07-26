@@ -172,6 +172,7 @@ const Seacrh = ({navigation}) => {
       .catch(e => {
         console.log(e);
       });
+    console.log(masjidData);
   }, []);
 
   const renderItem = ({item}) => (
@@ -238,14 +239,15 @@ const Seacrh = ({navigation}) => {
               <TextInput
                 onChangeText={onChangeSearch}
                 value={textSearch}
-                placeholder="  Enter City/Area e.g Karachi/Nazimabad..."
+                placeholder="Enter City/Area e.g Karachi/Nazimabad..."
                 style={{
                   backgroundColor: '#eeee',
                   width: '80%',
                   borderRadius: 10,
                   alignContent: 'center',
+                  color: 'black',
                   height: 40,
-                  color: '#0000',
+                  paddingHorizontal: 20,
                 }}
               />
             </View>

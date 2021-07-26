@@ -29,8 +29,9 @@ const MasjidInfo = ({route, navigation}) => {
   const {favId} = route.params;
   const {latitude} = route.params;
   const {longitude} = route.params;
+  const {user} = route.params;
 
-  console.log(latitude, longitude);
+  console.log(user);
 
   return (
     <>
@@ -78,7 +79,7 @@ const MasjidInfo = ({route, navigation}) => {
         }
         backgroundColor="#1F441E"
       />
-      <SafeAreaView style={styles.container}>
+      <>
         <ScrollView style={styles.scrollView}>
           <View>
             <View>
@@ -115,7 +116,7 @@ const MasjidInfo = ({route, navigation}) => {
                   size={20}
                   style={{paddingRight: 10, paddingLeft: 13}}
                 />
-                <Text style={{maxWidth: '56%'}}>{address}</Text>
+                <Text style={{maxWidth: 200}}>{address}</Text>
               </View>
               <View style={{flexDirection: 'row'}}>
                 <Icon
@@ -152,7 +153,7 @@ const MasjidInfo = ({route, navigation}) => {
                   size={20}
                   style={{paddingRight: 10, paddingLeft: 10}}
                 />
-                <Text style={{maxWidth: 280}}>Moulana Tariq</Text>
+                <Text style={{maxWidth: 280}}>{user.name}</Text>
               </View>
             </View>
             <View
@@ -168,7 +169,7 @@ const MasjidInfo = ({route, navigation}) => {
                   size={20}
                   style={{paddingRight: 10, paddingLeft: 10}}
                 />
-                <Text style={{maxWidth: 280}}>+92 323 0000000</Text>
+                <Text style={{maxWidth: 280}}>{user.phone}</Text>
               </View>
               <View>
                 <Image
@@ -178,7 +179,7 @@ const MasjidInfo = ({route, navigation}) => {
                   style={{
                     width: 141,
                     height: 76,
-                    marginTop: -40,
+                    marginTop: -30,
                     marginRight: 10,
                     borderRadius: 10,
                   }}
@@ -404,7 +405,7 @@ const MasjidInfo = ({route, navigation}) => {
             </TouchableOpacity>
           </View>
         </ScrollView>
-      </SafeAreaView>
+      </>
     </>
   );
 };
