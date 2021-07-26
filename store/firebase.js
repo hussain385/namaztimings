@@ -36,6 +36,41 @@ export const getCurrentLocation = async () => {
     );
 };
 
+async function sortMasjidData(snapshot, {latitude, longitude}) {
+    const masjids = [];
+    const users = await GetUsers();
+    snapshot.forEach(async (docSnapshot) => {
+        const loc1 = docSnapshot.data().g;
+        const d = haversine(loc1, {latitude, longitude});
+        const adminId = docSnapshot.data().adminId;
+        console.log(adminId, _.isEmpty(adminId), typeof adminId);
+        if (_.isEmpty(adminId)) {
+            console.log('when True');
+            masjids.push({
+                ...docSnapshot.data(),
+                distance: Number(d.toFixed(2)),
+                key: docSnapshot.id,
+                user: {
+                    name: 'No Admin',
+                    phone: '**********',
+                },
+            });
+        } else {
+            const u = _.find(users, (o) => {
+                return o.uid === adminId;
+            });
+            masjids.push({
+                ...docSnapshot.data(),
+                user: {...u},
+                distance: Number(d.toFixed(2)),
+                key: docSnapshot.id,
+            });
+
+        }
+    });
+    return _.sortBy(masjids, 'distance');
+}
+
 export async function GetAllMasjidData() {
     const [loading, setLoading] = useState(true);
     const [masjid, setMasjid] = useState(null);
@@ -43,54 +78,13 @@ export async function GetAllMasjidData() {
 
     useEffect(() => {
         const subs = firestore().collection('Masjid');
-        try {
-            getCurrentLocation().then(loc => {
-
-
-            // console.log(loc,'<========== location ');
-            subs
-                .onSnapshot(async snapshot => {
-                    const masjids = [];
-                    const users = await GetUsers();
-                    for (const docSnapshot of snapshot) {
-                        const loc1 = docSnapshot.data().g;
-                        const d = haversine(loc1, loc.coords);
-                        const adminId = docSnapshot.data().adminId;
-                        // console.log(docSnapshot.data().adminId,_.isEmpty(docSnapshot.data().adminId));
-                        if (_.isEmpty(adminId)) {
-                            console.log('When True');
-                            masjids.push({
-                                ...docSnapshot.data(),
-                                distance: Number(d.toFixed(2)),
-                                key: docSnapshot.id,
-                                user: {
-                                    name: 'No Admin',
-                                    phone: '**********',
-                                },
-                            });
-                        } else {
-                            const u = _.find(users, (o) => {
-                                return o.uid === adminId;
-                            });
-                            masjids.push({
-                                ...docSnapshot.data(),
-                                user: {...u},
-                                distance: Number(d.toFixed(2)),
-                                key: docSnapshot.id,
-                            });
-                        }
-                    }
-                    const masjids1 = _.sortBy(masjids, 'distance');
+        getCurrentLocation().then(loc => {
+            subs.onSnapshot(async snapshot => {
+                    const masjids1 = await sortMasjidData(snapshot,loc.coords);
                     setMasjid(masjids1);
                     setLoading(false);
                 });
             });
-        } catch (e) {
-            console.log(e);
-            setError(e);
-        }
-
-
         return () => subs;
     }, []);
     return [masjid, loading, error];
@@ -154,40 +148,7 @@ export function GetRadMasjidData1(radius = 500) {
             })
             .get()
             .then(async (snapshot) => {
-                const masjids = [];
-                const users = await GetUsers();
-                snapshot.forEach(async (docSnapshot) => {
-                    const loc1 = docSnapshot.data().g;
-                    const d = haversine(loc1, {latitude, longitude});
-                    const adminId = docSnapshot.data().adminId;
-                    console.log(adminId, _.isEmpty(adminId), typeof adminId);
-                    if (_.isEmpty(adminId)) {
-                        console.log('when True');
-                        masjids.push({
-                            ...docSnapshot.data(),
-                            distance: Number(d.toFixed(2)),
-                            key: docSnapshot.id,
-                            user: {
-                                name: 'No Admin',
-                                phone: '**********',
-                            },
-                        });
-                    } else {
-                        const u = _.find(users, (o) => {
-                            return o.uid === adminId;
-                        });
-
-                        // console.log(u,'added in collection from');
-                        masjids.push({
-                            ...docSnapshot.data(),
-                            user: {...u},
-                            distance: Number(d.toFixed(2)),
-                            key: docSnapshot.id,
-                        });
-
-                    }
-                });
-                const masjids1 = _.sortBy(masjids, 'distance');
+                const masjids1 = await sortMasjidData(snapshot,location.coords);
                 setMasjid(masjids1);
                 setLoading(false);
             })
@@ -244,6 +205,7 @@ export function GetFavMasjidData() {
         console.log(favorites);
         if (_.isNull(favorites)) {
             console.log('No Favorites Found in the storage');
+            setLoading(false);
             return;
         }
         const collections = [];
