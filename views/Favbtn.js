@@ -99,10 +99,10 @@ const Favbtn = ({favId, onRefresh}) => {
         borderRadius: 100,
         marginRight: 10,
         textAlign: 'center',
-        padding: 15,
-        marginTop: -20,
+        padding: 10,
+        marginTop: -10,
       }}>
-      <Entypo name="star" color={isFound ? '#8D2828' : '#5C5C5C'} size={25} />
+      <Entypo name="star" color={isFound ? '#8D2828' : '#5C5C5C'} size={20} />
     </TouchableOpacity>
   );
 };

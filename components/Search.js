@@ -31,6 +31,7 @@ const Item = ({
   onRefresh,
   latitude,
   longitude,
+  user,
 }) => (
   <View
     key={favId}
@@ -96,6 +97,7 @@ const Item = ({
                 distance: distance,
                 latitude: latitude,
                 longitude: longitude,
+                user: user,
               })
             }
             style={{
@@ -183,6 +185,7 @@ const Seacrh = ({navigation}) => {
       favId={item.key}
       latitude={item.g.latitude}
       longitude={item.g.longitude}
+      user={item.user}
     />
   );
   const renderItem1 = ({item}) => (
@@ -195,6 +198,7 @@ const Seacrh = ({navigation}) => {
       distance={item.item.distance}
       favId={item.item.key}
       latitude={item.item.g.latitude}
+      user={item.item.user}
       longitude={item.item.g.longitude}
     />
   );

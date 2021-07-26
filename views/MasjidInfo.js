@@ -86,22 +86,29 @@ const MasjidInfo = ({route, navigation}) => {
                 MASJID NEAR YOUR LOCATION
               </Text>
             </View>
-            <View style={{flexDirection: 'row'}}>
-              <View style={{flexGrow: 1, flexDirection: 'row'}}>
+            <View
+              style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row'}}>
                 <Icon
                   name="mosque"
                   color="#5C5C5C"
                   size={20}
                   style={{paddingRight: 10, paddingLeft: 10}}
                 />
-                <Text style={{fontSize: 24, color: '#5C5C5C', marginTop: -5}}>
+                <Text
+                  style={{fontSize: 17, color: '#5C5C5C', fontWeight: 'bold'}}>
                   {name}
                 </Text>
               </View>
               <Favbtn favId={favId} />
             </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
-              <View style={{flexGrow: 1, flexDirection: 'row'}}>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                marginTop: 10,
+              }}>
+              <View style={{flexDirection: 'row'}}>
                 <Icon
                   name="map-marker-alt"
                   color="#5C5C5C"
@@ -132,8 +139,13 @@ const MasjidInfo = ({route, navigation}) => {
                 </Text>
               </View>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
-              <View style={{flexGrow: 1, flexDirection: 'row'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: 10,
+              }}>
+              <View style={{flexDirection: 'row'}}>
                 <Icon
                   name="user-alt"
                   color="#5C5C5C"
@@ -143,8 +155,13 @@ const MasjidInfo = ({route, navigation}) => {
                 <Text style={{maxWidth: 280}}>Moulana Tariq</Text>
               </View>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 20}}>
-              <View style={{flexGrow: 1, flexDirection: 'row'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: 10,
+              }}>
+              <View style={{flexDirection: 'row'}}>
                 <Icon
                   name="phone-alt"
                   color="#5C5C5C"
@@ -214,12 +231,16 @@ const MasjidInfo = ({route, navigation}) => {
                 <Text style={{color: '#1F441E'}}>Donation</Text>
               </TouchableOpacity>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: 10,
+              }}>
               <View
                 style={{
-                  flexGrow: 1,
                   flexDirection: 'row',
                   backgroundColor: '#E1E1E1',
+                  flexGrow: 1,
                   padding: 10,
                 }}>
                 <Text style={{fontSize: 17}}>
@@ -228,31 +249,38 @@ const MasjidInfo = ({route, navigation}) => {
                 </Text>
               </View>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: 10,
+              }}>
               <View
                 style={{
-                  flexGrow: 1,
                   flexDirection: 'row',
                   paddingLeft: 10,
-                  justifyContent: 'space-between',
                 }}>
                 <Text style={{fontSize: 20, fontWeight: 'bold'}}>
                   Namaz Timings
                 </Text>
-                <Edit
-                  fajar={fajar}
-                  zohar={zohar}
-                  asar={asar}
-                  magrib={magrib}
-                  isha={isha}
-                  uid={favId}
-                />
               </View>
+              <Edit
+                fajar={fajar}
+                zohar={zohar}
+                asar={asar}
+                magrib={magrib}
+                isha={isha}
+                uid={favId}
+              />
             </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                marginTop: 10,
+              }}>
               <View
                 style={{
-                  flexGrow: 1,
                   paddingLeft: 10,
                 }}>
                 <Text style={{fontSize: 17}}>Fajr</Text>
@@ -264,10 +292,14 @@ const MasjidInfo = ({route, navigation}) => {
                 <Text style={{fontSize: 17}}>{fajar}</Text>
               </View>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                marginTop: 10,
+              }}>
               <View
                 style={{
-                  flexGrow: 1,
                   paddingLeft: 10,
                 }}>
                 <Text style={{fontSize: 17}}>Zohr</Text>
@@ -279,10 +311,14 @@ const MasjidInfo = ({route, navigation}) => {
                 <Text style={{fontSize: 17}}>{zohar}</Text>
               </View>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                marginTop: 10,
+              }}>
               <View
                 style={{
-                  flexGrow: 1,
                   paddingLeft: 10,
                 }}>
                 <Text style={{fontSize: 17}}>Asr</Text>
@@ -294,10 +330,14 @@ const MasjidInfo = ({route, navigation}) => {
                 <Text style={{fontSize: 17}}>{asar}</Text>
               </View>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                marginTop: 10,
+              }}>
               <View
                 style={{
-                  flexGrow: 1,
                   paddingLeft: 10,
                 }}>
                 <Text style={{fontSize: 17}}>Magrib</Text>
@@ -309,10 +349,14 @@ const MasjidInfo = ({route, navigation}) => {
                 <Text style={{fontSize: 17}}>{magrib}</Text>
               </View>
             </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                marginTop: 10,
+              }}>
               <View
                 style={{
-                  flexGrow: 1,
                   paddingLeft: 10,
                 }}>
                 <Text style={{fontSize: 17}}>Isha</Text>

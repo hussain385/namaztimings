@@ -29,6 +29,7 @@ const Item = ({
   onRefresh,
   latitude,
   longitude,
+  user,
 }) => (
   <View
     style={{
@@ -93,6 +94,7 @@ const Item = ({
                 distance: distance,
                 latitude: latitude,
                 longitude: longitude,
+                user: user,
               })
             }
             style={{
@@ -171,6 +173,7 @@ const Favourites = ({navigation}) => {
       favId={item.key}
       onRefresh={onRefresh}
       longitude={item.g.longitude}
+      user={item.user}
       latitude={item.g.latitude}
     />
   );

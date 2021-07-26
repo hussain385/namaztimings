@@ -153,8 +153,12 @@ function HomeScreen({navigation}) {
                     MASJID NEAR YOUR LOCATION
                   </Text>
                 </View>
-                <View style={{flexDirection: 'row'}}>
-                  <View style={{flexGrow: 1, flexDirection: 'row'}}>
+                <View
+                  style={{
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                  }}>
+                  <View style={{flexDirection: 'row'}}>
                     <Icon
                       name="mosque"
                       color="#5C5C5C"
@@ -162,14 +166,22 @@ function HomeScreen({navigation}) {
                       style={{paddingRight: 10, paddingLeft: 10}}
                     />
                     <Text
-                      style={{fontSize: 24, color: '#5C5C5C', marginTop: -5}}>
+                      style={{
+                        fontSize: 17,
+                        color: '#5C5C5C',
+                        fontWeight: 'bold',
+                      }}>
                       {masjidData[0].name}
                     </Text>
                   </View>
                   <Favbtn favId={masjidData[0].key} />
                 </View>
-                <View style={{flexDirection: 'row'}}>
-                  <View style={{flexGrow: 1, flexDirection: 'row'}}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <View style={{flexDirection: 'row'}}>
                     <Icon
                       name="map-marker-alt"
                       color="#5C5C5C"
@@ -199,15 +211,23 @@ function HomeScreen({navigation}) {
                       }}
                       style={{
                         color: '#900000',
-                        fontSize: 18,
+                        fontSize: 17,
                         marginRight: 12,
+                        fontWeight: 'bold',
+                        fontStyle: 'underlined',
+                        textDecorationLine: 'underline',
                       }}>
-                      {masjidData[0].distance} KM Away
+                      {masjidData[0].distance} KM AWAY
                     </Text>
                   </View>
                 </View>
-                <View style={{flexDirection: 'row', marginTop: 5}}>
-                  <View style={{flexGrow: 1, flexDirection: 'row'}}>
+                <View
+                  style={{
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    marginTop: 5,
+                  }}>
+                  <View style={{flexDirection: 'row'}}>
                     <Icon
                       name="user-alt"
                       color="#5C5C5C"
@@ -219,8 +239,13 @@ function HomeScreen({navigation}) {
                     </Text>
                   </View>
                 </View>
-                <View style={{flexDirection: 'row', marginTop: 10}}>
-                  <View style={{flexGrow: 1, flexDirection: 'row'}}>
+                <View
+                  style={{
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    marginTop: 10,
+                  }}>
+                  <View style={{flexDirection: 'row'}}>
                     <Icon
                       name="phone-alt"
                       color="#5C5C5C"
@@ -243,7 +268,7 @@ function HomeScreen({navigation}) {
                       style={{
                         width: 141,
                         height: 76,
-                        marginTop: -20,
+                        marginTop: -30,
                         marginRight: 10,
                         borderRadius: 8,
                       }}
@@ -260,7 +285,7 @@ function HomeScreen({navigation}) {
                     }}>
                     <Text style={{fontSize: 17}}>
                       Last Updated:
-                      <Text style={{color: '#008000'}}>14th May 2021</Text>
+                      <Text style={{color: '#008000'}}> 14th May 2021</Text>
                     </Text>
                   </View>
                 </View>
@@ -389,42 +414,23 @@ function HomeScreen({navigation}) {
                         favId: masjidData[0].key,
                         latitude: masjidData[0].g.latitude,
                         longitude: masjidData[0].g.longitude,
+                        user: masjidData[0].user,
                       })
                     }
                     style={{
-                      paddingVertical: 5,
-                      width: '40%',
-                      marginRight: 10,
-                      marginVertical: 10,
-                      borderRadius: 5,
-                      backgroundColor: '#364547',
-                    }}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        fontSize: 20,
-                        color: '#ffff',
-                      }}>
-                      More Info
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('Notifications')}
-                    style={{
-                      paddingVertical: 5,
-                      width: '40%',
-                      marginLeft: 10,
-                      marginVertical: 10,
-                      borderRadius: 5,
+                      alignItems: 'center',
                       backgroundColor: '#CEE6B4',
+                      padding: 10,
+                      borderRadius: 5,
+                      width: '70%',
+                      marginHorizontal: 10,
                     }}>
                     <Text
                       style={{
                         textAlign: 'center',
-                        fontSize: 16,
                         color: '#1F441E',
                       }}>
-                      New & Annoucment
+                      More Info
                     </Text>
                   </TouchableOpacity>
                 </View>
