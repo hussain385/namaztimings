@@ -75,11 +75,6 @@ export function GetAllMasjidData() {
                                         });
                                     });
                             }
-                            // masjids.push({
-                            //     ...docSnapshot.data(),
-                            //     distance: Number(d.toFixed(2)),
-                            //     key: docSnapshot.id,
-                            // });
                         });
                         const masjids1 = _.sortBy(masjids, 'distance');
                         setMasjid(masjids1);
@@ -88,78 +83,11 @@ export function GetAllMasjidData() {
             })
             .catch(e => {
                 setError(e);
-                // console.log(e);
             });
 
         return () => subs;
     }, []);
     return [masjid, loading, error];
-}
-
-export function GetRadMasjidData(radius = 500) {
-    const [loading, setLoading] = useState(true);
-    const [masjid, setMasjid] = useState(null);
-    const [error, setError] = useState({
-        message: '',
-    });
-    const [location, setLocation] = useState({
-        coords: {
-            latitude: 24.8607,
-            longitude: 67.0011,
-        },
-    });
-
-    useEffect(() => {
-        setLoading(true);
-        if (
-            location.coords.latitude === 24.8607 &&
-            location.coords.longitude === 67.0011
-        ) {
-            getCurrentLocation()
-                .then(position => {
-                    console.log(
-                        position.coords.latitude,
-                        position.coords.longitude,
-                        '<===== position of promise geolocation',
-                    );
-                    setLocation(position);
-                    const {latitude, longitude} = position.coords;
-                    geoCollection
-                        .near({
-                            center: new firestore.GeoPoint(latitude, longitude),
-                            radius: radius,
-                        })
-                        .get()
-                        .then(snapshot => {
-                            const masjids = [];
-                            snapshot.forEach(docSnapshot => {
-                                const loc1 = docSnapshot.data().g;
-                                const d = haversine(loc1, position.coords);
-                                masjids.push({
-                                    ...docSnapshot.data(),
-                                    distance: Number(d.toFixed(2)),
-                                    key: docSnapshot.id,
-                                });
-                            });
-
-                            const masjids1 = _.sortBy(masjids, 'distance');
-                            console.table(masjids1);
-                            console.log('<========== From GetRadMasjidData');
-                            setMasjid(masjids1);
-                            setLoading(false);
-                        })
-                        .catch(e => {
-                            setError(e);
-                            console.log(e);
-                        });
-                })
-                .catch(e => {
-                    setError(e);
-                    console.error(e);
-                });
-        }
-    }, [radius, error, location.coords]);
-    return [masjid, loading, location, error];
 }
 
 export function GetRadMasjidData1(radius = 500) {
@@ -266,18 +194,6 @@ export function GetRadMasjidData1(radius = 500) {
     return [masjid, loading, location, error, getLocation, GetData];
 }
 
-// export async function setFavStore(value) {
-//   const [error, setError] = React.useState(null);
-//   try {
-//     const jsonValue = JSON.stringify(value);
-//     console.log(jsonValue);
-//     await AsyncStorage.setItem('favorites', jsonValue);
-//   } catch (e) {
-//     setError(e);
-//     console.log(e);
-//   }
-// }
-
 export function GetFavMasjidData() {
     const [loading, setLoading] = useState(true);
     const [masjid, setMasjid] = useState(null);
@@ -331,16 +247,16 @@ export function GetFavMasjidData() {
                     },
                 });
             } else {
-                const user = await firestore()
+                firestore()
                     .collection('users')
                     .doc(docSnapshot.data().adminId)
-                    .get()
-
-                masjids.push({
-                    ...docSnapshot.data(),
-                    user: {...user},
-                    distance: Number(d.toFixed(2)),
-                    key: docSnapshot.id,
+                    .get().then(u => {
+                    masjids.push({
+                        ...docSnapshot.data(),
+                        user: {...u},
+                        distance: Number(d.toFixed(2)),
+                        key: docSnapshot.id,
+                    });
                 });
 
             }
