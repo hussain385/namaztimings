@@ -5,8 +5,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import _ from 'lodash';
 
-const Favbtn = ({favId, onRefresh}) => {
-  const [isFav, setIsFav] = useState(false); // is Fav contains?
+const Favbtn = ({favId, onRefresh, isBig = true}) => {
+  const [isFav, setIsFav] = useState(false);
   const [isFound, setIsFound] = useState(false); // is Fav already exist in storage?
 
   const handleFavourite = async key => {
@@ -92,18 +92,43 @@ const Favbtn = ({favId, onRefresh}) => {
   }, [favId]);
 
   return (
-    <TouchableOpacity
-      onPress={() => handleFavourite(favId)}
-      style={{
-        backgroundColor: '#E1E1E1',
-        borderRadius: 100,
-        marginRight: 10,
-        textAlign: 'center',
-        padding: 10,
-        marginTop: -10,
-      }}>
-      <Entypo name="star" color={isFound ? '#8D2828' : '#5C5C5C'} size={20} />
-    </TouchableOpacity>
+    <>
+      {isBig ? (
+        <TouchableOpacity
+          onPress={() => handleFavourite(favId)}
+          style={{
+            backgroundColor: '#E1E1E1',
+            borderRadius: 100,
+            marginRight: 10,
+            textAlign: 'center',
+            padding: 14,
+            marginTop: -10,
+          }}>
+          <Entypo
+            name="star"
+            color={isFound ? '#8D2828' : '#5C5C5C'}
+            size={25}
+          />
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          onPress={() => handleFavourite(favId)}
+          style={{
+            backgroundColor: '#E1E1E1',
+            borderRadius: 100,
+            marginRight: 10,
+            textAlign: 'center',
+            padding: 10,
+            marginTop: -10,
+          }}>
+          <Entypo
+            name="star"
+            color={isFound ? '#8D2828' : '#5C5C5C'}
+            size={20}
+          />
+        </TouchableOpacity>
+      )}
+    </>
   );
 };
 

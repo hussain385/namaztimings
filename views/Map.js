@@ -9,7 +9,7 @@ import {GetAllMasjidData} from '../store/firebase';
 import {isNull} from 'lodash';
 
 const Map = ({route}) => {
-  const [masjidData] = GetAllMasjidData();
+  const [masjidData, loading] = GetAllMasjidData();
   const {longitude} = route.params;
   const {latitude} = route.params;
 
@@ -25,7 +25,7 @@ const Map = ({route}) => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}>
-        {masjidData !== null
+        {masjidData !== null && !loading
           ? masjidData.map((masjid, id) => (
               <SafeAreaView key={id}>
                 <Marker

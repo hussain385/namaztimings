@@ -33,6 +33,7 @@ function HomeScreen({navigation}) {
   // Geocoder.init('AIzaSyCrsNBX-pWunuPeL-ziP99aXhetdZL2VKs');
 
   useEffect(() => {
+    onRefresh();
     const willFocusSubscription = navigation.addListener('focus', () => {
       onRefresh();
     });
@@ -173,7 +174,7 @@ function HomeScreen({navigation}) {
                       {masjidData[0].name}
                     </Text>
                   </View>
-                  <Favbtn favId={masjidData[0].key} />
+                  <Favbtn favId={masjidData[0].key} isBig={false} />
                 </View>
                 <View
                   style={{
@@ -254,7 +255,7 @@ function HomeScreen({navigation}) {
                     <Text
                       style={{maxWidth: 280, marginTop: 0}}
                       onPress={() => {
-                        Linking.openURL('tel:+92 323 0000000');
+                        Linking.openURL(`tel:${masjidData[0].user.phone}`);
                       }}>
                       {masjidData[0].user.phone}
                     </Text>

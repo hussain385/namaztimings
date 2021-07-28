@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Dimensions,
   View,
   Linking,
 } from 'react-native';
@@ -17,6 +18,8 @@ import Favbtn from './Favbtn';
 import Edit from './Edit';
 
 const MasjidInfo = ({route, navigation}) => {
+  const [colorText, setcolorText] = React.useState('#1F441E');
+  const [backgroundColor, setbackgroundColor] = React.useState('#CEE6B4');
   const {name} = route.params;
   const {url} = route.params;
   const {address} = route.params;
@@ -32,6 +35,16 @@ const MasjidInfo = ({route, navigation}) => {
   const {user} = route.params;
 
   console.log(user);
+
+  React.useEffect(() => {
+    if (user.name !== 'No Admin') {
+      setcolorText('#ffff');
+      setbackgroundColor('#364547');
+    } else {
+      setcolorText('#1F441E');
+      setbackgroundColor('#CEE6B4');
+    }
+  }, []);
 
   return (
     <>
@@ -70,17 +83,26 @@ const MasjidInfo = ({route, navigation}) => {
           </View>
         }
         rightComponent={
-          <Icon
-            name="map-marker-alt"
-            color="#ffff"
-            size={26}
-            style={{paddingRight: 10}}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Map1', {
+                latitude: latitude,
+                longitude: longitude,
+                name: name,
+              })
+            }>
+            <Icon
+              name="map-marker-alt"
+              color="#ffff"
+              size={26}
+              style={{paddingRight: 10, marginTop: 3}}
+            />
+          </TouchableOpacity>
         }
         backgroundColor="#1F441E"
       />
-      <>
-        <ScrollView style={styles.scrollView}>
+      <SafeAreaView style={{height: Dimensions.get('window').height - 150}}>
+        <ScrollView>
           <View>
             <View>
               <Text style={{textAlign: 'center', fontSize: 17, padding: 15}}>
@@ -101,7 +123,7 @@ const MasjidInfo = ({route, navigation}) => {
                   {name}
                 </Text>
               </View>
-              <Favbtn favId={favId} />
+              <Favbtn favId={favId} isBig={false} />
             </View>
             <View
               style={{
@@ -135,6 +157,8 @@ const MasjidInfo = ({route, navigation}) => {
                     color: '#900000',
                     fontSize: 16,
                     marginRight: 12,
+                    fontWeight: 'bold',
+                    textDecorationLine: 'underline',
                   }}>
                   {distance} Km Away
                 </Text>
@@ -169,7 +193,13 @@ const MasjidInfo = ({route, navigation}) => {
                   size={20}
                   style={{paddingRight: 18, paddingLeft: 10}}
                 />
-                <Text style={{maxWidth: 280}}>{user.phone}</Text>
+                <Text
+                  style={{maxWidth: 280}}
+                  onPress={() => {
+                    Linking.openURL(`tel:${user.phone}`);
+                  }}>
+                  {user.phone}
+                </Text>
               </View>
               <View>
                 <Image
@@ -394,22 +424,21 @@ const MasjidInfo = ({route, navigation}) => {
                 shadowRadius: 6.27,
                 elevation: 5,
                 alignItems: 'center',
-                backgroundColor: '#364547',
+                backgroundColor: `${backgroundColor}`,
                 padding: 10,
                 borderRadius: 5,
-                width: 180,
+                width: '70%',
                 marginHorizontal: 10,
-              }}
-              onPress={() => navigation.navigate('More Info')}>
-              <Text style={{color: '#ffff'}}>Request Admin</Text>
+              }}>
+              <Text style={{color: `${colorText}`}}>Request Admin</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
-      </>
+      </SafeAreaView>
     </>
   );
 };
-
+//'#364547'
 const styles = StyleSheet.create({
   container: {
     flex: 1,

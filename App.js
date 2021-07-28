@@ -24,6 +24,7 @@ import Map from './views/Map';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {AuthContext, AuthContextProvider} from './store/fireAuth';
 import CustomDrawerContent from './views/CustomDrawerContent';
+import Maps1 from './views/Maps1';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -156,6 +157,52 @@ const HomeStackScreen = ({navigation}) => (
         ),
       }}
     />
+
+    <HomeStack.Screen
+      name="Map1"
+      component={Maps1}
+      options={{
+        headerTransparent: true,
+        title: '',
+        headerLeft: () => (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignSelf: 'center',
+              width: '100%',
+              marginTop: 20,
+            }}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{marginHorizontal: 15, marginTop: 7}}>
+              <Icon name="arrow-left" color="#ffff" size={25} />
+            </TouchableOpacity>
+            <GooglePlacesAutocomplete
+              styles={{
+                textInput: {
+                  width: Dimensions.get('window').width - 60,
+                  color: '#5d5d5d',
+                  fontSize: 16,
+                  zIndex: 1,
+                },
+              }}
+              placeholder="Search"
+              onPress={(data, details = null) => {
+                // 'details' is provided when fetchDetails = true
+                console.log(data, details);
+              }}
+              onFail={error => console.error(error)}
+              query={{
+                key: 'AIzaSyCrsNBX-pWunuPeL-ziP99aXhetdZL2VKs',
+                language: 'en',
+                types: '(cities)',
+              }}
+            />
+          </View>
+        ),
+      }}
+    />
+
     <HomeStack.Screen
       name="Show More"
       component={ShowMore}
@@ -339,7 +386,11 @@ function MyTabs() {
             </Text>
           ),
           tabBarIcon: ({focused, color}) => (
-            <Icon name="home" color={focused ? '#1F441E' : '#5C5C5C'} size={20} />
+            <Icon
+              name="home"
+              color={focused ? '#1F441E' : '#5C5C5C'}
+              size={20}
+            />
           ),
         }}
       />

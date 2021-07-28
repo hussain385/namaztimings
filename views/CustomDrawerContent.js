@@ -37,10 +37,7 @@ const CustomDrawerContent = ({navigation}) => {
           borderBottomWidth: 1,
           marginBottom: 30,
         }}>
-        <CoText
-          textStyles={[{color: 'grey', fontSize: 30, TextAlign: 'center'}]}
-          text="LOGO"
-        />
+        <CoText textStyles={[{color: 'grey', fontSize: 30}]} text="LOGO" />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate('Home')}

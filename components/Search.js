@@ -61,7 +61,7 @@ const Item = ({
         <View style={{flexDirection: 'row'}}>
           <View style={{flexGrow: 1}} />
           <View style={{top: -50}}>
-            <Favbtn favId={favId} onRefresh={onRefresh} />
+            <Favbtn favId={favId} onRefresh={onRefresh} isBig={true} />
           </View>
         </View>
       </ImageBackground>
@@ -147,7 +147,7 @@ const Item = ({
 );
 
 const Seacrh = ({navigation}) => {
-  const [masjidData, loading, error] = GetAllMasjidData();
+  const [masjidData, loading] = GetAllMasjidData();
   // const fuse = new Fuse(masjidData, {keys: ['name', 'address']});
   const [textSearch, setTextSearch] = useState('');
   const [location, setLocation] = useState();
@@ -172,7 +172,7 @@ const Seacrh = ({navigation}) => {
       .catch(e => {
         console.log(e);
       });
-    console.log(masjidData);
+    console.log(masjidData, '----- data');
   }, []);
 
   const renderItem = ({item}) => (
