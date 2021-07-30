@@ -2108,12 +2108,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-firebase/auth@npm:^12.2.0":
-  version: 12.2.0
-  resolution: "@react-native-firebase/auth@npm:12.2.0"
+"@react-native-firebase/auth@npm:^12.1.0":
+  version: 12.3.0
+  resolution: "@react-native-firebase/auth@npm:12.3.0"
   peerDependencies:
-    "@react-native-firebase/app": 12.2.0
-  checksum: 6312564afdb248b408a7f597cf0b30ed724890204607c31bd1bba6ed6a1e542105a2911901ad2ef6836612a8e86e52206f353dc1c5ba4b551a34bfa0e7aa151e
+    "@react-native-firebase/app": 12.3.0
+  checksum: 7015f7baf954b96a6768bd7404261e90c57ffd1ec9b9877e0c18a5f232f0e9fe0c4f83178316ddabf9c30aba65043aa77ba68ccb9126b43159e101c50ec3e498
   languageName: node
   linkType: hard
 
@@ -2123,6 +2123,15 @@ __metadata:
   peerDependencies:
     "@react-native-firebase/app": 12.1.0
   checksum: 6659d4dd70e6864a517bb8fae0a76e58c15e3835e1cc1a7ee7ab3d6d24ec1a907fb20b159b13f8c0ce49f8d4288e64e4a77ad56d8af2ace9325e605e5b02131c
+  languageName: node
+  linkType: hard
+
+"@react-native-firebase/messaging@npm:^12.3.0":
+  version: 12.3.0
+  resolution: "@react-native-firebase/messaging@npm:12.3.0"
+  peerDependencies:
+    "@react-native-firebase/app": 12.3.0
+  checksum: 594ef6ea5b108cc8676e7ad5871626981849dcc1fdc09ae96ca9161f926acc8391f879b7ed02d8bb8690e042d760aeafb98ee0a398e72c8c464b3d35bdfd0206
   languageName: node
   linkType: hard
 
@@ -7962,8 +7971,9 @@ __metadata:
     "@react-native-community/geolocation": ^2.0.2
     "@react-native-community/masked-view": ^0.1.11
     "@react-native-firebase/app": ^12.1.0
-    "@react-native-firebase/auth": ^12.2.0
+    "@react-native-firebase/auth": ^12.1.0
     "@react-native-firebase/firestore": ^12.1.0
+    "@react-native-firebase/messaging": ^12.3.0
     "@react-navigation/bottom-tabs": ^5.11.11
     "@react-navigation/drawer": ^5.12.5
     "@react-navigation/native": ^5.9.4
