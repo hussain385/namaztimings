@@ -55,13 +55,14 @@ async function sortMasjidData(snapshot, {latitude, longitude}) {
                 geopoint: data.g.geopoint,
             },
             timing: {
-                asar: data.timing.asar || "01:00 PM",
-                fajar: data.timing.fajar || "04:30 PM",
-                isha: data.timing.isha || "09:30 PM",
-                magrib: data.timing.magrib || "07:00 PM",
-                zohar: data.timing.zohar || "05:30 PM",
+                asar: !_.isUndefined(data.timing) ? !_.isUndefined(data.timing.asar) && data.timing.asar : "01:00 PM",
+                fajar: !_.isUndefined(data.timing) ? !_.isUndefined(data.timing.fajar) && data.timing.fajar : "04:30 PM",
+                isha: !_.isUndefined(data.timing) ? !_.isUndefined(data.timing.fajar) && data.timing.isha : "09:30 PM",
+                magrib: !_.isUndefined(data.timing) ? !_.isUndefined(data.timing.fajar) && data.timing.magrib : "07:00 PM",
+                zohar: !_.isUndefined(data.timing) ? !_.isUndefined(data.timing.fajar) && data.timing.zohar : "05:30 PM",
             },
         }
+        console.log(tempData,'<======== tempData');
         const adminId = tempData.adminId;
         console.log(adminId, _.isEmpty(adminId), typeof adminId);
         if (_.isEmpty(adminId)) {
@@ -99,7 +100,7 @@ export function GetAllMasjidData() {
                 setMasjid(masjids1);
                 setLoading(false);
             });
-        });
+        }).catch(reason => setError(reason));
         return () => subs;
     }, []);
     return [masjid, loading, error];
