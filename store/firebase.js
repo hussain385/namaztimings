@@ -36,19 +36,13 @@ export const getCurrentLocation = async () => {
     );
 };
 
-async function sortMasjidData(snapshot, {latitude, longitude}) {
-    const masjids = [];
-    const users = await GetUsers();
-    snapshot.forEach(docSnapshot => {
-        const data = docSnapshot.data()
-        const loc1 = data.g.geopoint;
-        const d = haversine(loc1, {latitude, longitude});
-        const tempData = {
+function modifyData(data,id,d) {
+     return tempData = {
             name: data.name,
             address: data.address,
             pictureURL: data.pictureURL,
             adminId: data.adminId || "",
-            key: docSnapshot.id,
+            key: id,
             distance: Number(d.toFixed(2)),
             g: {
                 geohash: data.g.geohash,
@@ -62,6 +56,16 @@ async function sortMasjidData(snapshot, {latitude, longitude}) {
                 zohar: !_.isUndefined(data.timing) ? !_.isUndefined(data.timing.fajar) && data.timing.zohar : "05:30 PM",
             },
         }
+}
+
+async function sortMasjidData(snapshot, {latitude, longitude}) {
+    const masjids = [];
+    const users = await GetUsers();
+    snapshot.forEach(docSnapshot => {
+        const data = docSnapshot.data()
+        const loc1 = data.g.geopoint;
+        const d = haversine(loc1, {latitude, longitude});
+        const tempData = modifyData(data,docSnapshot.id,d);
         console.log(tempData,'<======== tempData');
         const adminId = tempData.adminId;
         console.log(adminId, _.isEmpty(adminId), typeof adminId);
@@ -242,25 +246,7 @@ export function GetFavMasjidData() {
             const data = docSnapshot.data();
             const loc1 = data.g.geopoint;
             const d = haversine(loc1, pos.coords);
-            const tempData = {
-                name: data.name,
-                address: data.address,
-                pictureURL: data.pictureURL,
-                adminId: data.adminId || "",
-                key: docSnapshot.id,
-                distance: Number(d.toFixed(2)),
-                g: {
-                    geohash: data.g.geohash,
-                    geopoint: data.g.geopoint,
-                },
-                timing: {
-                    asar: data.timing.asar || "01:00 PM",
-                    fajar: data.timing.fajar || "04:30 PM",
-                    isha: data.timing.isha || "09:30 PM",
-                    magrib: data.timing.magrib || "07:00 PM",
-                    zohar: data.timing.zohar || "05:30 PM",
-                },
-            }
+            const tempData = modifyData(data,docSnapshot.id,d);
             const adminId = tempData.adminId;
             if (_.isEmpty(adminId)) {
                 masjids.push({
