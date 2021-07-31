@@ -1,12 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {SafeAreaView} from 'react-native';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {Header} from 'react-native-elements';
-import {View, ActivityIndicator, TouchableOpacity} from 'react-native';
-import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
-import {GetAllMasjidData} from '../store/firebase';
-import {isNull} from 'lodash';
 
 const Maps1 = ({route}) => {
   const {longitude} = route.params;

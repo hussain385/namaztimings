@@ -1,21 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {Component, useContext} from 'react';
-import {DrawerContentScrollView} from '@react-navigation/drawer';
-import {AuthContext} from '../store/fireAuth';
-import {
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
-import CoText from '../views/Text/Text';
 import auth from '@react-native-firebase/auth';
-import Entypo from 'react-native-vector-icons/Entypo';
+import {DrawerContentScrollView} from '@react-navigation/drawer';
 import _ from 'lodash';
+import React, {useContext} from 'react';
+import {TouchableOpacity, View} from 'react-native';
+import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {AuthContext} from '../store/fireAuth';
+import CoText from '../views/Text/Text';
 
 const CustomDrawerContent = ({navigation}) => {
   const user = useContext(AuthContext);

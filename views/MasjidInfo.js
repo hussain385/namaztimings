@@ -1,21 +1,20 @@
 /* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {
+  Dimensions,
   Image,
+  Linking,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  Dimensions,
   View,
-  Linking,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import {NavigationContainer} from '@react-navigation/native';
 import {Header} from 'react-native-elements';
-import Favbtn from './Favbtn';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import Edit from './Edit';
+import Favbtn from './Favbtn';
 
 const MasjidInfo = ({route, navigation}) => {
   const [colorText, setcolorText] = React.useState('#1F441E');
@@ -44,7 +43,7 @@ const MasjidInfo = ({route, navigation}) => {
       setcolorText('#1F441E');
       setbackgroundColor('#CEE6B4');
     }
-  }, []);
+  }, [user.name]);
 
   return (
     <>
