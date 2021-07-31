@@ -48,14 +48,28 @@ const Item = ({
       shadowRadius: 6.27,
       elevation: 5,
     }}>
-    <View>
+    <TouchableOpacity
+      onPress={() =>
+        nav.navigate('More Info', {
+          name: title,
+          url: url,
+          address: address,
+          timing: timings,
+          favId: favId,
+          distance: distance,
+          latitude: latitude,
+          longitude: longitude,
+          user: user,
+        })
+      }>
+      {/* <View> */}
       <ImageBackground
         source={{uri: `${url}`}}
         style={{
           flex: 1,
           resizeMode: 'cover',
           justifyContent: 'center',
-          width: 391,
+          width: '100%',
           height: 200,
         }}>
         <View style={{flexDirection: 'row'}}>
@@ -65,14 +79,18 @@ const Item = ({
           </View>
         </View>
       </ImageBackground>
-    </View>
+      {/* </View> */}
+    </TouchableOpacity>
+
     <View style={{padding: 5}}>
       <View style={{flexDirection: 'row', margin: 5}}>
         <View style={{flexGrow: 1}}>
           <Text style={{fontSize: 17}}>{title}</Text>
         </View>
         <View>
-          <Text style={{color: '#900000'}}>{distance}KM AWAY</Text>
+          <Text style={{color: '#900000', textDecorationLine: 'underline'}}>
+            {distance}KM AWAY
+          </Text>
         </View>
       </View>
       <View
@@ -81,66 +99,53 @@ const Item = ({
           justifyContent: 'center',
           paddingHorizontal: 5,
         }}>
-        <View style={{flexGrow: 1}}>
-          <TouchableOpacity
-            onPress={() =>
-              nav.navigate('More Info', {
-                name: title,
-                url: url,
-                address: address,
-                isha: timings.isha,
-                fajar: timings.fajar,
-                zohar: timings.zohar,
-                asar: timings.asar,
-                magrib: timings.magrib,
-                favId: favId,
-                distance: distance,
-                latitude: latitude,
-                longitude: longitude,
-                user: user,
-              })
-            }
+        <TouchableOpacity
+          onPress={() =>
+            nav.navigate('More Info', {
+              name: title,
+              url: url,
+              address: address,
+              timing: timings,
+              favId: favId,
+              distance: distance,
+              latitude: latitude,
+              longitude: longitude,
+              user: user,
+            })
+          }
+          style={{
+            alignItems: 'center',
+            backgroundColor: '#1F441E',
+            padding: 10,
+            borderRadius: 5,
+            width: '47%',
+            marginVertical: 10,
+            marginHorizontal: 10,
+          }}>
+          <Text style={{color: '#CEE6B4'}}>More Info</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            Linking.openURL(
+              `https://maps.google.com/?q=${latitude},${longitude}`,
+            );
+          }}
+          style={{
+            alignItems: 'center',
+            padding: 10,
+            borderRadius: 5,
+            width: '47%',
+            marginVertical: 10,
+            marginHorizontal: 10,
+            backgroundColor: '#CEE6B4',
+          }}>
+          <Text
             style={{
-              paddingVertical: 5,
-              width: 160,
-              marginVertical: 10,
-              borderRadius: 5,
-              backgroundColor: '#364547',
+              color: '#1F441E',
             }}>
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 20,
-                color: '#ffff',
-              }}>
-              More Info
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity
-            onPress={() => {
-              Linking.openURL(
-                `https://maps.google.com/?q=${latitude},${longitude}`,
-              );
-            }}
-            style={{
-              paddingVertical: 5,
-              width: 160,
-              marginVertical: 10,
-              borderRadius: 5,
-              backgroundColor: '#CEE6B4',
-            }}>
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 20,
-                color: '#1F441E',
-              }}>
-              Locations
-            </Text>
-          </TouchableOpacity>
-        </View>
+            Location
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   </View>

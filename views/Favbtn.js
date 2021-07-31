@@ -103,6 +103,7 @@ const Favbtn = ({favId, onRefresh, isBig = true}) => {
             textAlign: 'center',
             padding: 14,
             marginTop: -10,
+            zIndex: 10,
           }}>
           <Entypo
             name="star"
@@ -120,6 +121,7 @@ const Favbtn = ({favId, onRefresh, isBig = true}) => {
             textAlign: 'center',
             padding: 10,
             marginTop: -10,
+            zIndex: 10,
           }}>
           <Entypo
             name="star"

@@ -201,7 +201,7 @@ function HomeScreen({navigation}) {
                       name="directions"
                       color="#900000"
                       size={20}
-                      style={{paddingRight: 18, paddingLeft: 10}}
+                      style={{paddingRight: 7}}
                     />
                     <Text
                       onPress={() => {
@@ -214,10 +214,9 @@ function HomeScreen({navigation}) {
                         fontSize: 17,
                         marginRight: 12,
                         fontWeight: 'bold',
-                        fontStyle: 'underlined',
                         textDecorationLine: 'underline',
                       }}>
-                      {masjidData[0].distance} KM AWAY
+                      {masjidData[0].distance} Km Away
                     </Text>
                   </View>
                 </View>
@@ -406,10 +405,7 @@ function HomeScreen({navigation}) {
                         url: masjidData[0].pictureURL,
                         address: masjidData[0].address,
                         isha: masjidData[0].timing.isha,
-                        fajar: masjidData[0].timing.fajar,
-                        zohar: masjidData[0].timing.zohar,
-                        asar: masjidData[0].timing.asar,
-                        magrib: masjidData[0].timing.magrib,
+                        timing: masjidData[0].timing,
                         distance: masjidData[0].distance,
                         favId: masjidData[0].key,
                         latitude: masjidData[0].g.latitude,

@@ -47,18 +47,19 @@ const Edit = ({isha, fajar, zohar, asar, magrib, uid}) => {
       magrib: magrib,
     };
     if (_.isEqual(time, prevTime)) {
-      Alert.alert('Alert Title', 'My Alert Msg');
+      Alert.alert('Alert', 'No Change Found');
+    } else {
+      console.log(uid);
+      await firestore()
+        .collection('Masjid')
+        .doc(uid)
+        .collection('requests')
+        .add(time)
+        .then(a => {
+          Alert.alert('Alert', 'Request has been forwarded to the admin');
+        });
     }
-    console.log(uid);
-    await firestore()
-      .collection('Masjid')
-      .doc(uid)
-      .collection('requests')
-      .add(time)
-      .then(a => {
-        Alert.alert('Alert Title', 'Request has been forwarded to the admin');
-      });
-    setTimePickerVisibility(false);
+    await setTimePickerVisibility(false);
   }
 
   const hideTimePicker = () => {
@@ -124,7 +125,9 @@ const Edit = ({isha, fajar, zohar, asar, magrib, uid}) => {
         onPress={() => {
           setModalVisible(!modalVisible);
         }}>
-        <Text style={{fontSize: 20, fontWeight: '200'}}>Edit</Text>
+        <Text style={{fontSize: 16, marginTop: 3, fontWeight: '200'}}>
+          Edit
+        </Text>
         <Icon name="square-edit-outline" size={24} style={{marginTop: 1}} />
       </TouchableOpacity>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>

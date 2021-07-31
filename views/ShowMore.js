@@ -14,81 +14,77 @@ import {Card} from 'react-native-paper';
 import {GetAllMasjidData, getCurrentLocation} from '../store/firebase';
 
 const Item = props => (
-  <TouchableOpacity
-    key={props.favId}
-    onPress={() =>
-      props.nav.navigate('More Info', {
-        name: props.title,
-        url: props.url,
-        address: props.address,
-        isha: props.timings.isha,
-        fajar: props.timings.fajar,
-        zohar: props.timings.zohar,
-        asar: props.timings.asar,
-        magrib: props.timings.magrib,
-        favId: props.favId,
-        distance: props.distance,
-        latitude: props.latitude,
-        longitude: props.longitude,
-        user: props.user,
-      })
-    }>
-    <Card
-      style={{
-        borderRadius: 5,
-        margin: 10,
-        shadowOpacity: 10,
-        elevation: 20,
-      }}>
+  <Card
+    style={{
+      borderRadius: 5,
+      margin: 10,
+      shadowOpacity: 10,
+      elevation: 20,
+    }}>
+    <TouchableOpacity
+      onPress={() =>
+        props.nav.navigate('More Info', {
+          name: props.title,
+          url: props.url,
+          address: props.address,
+          timing: props.timings,
+          favId: props.favId,
+          distance: props.distance,
+          latitude: props.latitude,
+          longitude: props.longitude,
+          user: props.user,
+        })
+      }>
       <Card.Cover
         source={{
           uri: `${props.url}`,
         }}
       />
-      <Card.Actions style={{flexDirection: 'column'}}>
-        <View style={{flexDirection: 'row', margin: 5}}>
-          <View style={{flexGrow: 1}}>
-            <Text style={{fontSize: 17}}>{props.title}</Text>
-          </View>
-          <View>
-            <Text style={{color: '#8D2828'}}>{props.distance} Km Away</Text>
-          </View>
+    </TouchableOpacity>
+
+    <Card.Actions style={{flexDirection: 'column'}}>
+      <View style={{flexDirection: 'row', margin: 5}}>
+        <View style={{flexGrow: 1}}>
+          <Text style={{fontSize: 17}}>{props.title}</Text>
         </View>
-        <View style={{flexDirection: 'row', marginTop: 10}}>
-          <View style={{flexGrow: 5}}>
-            <Text style={{textAlign: 'center', fontSize: 14}}>Fajar</Text>
-            <Text style={{textAlign: 'center', fontSize: 14}}>
-              {props.timings.fajar}
-            </Text>
-          </View>
-          <View style={{flexGrow: 5}}>
-            <Text style={{textAlign: 'center', fontSize: 14}}>Zohar</Text>
-            <Text style={{textAlign: 'center', fontSize: 14}}>
-              {props.timings.zohar}
-            </Text>
-          </View>
-          <View style={{flexGrow: 5}}>
-            <Text style={{textAlign: 'center', fontSize: 14}}>Asar</Text>
-            <Text style={{textAlign: 'center', fontSize: 14}}>
-              {props.timings.asar}
-            </Text>
-          </View>
-          <View style={{flexGrow: 5}}>
-            <Text style={{textAlign: 'center', fontSize: 14}}>Magrib</Text>
-            <Text style={{textAlign: 'center', fontSize: 14}}>
-              {props.timings.magrib}
-            </Text>
-          </View>
-          <View style={{flexGrow: 5}}>
-            <Text style={{textAlign: 'center', fontSize: 14}}>Isha</Text>
-            <Text style={{textAlign: 'center', fontSize: 14}}>
-              {props.timings.isha}
-            </Text>
-          </View>
+        <View>
+          <Text style={{color: '#8D2828'}}>{props.distance || 0} Km Away</Text>
         </View>
-      </Card.Actions>
-    </Card>
-  </TouchableOpacity>
+      </View>
+      <View style={{flexDirection: 'row', marginTop: 10}}>
+        <View style={{flexGrow: 5}}>
+          <Text style={{textAlign: 'center', fontSize: 14}}>Fajar</Text>
+          <Text style={{textAlign: 'center', fontSize: 14}}>
+            {props.timings.fajar || '--'}
+          </Text>
+        </View>
+        <View style={{flexGrow: 5}}>
+          <Text style={{textAlign: 'center', fontSize: 14}}>Zohar</Text>
+          <Text style={{textAlign: 'center', fontSize: 14}}>
+            {props.timings.zohar || '--'}
+          </Text>
+        </View>
+        <View style={{flexGrow: 5}}>
+          <Text style={{textAlign: 'center', fontSize: 14}}>Asar</Text>
+          <Text style={{textAlign: 'center', fontSize: 14}}>
+            {props.timings.asar || '--'}
+          </Text>
+        </View>
+        <View style={{flexGrow: 5}}>
+          <Text style={{textAlign: 'center', fontSize: 14}}>Magrib</Text>
+          <Text style={{textAlign: 'center', fontSize: 14}}>
+            {props.timings.magrib || '--'}
+          </Text>
+        </View>
+        <View style={{flexGrow: 5}}>
+          <Text style={{textAlign: 'center', fontSize: 14}}>Isha</Text>
+          <Text style={{textAlign: 'center', fontSize: 14}}>
+            {props.timings.isha || '--'}
+          </Text>
+        </View>
+      </View>
+    </Card.Actions>
+  </Card>
 );
 
 const ShowMore = ({navigation}) => {

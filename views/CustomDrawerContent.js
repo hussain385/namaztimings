@@ -2,14 +2,7 @@
 import React, {Component, useContext} from 'react';
 import {DrawerContentScrollView} from '@react-navigation/drawer';
 import {AuthContext} from '../store/fireAuth';
-import {
-  View,
-  Image,
-  Text,
-  TouchableOpacity,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import CoText from '../views/Text/Text';
 import auth from '@react-native-firebase/auth';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -29,15 +22,20 @@ const CustomDrawerContent = ({navigation}) => {
   return (
     <DrawerContentScrollView style={{backgroundColor: '#CEE6B4'}}>
       <TouchableOpacity
+        onPress={() => navigation.navigate('Home')}
         style={{
-          flexDirection: 'row',
-          alignItems: 'center',
           padding: 30,
           borderBottomColor: '#1F441E',
           borderBottomWidth: 1,
           marginBottom: 30,
+          flexDirection: 'column',
+          alignSelf: 'center',
         }}>
-        <CoText textStyles={[{color: 'grey', fontSize: 30}]} text="LOGO" />
+        <CoText
+          textStyles={[{color: '#1F441E', fontSize: 18, fontWeight: 'bold'}]}
+          text="Masjid Finder Pakistan"
+        />
+        <CoText textStyles={[{color: '#1F441E'}]} text="Masjidfinder.pk" />
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate('Home')}

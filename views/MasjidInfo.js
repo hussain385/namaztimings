@@ -23,11 +23,7 @@ const MasjidInfo = ({route, navigation}) => {
   const {name} = route.params;
   const {url} = route.params;
   const {address} = route.params;
-  const {isha} = route.params;
-  const {fajar} = route.params;
-  const {zohar} = route.params;
-  const {asar} = route.params;
-  const {magrib} = route.params;
+  const {timing} = route.params;
   const {distance} = route.params;
   const {favId} = route.params;
   const {latitude} = route.params;
@@ -36,15 +32,15 @@ const MasjidInfo = ({route, navigation}) => {
 
   console.log(user);
 
-  React.useEffect(() => {
-    if (user.name !== 'No Admin') {
-      setcolorText('#ffff');
-      setbackgroundColor('#364547');
-    } else {
-      setcolorText('#1F441E');
-      setbackgroundColor('#CEE6B4');
-    }
-  }, []);
+  // React.useEffect(() => {
+  //   if (user.name !== 'No Admin') {
+  //     setcolorText('#ffff');
+  //     setbackgroundColor('#364547');
+  //   } else {
+  //     setcolorText('#1F441E');
+  //     setbackgroundColor('#CEE6B4');
+  //   }
+  // }, []);
 
   return (
     <>
@@ -136,7 +132,7 @@ const MasjidInfo = ({route, navigation}) => {
                   name="map-marker-alt"
                   color="#5C5C5C"
                   size={20}
-                  style={{paddingRight: 18, paddingLeft: 13}}
+                  style={{paddingRight: 18, paddingLeft: 14}}
                 />
                 <Text style={{maxWidth: 200}}>{address}</Text>
               </View>
@@ -145,7 +141,7 @@ const MasjidInfo = ({route, navigation}) => {
                   name="directions"
                   color="#900000"
                   size={20}
-                  style={{paddingRight: 18, paddingLeft: 10}}
+                  style={{paddingRight: 7}}
                 />
                 <Text
                   onPress={() => {
@@ -164,104 +160,106 @@ const MasjidInfo = ({route, navigation}) => {
                 </Text>
               </View>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginTop: 10,
-              }}>
-              <View style={{flexDirection: 'row'}}>
-                <Icon
-                  name="user-alt"
-                  color="#5C5C5C"
-                  size={20}
-                  style={{paddingRight: 18, paddingLeft: 10}}
-                />
-                <Text style={{maxWidth: 280}}>{user.name}</Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginTop: 10,
-              }}>
-              <View style={{flexDirection: 'row'}}>
-                <Icon
-                  name="phone-alt"
-                  color="#5C5C5C"
-                  size={20}
-                  style={{paddingRight: 18, paddingLeft: 10}}
-                />
-                <Text
-                  style={{maxWidth: 280}}
-                  onPress={() => {
-                    Linking.openURL(`tel:${user.phone}`);
-                  }}>
-                  {user.phone}
-                </Text>
-              </View>
-              <View>
-                <Image
-                  source={{
-                    uri: `${url}`,
-                  }}
+            {user.name !== 'No Admin' ? (
+              <>
+                <View
                   style={{
-                    width: 141,
-                    height: 76,
-                    marginTop: -30,
-                    marginRight: 10,
-                    borderRadius: 10,
-                  }}
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                paddingHorizontal: 15,
-                paddingTop: 10,
-              }}>
-              <TouchableOpacity
-                style={{
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 5,
-                  },
-                  shadowOpacity: 0.34,
-                  shadowRadius: 6.27,
-                  elevation: 5,
-                  alignItems: 'center',
-                  backgroundColor: '#ffff',
-                  padding: 10,
-                  borderRadius: 5,
-                  width: '45%',
-                  marginHorizontal: 10,
-                }}>
-                <Text style={{color: '#364547'}}>News & Annoucement</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 5,
-                  },
-                  shadowOpacity: 0.34,
-                  shadowRadius: 6.27,
-                  elevation: 5,
-                  alignItems: 'center',
-                  backgroundColor: '#ffff',
-                  padding: 10,
-                  borderRadius: 5,
-                  width: '45%',
-                  marginHorizontal: 10,
-                }}>
-                <Text style={{color: '#1F441E'}}>Donation</Text>
-              </TouchableOpacity>
-            </View>
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: 10,
+                  }}>
+                  <View style={{flexDirection: 'row'}}>
+                    <Icon
+                      name="user-alt"
+                      color="#5C5C5C"
+                      size={20}
+                      style={{paddingRight: 18, paddingLeft: 10}}
+                    />
+                    <Text style={{maxWidth: 280}}>{user.name}</Text>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    marginTop: 10,
+                  }}>
+                  <View style={{flexDirection: 'row'}}>
+                    <Icon
+                      name="phone-alt"
+                      color="#5C5C5C"
+                      size={20}
+                      style={{paddingRight: 18, paddingLeft: 10}}
+                    />
+                    <Text
+                      style={{maxWidth: 280}}
+                      onPress={() => {
+                        Linking.openURL(`tel:${user.phone}`);
+                      }}>
+                      {user.phone}
+                    </Text>
+                  </View>
+                  <View>
+                    <Image
+                      source={{
+                        uri: `${url}`,
+                      }}
+                      style={{
+                        width: 141,
+                        height: 76,
+                        marginTop: -30,
+                        marginRight: 10,
+                        borderRadius: 10,
+                      }}
+                    />
+                  </View>
+                </View>
+              </>
+            ) : (
+              <>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    paddingBottom: 10,
+                    marginTop: 10,
+                    justifyContent: 'space-between',
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: 5,
+                    }}>
+                    <Icon
+                      name="user-alt"
+                      color="#1F441E"
+                      size={20}
+                      style={{paddingRight: 18, paddingLeft: 12}}
+                    />
+                    <TouchableOpacity>
+                      <Text
+                        style={{
+                          color: '#1F441E',
+                          fontWeight: 'bold',
+                          textDecorationLine: 'underline',
+                        }}>
+                        Become An Admin
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <Image
+                    source={{
+                      uri: `${url}`,
+                    }}
+                    style={{
+                      width: 141,
+                      height: 76,
+                      marginRight: 10,
+                      borderRadius: 10,
+                    }}
+                  />
+                </View>
+              </>
+            )}
             <View
               style={{
                 flexDirection: 'row',
@@ -296,11 +294,11 @@ const MasjidInfo = ({route, navigation}) => {
                 </Text>
               </View>
               <Edit
-                fajar={fajar}
-                zohar={zohar}
-                asar={asar}
-                magrib={magrib}
-                isha={isha}
+                fajar={timing.fajar}
+                zohar={timing.zohar}
+                asar={timing.asar}
+                magrib={timing.magrib}
+                isha={timing.isha}
                 uid={favId}
               />
             </View>
@@ -320,7 +318,7 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{fajar}</Text>
+                <Text style={{fontSize: 17}}>{timing.fajar}</Text>
               </View>
             </View>
             <View
@@ -339,7 +337,7 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{zohar}</Text>
+                <Text style={{fontSize: 17}}>{timing.zohar}</Text>
               </View>
             </View>
             <View
@@ -358,7 +356,7 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{asar}</Text>
+                <Text style={{fontSize: 17}}>{timing.asar}</Text>
               </View>
             </View>
             <View
@@ -377,7 +375,7 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{magrib}</Text>
+                <Text style={{fontSize: 17}}>{timing.magrib}</Text>
               </View>
             </View>
             <View
@@ -396,7 +394,64 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{isha}</Text>
+                <Text style={{fontSize: 17}}>{timing.isha}</Text>
+              </View>
+            </View>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                marginTop: 10,
+              }}>
+              <View
+                style={{
+                  paddingLeft: 10,
+                }}>
+                <Text style={{fontSize: 17}}>Jumu'ah</Text>
+              </View>
+              <View
+                style={{
+                  paddingRight: 10,
+                }}>
+                <Text style={{fontSize: 17}}>{timing.jummuah || '--'}</Text>
+              </View>
+            </View>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                marginTop: 10,
+              }}>
+              <View
+                style={{
+                  paddingLeft: 10,
+                }}>
+                <Text style={{fontSize: 17}}>Eid Ul Fitr</Text>
+              </View>
+              <View
+                style={{
+                  paddingRight: 10,
+                }}>
+                <Text style={{fontSize: 17}}>{timing.eidulfitr || '--'}</Text>
+              </View>
+            </View>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                marginTop: 10,
+              }}>
+              <View
+                style={{
+                  paddingLeft: 10,
+                }}>
+                <Text style={{fontSize: 17}}>Eid Ul Adha</Text>
+              </View>
+              <View
+                style={{
+                  paddingRight: 10,
+                }}>
+                <Text style={{fontSize: 17}}>{timing.eiduladha || '--'}</Text>
               </View>
             </View>
           </View>
@@ -411,26 +466,45 @@ const MasjidInfo = ({route, navigation}) => {
             style={{
               flexDirection: 'row',
               justifyContent: 'center',
-              paddingBottom: 10,
+              paddingHorizontal: 5,
             }}>
             <TouchableOpacity
+              onPress={() => navigation.navigate('Notification')}
               style={{
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 0,
-                  height: 5,
-                },
-                shadowOpacity: 0.34,
-                shadowRadius: 6.27,
-                elevation: 5,
                 alignItems: 'center',
-                backgroundColor: `${backgroundColor}`,
+                backgroundColor: '#CEE6B4',
                 padding: 10,
                 borderRadius: 5,
                 width: '70%',
                 marginHorizontal: 10,
               }}>
-              <Text style={{color: `${colorText}`}}>Request Admin</Text>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: '#1F441E',
+                }}>
+                News & Announcement
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginTop: 10,
+              justifyContent: 'center',
+            }}>
+            <TouchableOpacity
+              style={{
+                alignItems: 'center',
+                backgroundColor: '#1F441E',
+                padding: 10,
+                borderRadius: 5,
+                width: '70%',
+                marginHorizontal: 10,
+              }}
+              // onPress={() => navigation.navigate('Show More')}
+            >
+              <Text style={{color: '#CEE6B4'}}>Donation</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
