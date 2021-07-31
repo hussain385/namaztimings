@@ -1,20 +1,20 @@
 /* eslint-disable react-native/no-inline-styles */
+import firestore from '@react-native-firebase/firestore';
+import _ from 'lodash';
+import moment from 'moment';
 import React, {useState} from 'react';
 import {
+  Alert,
   Modal,
+  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Pressable,
-  Alert,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import firestore from '@react-native-firebase/firestore';
-import _ from 'lodash';
-import moment from 'moment';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Edit = ({isha, fajar, zohar, asar, magrib, uid}) => {
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);

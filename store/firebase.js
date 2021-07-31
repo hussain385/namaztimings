@@ -1,4 +1,8 @@
-/* eslint-disable prettier/prettier */
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import firestore from '@react-native-firebase/firestore';
+import * as geofirestore from 'geofirestore';
+import haversine from 'haversine';
+import _ from 'lodash';
 import {useEffect, useState} from 'react';
 import {
   Alert,
@@ -7,13 +11,8 @@ import {
   Platform,
   ToastAndroid,
 } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
 import Geolocation from 'react-native-geolocation-service';
-import haversine from 'haversine';
-import _ from 'lodash';
-import * as geofirestore from 'geofirestore';
 import appConfig from '../app.json';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const GeoFirestore = geofirestore.initializeApp(firestore());
 const geoCollection = GeoFirestore.collection('Masjid');
@@ -42,20 +41,53 @@ export const getCurrentLocation = async () => {
   );
 };
 
+function modifyData(data, id, d) {
+  return {
+    name: data.name,
+    address: data.address,
+    pictureURL: data.pictureURL,
+    adminId: data.adminId || '',
+    key: id,
+    distance: Number(d.toFixed(2)),
+    g: {
+      geohash: data.g.geohash,
+      geopoint: data.g.geopoint,
+    },
+    timing: {
+      asar: !_.isUndefined(data.timing)
+        ? !_.isUndefined(data.timing.asar) && data.timing.asar
+        : '01:00 PM',
+      fajar: !_.isUndefined(data.timing)
+        ? !_.isUndefined(data.timing.fajar) && data.timing.fajar
+        : '04:30 PM',
+      isha: !_.isUndefined(data.timing)
+        ? !_.isUndefined(data.timing.isha) && data.timing.isha
+        : '09:30 PM',
+      magrib: !_.isUndefined(data.timing)
+        ? !_.isUndefined(data.timing.magrib) && data.timing.magrib
+        : '07:00 PM',
+      zohar: !_.isUndefined(data.timing)
+        ? !_.isUndefined(data.timing.zohar) && data.timing.zohar
+        : '05:30 PM',
+    },
+  };
+}
+
 async function sortMasjidData(snapshot, {latitude, longitude}) {
   const masjids = [];
   const users = await GetUsers();
-  snapshot.forEach(async docSnapshot => {
-    const loc1 = docSnapshot.data().g;
+  snapshot.forEach(docSnapshot => {
+    const data = docSnapshot.data();
+    const loc1 = data.g.geopoint;
     const d = haversine(loc1, {latitude, longitude});
-    const adminId = docSnapshot.data().adminId;
+    const tempData = modifyData(data, docSnapshot.id, d);
+    console.log(tempData, '<======== tempData');
+    const adminId = tempData.adminId;
     console.log(adminId, _.isEmpty(adminId), typeof adminId);
     if (_.isEmpty(adminId)) {
       console.log('when True');
       masjids.push({
-        ...docSnapshot.data(),
-        distance: Number(d.toFixed(2)),
-        key: docSnapshot.id,
+        ...tempData,
         user: {
           name: 'No Admin',
           phone: '**********',
@@ -66,10 +98,8 @@ async function sortMasjidData(snapshot, {latitude, longitude}) {
         return o.uid === adminId;
       });
       masjids.push({
-        ...docSnapshot.data(),
+        ...tempData,
         user: {...u},
-        distance: Number(d.toFixed(2)),
-        key: docSnapshot.id,
       });
     }
   });
@@ -83,13 +113,15 @@ export function GetAllMasjidData() {
 
   useEffect(() => {
     const subs = firestore().collection('Masjid');
-    getCurrentLocation().then(loc => {
-      subs.onSnapshot(async snapshot => {
-        const masjids1 = await sortMasjidData(snapshot, loc.coords);
-        setMasjid(masjids1);
-        setLoading(false);
-      });
-    });
+    getCurrentLocation()
+      .then(loc => {
+        subs.onSnapshot(async snapshot => {
+          const masjids1 = await sortMasjidData(snapshot, loc.coords);
+          setMasjid(masjids1);
+          setLoading(false);
+        });
+      })
+      .catch(reason => setError(reason));
     return () => subs;
   }, []);
   return [masjid, loading, error];
@@ -228,14 +260,14 @@ export function GetFavMasjidData() {
     const masjids = [];
     const users = await GetUsers();
     doc.forEach(docSnapshot => {
-      const loc1 = docSnapshot.data().g;
+      const data = docSnapshot.data();
+      const loc1 = data.g.geopoint;
       const d = haversine(loc1, pos.coords);
-      const adminId = docSnapshot.data().adminId;
+      const tempData = modifyData(data, docSnapshot.id, d);
+      const adminId = tempData.adminId;
       if (_.isEmpty(adminId)) {
         masjids.push({
-          ...docSnapshot.data(),
-          distance: Number(d.toFixed(2)),
-          key: docSnapshot.id,
+          ...tempData,
           user: {
             name: 'No Admin',
             phone: '**********',
@@ -248,8 +280,6 @@ export function GetFavMasjidData() {
         masjids.push({
           ...docSnapshot.data(),
           user: {...u},
-          distance: Number(d.toFixed(2)),
-          key: docSnapshot.id,
         });
       }
     });

@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
 import {Card} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import {GetAllMasjidData, getCurrentLocation} from '../store/firebase';
 
 const Item = props => (

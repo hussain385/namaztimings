@@ -1,30 +1,30 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable prettier/prettier */
-import * as React from 'react';
-import {Text, TouchableOpacity, Dimensions, View} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+import '@react-native-firebase/app';
+import messaging from '@react-native-firebase/messaging';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import * as React from 'react';
+import {Dimensions, Text, TouchableOpacity, View} from 'react-native';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import HomeScreen from './components/HomeScreen';
-import Search from './components/Search';
-import Favourites from './components/Favourites';
-import Invite from './components/Invite';
+import Admin from './components/Admin';
 import ContactUS from './components/ContactUs';
+import Favourites from './components/Favourites';
+import HomeScreen from './components/HomeScreen';
+import Invite from './components/Invite';
 import Login from './components/Login';
 import Notifications from './components/Notifications';
+import Search from './components/Search';
 import Terms from './components/Terms';
-import Entypo from 'react-native-vector-icons/Entypo';
-import Admin from './components/Admin';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import '@react-native-firebase/app';
-import MasjidInfo from './views/MasjidInfo';
-import ShowMore from './views/ShowMore';
-import Map from './views/Map';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {AuthContext, AuthContextProvider} from './store/fireAuth';
 import CustomDrawerContent from './views/CustomDrawerContent';
+import Map from './views/Map';
 import Maps1 from './views/Maps1';
+import MasjidInfo from './views/MasjidInfo';
+import ShowMore from './views/ShowMore';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -360,7 +360,7 @@ function MyTabs() {
                 color: focused ? '#1F441E' : '#5C5C5C',
                 marginBottom: 5,
               }}>
-              FAVOURITES
+              FAVORITES
             </Text>
           ),
           tabBarIcon: ({focused, color}) => (
@@ -421,6 +421,17 @@ function MyTabs() {
 }
 
 export default function App() {
+  React.useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      React.Alert.alert(
+        'A new FCM message arrived!',
+        JSON.stringify(remoteMessage),
+      );
+    });
+
+    return unsubscribe;
+  }, []);
+
   return (
     <AuthContextProvider>
       <NavigationContainer>
