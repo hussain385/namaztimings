@@ -1,14 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {Component, useContext} from 'react';
-import {DrawerContentScrollView} from '@react-navigation/drawer';
-import {AuthContext} from '../store/fireAuth';
-import {View, TouchableOpacity} from 'react-native';
-import CoText from '../views/Text/Text';
 import auth from '@react-native-firebase/auth';
-import Entypo from 'react-native-vector-icons/Entypo';
+import {DrawerContentScrollView} from '@react-navigation/drawer';
 import _ from 'lodash';
+import React, {useContext} from 'react';
+import {TouchableOpacity, View} from 'react-native';
+import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {AuthContext} from '../store/fireAuth';
+import CoText from '../views/Text/Text';
 
 const CustomDrawerContent = ({navigation}) => {
   const user = useContext(AuthContext);
@@ -38,7 +38,7 @@ const CustomDrawerContent = ({navigation}) => {
         <CoText textStyles={[{color: '#1F441E'}]} text="Masjidfinder.pk" />
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('home')}
         style={{
           paddingHorizontal: 20,
           flexDirection: 'row',
@@ -51,7 +51,11 @@ const CustomDrawerContent = ({navigation}) => {
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate('Find Masjid')}
+        onPress={() =>
+          navigation.navigate('SearchStackScreen', {
+            screen: 'Find Masjid',
+          })
+        }
         style={{
           paddingHorizontal: 20,
           flexDirection: 'row',
@@ -64,7 +68,11 @@ const CustomDrawerContent = ({navigation}) => {
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate('Favourites')}
+        onPress={() =>
+          navigation.navigate('FavouriteStackScreen', {
+            screen: 'Favourites',
+          })
+        }
         style={{
           paddingHorizontal: 20,
           flexDirection: 'row',

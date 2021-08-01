@@ -116,6 +116,7 @@ const Favbtn = ({favId, onRefresh, isBig = true}) => {
           onPress={() => handleFavourite(favId)}
           style={{
             backgroundColor: '#E1E1E1',
+            height: 43,
             borderRadius: 100,
             marginRight: 10,
             textAlign: 'center',

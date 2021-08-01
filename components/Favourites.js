@@ -1,23 +1,21 @@
 /* eslint-disable react-native/no-inline-styles */
+import _ from 'lodash';
 import React, {useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
   ImageBackground,
+  Linking,
   Text,
   TouchableOpacity,
-  Image,
-  Linking,
   View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icon1 from 'react-native-vector-icons/FontAwesome5';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Header} from 'react-native-elements';
-import {GetFavMasjidData} from '../store/firebase';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Icon1 from 'react-native-vector-icons/FontAwesome5';
+import {GetFavMasjidData} from '../store/firebase';
 import Favbtn from '../views/Favbtn';
-import _ from 'lodash';
 
 const Item = ({
   url,
@@ -102,7 +100,7 @@ const Item = ({
         }}>
         <TouchableOpacity
           onPress={() =>
-            nav.navigate('More Info', {
+            nav.navigate('Home', {
               name: title,
               url: url,
               address: address,

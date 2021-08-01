@@ -4,26 +4,25 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  Linking,
   RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  TouchableOpacityBase,
-  Linking,
   View,
 } from 'react-native';
+// import Entypo from 'react-native-vector-icons/Entypo';
+import {Header} from 'react-native-elements';
 // import {NavigationContainer} from '@react-navigation/native';
 // import {Divider} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-// import Entypo from 'react-native-vector-icons/Entypo';
-import {Header} from 'react-native-elements';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {GetRadMasjidData1} from '../store/firebase';
+import {headerStyles, textStyles} from '../theme/styles/Base';
 // import Geocoder from 'react-native-geocoding';
 import Favbtn from '../views/Favbtn';
-import {headerStyles, textStyles} from '../theme/styles/Base';
 import CoText from '../views/Text/Text';
 
 function HomeScreen({navigation}) {
@@ -163,13 +162,17 @@ function HomeScreen({navigation}) {
                       name="mosque"
                       color="#5C5C5C"
                       size={20}
-                      style={{paddingRight: 10, paddingLeft: 10}}
+                      style={{
+                        paddingRight: 10,
+                        paddingLeft: 10,
+                      }}
                     />
                     <Text
                       style={{
                         fontSize: 17,
                         color: '#5C5C5C',
                         fontWeight: 'bold',
+                        maxWidth: 200,
                       }}>
                       {masjidData[0].name}
                     </Text>
@@ -206,7 +209,7 @@ function HomeScreen({navigation}) {
                     <Text
                       onPress={() => {
                         Linking.openURL(
-                          `https://maps.google.com/?q=${masjidData[0].g.latitude},${masjidData[0].g.longitude}`,
+                          `https://maps.google.com/?q=${masjidData[0].g.geopoint.latitude},${masjidData[0].g.geopoint.longitude}`,
                         );
                       }}
                       style={{
@@ -220,60 +223,108 @@ function HomeScreen({navigation}) {
                     </Text>
                   </View>
                 </View>
-                <View
-                  style={{
-                    justifyContent: 'space-between',
-                    flexDirection: 'row',
-                    marginTop: 5,
-                  }}>
-                  <View style={{flexDirection: 'row'}}>
-                    <Icon
-                      name="user-alt"
-                      color="#5C5C5C"
-                      size={20}
-                      style={{paddingRight: 18, paddingLeft: 10}}
-                    />
-                    <Text style={{maxWidth: 280, marginTop: 2}}>
-                      {masjidData[0].user.name}
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    justifyContent: 'space-between',
-                    flexDirection: 'row',
-                    marginTop: 10,
-                  }}>
-                  <View style={{flexDirection: 'row'}}>
-                    <Icon
-                      name="phone-alt"
-                      color="#5C5C5C"
-                      size={20}
-                      style={{paddingRight: 18, paddingLeft: 10}}
-                    />
-                    <Text
-                      style={{maxWidth: 280, marginTop: 0}}
-                      onPress={() => {
-                        Linking.openURL(`tel:${masjidData[0].user.phone}`);
-                      }}>
-                      {masjidData[0].user.phone}
-                    </Text>
-                  </View>
-                  <View>
-                    <Image
-                      source={{
-                        uri: `${masjidData[0].pictureURL}`,
-                      }}
+                {masjidData[0].user.name !== 'No Admin' ? (
+                  <>
+                    <View
                       style={{
-                        width: 141,
-                        height: 76,
-                        marginTop: -30,
-                        marginRight: 10,
-                        borderRadius: 8,
-                      }}
-                    />
-                  </View>
-                </View>
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginTop: 10,
+                      }}>
+                      <View style={{flexDirection: 'row'}}>
+                        <Icon
+                          name="user-alt"
+                          color="#5C5C5C"
+                          size={20}
+                          style={{paddingRight: 18, paddingLeft: 10}}
+                        />
+                        <Text style={{maxWidth: 280}}>
+                          {masjidData[0].user.name}
+                        </Text>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        marginTop: 10,
+                      }}>
+                      <View style={{flexDirection: 'row'}}>
+                        <Icon
+                          name="phone-alt"
+                          color="#5C5C5C"
+                          size={20}
+                          style={{paddingRight: 18, paddingLeft: 10}}
+                        />
+                        <Text
+                          style={{maxWidth: 280}}
+                          onPress={() => {
+                            Linking.openURL(`tel:${masjidData[0].user.phone}`);
+                          }}>
+                          {masjidData[0].user.phone}
+                        </Text>
+                      </View>
+                      <View>
+                        <Image
+                          source={{
+                            uri: `${masjidData[0].pictureURL}`,
+                          }}
+                          style={{
+                            width: 141,
+                            height: 76,
+                            marginTop: -30,
+                            marginRight: 10,
+                            borderRadius: 10,
+                          }}
+                        />
+                      </View>
+                    </View>
+                  </>
+                ) : (
+                  <>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        paddingBottom: 10,
+                        marginTop: 10,
+                        justifyContent: 'space-between',
+                      }}>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          marginTop: 5,
+                        }}>
+                        <Icon
+                          name="user-alt"
+                          color="#1F441E"
+                          size={20}
+                          style={{paddingRight: 18, paddingLeft: 12}}
+                        />
+                        <TouchableOpacity>
+                          <Text
+                            style={{
+                              color: '#1F441E',
+                              fontWeight: 'bold',
+                              textDecorationLine: 'underline',
+                            }}>
+                            Become An Admin
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                      <Image
+                        source={{
+                          uri: `${masjidData[0].pictureURL}`,
+                        }}
+                        style={{
+                          width: 141,
+                          height: 76,
+                          marginRight: 10,
+                          borderRadius: 10,
+                        }}
+                      />
+                    </View>
+                  </>
+                )}
                 <View style={{flexDirection: 'row', marginTop: 10}}>
                   <View
                     style={{
@@ -408,8 +459,8 @@ function HomeScreen({navigation}) {
                         timing: masjidData[0].timing,
                         distance: masjidData[0].distance,
                         favId: masjidData[0].key,
-                        latitude: masjidData[0].g.latitude,
-                        longitude: masjidData[0].g.longitude,
+                        latitude: masjidData[0].g.geopoint.latitude,
+                        longitude: masjidData[0].g.geopoint.longitude,
                         user: masjidData[0].user,
                       })
                     }

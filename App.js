@@ -98,14 +98,6 @@ const HomeStackScreen = ({navigation}) => (
       options={{title: 'Prayer Time', headerShown: false}}
     />
     <HomeStack.Screen
-      name="Prayer Time"
-      component={HomeScreen}
-      options={{
-        title: 'Prayer Time',
-        headerShown: false,
-      }}
-    />
-    <HomeStack.Screen
       name="More Info"
       component={MasjidInfo}
       options={{
@@ -219,6 +211,7 @@ function MyDrawer() {
   console.log(user, '<============= user');
   return (
     <Drawer.Navigator
+      initialRouteName="Home"
       drawerContentOptions={{
         activeTintColor: '#CEE6B4',
         itemStyle: {backgroundColor: '#CEE6B4'},
@@ -339,6 +332,41 @@ function MyTabs() {
   return (
     <Tab.Navigator
       initialRouteName="Home"
+      screenOptions={({route}) => ({
+        tabBarIcon: ({focused, color, size}) => {
+          let iconName;
+
+          if (route.name === 'FavouriteStackScreen') {
+            return (
+              <Entypo
+                name="star"
+                color={focused ? '#1F441E' : '#5C5C5C'}
+                size={24}
+              />
+            );
+          }
+          if (route.name === 'home') {
+            return (
+              <Icon
+                name="home"
+                color={focused ? '#1F441E' : '#5C5C5C'}
+                size={20}
+              />
+            );
+          }
+          if (route.name === 'SearchStackScreen') {
+            return (
+              <Icon
+                name="search"
+                color={focused ? '#1F441E' : '#5C5C5C'}
+                size={20}
+              />
+            );
+          }
+
+          // You can return any component that you like here!
+        },
+      })}
       tabBarOptions={{
         style: {
           height: '8%',
@@ -363,17 +391,10 @@ function MyTabs() {
               FAVORITES
             </Text>
           ),
-          tabBarIcon: ({focused, color}) => (
-            <Entypo
-              name="star"
-              color={focused ? '#1F441E' : '#5C5C5C'}
-              size={24}
-            />
-          ),
         }}
       />
       <Tab.Screen
-        name="Home"
+        name="home"
         component={HomeScreen}
         options={{
           tabBarLabel: ({focused, color}) => (
@@ -384,13 +405,6 @@ function MyTabs() {
               }}>
               HOME
             </Text>
-          ),
-          tabBarIcon: ({focused, color}) => (
-            <Icon
-              name="home"
-              color={focused ? '#1F441E' : '#5C5C5C'}
-              size={20}
-            />
           ),
         }}
       />
@@ -406,13 +420,6 @@ function MyTabs() {
               }}>
               SEARCH
             </Text>
-          ),
-          tabBarIcon: ({focused, color}) => (
-            <Icon
-              name="search"
-              color={focused ? '#1F441E' : '#5C5C5C'}
-              size={20}
-            />
           ),
         }}
       />

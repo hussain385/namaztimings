@@ -28,8 +28,8 @@ const Map = ({route}) => {
                 <Marker
                   title={`${masjid.name}`}
                   coordinate={{
-                    latitude: Number(masjid.g.latitude),
-                    longitude: Number(masjid.g.longitude),
+                    latitude: Number(masjid.g.geopoint.latitude),
+                    longitude: Number(masjid.g.geopoint.longitude),
                   }}>
                   <Icon
                     name="mosque"

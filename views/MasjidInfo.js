@@ -1,25 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {
+  Dimensions,
   Image,
+  Linking,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  Dimensions,
   View,
-  Linking,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import {NavigationContainer} from '@react-navigation/native';
 import {Header} from 'react-native-elements';
-import Favbtn from './Favbtn';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import Edit from './Edit';
+import Favbtn from './Favbtn';
 
 const MasjidInfo = ({route, navigation}) => {
-  const [colorText, setcolorText] = React.useState('#1F441E');
-  const [backgroundColor, setbackgroundColor] = React.useState('#CEE6B4');
   const {name} = route.params;
   const {url} = route.params;
   const {address} = route.params;
@@ -97,7 +94,7 @@ const MasjidInfo = ({route, navigation}) => {
         }
         backgroundColor="#1F441E"
       />
-      <SafeAreaView style={{height: Dimensions.get('window').height - 150}}>
+      <SafeAreaView style={{height: Dimensions.get('window').height - 85}}>
         <ScrollView>
           <View>
             <View>

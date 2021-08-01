@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   FlatList,
   // StyleSheet,
+  Linking,
   Text,
   TouchableOpacity,
   View,
@@ -48,7 +49,15 @@ const Item = props => (
           <Text style={{fontSize: 17}}>{props.title}</Text>
         </View>
         <View>
-          <Text style={{color: '#8D2828'}}>{props.distance || 0} Km Away</Text>
+          <Text
+            onPress={() => {
+              Linking.openURL(
+                `https://maps.google.com/?q=${props.latitude},${props.longitude}`,
+              );
+            }}
+            style={{color: '#8D2828', textDecorationLine: 'underline'}}>
+            {props.distance || 0} Km Away
+          </Text>
         </View>
       </View>
       <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -111,8 +120,8 @@ const ShowMore = ({navigation}) => {
       nav={navigation}
       distance={item.distance}
       favId={item.key}
-      longitude={item.g.longitude}
-      latitude={item.g.latitude}
+      longitude={item.g.geopoint.longitude}
+      latitude={item.g.geopoint.latitude}
       user={item.user}
     />
   );

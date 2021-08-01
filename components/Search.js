@@ -1,23 +1,23 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
+import Fuse from 'fuse.js';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-  TextInput,
   Dimensions,
+  FlatList,
   ImageBackground,
   Linking,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import {GetAllMasjidData, getCurrentLocation} from '../store/firebase';
-import Fuse from 'fuse.js';
-import {SafeAreaView} from 'react-native';
 import Favbtn from '../views/Favbtn';
 
 const Item = ({
@@ -62,7 +62,6 @@ const Item = ({
           user: user,
         })
       }>
-      {/* <View> */}
       <ImageBackground
         source={{uri: `${url}`}}
         style={{
@@ -79,16 +78,26 @@ const Item = ({
           </View>
         </View>
       </ImageBackground>
-      {/* </View> */}
     </TouchableOpacity>
 
     <View style={{padding: 5}}>
-      <View style={{flexDirection: 'row', margin: 5}}>
-        <View style={{flexGrow: 1}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          margin: 5,
+          justifyContent: 'space-between',
+        }}>
+        <View style={{maxWidth: 250}}>
           <Text style={{fontSize: 17}}>{title}</Text>
         </View>
         <View>
-          <Text style={{color: '#900000', textDecorationLine: 'underline'}}>
+          <Text
+            onPress={() => {
+              Linking.openURL(
+                `https://maps.google.com/?q=${latitude},${longitude}`,
+              );
+            }}
+            style={{color: '#900000', textDecorationLine: 'underline'}}>
             {distance}KM AWAY
           </Text>
         </View>
@@ -189,8 +198,8 @@ const Seacrh = ({navigation}) => {
       nav={navigation}
       distance={item.distance}
       favId={item.key}
-      latitude={item.g.latitude}
-      longitude={item.g.longitude}
+      latitude={item.g.geopoint.latitude}
+      longitude={item.g.geopoint.longitude}
       user={item.user}
     />
   );
@@ -203,9 +212,9 @@ const Seacrh = ({navigation}) => {
       nav={navigation}
       distance={item.item.distance}
       favId={item.item.key}
-      latitude={item.item.g.latitude}
+      latitude={item.item.g.geopoint.latitude}
       user={item.item.user}
-      longitude={item.item.g.longitude}
+      longitude={item.item.g.geopoint.longitude}
     />
   );
   return (
