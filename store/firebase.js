@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 import * as geofirestore from 'geofirestore';
 import haversine from 'haversine';
@@ -128,7 +127,7 @@ export function GetAllMasjidData() {
   return [masjid, loading, error];
 }
 
-export function GetRadMasjidData1(radius = 500) {
+export function GetRadMasjidData1(radius = 50) {
   const [loading, setLoading] = useState(true);
   const [masjid, setMasjid] = useState(null);
   const [error, setError] = useState({
@@ -142,7 +141,10 @@ export function GetRadMasjidData1(radius = 500) {
   });
 
   const getLocation = async () => {
-    setLoading(true);
+    if (_.isNull(masjid)) {
+      setLoading(true);
+    }
+
     const hasPermission = await hasLocationPermission();
 
     if (!hasPermission) {
@@ -179,7 +181,7 @@ export function GetRadMasjidData1(radius = 500) {
     let latitude, longitude;
     latitude = location.coords.latitude;
     longitude = location.coords.longitude;
-    const query = geoCollection
+    geoCollection
       .near({
         center: new firestore.GeoPoint(latitude, longitude),
         radius: radius,
@@ -194,7 +196,6 @@ export function GetRadMasjidData1(radius = 500) {
         setError(e);
         console.log(e);
       });
-    return () => query;
   }
 
   return [masjid, loading, location, error, getLocation, GetData];
@@ -226,22 +227,24 @@ export function GetFavMasjidData() {
   const favoriteId = useSelector(state => state.favorites.value);
   const subs = firestore().collection('Masjid');
 
-  async function getFavStore() {
-    try {
-      const value = await AsyncStorage.getItem('favorites');
-      if (!_.isNull(value)) {
-        return JSON.parse(value);
-      } else {
-        return null;
-      }
-    } catch (e) {
-      setError(e);
-      console.log(e);
-    }
-  }
+  // async function getFavStore() {
+  //   try {
+  //     const value = await AsyncStorage.getItem('favorites');
+  //     if (!_.isNull(value)) {
+  //       return JSON.parse(value);
+  //     } else {
+  //       return null;
+  //     }
+  //   } catch (e) {
+  //     setError(e);
+  //     console.log(e);
+  //   }
+  // }
 
   async function GetData() {
-    setLoading(true);
+    if (_.isNull(masjid)) {
+      setLoading(true);
+    }
     console.log('%c triggered the GetData from Faves', 'color: #bada55');
     const favorites = favoriteId;
     console.log(favorites, '<=========== favs from redux');
@@ -257,36 +260,40 @@ export function GetFavMasjidData() {
         console.log(fav, '<======= faves from getFavData');
       }
     });
-    const pos = await getCurrentLocation();
-    const doc = await Promise.all(collections);
-    const masjids = [];
-    const users = await GetUsers();
-    doc.forEach(docSnapshot => {
-      const data = docSnapshot.data();
-      const loc1 = data.g.geopoint;
-      const d = haversine(loc1, pos.coords);
-      const tempData = modifyData(data, docSnapshot.id, d);
-      const adminId = tempData.adminId;
-      if (_.isEmpty(adminId)) {
-        masjids.push({
-          ...tempData,
-          user: {
-            name: 'No Admin',
-            phone: '**********',
-          },
-        });
-      } else {
-        const u = _.find(users, o => {
-          return o.uid === adminId;
-        });
-        masjids.push({
-          ...docSnapshot.data(),
-          user: {...u},
-        });
-      }
-    });
-    setMasjid(_.sortBy(masjids, 'distance'));
-    setLoading(false);
+    try {
+      const pos = await getCurrentLocation();
+      const doc = await Promise.all(collections);
+      const masjids = [];
+      const users = await GetUsers();
+      doc.forEach(docSnapshot => {
+        const data = docSnapshot.data();
+        const loc1 = data.g.geopoint;
+        const d = haversine(loc1, pos.coords);
+        const tempData = modifyData(data, docSnapshot.id, d);
+        const adminId = tempData.adminId;
+        if (_.isEmpty(adminId)) {
+          masjids.push({
+            ...tempData,
+            user: {
+              name: 'No Admin',
+              phone: '**********',
+            },
+          });
+        } else {
+          const u = _.find(users, o => {
+            return o.uid === adminId;
+          });
+          masjids.push({
+            ...docSnapshot.data(),
+            user: {...u},
+          });
+        }
+      });
+      setMasjid(_.sortBy(masjids, 'distance'));
+      setLoading(false);
+    } catch (e) {
+      setError(e);
+    }
   }
 
   return [masjid, loading, error, GetData];

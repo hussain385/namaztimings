@@ -11,6 +11,8 @@ import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Provider} from 'react-redux';
+import {persistStore} from 'redux-persist';
+import {PersistGate} from 'redux-persist/integration/react';
 import Admin from './components/Admin';
 import ContactUS from './components/ContactUs';
 import Favourites from './components/Favourites';
@@ -431,6 +433,8 @@ function MyTabs() {
 }
 
 export default function App() {
+  const persistor = persistStore(store);
+
   React.useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       React.Alert.alert(
@@ -444,11 +448,13 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <AuthContextProvider>
-        <NavigationContainer>
-          <RootStackScreen />
-        </NavigationContainer>
-      </AuthContextProvider>
+      <PersistGate persistor={persistor}>
+        <AuthContextProvider>
+          <NavigationContainer>
+            <RootStackScreen />
+          </NavigationContainer>
+        </AuthContextProvider>
+      </PersistGate>
     </Provider>
   );
 }

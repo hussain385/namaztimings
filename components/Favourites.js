@@ -14,6 +14,7 @@ import {Header} from 'react-native-elements';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Icon1 from 'react-native-vector-icons/FontAwesome5';
+import {useSelector} from 'react-redux';
 import {GetFavMasjidData} from '../store/firebase';
 import Favbtn from '../views/Favbtn';
 
@@ -154,6 +155,7 @@ const Favourites = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
   //   const [masjidData, loading, error] = GetRadMasjidData();
   const [masjidData, loading, error, GetData] = GetFavMasjidData();
+  const favoriteId = useSelector(state => state.favorites.value);
 
   function onRefresh() {
     setRefreshing(true);
@@ -162,11 +164,9 @@ const Favourites = ({navigation}) => {
   }
 
   React.useEffect(() => {
-    const willFocusSubscription = navigation.addListener('focus', () => {
-      onRefresh();
-    });
-    return willFocusSubscription;
-  }, []);
+    GetData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [favoriteId]);
 
   const renderItem = ({item}) => (
     <Item
