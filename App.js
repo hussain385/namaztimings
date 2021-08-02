@@ -10,6 +10,7 @@ import {Dimensions, Text, TouchableOpacity, View} from 'react-native';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {Provider} from 'react-redux';
 import Admin from './components/Admin';
 import ContactUS from './components/ContactUs';
 import Favourites from './components/Favourites';
@@ -19,6 +20,7 @@ import Login from './components/Login';
 import Notifications from './components/Notifications';
 import Search from './components/Search';
 import Terms from './components/Terms';
+import {store} from './redux/store';
 import {AuthContext, AuthContextProvider} from './store/fireAuth';
 import CustomDrawerContent from './views/CustomDrawerContent';
 import Map from './views/Map';
@@ -58,13 +60,13 @@ const FavouriteStackScreen = ({navigation}) => (
         title: 'Prayer Time',
       }}
     />
-    <FavouriteStack.Screen
+    {/* <FavouriteStack.Screen
       name="More Info"
       component={MasjidInfo}
       options={{
         title: 'Prayer Time',
       }}
-    />
+    /> */}
   </FavouriteStack.Navigator>
 );
 const SearchStackScreen = ({navigation}) => (
@@ -80,13 +82,13 @@ const SearchStackScreen = ({navigation}) => (
         title: 'Prayer Time',
       }}
     />
-    <SearchStack.Screen
+    {/* <SearchStack.Screen
       name="More Info"
       component={MasjidInfo}
       options={{
         title: 'Prayer Time',
       }}
-    />
+    /> */}
   </SearchStack.Navigator>
 );
 
@@ -97,14 +99,14 @@ const HomeStackScreen = ({navigation}) => (
       component={MyTabs}
       options={{title: 'Prayer Time', headerShown: false}}
     />
-    <HomeStack.Screen
+    {/* <HomeStack.Screen
       name="More Info"
       component={MasjidInfo}
       options={{
         title: 'Prayer Time',
         headerShown: false,
       }}
-    />
+    /> */}
     <HomeStack.Screen
       name="Map"
       component={Map}
@@ -324,6 +326,7 @@ function MyDrawer() {
       <Drawer.Screen name="Terms & Conditions" component={Terms} />
       <Drawer.Screen name="Admin view" component={Admin} />
       <Drawer.Screen name="login" component={Login} />
+      <Drawer.Screen name="More Info" component={MasjidInfo} />
     </Drawer.Navigator>
   );
 }
@@ -331,7 +334,7 @@ function MyDrawer() {
 function MyTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="home"
       screenOptions={({route}) => ({
         tabBarIcon: ({focused, color, size}) => {
           let iconName;
@@ -440,10 +443,12 @@ export default function App() {
   }, []);
 
   return (
-    <AuthContextProvider>
-      <NavigationContainer>
-        <RootStackScreen />
-      </NavigationContainer>
-    </AuthContextProvider>
+    <Provider store={store}>
+      <AuthContextProvider>
+        <NavigationContainer>
+          <RootStackScreen />
+        </NavigationContainer>
+      </AuthContextProvider>
+    </Provider>
   );
 }

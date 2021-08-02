@@ -162,10 +162,7 @@ function HomeScreen({navigation}) {
                       name="mosque"
                       color="#5C5C5C"
                       size={20}
-                      style={{
-                        paddingRight: 10,
-                        paddingLeft: 10,
-                      }}
+                      style={{paddingRight: 10, paddingLeft: 10}}
                     />
                     <Text
                       style={{
@@ -174,7 +171,7 @@ function HomeScreen({navigation}) {
                         fontWeight: 'bold',
                         maxWidth: 200,
                       }}>
-                      {masjidData[0].name}
+                      sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
                     </Text>
                   </View>
                   <Favbtn favId={masjidData[0].key} isBig={false} />

@@ -29,16 +29,6 @@ const MasjidInfo = ({route, navigation}) => {
 
   console.log(user);
 
-  // React.useEffect(() => {
-  //   if (user.name !== 'No Admin') {
-  //     setcolorText('#ffff');
-  //     setbackgroundColor('#364547');
-  //   } else {
-  //     setcolorText('#1F441E');
-  //     setbackgroundColor('#CEE6B4');
-  //   }
-  // }, []);
-
   return (
     <>
       <Header
@@ -112,7 +102,12 @@ const MasjidInfo = ({route, navigation}) => {
                   style={{paddingRight: 10, paddingLeft: 10}}
                 />
                 <Text
-                  style={{fontSize: 17, color: '#5C5C5C', fontWeight: 'bold'}}>
+                  style={{
+                    fontSize: 17,
+                    color: '#5C5C5C',
+                    fontWeight: 'bold',
+                    maxWidth: 200,
+                  }}>
                   {name}
                 </Text>
               </View>

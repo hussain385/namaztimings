@@ -12,6 +12,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import {useSelector} from 'react-redux';
 import appConfig from '../app.json';
 
 const GeoFirestore = geofirestore.initializeApp(firestore());
@@ -81,7 +82,7 @@ async function sortMasjidData(snapshot, {latitude, longitude}) {
     const loc1 = data.g.geopoint;
     const d = haversine(loc1, {latitude, longitude});
     const tempData = modifyData(data, docSnapshot.id, d);
-    console.log(tempData, '<======== tempData');
+    // console.log(tempData, '<======== tempData');
     const adminId = tempData.adminId;
     console.log(adminId, _.isEmpty(adminId), typeof adminId);
     if (_.isEmpty(adminId)) {
@@ -222,6 +223,7 @@ export function GetFavMasjidData() {
   const [loading, setLoading] = useState(true);
   const [masjid, setMasjid] = useState(null);
   const [error, setError] = useState(null);
+  const favoriteId = useSelector(state => state.favorites.value);
   const subs = firestore().collection('Masjid');
 
   async function getFavStore() {
@@ -241,8 +243,8 @@ export function GetFavMasjidData() {
   async function GetData() {
     setLoading(true);
     console.log('%c triggered the GetData from Faves', 'color: #bada55');
-    const favorites = await getFavStore();
-    console.log(favorites);
+    const favorites = favoriteId;
+    console.log(favorites, '<=========== favs from redux');
     if (_.isNull(favorites)) {
       console.log('No Favorites Found in the storage');
       setLoading(false);

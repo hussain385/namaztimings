@@ -5,8 +5,8 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
-  "eslint.nodePath": ".yarn/sdks",
-  "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+  // "eslint.nodePath": ".yarn/sdks",
+  "prettier.prettierPath": "node_modules/prettier/index.js",
   "jest.jestCommandLine": "yarn jest",
   "files.associations": {
     ".env.**": "dotenv"

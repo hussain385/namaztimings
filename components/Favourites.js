@@ -100,7 +100,7 @@ const Item = ({
         }}>
         <TouchableOpacity
           onPress={() =>
-            nav.navigate('Home', {
+            nav.navigate('More Info', {
               name: title,
               url: url,
               address: address,
@@ -178,9 +178,9 @@ const Favourites = ({navigation}) => {
       distance={item.distance}
       favId={item.key}
       onRefresh={onRefresh}
-      longitude={item.g.longitude}
+      longitude={item.g.geopoint.longitude}
       user={item.user}
-      latitude={item.g.latitude}
+      latitude={item.g.geopoint.latitude}
     />
   );
   return (
