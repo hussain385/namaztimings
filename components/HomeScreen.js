@@ -171,7 +171,7 @@ function HomeScreen({navigation}) {
                         fontWeight: 'bold',
                         maxWidth: 200,
                       }}>
-                      sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+                      {masjidData[0].name}
                     </Text>
                   </View>
                   <Favbtn favId={masjidData[0].key} isBig={false} />
@@ -188,7 +188,7 @@ function HomeScreen({navigation}) {
                       size={20}
                       style={{
                         paddingRight: 18,
-                        paddingLeft: 13,
+                        paddingLeft: 15,
                         marginTop: 5,
                       }}
                     />
@@ -304,7 +304,7 @@ function HomeScreen({navigation}) {
                               fontWeight: 'bold',
                               textDecorationLine: 'underline',
                             }}>
-                            Become An Admin
+                            Become an Admin
                           </Text>
                         </TouchableOpacity>
                       </View>

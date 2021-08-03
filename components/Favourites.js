@@ -11,7 +11,6 @@ import {
   View,
 } from 'react-native';
 import {Header} from 'react-native-elements';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import {useSelector} from 'react-redux';
@@ -77,8 +76,13 @@ const Item = ({
       </ImageBackground>
     </TouchableOpacity>
     <View style={{padding: 5}}>
-      <View style={{flexDirection: 'row', margin: 5}}>
-        <View style={{flexGrow: 1}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          margin: 5,
+          justifyContent: 'space-between',
+        }}>
+        <View style={{maxWidth: 250}}>
           <Text style={{fontSize: 17}}>{title}</Text>
         </View>
         <View>
@@ -165,6 +169,10 @@ const Favourites = ({navigation}) => {
 
   React.useEffect(() => {
     GetData();
+    const willFocusSubscription = navigation.addListener('focus', () => {
+      GetData();
+    });
+    return willFocusSubscription;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favoriteId]);
 
@@ -232,7 +240,7 @@ const Favourites = ({navigation}) => {
       {/* {loading ? (
         <ActivityIndicator color="#1F441E" size="large" />
       ) : ( */}
-      <SafeAreaView>
+      <>
         {(() => {
           if (!loading) {
             if (!_.isNull(masjidData) && !_.isEmpty(masjidData)) {
@@ -241,7 +249,7 @@ const Favourites = ({navigation}) => {
                   data={masjidData}
                   renderItem={renderItem}
                   keyExtractor={x => x.key}
-                  style={{marginBottom: 140}}
+                  style={{marginBottom: 60}}
                   onRefresh={() => onRefresh()}
                   refreshing={refreshing}
                 />
@@ -262,7 +270,7 @@ const Favourites = ({navigation}) => {
             return <ActivityIndicator color="#1F441E" size="large" />;
           }
         })()}
-      </SafeAreaView>
+      </>
     </>
   );
 };

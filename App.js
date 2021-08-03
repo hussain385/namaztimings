@@ -24,6 +24,7 @@ import Search from './components/Search';
 import Terms from './components/Terms';
 import {store} from './redux/store';
 import {AuthContext, AuthContextProvider} from './store/fireAuth';
+import {AddMasjid} from './views/AddMasjid';
 import CustomDrawerContent from './views/CustomDrawerContent';
 import Map from './views/Map';
 import Maps1 from './views/Maps1';
@@ -101,14 +102,21 @@ const HomeStackScreen = ({navigation}) => (
       component={MyTabs}
       options={{title: 'Prayer Time', headerShown: false}}
     />
-    {/* <HomeStack.Screen
+    <HomeStack.Screen
       name="More Info"
       component={MasjidInfo}
       options={{
         title: 'Prayer Time',
         headerShown: false,
       }}
-    /> */}
+    />
+    <HomeStack.Screen
+      name="Add Masjid"
+      component={AddMasjid}
+      options={{
+        headerShown: false,
+      }}
+    />
     <HomeStack.Screen
       name="Map"
       component={Map}
@@ -328,7 +336,7 @@ function MyDrawer() {
       <Drawer.Screen name="Terms & Conditions" component={Terms} />
       <Drawer.Screen name="Admin view" component={Admin} />
       <Drawer.Screen name="login" component={Login} />
-      <Drawer.Screen name="More Info" component={MasjidInfo} />
+      {/* <Drawer.Screen name="More Info" component={MasjidInfo} /> */}
     </Drawer.Navigator>
   );
 }

@@ -88,9 +88,7 @@ const MasjidInfo = ({route, navigation}) => {
         <ScrollView>
           <View>
             <View>
-              <Text style={{textAlign: 'center', fontSize: 17, padding: 15}}>
-                MASJID NEAR YOUR LOCATION
-              </Text>
+              <Text />
             </View>
             <View
               style={{justifyContent: 'space-between', flexDirection: 'row'}}>
@@ -124,7 +122,7 @@ const MasjidInfo = ({route, navigation}) => {
                   name="map-marker-alt"
                   color="#5C5C5C"
                   size={20}
-                  style={{paddingRight: 18, paddingLeft: 14}}
+                  style={{paddingRight: 18, paddingLeft: 15}}
                 />
                 <Text style={{maxWidth: 200}}>{address}</Text>
               </View>
@@ -234,7 +232,7 @@ const MasjidInfo = ({route, navigation}) => {
                           fontWeight: 'bold',
                           textDecorationLine: 'underline',
                         }}>
-                        Become An Admin
+                        Become an Admin
                       </Text>
                     </TouchableOpacity>
                   </View>

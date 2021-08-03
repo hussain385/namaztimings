@@ -167,7 +167,7 @@ const Seacrh = ({navigation}) => {
   const [location, setLocation] = useState();
   const [result, setResult] = useState(null);
 
-  const [modalVisible, setModalVisible] = useState(false);
+  // const [modalVisible, setModalVisible] = useState(false);
 
   function onChangeSearch(text) {
     const fuse = new Fuse(masjidData, {keys: ['address'], distance: 400});
@@ -337,7 +337,7 @@ const Seacrh = ({navigation}) => {
             height: 50,
           }}>
           <TouchableOpacity
-            onPress={() => setModalVisible(true)}
+            onPress={() => navigation.navigate('Add Masjid')}
             style={{
               alignItems: 'center',
               backgroundColor: '#1F441E',

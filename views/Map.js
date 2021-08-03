@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, Text} from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {GetAllMasjidData} from '../store/firebase';
@@ -31,6 +31,7 @@ const Map = ({route}) => {
                     latitude: Number(masjid.g.geopoint.latitude),
                     longitude: Number(masjid.g.geopoint.longitude),
                   }}>
+                  <Text>{masjid.name}</Text>
                   <Icon
                     name="mosque"
                     color="#1F441E"

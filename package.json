@@ -27,6 +27,7 @@
     "@voximplant/react-native-foreground-service": "^2.0.0",
     "babel-eslint": "^10.1.0",
     "country-list": "^2.2.0",
+    "formik": "^2.2.9",
     "fuse.js": "^6.4.6",
     "geofire-common": "^5.2.0",
     "geofirestore": "^4.4.2",
