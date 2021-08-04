@@ -169,10 +169,10 @@ const Favourites = ({navigation}) => {
 
   React.useEffect(() => {
     GetData();
-    const willFocusSubscription = navigation.addListener('focus', () => {
-      GetData();
-    });
-    return willFocusSubscription;
+    // const willFocusSubscription = navigation.addListener('focus', () => {
+    //   GetData();
+    // });
+    // return willFocusSubscription;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favoriteId]);
 

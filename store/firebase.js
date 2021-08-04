@@ -41,7 +41,7 @@ export const getCurrentLocation = async () => {
   );
 };
 
-function modifyData(data, id, d) {
+export function modifyData(data, id, d) {
   return {
     name: data.name,
     address: data.address,
@@ -73,7 +73,7 @@ function modifyData(data, id, d) {
   };
 }
 
-async function sortMasjidData(snapshot, {latitude, longitude}) {
+export async function sortMasjidData(snapshot, {latitude, longitude}) {
   const masjids = [];
   const users = await GetUsers();
   snapshot.forEach(docSnapshot => {

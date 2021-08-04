@@ -1,11 +1,10 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
+import firestore from '@react-native-firebase/firestore';
 import * as React from 'react';
 import {
   ActivityIndicator,
-  Alert,
   Image,
-  RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -13,98 +12,117 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
-import {useCollectionOnce} from 'react-firebase-hooks/firestore';
-import firestore from '@react-native-firebase/firestore';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AuthContext} from '../store/fireAuth';
-import _ from 'lodash';
+import {modifyData} from '../store/firebase';
+import {headerStyles, textStyles} from '../theme/styles/Base';
+import Edit from '../views/Edit';
+import CoText from '../views/Text/Text';
 
 const Admin = ({navigation}) => {
+  const [notify, setNotify] = React.useState(0);
+  const [requests, setRequests] = React.useState([]);
+  const [snapshot, setSnapshot] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState();
   const user = React.useContext(AuthContext);
-  if (_.isNull(user) || _.isUndefined(user)) {
-    return (
-      <SafeAreaView>
-        <Header
-          containerStyle={{
-            shadowOpacity: 50,
-            elevation: 50,
-          }}
-          leftComponent={
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-              <Icon
-                name="arrow-left"
-                color="#ffff"
-                size={26}
-                style={{paddingLeft: 10}}
-              />
-            </TouchableOpacity>
-          }
-          centerComponent={
-            <View style={{textAlign: 'center'}}>
-              <Text
-                style={{
-                  color: '#ffff',
-                  fontSize: 22,
-                  marginBottom: 5,
-                  marginTop: 5,
-                  textAlign: 'center',
-                }}>
-                Admin
-              </Text>
-            </View>
-          }
-          backgroundColor="#1F441E"
-        />
-      </SafeAreaView>
-    );
-  } else {
-    const [snapshot, loading, error] = useCollectionOnce(
-      firestore().collection('Masjid').where('adminId', '==', user.uid),
-    );
-    console.log(snapshot, error);
-    return (
-      <SafeAreaView>
-        <Header
-          containerStyle={{
-            shadowOpacity: 50,
-            elevation: 50,
-          }}
-          leftComponent={
-            <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-              <Icon
-                name="arrow-left"
-                color="#ffff"
-                size={26}
-                style={{paddingLeft: 10}}
-              />
-            </TouchableOpacity>
-          }
-          centerComponent={
-            <View style={{textAlign: 'center'}}>
-              <Text
-                style={{
-                  color: '#ffff',
-                  fontSize: 22,
-                  marginBottom: 5,
-                  marginTop: 5,
-                  textAlign: 'center',
-                }}>
-                Admin
-              </Text>
-            </View>
-          }
-          backgroundColor="#1F441E"
-        />
-        {error && (
-          <View>
-            <Text>{error}</Text>
+  // const [snapshot, loading, error] = useCollectionOnce(
+  //   firestore().collection('Masjid').where('adminId', '==', user.uid),
+  // );
+  React.useEffect(() => {
+    setLoading(true);
+    let unSubReq;
+    const unSub = firestore()
+      .collection('Masjid')
+      .where('adminId', '==', user.uid)
+      .onSnapshot(data => {
+        setLoading(false);
+        setSnapshot(data);
+        setNotify(0);
+        data.docs.map(n => {
+          unSubReq = firestore()
+            .collection('Masjid')
+            .doc(n.id)
+            .collection('requests')
+            .onSnapshot(reqData => {
+              setRequests(reqData.docs);
+              setNotify(reqData.docs.length);
+            });
+        });
+      }, setError);
+    return () => {
+      unSub();
+      unSubReq && unSubReq();
+      console.log('unsubscribing....');
+    };
+  }, [user.uid]);
+
+  return (
+    <SafeAreaView>
+      <Header
+        containerStyle={{
+          shadowOpacity: 50,
+          elevation: 50,
+        }}
+        leftComponent={
+          <TouchableOpacity onPress={() => navigation.navigate('home')}>
+            <Icon
+              name="arrow-left"
+              color="#ffff"
+              size={26}
+              style={{paddingLeft: 10}}
+            />
+          </TouchableOpacity>
+        }
+        centerComponent={
+          <View style={{textAlign: 'center'}}>
+            <Text
+              style={{
+                color: '#ffff',
+                fontSize: 22,
+                marginBottom: 5,
+                marginTop: 5,
+                textAlign: 'center',
+              }}>
+              Admin
+            </Text>
           </View>
-        )}
-        {loading && <ActivityIndicator color="#1F441E" size="large" />}
-        {snapshot ? (
-          <>
-            {snapshot.docs.map(doc => (
+        }
+        rightComponent={
+          <TouchableOpacity
+            onPress={() => navigation.navigate('adminNotification', {requests})}
+            style={{
+              paddingRight: 10,
+            }}>
+            <View>
+              <View style={headerStyles.cartTxt}>
+                <CoText
+                  textStyles={[
+                    textStyles.simple,
+                    {fontSize: 10, color: '#1F441E'},
+                  ]}
+                  text={notify}
+                />
+              </View>
+              <MaterialIcons name="bell" size={28} color="white" />
+            </View>
+          </TouchableOpacity>
+        }
+        backgroundColor="#1F441E"
+      />
+      {error && (
+        <View>
+          <Text>{error}</Text>
+        </View>
+      )}
+      {loading && <ActivityIndicator color="#1F441E" size="large" />}
+      {snapshot ? (
+        <>
+          {snapshot.docs.map(doc => {
+            const data = modifyData(doc.data(), doc.id, 0);
+            return (
               <ScrollView
                 style={styles.scrollView}
                 key={doc.id}
@@ -137,7 +155,7 @@ const Admin = ({navigation}) => {
                           color: '#5C5C5C',
                           fontWeight: 'bold',
                         }}>
-                        {doc.data().name}
+                        {data.name}
                       </Text>
                     </View>
                   </View>
@@ -153,8 +171,8 @@ const Admin = ({navigation}) => {
                           marginTop: 5,
                         }}
                       />
-                      <Text style={{maxWidth: 280, marginTop: 5}}>
-                        {doc.data().address}
+                      <Text style={{maxWidth: 200, marginTop: 5}}>
+                        {data.address}
                       </Text>
                     </View>
                   </View>
@@ -186,10 +204,10 @@ const Admin = ({navigation}) => {
                     <View>
                       <Image
                         source={{
-                          uri: `${doc.data().pictureURL}`,
+                          uri: `${data.pictureURL}`,
                         }}
                         style={{
-                          width: 200,
+                          width: 160,
                           height: 100,
                           marginTop: -50,
                           marginRight: 10,
@@ -223,6 +241,15 @@ const Admin = ({navigation}) => {
                         Namaz Timings
                       </Text>
                     </View>
+                    <Edit
+                      fajar={data.timing.fajar}
+                      zohar={data.timing.zohar}
+                      asar={data.timing.asar}
+                      magrib={data.timing.magrib}
+                      isha={data.timing.isha}
+                      uid={doc.id}
+                      isRequest={false}
+                    />
                   </View>
                   <View style={{flexDirection: 'row', marginTop: 10}}>
                     <View
@@ -236,9 +263,7 @@ const Admin = ({navigation}) => {
                       style={{
                         paddingRight: 10,
                       }}>
-                      <Text style={{fontSize: 17}}>
-                        {doc.data().timing.fajar}
-                      </Text>
+                      <Text style={{fontSize: 17}}>{data.timing.fajar}</Text>
                     </View>
                   </View>
                   <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -253,9 +278,7 @@ const Admin = ({navigation}) => {
                       style={{
                         paddingRight: 10,
                       }}>
-                      <Text style={{fontSize: 17}}>
-                        {doc.data().timing.zohar}
-                      </Text>
+                      <Text style={{fontSize: 17}}>{data.timing.zohar}</Text>
                     </View>
                   </View>
                   <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -270,9 +293,7 @@ const Admin = ({navigation}) => {
                       style={{
                         paddingRight: 10,
                       }}>
-                      <Text style={{fontSize: 17}}>
-                        {doc.data().timing.asar}
-                      </Text>
+                      <Text style={{fontSize: 17}}>{data.timing.asar}</Text>
                     </View>
                   </View>
                   <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -287,9 +308,7 @@ const Admin = ({navigation}) => {
                       style={{
                         paddingRight: 10,
                       }}>
-                      <Text style={{fontSize: 17}}>
-                        {doc.data().timing.magrib}
-                      </Text>
+                      <Text style={{fontSize: 17}}>{data.timing.magrib}</Text>
                     </View>
                   </View>
                   <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -304,9 +323,7 @@ const Admin = ({navigation}) => {
                       style={{
                         paddingRight: 10,
                       }}>
-                      <Text style={{fontSize: 17}}>
-                        {doc.data().timing.isha}
-                      </Text>
+                      <Text style={{fontSize: 17}}>{data.timing.isha}</Text>
                     </View>
                   </View>
                   <View
@@ -339,13 +356,13 @@ const Admin = ({navigation}) => {
                   </View>
                 </View>
               </ScrollView>
-              // <Text key={doc.id}>{doc.data().pictureURL)}</Text>
-            ))}
-          </>
-        ) : null}
-      </SafeAreaView>
-    );
-  }
+            );
+            // <Text key={doc.id}>{data.pictureURL)}</Text>
+          })}
+        </>
+      ) : null}
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({

@@ -25,6 +25,7 @@ import Terms from './components/Terms';
 import {store} from './redux/store';
 import {AuthContext, AuthContextProvider} from './store/fireAuth';
 import {AddMasjid} from './views/AddMasjid';
+import AdminNotification from './views/AdminNotification';
 import CustomDrawerContent from './views/CustomDrawerContent';
 import Map from './views/Map';
 import Maps1 from './views/Maps1';
@@ -115,6 +116,13 @@ const HomeStackScreen = ({navigation}) => (
       component={AddMasjid}
       options={{
         headerShown: false,
+      }}
+    />
+    <HomeStack.Screen
+      name="adminNotification"
+      component={AdminNotification}
+      options={{
+        headerShown: true,
       }}
     />
     <HomeStack.Screen

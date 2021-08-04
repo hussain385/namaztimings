@@ -16,7 +16,7 @@ import {
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Edit = ({isha, fajar, zohar, asar, magrib, uid}) => {
+const Edit = ({isha, fajar, zohar, asar, magrib, uid, isRequest = true}) => {
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [namazTime, setNamazTime] = useState('');
@@ -50,14 +50,25 @@ const Edit = ({isha, fajar, zohar, asar, magrib, uid}) => {
       Alert.alert('Alert', 'No Change Found');
     } else {
       console.log(uid);
-      await firestore()
-        .collection('Masjid')
-        .doc(uid)
-        .collection('requests')
-        .add(time)
-        .then(a => {
-          Alert.alert('Alert', 'Request has been forwarded to the admin');
-        });
+      if (isRequest) {
+        await firestore()
+          .collection('Masjid')
+          .doc(uid)
+          .collection('requests')
+          .add(time)
+          .then(a => {
+            Alert.alert('Alert', 'Request has been forwarded to the admin');
+          });
+      } else {
+        await firestore()
+          .collection('Masjid')
+          .doc(uid)
+          .update({
+            timing: {
+              ...time,
+            },
+          });
+      }
     }
     await setTimePickerVisibility(false);
   }
@@ -222,7 +233,9 @@ const Edit = ({isha, fajar, zohar, asar, magrib, uid}) => {
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={submitRequest}>
-                <Text style={styles.textStyle1}>Request</Text>
+                <Text style={styles.textStyle1}>
+                  {isRequest ? 'Request' : 'Confirm'}
+                </Text>
               </Pressable>
             </View>
           </View>
