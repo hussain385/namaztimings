@@ -34,10 +34,11 @@ const Admin = ({navigation}) => {
   React.useEffect(() => {
     setLoading(true);
     let unSubReq;
-    const unSub = firestore()
+    firestore()
       .collection('Masjid')
       .where('adminId', '==', user.uid)
-      .onSnapshot(data => {
+      .get()
+      .then(data => {
         setLoading(false);
         setSnapshot(data);
         setNotify(0);
@@ -47,13 +48,37 @@ const Admin = ({navigation}) => {
             .doc(n.id)
             .collection('requests')
             .onSnapshot(reqData => {
+              reqData.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                  setNotify(prevState => {
+                    return prevState += 1
+                  })
+                }
+                if (change.type === "modified") {
+                  const data = change.doc.data();
+                  if (data['isRead'] === true) {
+                    setNotify(prevState => {
+                      return prevState -= 1
+                    })
+                  } else {
+                    setNotify(prevState => {
+                      return prevState += 1
+                    })
+                  }
+                }
+                if (change.type === "removed") {
+                  setNotify(prevState => {
+                    return prevState -= 1
+                  })
+                }
+
+              })
+              reqData.initData()
               setRequests(reqData.docs);
-              setNotify(reqData.docs.length);
             });
         });
       }, setError);
     return () => {
-      unSub();
       unSubReq && unSubReq();
       console.log('unsubscribing....');
     };
@@ -106,7 +131,7 @@ const Admin = ({navigation}) => {
                   text={notify}
                 />
               </View>
-              <MaterialIcons name="bell" size={28} color="white" />
+              <MaterialIcons name="bell" size={28} color="white"/>
             </View>
           </TouchableOpacity>
         }
@@ -117,7 +142,7 @@ const Admin = ({navigation}) => {
           <Text>{error}</Text>
         </View>
       )}
-      {loading && <ActivityIndicator color="#1F441E" size="large" />}
+      {loading && <ActivityIndicator color="#1F441E" size="large"/>}
       {snapshot ? (
         <>
           {snapshot.docs.map(doc => {

@@ -1,13 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import {Formik} from 'formik';
 import React, {useState} from 'react';
-import {
-  Dimensions,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Dimensions, Text, TextInput, TouchableOpacity, View,} from 'react-native';
 import {Header} from 'react-native-elements';
 import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -20,6 +14,7 @@ export const AddMasjid = ({navigation}) => {
     zohar: '00:00 AM',
     asar: '00:00 AM',
     magrib: '00:00 AM',
+    jummuah: '00:00 AM',
   });
   return (
     <>
@@ -70,8 +65,11 @@ export const AddMasjid = ({navigation}) => {
           UserPhone: '',
           MasjidAddress: '',
         }}
-        onSubmit={values => console.log(values)}>
-        {({handleChange, handleSubmit, values}) => (
+        onSubmit={values => {
+          console.log(values)
+
+        }}>
+        {({handleChange, handleSubmit, values, errors,touched}) => (
           <View
             style={{
               height: Dimensions.get('window').height - 110,
@@ -93,11 +91,14 @@ export const AddMasjid = ({navigation}) => {
                   elevation: 5,
                 }}>
                 <TextInput
-                  onChangeText={handleChange('email')}
-                  value={values.email}
+                  onChangeText={handleChange('MasjidName')}
+                  value={values.MasjidName}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
                   placeholder="Enter Masjid Name..."
                 />
+                {errors.MasjidName && touched.MasjidName ? (
+                  <div>{errors.MasjidName}</div>
+                ) : null}
               </View>
               <Text style={{marginLeft: 10, marginTop: 10}}>
                 Contact Person
@@ -117,11 +118,14 @@ export const AddMasjid = ({navigation}) => {
                   elevation: 5,
                 }}>
                 <TextInput
-                  onChangeText={handleChange('email')}
-                  value={values.email}
+                  onChangeText={handleChange('UserName')}
+                  value={values.UserName}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
                   placeholder="Enter Your Name..."
                 />
+                {errors.UserName && touched.UserName ? (
+                  <div>{errors.UserName}</div>
+                ) : null}
               </View>
               <Text style={{marginLeft: 10, marginTop: 10}}>Contact Email</Text>
               <View
@@ -139,11 +143,14 @@ export const AddMasjid = ({navigation}) => {
                   elevation: 5,
                 }}>
                 <TextInput
-                  onChangeText={handleChange('email')}
-                  value={values.email}
+                  onChangeText={handleChange('UserEmail')}
+                  value={values.UserEmail}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
                   placeholder="Enter Your Email..."
                 />
+                {errors.UserEmail && touched.UserEmail ? (
+                  <div>{errors.UserEmail}</div>
+                ) : null}
               </View>
               <Text style={{marginLeft: 10, marginTop: 10}}>
                 Contact Person Number
@@ -163,11 +170,14 @@ export const AddMasjid = ({navigation}) => {
                   elevation: 5,
                 }}>
                 <TextInput
-                  onChangeText={handleChange('email')}
-                  value={values.email}
+                  onChangeText={handleChange('UserPhone')}
+                  value={values.UserPhone}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
                   placeholder="Enter Your Phone Number..."
                 />
+                {errors.UserPhone && touched.UserPhone ? (
+                  <div>{errors.UserPhone}</div>
+                ) : null}
               </View>
               <Text style={{marginLeft: 10, marginTop: 10}}>
                 Masjid Address
@@ -187,11 +197,14 @@ export const AddMasjid = ({navigation}) => {
                   elevation: 5,
                 }}>
                 <TextInput
-                  onChangeText={handleChange('email')}
-                  value={values.email}
+                  onChangeText={handleChange('MasjidAddress')}
+                  value={values.MasjidAddress}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
                   placeholder="Enter Masjid Address..."
                 />
+                {errors.MasjidAddress && touched.MasjidAddress ? (
+                  <div>{errors.MasjidAddress}</div>
+                ) : null}
               </View>
               <View
                 style={{
@@ -219,6 +232,8 @@ export const AddMasjid = ({navigation}) => {
                   asar={timing.asar}
                   magrib={timing.magrib}
                   isha={timing.isha}
+                  isAdd={true}
+                  setTiming={setTiming}
                 />
               </View>
               <View

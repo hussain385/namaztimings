@@ -21,7 +21,7 @@ export const getCurrentLocation = async () => {
   const hasPermission = await hasLocationPermission();
 
   if (!hasPermission) {
-    return;
+    return null;
   }
 
   return new Promise((resolve, reject) =>

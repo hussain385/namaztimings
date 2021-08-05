@@ -3,20 +3,11 @@ import firestore from '@react-native-firebase/firestore';
 import _ from 'lodash';
 import moment from 'moment';
 import React, {useState} from 'react';
-import {
-  Alert,
-  Modal,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Alert, Modal, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View,} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Edit = ({isha, fajar, zohar, asar, magrib, uid, isRequest = true}) => {
+const Edit = ({isha, fajar, zohar, asar, magrib, uid, setTiming, isRequest = true, isAdd = false}) => {
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [namazTime, setNamazTime] = useState('');
@@ -50,6 +41,9 @@ const Edit = ({isha, fajar, zohar, asar, magrib, uid, isRequest = true}) => {
       Alert.alert('Alert', 'No Change Found');
     } else {
       console.log(uid);
+      if (isAdd) {
+        return setTiming(time)
+      }
       if (isRequest) {
         await firestore()
           .collection('Masjid')
@@ -139,7 +133,7 @@ const Edit = ({isha, fajar, zohar, asar, magrib, uid, isRequest = true}) => {
         <Text style={{fontSize: 16, marginTop: 3, fontWeight: '200'}}>
           Edit
         </Text>
-        <Icon name="square-edit-outline" size={24} style={{marginTop: 1}} />
+        <Icon name="square-edit-outline" size={24} style={{marginTop: 1}}/>
       </TouchableOpacity>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>

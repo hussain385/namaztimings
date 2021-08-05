@@ -72,5 +72,6 @@
   },
   "jest": {
     "preset": "react-native"
-  }
+  },
+  "packageManager": "yarn@3.0.0"
 }
