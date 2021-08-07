@@ -223,23 +223,6 @@ const Favourites = ({navigation}) => {
         }
         backgroundColor="#1F441E"
       />
-      {/* <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-          <View>
-            {masjidData !== null ? (
-              masjidData.map((masjid, id) => (
-
-              ))
-            ) : (
-              <ActivityIndicator size="small" color="#1F441E" />
-            )}
-
-          </View>
-        </ScrollView>
-      </SafeAreaView> */}
-      {/* {loading ? (
-        <ActivityIndicator color="#1F441E" size="large" />
-      ) : ( */}
       <>
         {(() => {
           if (!loading) {

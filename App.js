@@ -122,7 +122,7 @@ const HomeStackScreen = ({navigation}) => (
       name="adminNotification"
       component={AdminNotification}
       options={{
-        headerShown: true,
+        headerShown: false,
       }}
     />
     <HomeStack.Screen

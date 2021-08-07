@@ -43,53 +43,60 @@ const Item = props => (
       />
     </TouchableOpacity>
 
-    <Card.Actions style={{flexDirection: 'column'}}>
-      <View style={{flexDirection: 'row', margin: 5}}>
-        <View style={{flexGrow: 1}}>
-          <Text style={{fontSize: 17}}>{props.title}</Text>
+    <Card.Actions>
+      <View style={{width: '100%'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            margin: 5,
+            justifyContent: 'space-between',
+          }}>
+          <View style={{maxWidth: 250}}>
+            <Text style={{fontSize: 17}}>{props.title}</Text>
+          </View>
+          <View>
+            <Text
+              onPress={() => {
+                Linking.openURL(
+                  `https://maps.google.com/?q=${props.latitude},${props.longitude}`,
+                );
+              }}
+              style={{color: '#900000', textDecorationLine: 'underline'}}>
+              {props.distance}KM AWAY
+            </Text>
+          </View>
         </View>
-        <View>
-          <Text
-            onPress={() => {
-              Linking.openURL(
-                `https://maps.google.com/?q=${props.latitude},${props.longitude}`,
-              );
-            }}
-            style={{color: '#8D2828', textDecorationLine: 'underline'}}>
-            {props.distance || 0} Km Away
-          </Text>
-        </View>
-      </View>
-      <View style={{flexDirection: 'row', marginTop: 10}}>
-        <View style={{flexGrow: 5}}>
-          <Text style={{textAlign: 'center', fontSize: 14}}>Fajar</Text>
-          <Text style={{textAlign: 'center', fontSize: 14}}>
-            {props.timings.fajar || '--'}
-          </Text>
-        </View>
-        <View style={{flexGrow: 5}}>
-          <Text style={{textAlign: 'center', fontSize: 14}}>Zohar</Text>
-          <Text style={{textAlign: 'center', fontSize: 14}}>
-            {props.timings.zohar || '--'}
-          </Text>
-        </View>
-        <View style={{flexGrow: 5}}>
-          <Text style={{textAlign: 'center', fontSize: 14}}>Asar</Text>
-          <Text style={{textAlign: 'center', fontSize: 14}}>
-            {props.timings.asar || '--'}
-          </Text>
-        </View>
-        <View style={{flexGrow: 5}}>
-          <Text style={{textAlign: 'center', fontSize: 14}}>Magrib</Text>
-          <Text style={{textAlign: 'center', fontSize: 14}}>
-            {props.timings.magrib || '--'}
-          </Text>
-        </View>
-        <View style={{flexGrow: 5}}>
-          <Text style={{textAlign: 'center', fontSize: 14}}>Isha</Text>
-          <Text style={{textAlign: 'center', fontSize: 14}}>
-            {props.timings.isha || '--'}
-          </Text>
+        <View style={{flexDirection: 'row', marginTop: 10}}>
+          <View style={{flexGrow: 5}}>
+            <Text style={{textAlign: 'center', fontSize: 14}}>Fajar</Text>
+            <Text style={{textAlign: 'center', fontSize: 14}}>
+              {props.timings.fajar || '--'}
+            </Text>
+          </View>
+          <View style={{flexGrow: 5}}>
+            <Text style={{textAlign: 'center', fontSize: 14}}>Zohar</Text>
+            <Text style={{textAlign: 'center', fontSize: 14}}>
+              {props.timings.zohar || '--'}
+            </Text>
+          </View>
+          <View style={{flexGrow: 5}}>
+            <Text style={{textAlign: 'center', fontSize: 14}}>Asar</Text>
+            <Text style={{textAlign: 'center', fontSize: 14}}>
+              {props.timings.asar || '--'}
+            </Text>
+          </View>
+          <View style={{flexGrow: 5}}>
+            <Text style={{textAlign: 'center', fontSize: 14}}>Magrib</Text>
+            <Text style={{textAlign: 'center', fontSize: 14}}>
+              {props.timings.magrib || '--'}
+            </Text>
+          </View>
+          <View style={{flexGrow: 5}}>
+            <Text style={{textAlign: 'center', fontSize: 14}}>Isha</Text>
+            <Text style={{textAlign: 'center', fontSize: 14}}>
+              {props.timings.isha || '--'}
+            </Text>
+          </View>
         </View>
       </View>
     </Card.Actions>
@@ -175,21 +182,6 @@ const ShowMore = ({navigation}) => {
         backgroundColor="#1F441E"
       />
       {loading && <ActivityIndicator color="#1F441E" size="large" />}
-      {/* <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-          <View>
-            {masjidData !== null ? (
-              masjidData.map((masjid, id) => (
-
-              ))
-            ) : (
-              <ActivityIndicator size="small" color="#1F441E" />
-            )}
-
-          </View>
-        </ScrollView>
-      </SafeAreaView> */}
-
       <FlatList
         data={masjidData}
         renderItem={renderItem}

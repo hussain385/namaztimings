@@ -16,7 +16,16 @@ import {
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Edit = ({isha, fajar, zohar, asar, magrib, uid, isRequest = true}) => {
+const Edit = ({
+  isha,
+  fajar,
+  zohar,
+  asar,
+  magrib,
+  uid,
+  isRequest = true,
+  value = 'Edit',
+}) => {
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [namazTime, setNamazTime] = useState('');
@@ -27,11 +36,6 @@ const Edit = ({isha, fajar, zohar, asar, magrib, uid, isRequest = true}) => {
     asar: asar,
     magrib: magrib,
   });
-
-  // const [timeFajar, setTimeFajar] = useState({fajar});
-  // const [timeZohar, setTimeZohar] = useState({zohar});
-  // const [timeAsar, setTimeAsar] = useState({asar});
-  // const [timeMagrib, setTimeMagrib] = useState({magrib});
 
   const showTimePicker = namazName => {
     setTimePickerVisibility(true);
@@ -57,7 +61,17 @@ const Edit = ({isha, fajar, zohar, asar, magrib, uid, isRequest = true}) => {
           .collection('requests')
           .add(time)
           .then(a => {
-            Alert.alert('Alert', 'Request has been forwarded to the admin');
+            Alert.alert(
+              'Request Send!',
+              'Request has been forwarded to the admin',
+              [
+                {
+                  text: 'Ok',
+                  onPress: () => setModalVisible(!modalVisible),
+                },
+              ],
+              {cancelable: false},
+            );
           });
       } else {
         await firestore()
@@ -67,10 +81,12 @@ const Edit = ({isha, fajar, zohar, asar, magrib, uid, isRequest = true}) => {
             timing: {
               ...time,
             },
+          })
+          .then(a => {
+            setModalVisible(!modalVisible);
           });
       }
     }
-    await setTimePickerVisibility(false);
   }
 
   const hideTimePicker = () => {
@@ -78,13 +94,8 @@ const Edit = ({isha, fajar, zohar, asar, magrib, uid, isRequest = true}) => {
   };
 
   const handleConfirm = newTime => {
-    // newTime = new Date(newTime);
     const timeString = moment(newTime).format('hh:mm A');
     console.log(timeString);
-    // const timeString =
-    //   newTime.getHours() >= 12
-    //     ? `${'0' + String(newTime.getHours() - 12)}:${newTime.getMinutes()} PM`
-    //     : `${'0' + String(newTime.getHours())}:${newTime.getMinutes()} AM`;
     if (namazTime === 'Magrib') {
       setTime(pre => {
         return {
@@ -137,7 +148,7 @@ const Edit = ({isha, fajar, zohar, asar, magrib, uid, isRequest = true}) => {
           setModalVisible(!modalVisible);
         }}>
         <Text style={{fontSize: 16, marginTop: 3, fontWeight: '200'}}>
-          Edit
+          {value}
         </Text>
         <Icon name="square-edit-outline" size={24} style={{marginTop: 1}} />
       </TouchableOpacity>

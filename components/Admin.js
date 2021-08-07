@@ -92,7 +92,12 @@ const Admin = ({navigation}) => {
         }
         rightComponent={
           <TouchableOpacity
-            onPress={() => navigation.navigate('adminNotification', {requests})}
+            onPress={() =>
+              navigation.navigate('adminNotification', {
+                requests,
+                id: snapshot.docs.id,
+              })
+            }
             style={{
               paddingRight: 10,
             }}>
