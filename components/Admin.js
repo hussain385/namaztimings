@@ -15,11 +15,12 @@ import {
 import {Header} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {AuthContext} from '../store/fireAuth';
+// import {AuthContext} from '../store/fireAuth';
 import {modifyData} from '../store/firebase';
 import {headerStyles, textStyles} from '../theme/styles/Base';
 import Edit from '../views/Edit';
 import CoText from '../views/Text/Text';
+import { useSelector } from 'react-redux';
 
 const Admin = ({navigation}) => {
   const [notify, setNotify] = React.useState(0);
@@ -27,7 +28,8 @@ const Admin = ({navigation}) => {
   const [snapshot, setSnapshot] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState();
-  const user = React.useContext(AuthContext);
+  const auth = useSelector(state => state.firebase.auth);
+  // const user = React.useContext(AuthContext);
   // const [snapshot, loading, error] = useCollectionOnce(
   //   firestore().collection('Masjid').where('adminId', '==', user.uid),
   // );
@@ -36,7 +38,7 @@ const Admin = ({navigation}) => {
     let unSubReq;
     firestore()
       .collection('Masjid')
-      .where('adminId', '==', user.uid)
+      .where('adminId', '==', auth.uid)
       .get()
       .then(data => {
         setLoading(false);
@@ -49,31 +51,31 @@ const Admin = ({navigation}) => {
             .collection('requests')
             .onSnapshot(reqData => {
               reqData.docChanges().forEach((change) => {
-                if (change.type === "added") {
+                if (change.type === 'added') {
                   setNotify(prevState => {
-                    return prevState += 1
-                  })
+                    return prevState += 1;
+                  });
                 }
-                if (change.type === "modified") {
+                if (change.type === 'modified') {
                   const data = change.doc.data();
-                  if (data['isRead'] === true) {
+                  if (data.isRead === true) {
                     setNotify(prevState => {
-                      return prevState -= 1
-                    })
+                      return prevState -= 1;
+                    });
                   } else {
                     setNotify(prevState => {
-                      return prevState += 1
-                    })
+                      return prevState += 1;
+                    });
                   }
                 }
-                if (change.type === "removed") {
+                if (change.type === 'removed') {
                   setNotify(prevState => {
-                    return prevState -= 1
-                  })
+                    return prevState -= 1;
+                  });
                 }
 
-              })
-              reqData.initData()
+              });
+              reqData.initData();
               setRequests(reqData.docs);
             });
         });
@@ -82,7 +84,7 @@ const Admin = ({navigation}) => {
       unSubReq && unSubReq();
       console.log('unsubscribing....');
     };
-  }, [user.uid]);
+  }, [auth.uid]);
 
   return (
     <SafeAreaView>
