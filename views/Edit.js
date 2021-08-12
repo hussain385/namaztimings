@@ -55,7 +55,11 @@ const Edit = ({
       console.log(isRequest);
       Alert.alert('Alert', 'No Change Found');
     } else {
-      console.log(uid);
+      setTime(prevState => ({
+        ...prevState,
+        isRead: false,
+        createdAt: firestore.Timestamp.now(),
+      }));
       if (isRequest) {
         await firestore()
           .collection('Masjid')

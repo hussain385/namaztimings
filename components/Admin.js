@@ -19,6 +19,7 @@ import {headerStyles, textStyles} from '../theme/styles/Base';
 import Edit from '../views/Edit';
 import CoText from '../views/Text/Text';
 import {useSelector} from 'react-redux';
+import _ from 'lodash';
 
 const Admin = ({navigation}) => {
   const [notify, setNotify] = React.useState(0);
@@ -47,6 +48,7 @@ const Admin = ({navigation}) => {
             .collection('requests')
             .onSnapshot(reqData => {
               const rData = [];
+              console.log(reqData);
               reqData.forEach(docSnapshot => {
                 rData.push({
                   ...docSnapshot.data(),
@@ -54,7 +56,7 @@ const Admin = ({navigation}) => {
                   Masjidid: n.id,
                 });
               });
-              setRequests(rData);
+              setRequests(_.sortBy(rData, 'createdAt'));
               reqData.docChanges().forEach(change => {
                 if (change.type === 'added') {
                   setNotify(prevState => {

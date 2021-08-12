@@ -11,6 +11,19 @@ import {Header} from 'react-native-elements';
 import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Edit from './Edit';
+import firestore from '@react-native-firebase/firestore';
+
+const deleteFunc = (masjidId, reqId) => {
+  firestore()
+    .collection('Masjid')
+    .doc(masjidId)
+    .collection('requests')
+    .doc(reqId)
+    .delete()
+    .then(value => {
+      console.log('deleted', value);
+    });
+};
 
 const Item = ({fajar, zohar, asar, magrib, isha, id, Masjidid}) => (
   <Card
@@ -79,7 +92,9 @@ const Item = ({fajar, zohar, asar, magrib, isha, id, Masjidid}) => (
             padding: 10,
           }}>
           <Text style={{fontSize: 15, color: 'green'}}>Mark As Read</Text>
-          <Text style={{fontSize: 15, color: 'red'}}>Delete Message</Text>
+          <TouchableOpacity onPress={() => deleteFunc(Masjidid, id)}>
+            <Text style={{fontSize: 15, color: 'red'}}>Delete Message</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </Card.Actions>
@@ -100,7 +115,7 @@ const AdminNotification = ({
       asar={item.asar}
       magrib={item.magrib}
       isha={item.isha}
-      id={item.id}
+      id={item.id} //Own ID
       Masjidid={item.Masjidid}
     />
   );
