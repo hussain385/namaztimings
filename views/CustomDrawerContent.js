@@ -2,13 +2,13 @@
 import auth from '@react-native-firebase/auth';
 import {DrawerContentScrollView} from '@react-navigation/drawer';
 import _ from 'lodash';
-import React, {useContext} from 'react';
+import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CoText from '../views/Text/Text';
-import {isLoaded, useFirebase} from 'react-redux-firebase';
+import {isEmpty, isLoaded, useFirebase} from 'react-redux-firebase';
 import {useSelector} from 'react-redux';
 
 const CustomDrawerContent = ({navigation}) => {
@@ -16,9 +16,8 @@ const CustomDrawerContent = ({navigation}) => {
   const firebaseApp = useFirebase();
 
   async function handleSignOut() {
-    console.log(auth);
+    console.log('logging Out...', auth);
     await firebaseApp.logout();
-
     navigation.navigate('Home');
   }
 
@@ -152,7 +151,7 @@ const CustomDrawerContent = ({navigation}) => {
         </View>
       </TouchableOpacity>
       {(() => {
-        if (!isLoaded(auth)) {
+        if (isLoaded(auth) && !isEmpty(auth)) {
           return (
             <>
               <TouchableOpacity

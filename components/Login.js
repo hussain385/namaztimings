@@ -27,7 +27,7 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
 import CoText from '../views/Text/Text';
-import { isLoaded, useFirebase } from 'react-redux-firebase';
+import { isEmpty, isLoaded, useFirebase } from 'react-redux-firebase';
 import { useSelector } from 'react-redux';
 
 // const HEIGHT = Dimensions.get('window').height;
@@ -53,7 +53,7 @@ const Login = ({navigation}) => {
     console.log('Logged in as :', auth);
   }
 
-  if (isLoaded(auth)) {
+  if (isLoaded(auth) && !isEmpty(auth)) {
     console.log('the current user:',auth);
     navigation.navigate('Admin view');
   }

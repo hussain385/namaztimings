@@ -35,7 +35,7 @@ const Admin = ({navigation}) => {
     let unSubReq;
     const sub = firestore()
       .collection('Masjid')
-      .where('adminId', '==', auth.id)
+      .where('adminId', '==', auth.uid ? auth.uid : '')
       .onSnapshot(data => {
         setLoading(false);
         setSnapshot(data);
@@ -87,7 +87,7 @@ const Admin = ({navigation}) => {
       unSubReq && unSubReq();
       console.log('unsubscribing....');
     };
-  }, [auth.id]);
+  }, [auth.uid]);
   return (
     <SafeAreaView>
       <Header
