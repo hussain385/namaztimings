@@ -295,7 +295,7 @@ const Seacrh = ({navigation}) => {
             <FlatList
               data={masjidData}
               renderItem={renderItem}
-              keyExtractor={() => masjidData.key}
+              keyExtractor={item => item.key}
               style={{marginBottom: 140}}
             />
           );

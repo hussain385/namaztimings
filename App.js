@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import '@react-native-firebase/app';
+import firebase from '@react-native-firebase/app';
 import messaging from '@react-native-firebase/messaging';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -23,7 +23,7 @@ import Notifications from './components/Notifications';
 import Search from './components/Search';
 import Terms from './components/Terms';
 import {store} from './redux/store';
-import {AuthContext, AuthContextProvider} from './store/fireAuth';
+// import {AuthContext, AuthContextProvider} from './store/fireAuth';
 import {AddMasjid} from './views/AddMasjid';
 import AdminNotification from './views/AdminNotification';
 import CustomDrawerContent from './views/CustomDrawerContent';
@@ -31,6 +31,7 @@ import Map from './views/Map';
 import Maps1 from './views/Maps1';
 import MasjidInfo from './views/MasjidInfo';
 import ShowMore from './views/ShowMore';
+import {ReactReduxFirebaseProvider} from 'react-redux-firebase';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -227,8 +228,6 @@ const HomeStackScreen = ({navigation}) => (
 );
 
 function MyDrawer() {
-  const user = React.useContext(AuthContext);
-  console.log(user, '<============= user');
   return (
     <Drawer.Navigator
       initialRouteName="Home"
@@ -342,8 +341,8 @@ function MyDrawer() {
       <Drawer.Screen name="Invite Your Friends" component={Invite} />
       <Drawer.Screen name="Contact Us" component={ContactUS} />
       <Drawer.Screen name="Terms & Conditions" component={Terms} />
-      <Drawer.Screen name="Admin view" component={Admin} />
       <Drawer.Screen name="login" component={Login} />
+      <Drawer.Screen name="Admin view" component={Admin} />
       {/* <Drawer.Screen name="More Info" component={MasjidInfo} /> */}
     </Drawer.Navigator>
   );
@@ -450,6 +449,16 @@ function MyTabs() {
 
 export default function App() {
   const persistor = persistStore(store);
+  const rrfConfig = {
+    userProfile: 'users',
+    // useFirestoreForProfile: true // Firestore for Profile instead of Realtime DB
+  };
+  const rrfProps = {
+    firebase: firebase,
+    config: rrfConfig,
+    dispatch: store.dispatch,
+    // createFirestoreInstance // <- needed if using firestore
+  };
 
   React.useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
@@ -465,11 +474,11 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <AuthContextProvider>
+        <ReactReduxFirebaseProvider {...rrfProps}>
           <NavigationContainer>
             <RootStackScreen />
           </NavigationContainer>
-        </AuthContextProvider>
+        </ReactReduxFirebaseProvider>
       </PersistGate>
     </Provider>
   );

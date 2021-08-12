@@ -4,8 +4,8 @@ import React, {useState} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Header} from 'react-native-elements';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {useSignInWithEmailAndPassword} from 'react-firebase-hooks/auth';
-import auth from '@react-native-firebase/auth';
+// import {useSignInWithEmailAndPassword} from 'react-firebase-hooks/auth';
+// import auth from '@react-native-firebase/auth';
 import {conStyles, textStyles, textIn, btnStyles} from '../theme/styles/Base';
 import {
   View,
@@ -27,6 +27,8 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import _ from 'lodash';
 import CoText from '../views/Text/Text';
+import { isLoaded, useFirebase } from 'react-redux-firebase';
+import { useSelector } from 'react-redux';
 
 // const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
@@ -34,8 +36,10 @@ const WIDTH = Dimensions.get('window').width;
 const Login = ({navigation}) => {
   const [email, setEmail] = useState();
   const forgotLoading = false;
-  const [signInWithEmailAndPassword, user, loading, error] =
-    useSignInWithEmailAndPassword(auth());
+  const firebaseApp = useFirebase();
+  const auth = useSelector(state => state.firebase.auth);
+  // const [signInWithEmailAndPassword, user, loading, error] =
+  //   useSignInWithEmailAndPassword(auth());
   function onChangeEmail(text) {
     setEmail(text);
   }
@@ -44,12 +48,13 @@ const Login = ({navigation}) => {
     setPassword(text);
   }
   async function submitLogin() {
-    signInWithEmailAndPassword(email, password);
-    console.log('Logged in as :', user);
+    // signInWithEmailAndPassword(email, password);
+    await firebaseApp.login({email,password});
+    console.log('Logged in as :', auth);
   }
 
-  if (user) {
-    console.log('the current user:',user);
+  if (isLoaded(auth)) {
+    console.log('the current user:',auth);
     navigation.navigate('Admin view');
   }
 
@@ -230,14 +235,14 @@ const Login = ({navigation}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              {error && (
-                <>
-                  <CoText
-                    textStyles={[textStyles.simple, {color: 'red'}]}
-                    text={JSON.stringify(error.message)}
-                  />
-                </>
-              )}
+              {/*{error && (*/}
+              {/*  <>*/}
+              {/*    <CoText*/}
+              {/*      textStyles={[textStyles.simple, {color: 'red'}]}*/}
+              {/*      text={JSON.stringify(error.message)}*/}
+              {/*    />*/}
+              {/*  </>*/}
+              {/*)}*/}
             </View>
             <View
               style={{
@@ -245,14 +250,14 @@ const Login = ({navigation}) => {
                 paddingHorizontal: 20,
               }}>
               <TouchableOpacity onPress={submitLogin} style={btnStyles.basic}>
-                {loading ? (
-                  <ActivityIndicator size="small" color="white" />
-                ) : (
+                {/*{loading ? (*/}
+                {/*  <ActivityIndicator size="small" color="white" />*/}
+                {/*) : (*/}
                   <CoText
                     textStyles={[textStyles.simple, {color: 'white'}]}
                     text="SIGN IN "
                   />
-                )}
+                {/*)}*/}
               </TouchableOpacity>
             </View>
           </View>
