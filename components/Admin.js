@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 import firestore from '@react-native-firebase/firestore';
 import * as React from 'react';
@@ -15,11 +14,11 @@ import {
 import {Header} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {AuthContext} from '../store/fireAuth';
 import {modifyData} from '../store/firebase';
 import {headerStyles, textStyles} from '../theme/styles/Base';
 import Edit from '../views/Edit';
 import CoText from '../views/Text/Text';
+import {useSelector} from 'react-redux';
 
 const Admin = ({navigation}) => {
   const [notify, setNotify] = React.useState(0);
@@ -27,7 +26,7 @@ const Admin = ({navigation}) => {
   const [snapshot, setSnapshot] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState();
-  const user = React.useContext(AuthContext);
+  const auth = useSelector(state => state.firebase.auth);
   // const [snapshot, loading, error] = useCollectionOnce(
   //   firestore().collection('Masjid').where('adminId', '==', user.uid),
   // );
@@ -36,7 +35,7 @@ const Admin = ({navigation}) => {
     let unSubReq;
     const sub = firestore()
       .collection('Masjid')
-      .where('adminId', '==', user.uid)
+      .where('adminId', '==', auth.id)
       .onSnapshot(data => {
         setLoading(false);
         setSnapshot(data);
@@ -88,7 +87,7 @@ const Admin = ({navigation}) => {
       unSubReq && unSubReq();
       console.log('unsubscribing....');
     };
-  }, [user.uid]);
+  }, [auth.id]);
   return (
     <SafeAreaView>
       <Header
