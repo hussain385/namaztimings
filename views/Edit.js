@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {GetRadMasjidData1} from '../store/firebase';
 
 const Edit = ({
   isha,
@@ -50,7 +51,8 @@ const Edit = ({
       asar: asar,
       magrib: magrib,
     };
-    if (_.isEqual(time, prevTime)) {
+    if (_.isEqual(time, prevTime) && isRequest) {
+      console.log(isRequest);
       Alert.alert('Alert', 'No Change Found');
     } else {
       console.log(uid);
@@ -84,6 +86,7 @@ const Edit = ({
           })
           .then(a => {
             setModalVisible(!modalVisible);
+            GetRadMasjidData1().GetData();
           });
       }
     }

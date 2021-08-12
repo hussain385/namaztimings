@@ -23,7 +23,7 @@ import CoText from '../views/Text/Text';
 
 const Admin = ({navigation}) => {
   const [notify, setNotify] = React.useState(0);
-  const [requests, setRequests] = React.useState([]);
+  const [requests, setRequests] = React.useState(null);
   const [snapshot, setSnapshot] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState();
@@ -34,11 +34,10 @@ const Admin = ({navigation}) => {
   React.useEffect(() => {
     setLoading(true);
     let unSubReq;
-    firestore()
+    const sub = firestore()
       .collection('Masjid')
       .where('adminId', '==', user.uid)
-      .get()
-      .then(data => {
+      .onSnapshot(data => {
         setLoading(false);
         setSnapshot(data);
         setNotify(0);
@@ -48,42 +47,48 @@ const Admin = ({navigation}) => {
             .doc(n.id)
             .collection('requests')
             .onSnapshot(reqData => {
-              reqData.docChanges().forEach((change) => {
-                if (change.type === "added") {
+              const rData = [];
+              reqData.forEach(docSnapshot => {
+                rData.push({
+                  ...docSnapshot.data(),
+                  id: docSnapshot.id,
+                  Masjidid: n.id,
+                });
+              });
+              setRequests(rData);
+              reqData.docChanges().forEach(change => {
+                if (change.type === 'added') {
                   setNotify(prevState => {
-                    return prevState += 1
-                  })
+                    return (prevState += 1);
+                  });
                 }
-                if (change.type === "modified") {
-                  const data = change.doc.data();
-                  if (data['isRead'] === true) {
+                if (change.type === 'modified') {
+                  const data1 = change.doc.data();
+                  if (data1.isRead === true) {
                     setNotify(prevState => {
-                      return prevState -= 1
-                    })
+                      return (prevState -= 1);
+                    });
                   } else {
                     setNotify(prevState => {
-                      return prevState += 1
-                    })
+                      return (prevState += 1);
+                    });
                   }
                 }
-                if (change.type === "removed") {
+                if (change.type === 'removed') {
                   setNotify(prevState => {
-                    return prevState -= 1
-                  })
+                    return (prevState -= 1);
+                  });
                 }
-
-              })
-              reqData.initData()
-              setRequests(reqData.docs);
+              });
             });
         });
       }, setError);
     return () => {
+      sub();
       unSubReq && unSubReq();
       console.log('unsubscribing....');
     };
   }, [user.uid]);
-
   return (
     <SafeAreaView>
       <Header
@@ -92,7 +97,7 @@ const Admin = ({navigation}) => {
           elevation: 50,
         }}
         leftComponent={
-          <TouchableOpacity onPress={() => navigation.navigate('home')}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon
               name="arrow-left"
               color="#ffff"
@@ -136,7 +141,7 @@ const Admin = ({navigation}) => {
                   text={notify}
                 />
               </View>
-              <MaterialIcons name="bell" size={28} color="white"/>
+              <MaterialIcons name="bell" size={28} color="white" />
             </View>
           </TouchableOpacity>
         }
@@ -147,7 +152,7 @@ const Admin = ({navigation}) => {
           <Text>{error}</Text>
         </View>
       )}
-      {loading && <ActivityIndicator color="#1F441E" size="large"/>}
+      {loading && <ActivityIndicator color="#1F441E" size="large" />}
       {snapshot ? (
         <>
           {snapshot.docs.map(doc => {

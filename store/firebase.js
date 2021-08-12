@@ -198,7 +198,7 @@ export function GetRadMasjidData1(radius = 50) {
       });
   }
 
-  return [masjid, loading, location, error, getLocation, GetData];
+  return {masjid, loading, location, error, getLocation, GetData};
 }
 
 function GetUsers() {

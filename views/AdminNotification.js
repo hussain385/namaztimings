@@ -12,7 +12,7 @@ import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Edit from './Edit';
 
-const Item = ({fajar, zohar, asar, magrib, isha, id}) => (
+const Item = ({fajar, zohar, asar, magrib, isha, id, Masjidid}) => (
   <Card
     style={{
       borderRadius: 5,
@@ -42,7 +42,7 @@ const Item = ({fajar, zohar, asar, magrib, isha, id}) => (
                 asar={asar}
                 magrib={magrib}
                 isha={isha}
-                uid={id}
+                uid={Masjidid}
                 isRequest={false}
                 value="View"
               />
@@ -89,18 +89,22 @@ const Item = ({fajar, zohar, asar, magrib, isha, id}) => (
 const AdminNotification = ({
   navigation,
   route: {
-    params: {requests},
+    params: {requests, id},
   },
 }) => {
+  console.log(requests);
   const renderItem = ({item}) => (
     <Item
-      fajar={item.data().fajar}
-      zohar={item.data().zohar}
-      asar={item.data().asar}
-      magrib={item.data().magrib}
-      isha={item.data().isha}
+      fajar={item.fajar}
+      zohar={item.zohar}
+      asar={item.asar}
+      magrib={item.magrib}
+      isha={item.isha}
+      id={item.id}
+      Masjidid={item.Masjidid}
     />
   );
+
   return (
     <SafeAreaView>
       <Header
@@ -128,7 +132,7 @@ const AdminNotification = ({
                 marginTop: 5,
                 textAlign: 'center',
               }}>
-              More Masjid
+              Requests
             </Text>
           </View>
         }
