@@ -43,16 +43,9 @@ export const getCurrentLocation = async () => {
 
 export function modifyData(data, id, d) {
   return {
-    name: data.name,
-    address: data.address,
-    pictureURL: data.pictureURL,
-    adminId: data.adminId || '',
+    ...data,
     key: id,
     distance: Number(d.toFixed(2)),
-    g: {
-      geohash: data.g.geohash,
-      geopoint: data.g.geopoint,
-    },
     timing: {
       asar: !_.isUndefined(data.timing)
         ? !_.isUndefined(data.timing.asar) && data.timing.asar
@@ -71,6 +64,37 @@ export function modifyData(data, id, d) {
         : '05:30 PM',
     },
   };
+}
+export function sortMasjidData1(snapshot, {latitude, longitude}) {
+  const masjids = [];
+  console.log('sortMasjidData1', snapshot);
+  if (
+    _.isUndefined(snapshot) ||
+    _.isUndefined(latitude) ||
+    _.isUndefined(longitude)
+  ) {
+    return [];
+  }
+
+  _.map(snapshot, data => {
+    const loc1 = data.g.geopoint;
+    const d = haversine(loc1, {latitude, longitude});
+    const tempData = modifyData(data, data.id, d);
+    console.log(latitude, longitude, d, loc1, data.g, '<======== tempData');
+    const adminId = tempData.adminId;
+    console.log(adminId, _.isEmpty(adminId), typeof adminId);
+    if (_.isEmpty(adminId)) {
+      console.log('when True');
+      masjids.push({
+        ...tempData,
+        user: {
+          name: 'No Admin',
+          phone: '**********',
+        },
+      });
+    }
+  });
+  return _.sortBy(masjids, 'distance');
 }
 
 export async function sortMasjidData(snapshot, {latitude, longitude}) {

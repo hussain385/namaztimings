@@ -5963,6 +5963,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"immer@npm:8.0.1":
+  version: 8.0.1
+  resolution: "immer@npm:8.0.1"
+  checksum: 63d875c04882b862481a0a692816e5982975a47a57619698bc1bb52963ad3b624911991708b2b81a7af6fdac15083d408e43932d83a6a61216e5a4503efd4095
+  languageName: node
+  linkType: hard
+
 "immer@npm:^9.0.1":
   version: 9.0.5
   resolution: "immer@npm:9.0.5"
@@ -8362,6 +8369,7 @@ __metadata:
     react-redux: ^7.2.4
     react-redux-firebase: ^3.10.0
     react-test-renderer: 17.0.2
+    redux-firestore: ^0.15.0
     redux-persist: ^6.0.0
     rxjs: ^7.3.0
   languageName: unknown
@@ -9690,6 +9698,24 @@ __metadata:
   dependencies:
     resolve: ^1.1.6
   checksum: fe76bf9c21875ac16e235defedd7cbd34f333c02a92546142b7911a0f7c7059d2e16f441fe6fb9ae203f459c05a31b2bcf26202896d89e390eda7514d5d2702b
+  languageName: node
+  linkType: hard
+
+"reduce-reducers@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "reduce-reducers@npm:1.0.4"
+  checksum: 9b3648fa505a3ac7834cd8150ec98f9915e4020c8df0e9a4eddb5d3615814067943913f2582d0be4763ad6583209c0cf7ad3cc1021745b9b8e6ace768d49f6a9
+  languageName: node
+  linkType: hard
+
+"redux-firestore@npm:^0.15.0":
+  version: 0.15.0
+  resolution: "redux-firestore@npm:0.15.0"
+  dependencies:
+    immer: 8.0.1
+    lodash: ^4.17.20
+    reduce-reducers: ^1.0.4
+  checksum: 2a089d20ee822563359a646f33f9215f57269daf2d611b298068d3e0a297f07d0905a74cb71c42a48f54d36f2eac25d76fc8909a2f8a9a1410c249d9a73fc543
   languageName: node
   linkType: hard
 

@@ -61,24 +61,28 @@ const Edit = ({
         createdAt: firestore.Timestamp.now(),
       }));
       if (isRequest) {
-        await firestore()
-          .collection('Masjid')
-          .doc(uid)
-          .collection('requests')
-          .add(time)
-          .then(a => {
-            Alert.alert(
-              'Request Send!',
-              'Request has been forwarded to the admin',
-              [
-                {
-                  text: 'Ok',
-                  onPress: () => setModalVisible(!modalVisible),
-                },
-              ],
-              {cancelable: false},
-            );
-          });
+        try {
+          await firestore()
+            .collection('Masjid')
+            .doc(uid)
+            .collection('requests')
+            .add(time)
+            .then(a => {
+              Alert.alert(
+                'Request Send!',
+                'Request has been forwarded to the admin',
+                [
+                  {
+                    text: 'Ok',
+                    onPress: () => setModalVisible(!modalVisible),
+                  },
+                ],
+                {cancelable: false},
+              );
+            });
+        } catch (e) {
+          console.log(e);
+        }
       } else {
         await firestore()
           .collection('Masjid')

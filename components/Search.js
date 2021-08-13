@@ -17,8 +17,15 @@ import {
 } from 'react-native';
 import {Header} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {GetAllMasjidData, getCurrentLocation} from '../store/firebase';
+import { getCurrentLocation, sortMasjidData, sortMasjidData1 } from '../store/firebase';
 import Favbtn from '../views/Favbtn';
+import {  isLoaded, populate, useFirestoreConnect } from 'react-redux-firebase';
+import {  useSelector } from 'react-redux';
+
+const populates = [
+  { child: 'adminId', root: 'users' , childAlias: 'user'}, // replace owner with user object
+];
+
 
 const Item = ({
   url,
@@ -160,13 +167,24 @@ const Item = ({
   </View>
 );
 
-const Seacrh = ({navigation}) => {
-  const [masjidData, loading] = GetAllMasjidData();
-  // const fuse = new Fuse(masjidData, {keys: ['name', 'address']});
-  const [textSearch, setTextSearch] = useState('');
-  const [location, setLocation] = useState();
-  const [result, setResult] = useState(null);
 
+const Search = ({navigation}) => {
+  // const [masjidData, loading] = GetAllMasjidData();
+  // const snapshot = useSelector(state => state.firestore.ordered.Masjid);
+  // console.log(useSelector(state => state.firestore));
+  // const fuse = new Fuse(masjidData, {keys: ['name', 'address']});
+  useFirestoreConnect([
+    {
+      collection: 'Masjid',
+      populates,
+    },
+  ]);
+  const [textSearch, setTextSearch] = useState('');
+  const [location, setLocation] = useState({coords: {latitude: null, longitude: null}});
+  const [result, setResult] = useState(null);
+  // const [masjidData, setMasjidData] = useState([]);
+  const masjid = populate(useSelector(state => state.firestore), 'Masjid',populates);
+  const masjidData = sortMasjidData1(masjid,location.coords);
   // const [modalVisible, setModalVisible] = useState(false);
 
   function onChangeSearch(text) {
@@ -186,7 +204,6 @@ const Seacrh = ({navigation}) => {
       .catch(e => {
         console.log(e);
       });
-    console.log(masjidData, '----- data');
   }, []);
 
   const renderItem = ({item}) => (
@@ -198,6 +215,7 @@ const Seacrh = ({navigation}) => {
       nav={navigation}
       distance={item.distance}
       favId={item.key}
+      key={item.id}
       latitude={item.g.geopoint.latitude}
       longitude={item.g.geopoint.longitude}
       user={item.user}
@@ -212,6 +230,7 @@ const Seacrh = ({navigation}) => {
       nav={navigation}
       distance={item.item.distance}
       favId={item.item.key}
+      key={item.item.id}
       latitude={item.item.g.geopoint.latitude}
       user={item.item.user}
       longitude={item.item.g.geopoint.longitude}
@@ -288,7 +307,7 @@ const Seacrh = ({navigation}) => {
       {/* <View>
       </View> */}
 
-      {loading && <ActivityIndicator color="#1F441E" size="large" />}
+      {!isLoaded(masjid) && <ActivityIndicator color="#1F441E" size="large" />}
       {(() => {
         if (result === null) {
           return (
@@ -317,7 +336,7 @@ const Seacrh = ({navigation}) => {
                     <FlatList
                       data={masjidData}
                       renderItem={renderItem}
-                      keyExtractor={masjidData.key}
+                      keyExtractor={item => item.id}
                       style={{height: Dimensions.get('window').height - 240}}
                     />
                   );
@@ -327,7 +346,7 @@ const Seacrh = ({navigation}) => {
           );
         }
       })()}
-      {!loading && (
+      {isLoaded(masjid) && (
         <View
           style={{
             alignSelf: 'center',
@@ -373,4 +392,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Seacrh;
+export default Search;

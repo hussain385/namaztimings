@@ -32,6 +32,7 @@ import Maps1 from './views/Maps1';
 import MasjidInfo from './views/MasjidInfo';
 import ShowMore from './views/ShowMore';
 import {ReactReduxFirebaseProvider} from 'react-redux-firebase';
+import {createFirestoreInstance} from 'redux-firestore';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -457,7 +458,7 @@ export default function App() {
     firebase: firebase,
     config: rrfConfig,
     dispatch: store.dispatch,
-    // createFirestoreInstance // <- needed if using firestore
+    createFirestoreInstance, // <- needed if using firestore
   };
 
   React.useEffect(() => {

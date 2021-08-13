@@ -14,7 +14,7 @@ const Favbtn = ({favId, onRefresh, isBig = true}) => {
   const dispatch = useDispatch();
 
   const handleFavorite = async key => {
-    console.log(key, '<========= the Fav Key');
+    // console.log(key, '<========= the Fav Key');
     // const favCollection = [];
     if (_.isNull(key) || _.isUndefined(key)) {
       console.error('Fav key is null or undefined');
@@ -67,14 +67,14 @@ const Favbtn = ({favId, onRefresh, isBig = true}) => {
   };
 
   useEffect(() => {
-    console.log('In Favorite Btn effect');
+    // console.log('In Favorite Btn effect');
     if (!_.isEmpty(favoriteId)) {
-      console.log('not empty', favoriteId);
+      // console.log('not empty', favoriteId);
       if (_.includes(favoriteId, favId)) {
-        console.log('found', favoriteId, favId);
+        // console.log('found', favoriteId, favId);
         setIsFound(true);
       } else {
-        console.log('not found', favoriteId, favId);
+        // console.log('not found', favoriteId, favId);
         setIsFound(false);
       }
     } else {

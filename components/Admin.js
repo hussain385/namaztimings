@@ -20,76 +20,79 @@ import Edit from '../views/Edit';
 import CoText from '../views/Text/Text';
 import {useSelector} from 'react-redux';
 import _ from 'lodash';
+import {isLoaded, useFirestoreConnect} from 'react-redux-firebase';
 
 const Admin = ({navigation}) => {
   const [notify, setNotify] = React.useState(0);
   const [requests, setRequests] = React.useState(null);
-  const [snapshot, setSnapshot] = React.useState(null);
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState();
-  const auth = useSelector(state => state.firebase.auth);
+  // const [snapshot, setSnapshot] = React.useState(null);
+  // const [loading, setLoading] = React.useState(true);
+  // const [error, setError] = React.useState();
+  const {auth} = useSelector(state => state.firebase);
+  useFirestoreConnect([
+    {
+      collection: 'Masjid',
+      where: [['adminId', '==', auth.uid]],
+      storeAs: 'myMasjids',
+    },
+  ]);
+  const snapshot = useSelector(state => state.firestore.ordered.myMasjids);
+
   // const [snapshot, loading, error] = useCollectionOnce(
   //   firestore().collection('Masjid').where('adminId', '==', user.uid),
   // );
   React.useEffect(() => {
-    setLoading(true);
     let unSubReq;
-    const sub = firestore()
-      .collection('Masjid')
-      .where('adminId', '==', auth.uid ? auth.uid : '')
-      .onSnapshot(data => {
-        setLoading(false);
-        setSnapshot(data);
-        setNotify(0);
-        data.docs.map(n => {
-          unSubReq = firestore()
-            .collection('Masjid')
-            .doc(n.id)
-            .collection('requests')
-            .onSnapshot(reqData => {
-              const rData = [];
-              console.log(reqData);
-              reqData.forEach(docSnapshot => {
-                rData.push({
-                  ...docSnapshot.data(),
-                  id: docSnapshot.id,
-                  Masjidid: n.id,
-                });
+    setNotify(0);
+    if (isLoaded(snapshot)) {
+      snapshot.map(n => {
+        unSubReq = firestore()
+          .collection('Masjid')
+          .doc(n.id)
+          .collection('requests')
+          .onSnapshot(reqData => {
+            const rData = [];
+            console.log(reqData);
+            reqData.forEach(docSnapshot => {
+              rData.push({
+                ...docSnapshot.data(),
+                id: docSnapshot.id,
+                Masjidid: n.id,
               });
-              setRequests(_.sortBy(rData, 'createdAt'));
-              reqData.docChanges().forEach(change => {
-                if (change.type === 'added') {
+            });
+            setRequests(_.sortBy(rData, 'createdAt'));
+            reqData.docChanges().forEach(change => {
+              if (change.type === 'added') {
+                setNotify(prevState => {
+                  return (prevState += 1);
+                });
+              }
+              if (change.type === 'modified') {
+                const data1 = change.doc.data();
+                if (data1.isRead === true) {
+                  setNotify(prevState => {
+                    return (prevState -= 1);
+                  });
+                } else {
                   setNotify(prevState => {
                     return (prevState += 1);
                   });
                 }
-                if (change.type === 'modified') {
-                  const data1 = change.doc.data();
-                  if (data1.isRead === true) {
-                    setNotify(prevState => {
-                      return (prevState -= 1);
-                    });
-                  } else {
-                    setNotify(prevState => {
-                      return (prevState += 1);
-                    });
-                  }
-                }
-                if (change.type === 'removed') {
-                  setNotify(prevState => {
-                    return (prevState -= 1);
-                  });
-                }
-              });
+              }
+              if (change.type === 'removed') {
+                setNotify(prevState => {
+                  return (prevState -= 1);
+                });
+              }
             });
-        });
-      }, setError);
+          });
+      });
+    }
     return () => {
-      sub();
       unSubReq && unSubReq();
       console.log('unsubscribing....');
     };
-  }, [auth.uid]);
+  }, [snapshot]);
   return (
     <SafeAreaView>
       <Header
@@ -126,7 +129,7 @@ const Admin = ({navigation}) => {
             onPress={() =>
               navigation.navigate('adminNotification', {
                 requests,
-                id: snapshot.docs.id,
+                id: snapshot.map(value => value.id),
               })
             }
             style={{
@@ -148,16 +151,18 @@ const Admin = ({navigation}) => {
         }
         backgroundColor="#1F441E"
       />
-      {error && (
-        <View>
-          <Text>{error}</Text>
-        </View>
+      {/*{error && (*/}
+      {/*  <View>*/}
+      {/*    <Text>{error}</Text>*/}
+      {/*  </View>*/}
+      {/*)}*/}
+      {!isLoaded(snapshot) && (
+        <ActivityIndicator color="#1F441E" size="large" />
       )}
-      {loading && <ActivityIndicator color="#1F441E" size="large" />}
       {snapshot ? (
         <>
-          {snapshot.docs.map(doc => {
-            const data = modifyData(doc.data(), doc.id, 0);
+          {snapshot.map(doc => {
+            const data = modifyData(doc, doc.id, 0);
             return (
               <ScrollView
                 style={styles.scrollView}

@@ -15,10 +15,12 @@ import {
   actionTypes as rrfActionTypes,
   firebaseReducer,
 } from 'react-redux-firebase';
+import {firestoreReducer, constants as rfConstants} from 'redux-firestore';
 
 const reducer = combineReducers({
   favorites: favoriteReducer,
   firebase: firebaseReducer,
+  firestore: firestoreReducer,
 });
 
 const persistConfig = {
@@ -44,8 +46,11 @@ export const store = configureStore({
           ...Object.keys(rrfActionTypes).map(
             type => `@@reactReduxFirebase/${type}`,
           ),
+          ...Object.keys(rfConstants.actionTypes).map(
+            type => `${rfConstants.actionsPrefix}/${type}`,
+          ),
         ],
-        ignoredPaths: ['firebase'],
+        ignoredPaths: ['firebase', 'firestore'],
       },
       thunk: {extraArgument: {getFirebase}},
     }),
