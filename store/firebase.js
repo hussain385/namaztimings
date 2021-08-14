@@ -67,7 +67,7 @@ export function modifyData(data, id, d) {
 }
 export function sortMasjidData1(snapshot, {latitude, longitude}) {
   const masjids = [];
-  console.log('sortMasjidData1', snapshot);
+
   if (
     _.isUndefined(snapshot) ||
     _.isUndefined(latitude) ||
@@ -76,15 +76,15 @@ export function sortMasjidData1(snapshot, {latitude, longitude}) {
     return [];
   }
 
-  _.map(snapshot, data => {
+  _.map(snapshot, (data, key) => {
     const loc1 = data.g.geopoint;
     const d = haversine(loc1, {latitude, longitude});
-    const tempData = modifyData(data, data.id, d);
-    console.log(latitude, longitude, d, loc1, data.g, '<======== tempData');
+    const tempData = modifyData(data, key, d);
+    // console.log(latitude, longitude, d, loc1, data.g, '<======== tempData');
     const adminId = tempData.adminId;
-    console.log(adminId, _.isEmpty(adminId), typeof adminId);
+    // console.log(adminId, _.isEmpty(adminId), typeof adminId);
     if (_.isEmpty(adminId)) {
-      console.log('when True');
+      // console.log('when True');
       masjids.push({
         ...tempData,
         user: {
@@ -92,8 +92,11 @@ export function sortMasjidData1(snapshot, {latitude, longitude}) {
           phone: '**********',
         },
       });
+    } else {
+      masjids.push(tempData);
     }
   });
+  console.log('sortMasjidData1', masjids);
   return _.sortBy(masjids, 'distance');
 }
 
@@ -109,7 +112,7 @@ export async function sortMasjidData(snapshot, {latitude, longitude}) {
     const adminId = tempData.adminId;
     console.log(adminId, _.isEmpty(adminId), typeof adminId);
     if (_.isEmpty(adminId)) {
-      console.log('when True');
+      // console.log('when True');
       masjids.push({
         ...tempData,
         user: {
@@ -234,7 +237,7 @@ function GetUsers() {
         .then(d => {
           const data = [];
           d.forEach(doc => {
-            data.push({...doc.data(), uid: doc.id});
+            data.push({...doc.data(), uid: doc.id, id: doc.id});
           });
           resolve(data);
         });

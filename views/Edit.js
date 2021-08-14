@@ -1,5 +1,4 @@
 /* eslint-disable react-native/no-inline-styles */
-import firestore from '@react-native-firebase/firestore';
 import _ from 'lodash';
 import moment from 'moment';
 import React, {useState} from 'react';
@@ -15,7 +14,7 @@ import {
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {GetRadMasjidData1} from '../store/firebase';
+import {useFirestore} from 'react-redux-firebase';
 
 const Edit = ({
   isha,
@@ -24,6 +23,7 @@ const Edit = ({
   asar,
   magrib,
   uid,
+  adminId = '',
   isRequest = true,
   value = 'Edit',
 }) => {
@@ -37,6 +37,7 @@ const Edit = ({
     asar: asar,
     magrib: magrib,
   });
+  const firestore = useFirestore();
 
   const showTimePicker = namazName => {
     setTimePickerVisibility(true);
@@ -55,47 +56,63 @@ const Edit = ({
       console.log(isRequest);
       Alert.alert('Alert', 'No Change Found');
     } else {
-      setTime(prevState => ({
-        ...prevState,
-        isRead: false,
-        createdAt: firestore.Timestamp.now(),
-      }));
+      // setTime(prevState => ({
+      //   ...prevState,
+      //   isRead: false,
+      //   createdAt: firestore.Timestamp.now(),
+      // }));
       if (isRequest) {
         try {
-          await firestore()
-            .collection('Masjid')
-            .doc(uid)
+          await firestore
             .collection('requests')
-            .add(time)
+            .add({
+              timing: time,
+              adminId,
+              isRead: false,
+              createdAt: firestore.Timestamp.now(),
+            })
             .then(a => {
-              Alert.alert(
-                'Request Send!',
-                'Request has been forwarded to the admin',
-                [
-                  {
-                    text: 'Ok',
-                    onPress: () => setModalVisible(!modalVisible),
-                  },
-                ],
-                {cancelable: false},
-              );
+              firestore
+                .collection('Masjid')
+                .doc(uid)
+                .update({
+                  requestList: firestore.FieldValue.arrayUnion(a.id),
+                })
+                .then(value1 => {
+                  Alert.alert(
+                    'Request Send!',
+                    'Request has been forwarded to the admin',
+                    [
+                      {
+                        text: 'Ok',
+                        onPress: () => setModalVisible(!modalVisible),
+                      },
+                    ],
+                    {cancelable: false},
+                  );
+                });
             });
         } catch (e) {
           console.log(e);
         }
       } else {
-        await firestore()
-          .collection('Masjid')
-          .doc(uid)
-          .update({
-            timing: {
-              ...time,
-            },
-          })
-          .then(a => {
-            setModalVisible(!modalVisible);
-            GetRadMasjidData1().GetData();
-          });
+        try {
+          await firestore
+            .collection('Masjid')
+            .doc(uid)
+            .update({
+              timing: {
+                ...time,
+              },
+            })
+            .then(a => {
+              console.log('data sent');
+              setModalVisible(!modalVisible);
+              // GetRadMasjidData1().GetData();
+            });
+        } catch (e) {
+          console.error(e);
+        }
       }
     }
   }

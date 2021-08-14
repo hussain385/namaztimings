@@ -17,6 +17,7 @@ import Edit from './Edit';
 import Favbtn from './Favbtn';
 
 const MasjidInfo = ({route, navigation}) => {
+  console.log(route, navigation);
   const {name} = route.params;
   const {url} = route.params;
   const {address} = route.params;
@@ -290,6 +291,7 @@ const MasjidInfo = ({route, navigation}) => {
                 magrib={timing.magrib}
                 isha={timing.isha}
                 uid={favId}
+                adminId={user.id}
               />
             </View>
             <View

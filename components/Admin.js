@@ -20,11 +20,20 @@ import Edit from '../views/Edit';
 import CoText from '../views/Text/Text';
 import {useSelector} from 'react-redux';
 import _ from 'lodash';
-import {isLoaded, useFirestoreConnect} from 'react-redux-firebase';
+import {
+  isEmpty,
+  isLoaded,
+  populate,
+  useFirestoreConnect,
+} from 'react-redux-firebase';
+
+const populates = [
+  {child: 'requestList', root: 'requests', childAlias: 'requests'}, // replace owner with user object
+];
 
 const Admin = ({navigation}) => {
   const [notify, setNotify] = React.useState(0);
-  const [requests, setRequests] = React.useState(null);
+  // const [requests, setRequests] = React.useState(null);
   // const [snapshot, setSnapshot] = React.useState(null);
   // const [loading, setLoading] = React.useState(true);
   // const [error, setError] = React.useState();
@@ -32,64 +41,76 @@ const Admin = ({navigation}) => {
   useFirestoreConnect([
     {
       collection: 'Masjid',
-      where: [['adminId', '==', auth.uid]],
+      where: [
+        ['adminId', '==', isLoaded(auth) && !isEmpty(auth) ? auth.uid : ''],
+      ],
       storeAs: 'myMasjids',
+      populates,
     },
   ]);
-  const snapshot = useSelector(state => state.firestore.ordered.myMasjids);
-
+  const snapshot = populate(
+    useSelector(state => state.firestore),
+    'myMasjids',
+    populates,
+  );
   // const [snapshot, loading, error] = useCollectionOnce(
   //   firestore().collection('Masjid').where('adminId', '==', user.uid),
   // );
   React.useEffect(() => {
-    let unSubReq;
-    setNotify(0);
+    // let unSubReq;
     if (isLoaded(snapshot)) {
-      snapshot.map(n => {
-        unSubReq = firestore()
-          .collection('Masjid')
-          .doc(n.id)
-          .collection('requests')
-          .onSnapshot(reqData => {
-            const rData = [];
-            console.log(reqData);
-            reqData.forEach(docSnapshot => {
-              rData.push({
-                ...docSnapshot.data(),
-                id: docSnapshot.id,
-                Masjidid: n.id,
-              });
-            });
-            setRequests(_.sortBy(rData, 'createdAt'));
-            reqData.docChanges().forEach(change => {
-              if (change.type === 'added') {
-                setNotify(prevState => {
-                  return (prevState += 1);
-                });
-              }
-              if (change.type === 'modified') {
-                const data1 = change.doc.data();
-                if (data1.isRead === true) {
-                  setNotify(prevState => {
-                    return (prevState -= 1);
-                  });
-                } else {
-                  setNotify(prevState => {
-                    return (prevState += 1);
-                  });
-                }
-              }
-              if (change.type === 'removed') {
-                setNotify(prevState => {
-                  return (prevState -= 1);
-                });
-              }
-            });
-          });
+      setNotify(0);
+      _.map(snapshot, doc => {
+        setNotify(prevState => (prevState += doc.requests.length));
       });
     }
+
+    // if (isLoaded(snapshot)) {
+    // snapshot.map(n => {
+    // unSubReq = firestore()
+    //   .collection('Masjid')
+    //   .doc(n.id)
+    //   .collection('requests')
+    //   .onSnapshot(reqData => {
+    //     const rData = [];
+    //     console.log(reqData);
+    //     reqData.forEach(docSnapshot => {
+    //       rData.push({
+    //         ...docSnapshot.data(),
+    //         id: docSnapshot.id,
+    //         Masjidid: n.id,
+    //       });
+    //     });
+    //     setRequests(_.sortBy(rData, 'createdAt'));
+    //     reqData.docChanges().forEach(change => {
+    //       if (change.type === 'added') {
+    //         setNotify(prevState => {
+    //           return (prevState += 1);
+    //         });
+    //       }
+    //       if (change.type === 'modified') {
+    //         const data1 = change.doc.data();
+    //         if (data1.isRead === true) {
+    //           setNotify(prevState => {
+    //             return (prevState -= 1);
+    //           });
+    //         } else {
+    //           setNotify(prevState => {
+    //             return (prevState += 1);
+    //           });
+    //         }
+    //       }
+    //       if (change.type === 'removed') {
+    //         setNotify(prevState => {
+    //           return (prevState -= 1);
+    //         });
+    //       }
+    //     });
+    //   });
+    // });
+    // }
     return () => {
-      unSubReq && unSubReq();
+      // unSubReq && unSubReq();
       console.log('unsubscribing....');
     };
   }, [snapshot]);
@@ -126,12 +147,7 @@ const Admin = ({navigation}) => {
         }
         rightComponent={
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('adminNotification', {
-                requests,
-                id: snapshot.map(value => value.id),
-              })
-            }
+            onPress={() => navigation.navigate('adminNotification')}
             style={{
               paddingRight: 10,
             }}>
@@ -161,12 +177,12 @@ const Admin = ({navigation}) => {
       )}
       {snapshot ? (
         <>
-          {snapshot.map(doc => {
-            const data = modifyData(doc, doc.id, 0);
+          {_.map(snapshot, (doc, id) => {
+            const data = modifyData(doc, id, 0);
             return (
               <ScrollView
                 style={styles.scrollView}
-                key={doc.id}
+                key={id}
                 // refreshControl={
                 //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
                 // }
@@ -288,7 +304,7 @@ const Admin = ({navigation}) => {
                       asar={data.timing.asar}
                       magrib={data.timing.magrib}
                       isha={data.timing.isha}
-                      uid={doc.id}
+                      uid={id}
                       isRequest={false}
                     />
                   </View>

@@ -1,7 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import auth from '@react-native-firebase/auth';
 import {DrawerContentScrollView} from '@react-navigation/drawer';
-import _ from 'lodash';
 import React from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';

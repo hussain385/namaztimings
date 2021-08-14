@@ -12,16 +12,26 @@ import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Edit from './Edit';
 import firestore from '@react-native-firebase/firestore';
+import {useSelector} from 'react-redux';
+import {isLoaded, populate} from 'react-redux-firebase';
+import _ from 'lodash';
 
 const deleteFunc = (masjidId, reqId) => {
+  console.log(masjidId, reqId);
   firestore()
     .collection('Masjid')
     .doc(masjidId)
-    .collection('requests')
-    .doc(reqId)
-    .delete()
+    .update({
+      requestList: firestore.FieldValue.arrayRemove(reqId),
+    })
     .then(value => {
-      console.log('deleted', value);
+      firestore()
+        .collection('requests')
+        .doc(reqId)
+        .delete()
+        .then(value => {
+          console.log('deleted', value);
+        });
     });
 };
 
@@ -101,24 +111,46 @@ const Item = ({fajar, zohar, asar, magrib, isha, id, Masjidid}) => (
   </Card>
 );
 
-const AdminNotification = ({
-  navigation,
-  route: {
-    params: {requests, id},
-  },
-}) => {
-  console.log(requests);
-  const renderItem = ({item}) => (
-    <Item
-      fajar={item.fajar}
-      zohar={item.zohar}
-      asar={item.asar}
-      magrib={item.magrib}
-      isha={item.isha}
-      id={item.id} //Own ID
-      Masjidid={item.Masjidid}
-    />
+const populates = [
+  {child: 'requestList', root: 'requests', childAlias: 'requests'}, // replace owner with user object
+];
+
+const AdminNotification = ({navigation}) => {
+  // const {myMasjids} = useSelector(state => state.firestore.ordered);
+  const snapshot = populate(
+    useSelector(state => state.firestore),
+    'myMasjids',
+    populates,
   );
+  const data = [];
+  if (isLoaded(snapshot)) {
+    _.map(snapshot, (doc, id) => {
+      doc.requests.map(d => {
+        data.push({
+          ...d,
+          masjidId: id,
+        });
+      });
+    });
+  }
+
+  console.log('masjidData', data);
+  const renderItem = ({item}) => {
+    console.log(item);
+    if (!_.isUndefined(item.timing)) {
+      return (
+        <Item
+          fajar={item.timing.fajar}
+          zohar={item.timing.zohar}
+          asar={item.timing.asar}
+          magrib={item.timing.magrib}
+          isha={item.timing.isha}
+          id={item.id} //Own ID
+          Masjidid={item?.masjidId}
+        />
+      );
+    }
+  };
 
   return (
     <SafeAreaView>
@@ -154,7 +186,7 @@ const AdminNotification = ({
         backgroundColor="#1F441E"
       />
       <FlatList
-        data={requests}
+        data={data}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         style={{height: Dimensions.get('window').height - 70}}

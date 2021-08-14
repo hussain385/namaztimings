@@ -1,7 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import {Formik} from 'formik';
 import React, {useState} from 'react';
-import {Dimensions, Text, TextInput, TouchableOpacity, View,} from 'react-native';
+import {
+  Dimensions,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {Header} from 'react-native-elements';
 import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -66,10 +72,9 @@ export const AddMasjid = ({navigation}) => {
           MasjidAddress: '',
         }}
         onSubmit={values => {
-          console.log(values)
-
+          console.log(values);
         }}>
-        {({handleChange, handleSubmit, values, errors,touched}) => (
+        {({handleChange, handleSubmit, values, errors, touched}) => (
           <View
             style={{
               height: Dimensions.get('window').height - 110,
