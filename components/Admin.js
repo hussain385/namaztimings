@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import firestore from '@react-native-firebase/firestore';
+import _ from 'lodash';
 import * as React from 'react';
 import {
   ActivityIndicator,
@@ -14,21 +14,21 @@ import {
 import {Header} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {modifyData} from '../store/firebase';
-import {headerStyles, textStyles} from '../theme/styles/Base';
-import Edit from '../views/Edit';
-import CoText from '../views/Text/Text';
 import {useSelector} from 'react-redux';
-import _ from 'lodash';
 import {
   isEmpty,
   isLoaded,
   populate,
   useFirestoreConnect,
 } from 'react-redux-firebase';
+import {modifyData} from '../store/firebase';
+import {headerStyles, textStyles} from '../theme/styles/Base';
+import Edit from '../views/Edit';
+import CoText from '../views/Text/Text';
 
 const populates = [
-  {child: 'requestList', root: 'requests', childAlias: 'requests'}, // replace owner with user object
+  {child: 'requestList', root: 'requests', childAlias: 'requests'},
+  {child: 'adminId', root: 'users', childAlias: 'admin'},
 ];
 
 const Admin = ({navigation}) => {
@@ -53,6 +53,7 @@ const Admin = ({navigation}) => {
     'myMasjids',
     populates,
   );
+  console.log('From admin', snapshot);
   // const [snapshot, loading, error] = useCollectionOnce(
   //   firestore().collection('Masjid').where('adminId', '==', user.uid),
   // );
@@ -242,7 +243,7 @@ const Admin = ({navigation}) => {
                         style={{paddingRight: 18, paddingLeft: 10}}
                       />
                       <Text style={{maxWidth: 280, marginTop: 2}}>
-                        Moulana Tariq
+                        {doc.admin.name}
                       </Text>
                     </View>
                   </View>
@@ -255,7 +256,7 @@ const Admin = ({navigation}) => {
                         style={{paddingRight: 18, paddingLeft: 10}}
                       />
                       <Text style={{maxWidth: 280, marginTop: 0}}>
-                        +92 323 0000000
+                        {doc.admin.phone}
                       </Text>
                     </View>
                     <View>

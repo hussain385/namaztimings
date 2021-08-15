@@ -1,3 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
+import firestore from '@react-native-firebase/firestore';
+import _ from 'lodash';
 import React from 'react';
 import {
   Dimensions,
@@ -10,11 +13,9 @@ import {
 import {Header} from 'react-native-elements';
 import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Edit from './Edit';
-import firestore from '@react-native-firebase/firestore';
 import {useSelector} from 'react-redux';
 import {isLoaded, populate} from 'react-redux-firebase';
-import _ from 'lodash';
+import Edit from './Edit';
 
 const deleteFunc = (masjidId, reqId) => {
   console.log(masjidId, reqId);
@@ -24,18 +25,18 @@ const deleteFunc = (masjidId, reqId) => {
     .update({
       requestList: firestore.FieldValue.arrayRemove(reqId),
     })
-    .then(value => {
+    .then(() => {
       firestore()
         .collection('requests')
         .doc(reqId)
         .delete()
-        .then(value => {
-          console.log('deleted', value);
+        .then(value1 => {
+          console.log('deleted', value1);
         });
     });
 };
 
-const Item = ({fajar, zohar, asar, magrib, isha, id, Masjidid}) => (
+const Item = ({fajar, zohar, asar, magrib, isha, id, MasjidId, admin}) => (
   <Card
     style={{
       borderRadius: 5,
@@ -47,12 +48,12 @@ const Item = ({fajar, zohar, asar, magrib, isha, id, Masjidid}) => (
       <View style={{width: '100%'}}>
         <View style={{flexDirection: 'row', margin: 5}}>
           <View style={{flexGrow: 1}}>
-            <Text style={{fontSize: 17}}>User Name: Hussain</Text>
+            <Text style={{fontSize: 17}}>User Name: {admin.name}</Text>
           </View>
         </View>
         <View style={{flexDirection: 'row', margin: 5}}>
           <View style={{flexGrow: 1}}>
-            <Text style={{fontSize: 17}}>User Contact: +923236501386 </Text>
+            <Text style={{fontSize: 17}}>User Contact: {admin.phone}</Text>
           </View>
         </View>
         <View style={{backgroundColor: '#eeee', padding: 5, borderRadius: 8}}>
@@ -65,7 +66,7 @@ const Item = ({fajar, zohar, asar, magrib, isha, id, Masjidid}) => (
                 asar={asar}
                 magrib={magrib}
                 isha={isha}
-                uid={Masjidid}
+                uid={MasjidId}
                 isRequest={false}
                 value="View"
               />
@@ -102,7 +103,7 @@ const Item = ({fajar, zohar, asar, magrib, isha, id, Masjidid}) => (
             padding: 10,
           }}>
           <Text style={{fontSize: 15, color: 'green'}}>Mark As Read</Text>
-          <TouchableOpacity onPress={() => deleteFunc(Masjidid, id)}>
+          <TouchableOpacity onPress={() => deleteFunc(MasjidId, id)}>
             <Text style={{fontSize: 15, color: 'red'}}>Delete Message</Text>
           </TouchableOpacity>
         </View>
@@ -112,29 +113,48 @@ const Item = ({fajar, zohar, asar, magrib, isha, id, Masjidid}) => (
 );
 
 const populates = [
-  {child: 'requestList', root: 'requests', childAlias: 'requests'}, // replace owner with user object
+  {child: 'requestList', root: 'requests', childAlias: 'requests'},
+  {child: 'adminId', root: 'users', childAlias: 'admin'},
 ];
 
 const AdminNotification = ({navigation}) => {
+  // const [data, setData] = useState([]);
   // const {myMasjids} = useSelector(state => state.firestore.ordered);
+  // const {auth} = useSelector(state => state.firebase);
+  // useFirestoreConnect([
+  //   {
+  //     collection: 'Masjid',
+  //     where: [
+  //       ['adminId', '==', isLoaded(auth) && !isEmpty(auth) ? auth.uid : ''],
+  //     ],
+  //     storeAs: 'myMasjids',
+  //     populates,
+  //   },
+  // ]);
   const snapshot = populate(
     useSelector(state => state.firestore),
     'myMasjids',
     populates,
   );
-  const data = [];
+
+  const tempData = [];
   if (isLoaded(snapshot)) {
+    console.log(snapshot);
     _.map(snapshot, (doc, id) => {
-      doc.requests.map(d => {
-        data.push({
-          ...d,
-          masjidId: id,
+      if (doc.requests) {
+        doc.requests.map(d => {
+          tempData.push({
+            ...d,
+            createdAt: Date.parse(d.createdAt),
+            masjidId: id,
+            admin: doc.admin,
+          });
         });
-      });
+      }
     });
   }
+  const data = _.sortBy(tempData, 'createdAt');
 
-  console.log('masjidData', data);
   const renderItem = ({item}) => {
     console.log(item);
     if (!_.isUndefined(item.timing)) {
@@ -146,7 +166,8 @@ const AdminNotification = ({navigation}) => {
           magrib={item.timing.magrib}
           isha={item.timing.isha}
           id={item.id} //Own ID
-          Masjidid={item?.masjidId}
+          MasjidId={item.masjidId}
+          admin={item.admin}
         />
       );
     }
