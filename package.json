@@ -59,7 +59,8 @@
     "react-redux-firebase": "^3.10.0",
     "redux-firestore": "^0.15.0",
     "redux-persist": "^6.0.0",
-    "rxjs": "^7.3.0"
+    "rxjs": "^7.3.0",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "^7.14.8",

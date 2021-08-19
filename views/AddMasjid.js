@@ -12,8 +12,10 @@ import {Header} from 'react-native-elements';
 import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Edit from './Edit';
+import {useFirestore} from 'react-redux-firebase';
 
 export const AddMasjid = ({navigation}) => {
+  const firestore = useFirestore();
   const [timing, setTiming] = useState({
     isha: '00:00 AM',
     fajar: '00:00 AM',
@@ -22,6 +24,7 @@ export const AddMasjid = ({navigation}) => {
     magrib: '00:00 AM',
     jummuah: '00:00 AM',
   });
+  function submitData(data) {}
   return (
     <>
       <Header
@@ -73,6 +76,20 @@ export const AddMasjid = ({navigation}) => {
         }}
         onSubmit={values => {
           console.log(values);
+          firestore
+            .collection('newMasjid')
+            .add(values)
+            .then(
+              value => {
+                console.log('the new masjid data has been sent', value);
+              },
+              reason => {
+                console.error(
+                  'caught error while submitting new masjid data',
+                  reason,
+                );
+              },
+            );
         }}>
         {({handleChange, handleSubmit, values, errors, touched}) => (
           <View

@@ -33,15 +33,11 @@ const populates = [
 
 const Admin = ({navigation}) => {
   const [notify, setNotify] = React.useState(0);
-  // const [requests, setRequests] = React.useState(null);
-  // const [snapshot, setSnapshot] = React.useState(null);
-  // const [loading, setLoading] = React.useState(true);
-  // const [error, setError] = React.useState();
-  const {auth} = useSelector(state => state.firebase);
+  const {auth, profile} = useSelector(state => state.firebase);
   useFirestoreConnect([
     {
       collection: 'Masjid',
-      where: [
+      where: !profile.isAdmin && [
         ['adminId', '==', isLoaded(auth) && !isEmpty(auth) ? auth.uid : ''],
       ],
       storeAs: 'myMasjids',
@@ -54,11 +50,7 @@ const Admin = ({navigation}) => {
     populates,
   );
   console.log('From admin', snapshot);
-  // const [snapshot, loading, error] = useCollectionOnce(
-  //   firestore().collection('Masjid').where('adminId', '==', user.uid),
-  // );
   React.useEffect(() => {
-    // let unSubReq;
     if (isLoaded(snapshot)) {
       setNotify(0);
       _.map(snapshot, doc => {
@@ -66,55 +58,11 @@ const Admin = ({navigation}) => {
       });
     }
 
-    // if (isLoaded(snapshot)) {
-    // snapshot.map(n => {
-    // unSubReq = firestore()
-    //   .collection('Masjid')
-    //   .doc(n.id)
-    //   .collection('requests')
-    //   .onSnapshot(reqData => {
-    //     const rData = [];
-    //     console.log(reqData);
-    //     reqData.forEach(docSnapshot => {
-    //       rData.push({
-    //         ...docSnapshot.data(),
-    //         id: docSnapshot.id,
-    //         Masjidid: n.id,
-    //       });
-    //     });
-    //     setRequests(_.sortBy(rData, 'createdAt'));
-    //     reqData.docChanges().forEach(change => {
-    //       if (change.type === 'added') {
-    //         setNotify(prevState => {
-    //           return (prevState += 1);
-    //         });
-    //       }
-    //       if (change.type === 'modified') {
-    //         const data1 = change.doc.data();
-    //         if (data1.isRead === true) {
-    //           setNotify(prevState => {
-    //             return (prevState -= 1);
-    //           });
-    //         } else {
-    //           setNotify(prevState => {
-    //             return (prevState += 1);
-    //           });
-    //         }
-    //       }
-    //       if (change.type === 'removed') {
-    //         setNotify(prevState => {
-    //           return (prevState -= 1);
-    //         });
-    //       }
-    //     });
-    //   });
-    // });
-    // }
     return () => {
-      // unSubReq && unSubReq();
       console.log('unsubscribing....');
     };
   }, [snapshot]);
+
   return (
     <SafeAreaView>
       <Header
@@ -243,7 +191,7 @@ const Admin = ({navigation}) => {
                         style={{paddingRight: 18, paddingLeft: 10}}
                       />
                       <Text style={{maxWidth: 280, marginTop: 2}}>
-                        {doc.admin.name}
+                        {doc.admin && doc.admin.name}
                       </Text>
                     </View>
                   </View>
@@ -256,7 +204,7 @@ const Admin = ({navigation}) => {
                         style={{paddingRight: 18, paddingLeft: 10}}
                       />
                       <Text style={{maxWidth: 280, marginTop: 0}}>
-                        {doc.admin.phone}
+                        {doc.admin && doc.admin.phone}
                       </Text>
                     </View>
                     <View>
