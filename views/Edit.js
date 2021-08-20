@@ -26,6 +26,7 @@ const Edit = ({
   adminId = '',
   isRequest = true,
   value = 'Edit',
+  isAdd = false,
 }) => {
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -61,6 +62,8 @@ const Edit = ({
       //   isRead: false,
       //   createdAt: firestore.Timestamp.now(),
       // }));
+      if (isAdd) {
+      }
       if (isRequest) {
         try {
           await firestore

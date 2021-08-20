@@ -13,6 +13,38 @@ import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Edit from './Edit';
 import {useFirestore} from 'react-redux-firebase';
+import * as Yup from 'yup';
+import {TextStyle} from 'react-native';
+
+const phoneRegExp =
+  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
+
+const ERROR: TextStyle = {
+  color: 'red',
+};
+
+const AddMasjidSchema = Yup.object().shape({
+  name: Yup.string().required('Masjid name is required'),
+  address: Yup.string().required('Masjid address is required'),
+  pictureURL: Yup.string()
+    .url('Not a valid url')
+    .required("Masjid's pictureURL is required"),
+  userEmail: Yup.string().email().required('Email is required'),
+  userName: Yup.string().required('Your name is required'),
+  userPhone: Yup.string()
+    .matches(phoneRegExp, 'Phone number is not valid')
+    .min(11, 'phone no. is short, please check again')
+    .max(16, 'phone no. is long, please check again')
+    .required('Your Phone no. is required'),
+  timing: Yup.object().shape({
+    isha: Yup.string(),
+    fajar: Yup.string(),
+    zohar: Yup.string(),
+    asar: Yup.string(),
+    magrib: Yup.string(),
+    jummuah: Yup.string(),
+  }),
+});
 
 export const AddMasjid = ({navigation}) => {
   const firestore = useFirestore();
@@ -68,12 +100,22 @@ export const AddMasjid = ({navigation}) => {
       </View>
       <Formik
         initialValues={{
-          UserEmail: '',
-          UserName: '',
-          MasjidName: '',
-          UserPhone: '',
-          MasjidAddress: '',
+          name: '',
+          address: '',
+          pictureURL: '',
+          userEmail: '',
+          userName: '',
+          userPhone: '',
+          timing: {
+            isha: '',
+            fajar: '',
+            zohar: '',
+            asar: '',
+            magrib: '',
+            jummuah: '',
+          },
         }}
+        validationSchema={AddMasjidSchema}
         onSubmit={values => {
           console.log(values);
           firestore
@@ -91,7 +133,14 @@ export const AddMasjid = ({navigation}) => {
               },
             );
         }}>
-        {({handleChange, handleSubmit, values, errors, touched}) => (
+        {({
+          handleChange,
+          handleSubmit,
+          handleBlur,
+          values,
+          errors,
+          touched,
+        }) => (
           <View
             style={{
               height: Dimensions.get('window').height - 110,
@@ -113,15 +162,16 @@ export const AddMasjid = ({navigation}) => {
                   elevation: 5,
                 }}>
                 <TextInput
-                  onChangeText={handleChange('MasjidName')}
-                  value={values.MasjidName}
+                  onChangeText={handleChange('name')}
+                  value={values.name}
+                  onBlur={handleBlur('name')}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
                   placeholder="Enter Masjid Name..."
                 />
-                {errors.MasjidName && touched.MasjidName ? (
-                  <div>{errors.MasjidName}</div>
-                ) : null}
               </View>
+              {errors.name && touched.name && (
+                <Text style={ERROR}>{errors.name}</Text>
+              )}
               <Text style={{marginLeft: 10, marginTop: 10}}>
                 Contact Person
               </Text>
@@ -140,15 +190,16 @@ export const AddMasjid = ({navigation}) => {
                   elevation: 5,
                 }}>
                 <TextInput
-                  onChangeText={handleChange('UserName')}
-                  value={values.UserName}
+                  onChangeText={handleChange('userName')}
+                  value={values.userName}
+                  onBlur={handleBlur('userName')}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
                   placeholder="Enter Your Name..."
                 />
-                {errors.UserName && touched.UserName ? (
-                  <div>{errors.UserName}</div>
-                ) : null}
               </View>
+              {errors.userName && touched.userName && (
+                <Text style={ERROR}>{errors.userName}</Text>
+              )}
               <Text style={{marginLeft: 10, marginTop: 10}}>Contact Email</Text>
               <View
                 style={{
@@ -165,15 +216,16 @@ export const AddMasjid = ({navigation}) => {
                   elevation: 5,
                 }}>
                 <TextInput
-                  onChangeText={handleChange('UserEmail')}
-                  value={values.UserEmail}
+                  onChangeText={handleChange('userEmail')}
+                  value={values.userEmail}
+                  onBlur={handleBlur('userEmail')}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
                   placeholder="Enter Your Email..."
                 />
-                {errors.UserEmail && touched.UserEmail ? (
-                  <div>{errors.UserEmail}</div>
-                ) : null}
               </View>
+              {errors.userEmail && touched.userEmail && (
+                <Text style={ERROR}>{errors.userEmail}</Text>
+              )}
               <Text style={{marginLeft: 10, marginTop: 10}}>
                 Contact Person Number
               </Text>
@@ -192,15 +244,16 @@ export const AddMasjid = ({navigation}) => {
                   elevation: 5,
                 }}>
                 <TextInput
-                  onChangeText={handleChange('UserPhone')}
-                  value={values.UserPhone}
+                  onChangeText={handleChange('userPhone')}
+                  value={values.userPhone}
+                  onBlur={handleBlur('userPhone')}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
                   placeholder="Enter Your Phone Number..."
                 />
-                {errors.UserPhone && touched.UserPhone ? (
-                  <div>{errors.UserPhone}</div>
-                ) : null}
               </View>
+              {errors.userPhone && touched.userPhone && (
+                <Text style={ERROR}>{errors.userPhone}</Text>
+              )}
               <Text style={{marginLeft: 10, marginTop: 10}}>
                 Masjid Address
               </Text>
@@ -219,15 +272,16 @@ export const AddMasjid = ({navigation}) => {
                   elevation: 5,
                 }}>
                 <TextInput
-                  onChangeText={handleChange('MasjidAddress')}
-                  value={values.MasjidAddress}
+                  onChangeText={handleChange('address')}
+                  value={values.address}
+                  onBlur={handleBlur('address')}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
                   placeholder="Enter Masjid Address..."
                 />
-                {errors.MasjidAddress && touched.MasjidAddress ? (
-                  <div>{errors.MasjidAddress}</div>
-                ) : null}
               </View>
+              {errors.address && touched.address && (
+                <Text style={ERROR}>{errors.address}</Text>
+              )}
               <View
                 style={{
                   margin: 15,
@@ -255,7 +309,7 @@ export const AddMasjid = ({navigation}) => {
                   magrib={timing.magrib}
                   isha={timing.isha}
                   isAdd={true}
-                  setTiming={setTiming}
+                  value={setTiming}
                 />
               </View>
               <View
