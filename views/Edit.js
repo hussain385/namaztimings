@@ -27,6 +27,7 @@ const Edit = ({
   isRequest = true,
   value = 'Edit',
   isAdd = false,
+  handleChange = null,
 }) => {
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -63,6 +64,8 @@ const Edit = ({
       //   createdAt: firestore.Timestamp.now(),
       // }));
       if (isAdd) {
+        setModalVisible(!modalVisible);
+        return handleChange(time);
       }
       if (isRequest) {
         try {

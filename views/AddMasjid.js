@@ -11,16 +11,17 @@ import {
 import {Header} from 'react-native-elements';
 import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Edit from './Edit';
 import {useFirestore} from 'react-redux-firebase';
 import * as Yup from 'yup';
-import {TextStyle} from 'react-native';
+import Edit from './Edit';
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
-const ERROR: TextStyle = {
+const ERROR = {
   color: 'red',
+  marginLeft: 10,
+  marginTop: 10,
 };
 
 const AddMasjidSchema = Yup.object().shape({
@@ -36,14 +37,14 @@ const AddMasjidSchema = Yup.object().shape({
     .min(11, 'phone no. is short, please check again')
     .max(16, 'phone no. is long, please check again')
     .required('Your Phone no. is required'),
-  timing: Yup.object().shape({
-    isha: Yup.string(),
-    fajar: Yup.string(),
-    zohar: Yup.string(),
-    asar: Yup.string(),
-    magrib: Yup.string(),
-    jummuah: Yup.string(),
-  }),
+  // timing: Yup.object().shape({
+  //   isha: Yup.string(),
+  //   fajar: Yup.string(),
+  //   zohar: Yup.string(),
+  //   asar: Yup.string(),
+  //   magrib: Yup.string(),
+  //   jummuah: Yup.string(),
+  // }),
 });
 
 export const AddMasjid = ({navigation}) => {
@@ -56,7 +57,7 @@ export const AddMasjid = ({navigation}) => {
     magrib: '00:00 AM',
     jummuah: '00:00 AM',
   });
-  function submitData(data) {}
+  // function submitData(data) {}
   return (
     <>
       <Header
@@ -106,14 +107,14 @@ export const AddMasjid = ({navigation}) => {
           userEmail: '',
           userName: '',
           userPhone: '',
-          timing: {
-            isha: '',
-            fajar: '',
-            zohar: '',
-            asar: '',
-            magrib: '',
-            jummuah: '',
-          },
+          // timing: {
+          //   isha: '',
+          //   fajar: '',
+          //   zohar: '',
+          //   asar: '',
+          //   magrib: '',
+          //   jummuah: '',
+          // },
         }}
         validationSchema={AddMasjidSchema}
         onSubmit={values => {
@@ -309,7 +310,7 @@ export const AddMasjid = ({navigation}) => {
                   magrib={timing.magrib}
                   isha={timing.isha}
                   isAdd={true}
-                  value={setTiming}
+                  handleChange={setTiming}
                 />
               </View>
               <View
