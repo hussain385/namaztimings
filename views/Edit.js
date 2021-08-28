@@ -4,11 +4,13 @@ import moment from 'moment';
 import React, {useState} from 'react';
 import {
   Alert,
+  Dimensions,
   Modal,
   Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -33,6 +35,8 @@ const Edit = ({
   const [modalVisible, setModalVisible] = useState(false);
   const [namazTime, setNamazTime] = useState('');
   const [time, setTime] = useState({
+    userName: '',
+    userContact: '',
     isha: isha,
     fajar: fajar,
     zohar: zohar,
@@ -186,10 +190,81 @@ const Edit = ({
         </Text>
         <Icon name="square-edit-outline" size={24} style={{marginTop: 1}} />
       </TouchableOpacity>
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+      <Modal animationType="slide" transparent={true} visible={true}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Namaz Timings</Text>
+            <View style={{width: Dimensions.get('screen').width * 0.75}}>
+              <Text style={{marginLeft: 10, marginTop: 10}}>User Name</Text>
+              <View
+                style={{
+                  borderRadius: 10,
+                  marginHorizontal: 10,
+                  marginTop: 5,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 5,
+                  },
+                  shadowOpacity: 0.34,
+                  shadowRadius: 6.27,
+                  elevation: 5,
+                }}>
+                <TextInput
+                  onChangeText={userName => {
+                    setTime(pre => {
+                      return {
+                        ...pre,
+                        userName: userName,
+                      };
+                    });
+                    console.log(time, 'data');
+                  }}
+                  style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
+                  placeholder="Enter Your Name..."
+                  placeholderTextColor="grey"
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                width: Dimensions.get('screen').width * 0.75,
+                marginBottom: 10,
+              }}>
+              <Text style={{marginLeft: 10, marginTop: 10}}>User Contact</Text>
+              <View
+                style={{
+                  borderRadius: 10,
+                  marginHorizontal: 10,
+                  marginTop: 5,
+                  shadowColor: '#000',
+                  shadowOffset: {
+                    width: 0,
+                    height: 5,
+                  },
+                  shadowOpacity: 0.34,
+                  shadowRadius: 6.27,
+                  elevation: 5,
+                }}>
+                <TextInput
+                  onChangeText={userContact => {
+                    setTime(pre => {
+                      return {
+                        ...pre,
+                        userContact: userContact,
+                      };
+                    });
+                    console.log(time, 'data');
+                  }}
+                  // onChangeText={handleChange('address')}
+                  // value={values.address}
+                  // onBlur={handleBlur('address')}
+                  style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
+                  placeholder="Enter Your Name..."
+                  placeholderTextColor="grey"
+                />
+              </View>
+            </View>
             <View style={{flexDirection: 'row', marginTop: 10}}>
               <View
                 style={{

@@ -168,6 +168,7 @@ export const AddMasjid = ({navigation}) => {
                   onBlur={handleBlur('name')}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
                   placeholder="Enter Masjid Name..."
+                  placeholderTextColor="grey"
                 />
               </View>
               {errors.name && touched.name && (
@@ -196,6 +197,7 @@ export const AddMasjid = ({navigation}) => {
                   onBlur={handleBlur('userName')}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
                   placeholder="Enter Your Name..."
+                  placeholderTextColor="grey"
                 />
               </View>
               {errors.userName && touched.userName && (
@@ -222,6 +224,7 @@ export const AddMasjid = ({navigation}) => {
                   onBlur={handleBlur('userEmail')}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
                   placeholder="Enter Your Email..."
+                  placeholderTextColor="grey"
                 />
               </View>
               {errors.userEmail && touched.userEmail && (
@@ -250,6 +253,7 @@ export const AddMasjid = ({navigation}) => {
                   onBlur={handleBlur('userPhone')}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
                   placeholder="Enter Your Phone Number..."
+                  placeholderTextColor="grey"
                 />
               </View>
               {errors.userPhone && touched.userPhone && (
@@ -277,7 +281,8 @@ export const AddMasjid = ({navigation}) => {
                   value={values.address}
                   onBlur={handleBlur('address')}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
-                  placeholder="Enter Masjid Address..."
+                  placeholder="Enter Masjid Address Google Link..."
+                  placeholderTextColor="grey"
                 />
               </View>
               {errors.address && touched.address && (

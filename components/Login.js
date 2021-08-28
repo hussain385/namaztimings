@@ -1,9 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
+import {Formik} from 'formik';
 import React, {useEffect, useState} from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {Header} from 'react-native-elements';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {btnStyles, conStyles, textIn, textStyles} from '../theme/styles/Base';
 import {
   ActivityIndicator,
   Dimensions,
@@ -18,12 +15,15 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import {Header} from 'react-native-elements';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import CoText from '../views/Text/Text';
-import {isEmpty, isLoaded, useFirebase} from 'react-redux-firebase';
 import {useSelector} from 'react-redux';
+import {isEmpty, isLoaded, useFirebase} from 'react-redux-firebase';
 import * as Yup from 'yup';
-import {Formik} from 'formik';
+import {btnStyles, conStyles, textIn, textStyles} from '../theme/styles/Base';
+import CoText from '../views/Text/Text';
 
 // const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
@@ -148,6 +148,7 @@ const Login = ({navigation}) => {
                         onChangeText={handleChange('email')}
                         onBlur={handleBlur('email')}
                         value={values.email}
+                        placeholderTextColor="grey"
                       />
                     </View>
                   </View>
@@ -168,6 +169,7 @@ const Login = ({navigation}) => {
                         onChangeText={handleChange('password')}
                         onBlur={handleBlur('password')}
                         value={values.password}
+                        placeholderTextColor="grey"
                       />
                       <Icon
                         style={styles.icon}

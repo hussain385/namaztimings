@@ -1,6 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
 import firebase from '@react-native-firebase/app';
-import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -12,6 +11,8 @@ import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Provider} from 'react-redux';
+import {ReactReduxFirebaseProvider} from 'react-redux-firebase';
+import {createFirestoreInstance} from 'redux-firestore';
 import {persistStore} from 'redux-persist';
 import {PersistGate} from 'redux-persist/integration/react';
 import Admin from './components/Admin';
@@ -32,8 +33,6 @@ import Map from './views/Map';
 import Maps1 from './views/Maps1';
 import MasjidInfo from './views/MasjidInfo';
 import ShowMore from './views/ShowMore';
-import {ReactReduxFirebaseProvider} from 'react-redux-firebase';
-import {createFirestoreInstance} from 'redux-firestore';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -157,8 +156,8 @@ const HomeStackScreen = ({navigation}) => (
                 },
               }}
               placeholder="Search"
+              placeholderTextColor="grey"
               onPress={(data, details = null) => {
-                // 'details' is provided when fetchDetails = true
                 console.log(data, details);
               }}
               onFail={error => console.error(error)}

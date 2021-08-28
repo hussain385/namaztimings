@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 import Fuse from 'fuse.js';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -15,31 +15,30 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Header } from 'react-native-elements';
+import {Header} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { getCurrentLocation, sortMasjidData1 } from '../store/firebase';
+import {useSelector} from 'react-redux';
+import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
+import {getCurrentLocation, sortMasjidData1} from '../store/firebase';
 import Favbtn from '../views/Favbtn';
-import { isLoaded, populate, useFirestoreConnect } from 'react-redux-firebase';
-import { useSelector } from 'react-redux';
 
 const populates = [
-  { child: 'adminId', root: 'users', childAlias: 'user' }, // replace owner with user object
+  {child: 'adminId', root: 'users', childAlias: 'user'}, // replace owner with user object
 ];
 
-
 const Item = ({
-                url,
-                title,
-                distance,
-                favId,
-                address,
-                timings,
-                nav,
-                onRefresh,
-                latitude,
-                longitude,
-                user,
-              }) => (
+  url,
+  title,
+  distance,
+  favId,
+  address,
+  timings,
+  nav,
+  onRefresh,
+  latitude,
+  longitude,
+  user,
+}) => (
   <View
     key={favId}
     style={{
@@ -70,7 +69,7 @@ const Item = ({
         })
       }>
       <ImageBackground
-        source={{ uri: `${url}` }}
+        source={{uri: `${url}`}}
         style={{
           flex: 1,
           resizeMode: 'cover',
@@ -78,24 +77,24 @@ const Item = ({
           width: '100%',
           height: 200,
         }}>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ flexGrow: 1 }} />
-          <View style={{ top: -50 }}>
+        <View style={{flexDirection: 'row'}}>
+          <View style={{flexGrow: 1}} />
+          <View style={{top: -50}}>
             <Favbtn favId={favId} onRefresh={onRefresh} isBig={true} />
           </View>
         </View>
       </ImageBackground>
     </TouchableOpacity>
 
-    <View style={{ padding: 5 }}>
+    <View style={{padding: 5}}>
       <View
         style={{
           flexDirection: 'row',
           margin: 5,
           justifyContent: 'space-between',
         }}>
-        <View style={{ maxWidth: 250 }}>
-          <Text style={{ fontSize: 17 }}>{title}</Text>
+        <View style={{maxWidth: 250}}>
+          <Text style={{fontSize: 17}}>{title}</Text>
         </View>
         <View>
           <Text
@@ -104,7 +103,7 @@ const Item = ({
                 `https://maps.google.com/?q=${latitude},${longitude}`,
               );
             }}
-            style={{ color: '#900000', textDecorationLine: 'underline' }}>
+            style={{color: '#900000', textDecorationLine: 'underline'}}>
             {distance}KM AWAY
           </Text>
         </View>
@@ -138,7 +137,7 @@ const Item = ({
             marginVertical: 10,
             marginHorizontal: 10,
           }}>
-          <Text style={{ color: '#CEE6B4' }}>More Info</Text>
+          <Text style={{color: '#CEE6B4'}}>More Info</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
@@ -167,8 +166,7 @@ const Item = ({
   </View>
 );
 
-
-const Search = ({ navigation }) => {
+const Search = ({navigation}) => {
   useFirestoreConnect([
     {
       collection: 'Masjid',
@@ -176,14 +174,16 @@ const Search = ({ navigation }) => {
     },
   ]);
   const [textSearch, setTextSearch] = useState('');
-  const [location, setLocation] = useState({ coords: { latitude: null, longitude: null } });
+  const [location, setLocation] = useState({
+    coords: {latitude: null, longitude: null},
+  });
   const [result, setResult] = useState(null);
   const firestore = useSelector(state => state.firestore);
   const masjid = populate(firestore, 'Masjid', populates);
   const masjidData = sortMasjidData1(masjid, location.coords);
 
   function onChangeSearch(text) {
-    const fuse = new Fuse(masjidData, { keys: ['address'], distance: 400 });
+    const fuse = new Fuse(masjidData, {keys: ['address'], distance: 400});
     const resultf = fuse.search(text);
     setTextSearch(text);
     setResult(resultf);
@@ -201,7 +201,7 @@ const Search = ({ navigation }) => {
       });
   }, []);
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <Item
       title={item.name}
       address={item.address}
@@ -215,7 +215,7 @@ const Search = ({ navigation }) => {
       user={item.user}
     />
   );
-  const renderItem1 = ({ item }) => (
+  const renderItem1 = ({item}) => (
     <Item
       title={item.item.name}
       address={item.item.address}
@@ -235,17 +235,17 @@ const Search = ({ navigation }) => {
         leftComponent={
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{ zIndex: 1 }}>
+            style={{zIndex: 1}}>
             <Icon
               name="arrow-left"
               color="#ffff"
               size={26}
-              style={{ paddingLeft: 10 }}
+              style={{paddingLeft: 10}}
             />
           </TouchableOpacity>
         }
         centerComponent={
-          <View style={{ textAlign: 'center' }}>
+          <View style={{textAlign: 'center'}}>
             <Text
               style={{
                 color: '#ffff',
@@ -275,6 +275,7 @@ const Search = ({ navigation }) => {
                   height: 40,
                   paddingHorizontal: 20,
                 }}
+                placeholderTextColor="grey"
               />
             </View>
           </View>
@@ -291,7 +292,7 @@ const Search = ({ navigation }) => {
               name="map-marker-alt"
               color="#ffff"
               size={26}
-              style={{ paddingRight: 10, marginTop: 3 }}
+              style={{paddingRight: 10, marginTop: 3}}
             />
           </TouchableOpacity>
         }
@@ -308,7 +309,7 @@ const Search = ({ navigation }) => {
               data={masjidData}
               renderItem={renderItem}
               keyExtractor={item => item.key}
-              style={{ marginBottom: 140 }}
+              style={{marginBottom: 140}}
             />
           );
         } else {
@@ -321,7 +322,7 @@ const Search = ({ navigation }) => {
                       data={result}
                       renderItem={renderItem1}
                       keyExtractor={result.key}
-                      style={{ height: Dimensions.get('window').height - 240 }}
+                      style={{height: Dimensions.get('window').height - 240}}
                     />
                   );
                 } else {
@@ -330,7 +331,7 @@ const Search = ({ navigation }) => {
                       data={masjidData}
                       renderItem={renderItem}
                       keyExtractor={item => item.id}
-                      style={{ height: Dimensions.get('window').height - 240 }}
+                      style={{height: Dimensions.get('window').height - 240}}
                     />
                   );
                 }
@@ -358,7 +359,7 @@ const Search = ({ navigation }) => {
               width: 300,
               marginHorizontal: 10,
             }}>
-            <Text style={{ color: '#CEE6B4' }}>Add Masjid</Text>
+            <Text style={{color: '#CEE6B4'}}>Add Masjid</Text>
           </TouchableOpacity>
         </View>
       )}

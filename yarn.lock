@@ -2299,12 +2299,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-firebase/auth@npm:^12.4.0":
-  version: 12.4.0
-  resolution: "@react-native-firebase/auth@npm:12.4.0"
+"@react-native-firebase/auth@npm:^12.7.3":
+  version: 12.7.3
+  resolution: "@react-native-firebase/auth@npm:12.7.3"
   peerDependencies:
-    "@react-native-firebase/app": 12.4.0
-  checksum: 05ca8d962ffb1b82cdecb87c0929c3a0594e504b75374e95b1ed4ee4baedfaab6408676177fcab0d217136d55921f200377bb6e858e523fd7c2d08a3f60e665e
+    "@react-native-firebase/app": 12.7.3
+  checksum: 82e1d46d0101b6117d52c73eefac15d6db5b2e4a6eded6b03f4929f1ee858b1ea3d3e6bde7bb9353da7daf71826f0327b8731459da93927ec2b9a1a3192f5bf4
   languageName: node
   linkType: hard
 
@@ -8339,7 +8339,7 @@ __metadata:
     "@react-native-community/geolocation": ^2.0.2
     "@react-native-community/masked-view": ^0.1.11
     "@react-native-firebase/app": ^12.4.0
-    "@react-native-firebase/auth": ^12.4.0
+    "@react-native-firebase/auth": ^12.7.3
     "@react-native-firebase/firestore": ^12.4.0
     "@react-native-firebase/messaging": ^12.4.0
     "@react-navigation/bottom-tabs": ^5.11.11
