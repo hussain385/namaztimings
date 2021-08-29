@@ -1,5 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import firebase from '@react-native-firebase/app';
+import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
@@ -53,7 +54,7 @@ const RootStackScreen = () => (
   </RootStack.Navigator>
 );
 
-const FavouriteStackScreen = ({navigation}) => (
+const FavouriteStackScreen = () => (
   <FavouriteStack.Navigator
     screenOptions={{
       headerShown: false,
@@ -75,7 +76,7 @@ const FavouriteStackScreen = ({navigation}) => (
     /> */}
   </FavouriteStack.Navigator>
 );
-const SearchStackScreen = ({navigation}) => (
+const SearchStackScreen = () => (
   <SearchStack.Navigator
     screenOptions={{
       headerShown: false,
@@ -242,7 +243,7 @@ function MyDrawer() {
         backgroundColor: '#CEE6B4',
       }}
       screenOptions={({route}) => ({
-        drawerIcon: ({focused, color, size}) => {
+        drawerIcon: () => {
           if (route.name === 'Home') {
             return (
               <Icon
@@ -354,9 +355,7 @@ function MyTabs() {
     <Tab.Navigator
       initialRouteName="home"
       screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color, size}) => {
-          let iconName;
-
+        tabBarIcon: ({focused}) => {
           if (route.name === 'FavouriteStackScreen') {
             return (
               <Entypo
@@ -403,7 +402,7 @@ function MyTabs() {
         name="FavouriteStackScreen"
         component={FavouriteStackScreen}
         options={{
-          tabBarLabel: ({focused, color}) => (
+          tabBarLabel: ({focused}) => (
             <Text
               style={{
                 color: focused ? '#1F441E' : '#5C5C5C',
@@ -418,7 +417,7 @@ function MyTabs() {
         name="home"
         component={HomeScreen}
         options={{
-          tabBarLabel: ({focused, color}) => (
+          tabBarLabel: ({focused}) => (
             <Text
               style={{
                 color: focused ? '#1F441E' : '#5C5C5C',
@@ -433,7 +432,7 @@ function MyTabs() {
         name="SearchStackScreen"
         component={SearchStackScreen}
         options={{
-          tabBarLabel: ({focused, color}) => (
+          tabBarLabel: ({focused}) => (
             <Text
               style={{
                 color: focused ? '#1F441E' : '#5C5C5C',
@@ -469,7 +468,9 @@ export default function App() {
       );
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (
