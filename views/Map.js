@@ -1,14 +1,27 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {SafeAreaView, Text} from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {GetAllMasjidData} from '../store/firebase';
+import {sortMasjidData1} from '../store/firebase';
+import {populate, useFirestoreConnect} from 'react-redux-firebase';
+import {useSelector} from 'react-redux';
 
 const Map = ({route}) => {
-  const [masjidData, loading] = GetAllMasjidData();
+  const populates = [
+    {child: 'adminId', root: 'users', childAlias: 'user'}, // replace owner with user object
+  ];
+  useFirestoreConnect([
+    {
+      collection: 'Masjid',
+      populates,
+    },
+  ]);
+  // const [masjidData, loading] = GetAllMasjidData();
   const {longitude} = route.params;
   const {latitude} = route.params;
+  const firestore = useSelector(state => state.firestore);
+  const masjid = populate(firestore, 'Masjid', populates);
+  const masjidData = sortMasjidData1(masjid, {latitude, longitude});
 
   return (
     <SafeAreaView>
@@ -22,7 +35,7 @@ const Map = ({route}) => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}>
-        {masjidData !== null && !loading
+        {masjidData !== null
           ? masjidData.map((masjid, id) => (
               <SafeAreaView key={id}>
                 <Marker

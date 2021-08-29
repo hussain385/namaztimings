@@ -12,7 +12,9 @@ import {
 import {Header} from 'react-native-elements';
 import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {GetAllMasjidData, getCurrentLocation} from '../store/firebase';
+import {getCurrentLocation, sortMasjidData1} from '../store/firebase';
+import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
+import {useSelector} from 'react-redux';
 
 const Item = props => (
   <Card
@@ -104,8 +106,20 @@ const Item = props => (
 );
 
 const ShowMore = ({navigation}) => {
-  const [masjidData, loading] = GetAllMasjidData();
+  // const [masjidData, loading] = GetAllMasjidData();
+  const populates = [
+    {child: 'adminId', root: 'users', childAlias: 'user'}, // replace owner with user object
+  ];
+  useFirestoreConnect([
+    {
+      collection: 'Masjid',
+      populates,
+    },
+  ]);
   const [location, setLocation] = React.useState();
+  const firestore = useSelector(state => state.firestore);
+  const masjid = populate(firestore, 'Masjid', populates);
+  const masjidData = sortMasjidData1(masjid, location.coords);
 
   React.useEffect(() => {
     getCurrentLocation()
@@ -181,7 +195,7 @@ const ShowMore = ({navigation}) => {
         }
         backgroundColor="#1F441E"
       />
-      {loading && <ActivityIndicator color="#1F441E" size="large" />}
+      {!isLoaded(masjid) && <ActivityIndicator color="#1F441E" size="large" />}
       <FlatList
         data={masjidData}
         renderItem={renderItem}

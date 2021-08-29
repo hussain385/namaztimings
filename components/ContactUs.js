@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {NavigationContainer} from '@react-navigation/native';
 import {Header} from 'react-native-elements';
 
 const ContactUs = ({navigation}) => {

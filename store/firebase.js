@@ -80,7 +80,7 @@ export function sortMasjidData1(snapshot, {latitude, longitude}) {
     const loc1 = data.g.geopoint;
     const d = haversine(loc1, {latitude, longitude});
     const tempData = modifyData(data, key, d);
-    // console.log(latitude, longitude, d, loc1, data.g, '<======== tempData');
+    // console.log(data, tempData, '<======== tempData');
     const adminId = tempData.adminId;
     // console.log(adminId, _.isEmpty(adminId), typeof adminId);
     if (_.isEmpty(adminId)) {

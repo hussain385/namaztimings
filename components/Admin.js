@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import _ from 'lodash';
 import * as React from 'react';
 import {
@@ -54,7 +53,7 @@ const Admin = ({navigation}) => {
     if (isLoaded(snapshot)) {
       setNotify(0);
       _.map(snapshot, doc => {
-        setNotify(prevState => (prevState += doc.requests.length));
+        setNotify(prevState => (prevState += doc.requests?.length));
       });
     }
 
