@@ -30,10 +30,12 @@ const Edit = ({
   value = 'Edit',
   isAdd = false,
   handleChange = null,
+  userInfo = true,
 }) => {
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [namazTime, setNamazTime] = useState('');
+  const [disabled, setDisabled] = useState(userInfo);
   const [time, setTime] = useState({
     userName: '',
     userContact: '',
@@ -52,6 +54,8 @@ const Edit = ({
 
   async function submitRequest() {
     const prevTime = {
+      userName: '',
+      userContact: '',
       isha: isha,
       fajar: fajar,
       zohar: zohar,
@@ -60,7 +64,7 @@ const Edit = ({
     };
     if (_.isEqual(time, prevTime) && isRequest) {
       console.log(isRequest);
-      Alert.alert('Alert', 'No Change Found');
+      Alert.alert('Cannot Process', 'Please fill the form correctly');
     } else {
       // setTime(prevState => ({
       //   ...prevState,
@@ -190,81 +194,101 @@ const Edit = ({
         </Text>
         <Icon name="square-edit-outline" size={24} style={{marginTop: 1}} />
       </TouchableOpacity>
-      <Modal animationType="slide" transparent={true} visible={true}>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Namaz Timings</Text>
-            <View style={{width: Dimensions.get('screen').width * 0.75}}>
-              <Text style={{marginLeft: 10, marginTop: 10}}>User Name</Text>
-              <View
-                style={{
-                  borderRadius: 10,
-                  marginHorizontal: 10,
-                  marginTop: 5,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 5,
-                  },
-                  shadowOpacity: 0.34,
-                  shadowRadius: 6.27,
-                  elevation: 5,
-                }}>
-                <TextInput
-                  onChangeText={userName => {
-                    setTime(pre => {
-                      return {
-                        ...pre,
-                        userName: userName,
-                      };
-                    });
-                    console.log(time, 'data');
-                  }}
-                  style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
-                  placeholder="Enter Your Name..."
-                  placeholderTextColor="grey"
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                width: Dimensions.get('screen').width * 0.75,
-                marginBottom: 10,
-              }}>
-              <Text style={{marginLeft: 10, marginTop: 10}}>User Contact</Text>
-              <View
-                style={{
-                  borderRadius: 10,
-                  marginHorizontal: 10,
-                  marginTop: 5,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 5,
-                  },
-                  shadowOpacity: 0.34,
-                  shadowRadius: 6.27,
-                  elevation: 5,
-                }}>
-                <TextInput
-                  onChangeText={userContact => {
-                    setTime(pre => {
-                      return {
-                        ...pre,
-                        userContact: userContact,
-                      };
-                    });
-                    console.log(time, 'data');
-                  }}
-                  // onChangeText={handleChange('address')}
-                  // value={values.address}
-                  // onBlur={handleBlur('address')}
-                  style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
-                  placeholder="Enter Your Name..."
-                  placeholderTextColor="grey"
-                />
-              </View>
-            </View>
+            {userInfo && (
+              <>
+                <View style={{width: Dimensions.get('screen').width * 0.75}}>
+                  <Text style={{marginLeft: 10, marginTop: 10}}>User Name</Text>
+                  <View
+                    style={{
+                      borderRadius: 10,
+                      marginHorizontal: 10,
+                      marginTop: 5,
+                      shadowColor: '#000',
+                      shadowOffset: {
+                        width: 0,
+                        height: 5,
+                      },
+                      shadowOpacity: 0.34,
+                      shadowRadius: 6.27,
+                      elevation: 5,
+                    }}>
+                    <TextInput
+                      onChangeText={userName => {
+                        setTime(pre => {
+                          return {
+                            ...pre,
+                            userName: userName,
+                          };
+                        });
+                        if (userName !== '' && time.userContact !== '') {
+                          setDisabled(false);
+                        } else {
+                          setDisabled(true);
+                        }
+                      }}
+                      style={{
+                        paddingHorizontal: 10,
+                        backgroundColor: '#EEEEEE',
+                        color: 'black',
+                      }}
+                      placeholder="Enter Your Name..."
+                      placeholderTextColor="grey"
+                    />
+                  </View>
+                </View>
+                <View
+                  style={{
+                    width: Dimensions.get('screen').width * 0.75,
+                    marginBottom: 10,
+                  }}>
+                  <Text style={{marginLeft: 10, marginTop: 10}}>
+                    User Contact
+                  </Text>
+                  <View
+                    style={{
+                      borderRadius: 10,
+                      marginHorizontal: 10,
+                      marginTop: 5,
+                      shadowColor: '#000',
+                      shadowOffset: {
+                        width: 0,
+                        height: 5,
+                      },
+                      shadowOpacity: 0.34,
+                      shadowRadius: 6.27,
+                      elevation: 5,
+                    }}>
+                    <TextInput
+                      onChangeText={userContact => {
+                        setTime(pre => {
+                          return {
+                            ...pre,
+                            userContact: userContact,
+                          };
+                        });
+                        if (userContact !== '' && time.userName !== '') {
+                          setDisabled(false);
+                        } else {
+                          setDisabled(true);
+                        }
+                      }}
+                      style={{
+                        paddingHorizontal: 10,
+                        backgroundColor: '#EEEEEE',
+                        color: 'black',
+                      }}
+                      keyboardType="numeric"
+                      placeholder="Enter Your Name..."
+                      placeholderTextColor="grey"
+                    />
+                  </View>
+                </View>
+              </>
+            )}
             <View style={{flexDirection: 'row', marginTop: 10}}>
               <View
                 style={{
@@ -351,9 +375,22 @@ const Edit = ({
                 <Text style={styles.textStyle}>Cancel</Text>
               </Pressable>
               <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={submitRequest}>
-                <Text style={styles.textStyle1}>
+                disabled={disabled}
+                style={[
+                  styles.button,
+                  styles.buttonClose,
+                  {
+                    backgroundColor: disabled ? '#5C5C5C' : '#1F441E',
+                  },
+                ]}
+                onPress={() => submitRequest()}>
+                <Text
+                  style={[
+                    styles.textStyle1,
+                    {
+                      color: disabled ? 'white' : '#CEE6B4',
+                    },
+                  ]}>
                   {isRequest ? 'Request' : 'Confirm'}
                 </Text>
               </Pressable>

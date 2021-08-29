@@ -71,7 +71,7 @@ const Admin = ({navigation}) => {
           elevation: 50,
         }}
         leftComponent={
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.navigate('home')}>
             <Icon
               name="arrow-left"
               color="#ffff"
@@ -173,8 +173,8 @@ const Admin = ({navigation}) => {
                         size={20}
                         style={{
                           paddingRight: 18,
-                          paddingLeft: 13,
-                          marginTop: 5,
+                          paddingLeft: 15,
+                          marginTop: 10,
                         }}
                       />
                       <Text style={{maxWidth: 200, marginTop: 5}}>
@@ -188,7 +188,7 @@ const Admin = ({navigation}) => {
                         name="user-alt"
                         color="#5C5C5C"
                         size={20}
-                        style={{paddingRight: 18, paddingLeft: 10}}
+                        style={{paddingRight: 18, paddingLeft: 13}}
                       />
                       <Text style={{maxWidth: 280, marginTop: 2}}>
                         {doc.admin && doc.admin.name}
@@ -201,7 +201,11 @@ const Admin = ({navigation}) => {
                         name="phone-alt"
                         color="#5C5C5C"
                         size={20}
-                        style={{paddingRight: 18, paddingLeft: 10}}
+                        style={{
+                          paddingRight: 18,
+                          paddingLeft: 13,
+                          marginTop: 5,
+                        }}
                       />
                       <Text style={{maxWidth: 280, marginTop: 0}}>
                         {doc.admin && doc.admin.phone}
@@ -255,6 +259,7 @@ const Admin = ({navigation}) => {
                       isha={data.timing.isha}
                       uid={id}
                       isRequest={false}
+                      userInfo={false}
                     />
                   </View>
                   <View style={{flexDirection: 'row', marginTop: 10}}>

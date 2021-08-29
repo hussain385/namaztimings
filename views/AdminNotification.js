@@ -36,7 +36,18 @@ const deleteFunc = (masjidId, reqId) => {
     });
 };
 
-const Item = ({fajar, zohar, asar, magrib, isha, id, MasjidId, admin}) => (
+const Item = ({
+  fajar,
+  zohar,
+  asar,
+  magrib,
+  isha,
+  id,
+  MasjidId,
+  admin,
+  userName,
+  userContact,
+}) => (
   <Card
     style={{
       borderRadius: 5,
@@ -48,12 +59,12 @@ const Item = ({fajar, zohar, asar, magrib, isha, id, MasjidId, admin}) => (
       <View style={{width: '100%'}}>
         <View style={{flexDirection: 'row', margin: 5}}>
           <View style={{flexGrow: 1}}>
-            <Text style={{fontSize: 17}}>User Name: {admin.name}</Text>
+            <Text style={{fontSize: 17}}>User Name: {userName}</Text>
           </View>
         </View>
         <View style={{flexDirection: 'row', margin: 5}}>
           <View style={{flexGrow: 1}}>
-            <Text style={{fontSize: 17}}>User Contact: {admin.phone}</Text>
+            <Text style={{fontSize: 17}}>User Contact: {userContact}</Text>
           </View>
         </View>
         <View style={{backgroundColor: '#eeee', padding: 5, borderRadius: 8}}>
@@ -68,6 +79,7 @@ const Item = ({fajar, zohar, asar, magrib, isha, id, MasjidId, admin}) => (
                 isha={isha}
                 uid={MasjidId}
                 isRequest={false}
+                userInfo={false}
                 value="View"
               />
             </View>
@@ -168,6 +180,8 @@ const AdminNotification = ({navigation}) => {
           id={item.id} //Own ID
           MasjidId={item.masjidId}
           admin={item.admin}
+          userName={item.timing.userName}
+          userContact={item.timing.userContact}
         />
       );
     }
@@ -181,7 +195,7 @@ const AdminNotification = ({navigation}) => {
           elevation: 50,
         }}
         leftComponent={
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.navigate('Admin view')}>
             <Icon
               name="arrow-left"
               color="#ffff"
@@ -208,9 +222,14 @@ const AdminNotification = ({navigation}) => {
       />
       <FlatList
         data={data}
+        inverted={true}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        style={{height: Dimensions.get('window').height - 70}}
+        style={{
+          height: Dimensions.get('window').height - 80,
+        }}
+        initialScrollIndex={data.length - 1}
+        initialNumToRender={5}
       />
     </SafeAreaView>
   );

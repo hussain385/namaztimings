@@ -55,7 +55,7 @@ function HomeScreen({navigation}) {
     GetData();
     setRefreshing(false);
   }
-
+  console.log(masjidData);
   return (
     <>
       <Header
@@ -84,7 +84,7 @@ function HomeScreen({navigation}) {
               }}>
               Prayer Time
             </Text>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Map', {
                   latitude: location.coords.latitude || 0.0,
@@ -108,7 +108,7 @@ function HomeScreen({navigation}) {
                   Zainee Manzil, Saddar...
                 </Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         }
         rightComponent={
@@ -187,22 +187,20 @@ function HomeScreen({navigation}) {
                     <Icon
                       name="map-marker-alt"
                       color="#5C5C5C"
-                      size={20}
+                      size={24}
                       style={{
-                        paddingRight: 18,
+                        paddingRight: 16,
                         paddingLeft: 15,
-                        marginTop: 5,
+                        marginTop: 3,
                       }}
                     />
-                    <Text style={{maxWidth: 200, marginTop: 5}}>
-                      {masjidData[0].address}
-                    </Text>
+                    <Text style={{maxWidth: 200}}>{masjidData[0].address}</Text>
                   </View>
                   <View style={{flexDirection: 'row', marginTop: 5}}>
                     <Icon
                       name="directions"
                       color="#900000"
-                      size={20}
+                      size={24}
                       style={{paddingRight: 7}}
                     />
                     <Text
@@ -234,11 +232,11 @@ function HomeScreen({navigation}) {
                         <Icon
                           name="user-alt"
                           color="#5C5C5C"
-                          size={20}
-                          style={{paddingRight: 18, paddingLeft: 10}}
+                          size={22}
+                          style={{paddingRight: 15, paddingLeft: 13}}
                         />
-                        <Text style={{maxWidth: 280}}>
-                          {masjidData[0].user.name}
+                        <Text style={{maxWidth: 280, marginTop: 3}}>
+                          {masjidData[0].user.name || 'hussain'}
                         </Text>
                       </View>
                     </View>
@@ -252,15 +250,19 @@ function HomeScreen({navigation}) {
                         <Icon
                           name="phone-alt"
                           color="#5C5C5C"
-                          size={20}
-                          style={{paddingRight: 18, paddingLeft: 10}}
+                          size={22}
+                          style={{
+                            paddingRight: 15,
+                            paddingLeft: 13,
+                            marginTop: 3,
+                          }}
                         />
                         <Text
                           style={{maxWidth: 280}}
                           onPress={() => {
                             Linking.openURL(`tel:${masjidData[0].user.phone}`);
                           }}>
-                          {masjidData[0].user.phone}
+                          {masjidData[0].user.phone || '+920000000000'}
                         </Text>
                       </View>
                       <View>

@@ -310,6 +310,7 @@ const Search = ({navigation}) => {
               renderItem={renderItem}
               keyExtractor={item => item.key}
               style={{marginBottom: 140}}
+              initialNumToRender={5}
             />
           );
         } else {

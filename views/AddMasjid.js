@@ -315,6 +315,7 @@ export const AddMasjid = ({navigation}) => {
                   magrib={timing.magrib}
                   isha={timing.isha}
                   isAdd={true}
+                  userInfo={false}
                   handleChange={setTiming}
                 />
               </View>
@@ -423,7 +424,7 @@ export const AddMasjid = ({navigation}) => {
                   style={{
                     paddingLeft: 10,
                   }}>
-                  <Text style={{fontSize: 17}}>Jumu'ah</Text>
+                  <Text style={{fontSize: 17}}>Jumu&apos;ah</Text>
                 </View>
                 <View
                   style={{

@@ -93,7 +93,7 @@ const MasjidInfo = ({route, navigation}) => {
             </View>
             <View
               style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row', marginTop: 10}}>
                 <Icon
                   name="mosque"
                   color="#5C5C5C"
@@ -122,8 +122,12 @@ const MasjidInfo = ({route, navigation}) => {
                 <Icon
                   name="map-marker-alt"
                   color="#5C5C5C"
-                  size={20}
-                  style={{paddingRight: 18, paddingLeft: 15}}
+                  size={24}
+                  style={{
+                    paddingRight: 16,
+                    paddingLeft: 15,
+                    marginTop: 3,
+                  }}
                 />
                 <Text style={{maxWidth: 200}}>{address}</Text>
               </View>
@@ -131,7 +135,7 @@ const MasjidInfo = ({route, navigation}) => {
                 <Icon
                   name="directions"
                   color="#900000"
-                  size={20}
+                  size={24}
                   style={{paddingRight: 7}}
                 />
                 <Text
@@ -163,8 +167,8 @@ const MasjidInfo = ({route, navigation}) => {
                     <Icon
                       name="user-alt"
                       color="#5C5C5C"
-                      size={20}
-                      style={{paddingRight: 18, paddingLeft: 10}}
+                      size={22}
+                      style={{paddingRight: 15, paddingLeft: 13}}
                     />
                     <Text style={{maxWidth: 280}}>{user.name}</Text>
                   </View>
@@ -179,8 +183,12 @@ const MasjidInfo = ({route, navigation}) => {
                     <Icon
                       name="phone-alt"
                       color="#5C5C5C"
-                      size={20}
-                      style={{paddingRight: 18, paddingLeft: 10}}
+                      size={22}
+                      style={{
+                        paddingRight: 15,
+                        paddingLeft: 13,
+                        marginTop: 3,
+                      }}
                     />
                     <Text
                       style={{maxWidth: 280}}
@@ -399,7 +407,7 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingLeft: 10,
                 }}>
-                <Text style={{fontSize: 17}}>Jumu'ah</Text>
+                <Text style={{fontSize: 17}}>Jumu&apos;ah</Text>
               </View>
               <View
                 style={{

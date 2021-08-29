@@ -230,11 +230,13 @@ const Favourites = ({navigation}) => {
               return (
                 <FlatList
                   data={masjidData}
+                  inverted={true}
                   renderItem={renderItem}
                   keyExtractor={x => x.key}
                   style={{marginBottom: 60}}
                   onRefresh={() => onRefresh()}
                   refreshing={refreshing}
+                  initialScrollIndex={masjidData.length - 1}
                 />
               );
             } else {
