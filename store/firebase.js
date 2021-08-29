@@ -133,27 +133,6 @@ export async function sortMasjidData(snapshot, {latitude, longitude}) {
   return _.sortBy(masjids, 'distance');
 }
 
-export function GetAllMasjidData() {
-  const [loading, setLoading] = useState(true);
-  const [masjid, setMasjid] = useState();
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const subs = firestore().collection('Masjid');
-    getCurrentLocation()
-      .then(loc => {
-        subs.onSnapshot(async snapshot => {
-          const masjids1 = await sortMasjidData(snapshot, loc.coords);
-          setMasjid(masjids1);
-          setLoading(false);
-        });
-      })
-      .catch(reason => setError(reason));
-    return () => subs;
-  }, []);
-  return [masjid, loading, error];
-}
-
 export function GetRadMasjidData1(radius = 50) {
   const [loading, setLoading] = useState(true);
   const [masjid, setMasjid] = useState(null);
@@ -253,20 +232,6 @@ export function GetFavMasjidData() {
   const [error, setError] = useState(null);
   const favoriteId = useSelector(state => state.favorites.value);
   const subs = firestore().collection('Masjid');
-
-  // async function getFavStore() {
-  //   try {
-  //     const value = await AsyncStorage.getItem('favorites');
-  //     if (!_.isNull(value)) {
-  //       return JSON.parse(value);
-  //     } else {
-  //       return null;
-  //     }
-  //   } catch (e) {
-  //     setError(e);
-  //     console.log(e);
-  //   }
-  // }
 
   async function GetData() {
     if (_.isNull(masjid)) {
