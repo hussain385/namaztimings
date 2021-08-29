@@ -8,7 +8,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "prettier --check ."
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.5",
@@ -27,6 +28,9 @@
     "@voximplant/react-native-foreground-service": "^2.0.0",
     "babel-eslint": "^10.1.0",
     "country-list": "^2.2.0",
+    "eslint-plugin-prettier": "^3.4.1",
+    "eslint-plugin-react": "latest",
+    "eslint-plugin-react-native": "^3.11.0",
     "formik": "^2.2.9",
     "fuse.js": "^6.4.6",
     "geofire-common": "^5.2.0",
