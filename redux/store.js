@@ -16,6 +16,7 @@ import {
   firebaseReducer,
 } from 'react-redux-firebase';
 import {firestoreReducer, constants as rfConstants} from 'redux-firestore';
+import devToolsEnhancer from 'remote-redux-devtools';
 
 const reducer = combineReducers({
   favorites: favoriteReducer,
@@ -31,27 +32,30 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 
-export const store = configureStore({
-  reducer: persistedReducer,
-  middleware: getDefaultMiddleware =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [
-          FLUSH,
-          REHYDRATE,
-          PAUSE,
-          PERSIST,
-          PURGE,
-          REGISTER,
-          ...Object.keys(rrfActionTypes).map(
-            type => `@@reactReduxFirebase/${type}`,
-          ),
-          ...Object.keys(rfConstants.actionTypes).map(
-            type => `${rfConstants.actionsPrefix}/${type}`,
-          ),
-        ],
-        ignoredPaths: ['firebase', 'firestore'],
-      },
-      thunk: {extraArgument: {getFirebase}},
-    }),
-});
+export const store = configureStore(
+  {
+    reducer: persistedReducer,
+    middleware: getDefaultMiddleware =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: [
+            FLUSH,
+            REHYDRATE,
+            PAUSE,
+            PERSIST,
+            PURGE,
+            REGISTER,
+            ...Object.keys(rrfActionTypes).map(
+              type => `@@reactReduxFirebase/${type}`,
+            ),
+            ...Object.keys(rfConstants.actionTypes).map(
+              type => `${rfConstants.actionsPrefix}/${type}`,
+            ),
+          ],
+          ignoredPaths: ['firebase', 'firestore'],
+        },
+        thunk: {extraArgument: {getFirebase}},
+      }),
+  },
+  devToolsEnhancer({realtime: true}),
+);
