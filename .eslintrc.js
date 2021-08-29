@@ -26,6 +26,6 @@ module.exports = {
     'prettier/prettier': 'error',
     'react/prop-types': 'off',
     'react/display-name': 'off',
-    'react-native/no-inline-styles': 2,
+    'react-native/no-inline-styles': 0,
   },
 };
