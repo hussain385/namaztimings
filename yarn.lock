@@ -8520,7 +8520,7 @@ __metadata:
     react-native-maps: 0.28.0
     react-native-modal-datetime-picker: ^10.2.0
     react-native-paper: ^4.9.2
-    react-native-reanimated: ^2.2.0
+    react-native-reanimated: alpha
     react-native-safe-area-context: ^3.2.0
     react-native-screens: ^3.4.0
     react-native-searchable-country-dropdown: ^1.0.1
@@ -9663,19 +9663,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "react-native-reanimated@npm:2.2.0"
+"react-native-reanimated@npm:alpha":
+  version: 2.3.0-alpha.2
+  resolution: "react-native-reanimated@npm:2.3.0-alpha.2"
   dependencies:
     "@babel/plugin-transform-object-assign": ^7.10.4
-    fbjs: ^3.0.0
+    invariant: ^2.2.4
+    lodash.isequal: ^4.5.0
     mockdate: ^3.0.2
     string-hash-64: ^1.0.3
   peerDependencies:
     react: "*"
     react-native: "*"
     react-native-gesture-handler: "*"
-  checksum: faa81f9bcfa846aca54deed82485790ed112d536ad12d2dd0a578868a023ec7ec14da5c46b24af5a911ca89f2e8f74d00313306d5b08780fc3a0ba89ff464d1f
+  checksum: 1a72b683dbf3907505700c1ca634ee108e63c0722ded63a45a9cb2bd34cd3d3c7326c78f76e3b3df91b92fcc85ef9579074a05c2bf5429f7b49e8c2ca89a037b
   languageName: node
   linkType: hard
 
