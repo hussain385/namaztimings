@@ -1244,13 +1244,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/config-plugins@npm:^3.0.2":
-  version: 3.0.6
-  resolution: "@expo/config-plugins@npm:3.0.6"
+"@expo/config-plugins@npm:^3.0.7":
+  version: 3.1.0
+  resolution: "@expo/config-plugins@npm:3.1.0"
   dependencies:
     "@expo/config-types": ^42.0.0
-    "@expo/json-file": 8.2.32
-    "@expo/plist": 0.0.13
+    "@expo/json-file": 8.2.33
+    "@expo/plist": 0.0.14
+    chalk: ^4.1.2
     debug: ^4.3.1
     find-up: ~5.0.0
     fs-extra: 9.0.0
@@ -1261,7 +1262,7 @@ __metadata:
     slash: ^3.0.0
     xcode: ^3.0.1
     xml2js: ^0.4.23
-  checksum: 89d41a78c82b29b76c8be9fc4e120acf878f231f17d050c61d20d4f6638fcd5fc7267ce245ac981aef762403d085f24e6fb2bc6f561e767439d3c462dc5a6f12
+  checksum: 2b995975cf55a66676efca6efe344dfb5d09255c196bd9c2cb3d21a9864ee85f83baf9ad3d773300f90c43572e17a975e01fce39b033c23fa6977d0b17ce3890
   languageName: node
   linkType: hard
 
@@ -1272,25 +1273,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/json-file@npm:8.2.32":
-  version: 8.2.32
-  resolution: "@expo/json-file@npm:8.2.32"
+"@expo/json-file@npm:8.2.33":
+  version: 8.2.33
+  resolution: "@expo/json-file@npm:8.2.33"
   dependencies:
     "@babel/code-frame": ~7.10.4
     json5: ^1.0.1
     write-file-atomic: ^2.3.0
-  checksum: 6eaec64f81628cf6f9c4ed62873e1589adeab424aa9351f0474ab1f58cd5e3b7372ce2ffd7550d235ff1ab9dba39340cb512fb507daa9a638bba53814ae0336a
+  checksum: 1817fd116ca3ccf7f7b6b37de679b2a5afd009c25ffd7a2179cec116d5d64ce0c465ddee79a271c98c7bf37b42cee8d75e02a9f4b3b6151c30848c4126757f46
   languageName: node
   linkType: hard
 
-"@expo/plist@npm:0.0.13":
-  version: 0.0.13
-  resolution: "@expo/plist@npm:0.0.13"
+"@expo/plist@npm:0.0.14":
+  version: 0.0.14
+  resolution: "@expo/plist@npm:0.0.14"
   dependencies:
+    "@xmldom/xmldom": ~0.7.0
     base64-js: ^1.2.3
     xmlbuilder: ^14.0.0
-    xmldom: ~0.5.0
-  checksum: 02f6ab2f8abee70ac62761773f15b3dacc6a4ca230374bc889472fded54ed37c9de54d17fddbedb8834589fb0f5d8834110f617829e926360f6ca2833b617445
+  checksum: 9bfd1fe9912166dc7de0c3af250c1c5262374a64fec8fed6b392934edbbec92c424fffd143bcb17f6655682e2e50c2112592fbdb13d1c32da86182662a78ba0e
   languageName: node
   linkType: hard
 
@@ -2285,17 +2286,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-firebase/app@npm:^12.4.0":
-  version: 12.4.0
-  resolution: "@react-native-firebase/app@npm:12.4.0"
+"@react-native-firebase/app@npm:^12.7.3":
+  version: 12.7.3
+  resolution: "@react-native-firebase/app@npm:12.7.3"
   dependencies:
-    "@expo/config-plugins": ^3.0.2
+    "@expo/config-plugins": ^3.0.7
     opencollective-postinstall: ^2.0.1
     superstruct: ^0.6.2
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 37b7c9716bf17246cb95e0bd77875e59b70466552b3dd8e7a62deeeadcc3f46c0ff0e0d5d3437113cbcf12da4570e3546e0ba3c80657c9c9f44e687e48e47619
+  checksum: 670477102d34267e6d0aa2ba63b4d32761cb87c28885c7a649c2a3651026002bfb0ea3bcb62eab639f0328cbf7f81e17568a9cba441688755c93de1aa1021c93
   languageName: node
   linkType: hard
 
@@ -2308,21 +2309,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-firebase/firestore@npm:^12.4.0":
-  version: 12.4.0
-  resolution: "@react-native-firebase/firestore@npm:12.4.0"
+"@react-native-firebase/firestore@npm:^12.7.3":
+  version: 12.7.3
+  resolution: "@react-native-firebase/firestore@npm:12.7.3"
   peerDependencies:
-    "@react-native-firebase/app": 12.4.0
-  checksum: e566fa4fbeda4bff1ccf72a513b0550f31d7c9ad9fee2120bd6076010d62860c6fd7deb5f712c4e7d931108d30160f41f63a0c670ee5e50ef7d19ce3bdb21b0f
+    "@react-native-firebase/app": 12.7.3
+  checksum: 86268214b07fdf4cc5dcc07c2681112ee76ec066c4965dba07dfaaf5f501be13ac302f50c12785af15da2bf00dd52de26e7a0412be5aacb0e06d8f55e67e4586
   languageName: node
   linkType: hard
 
-"@react-native-firebase/messaging@npm:^12.4.0":
-  version: 12.4.0
-  resolution: "@react-native-firebase/messaging@npm:12.4.0"
+"@react-native-firebase/messaging@npm:^12.7.3":
+  version: 12.7.3
+  resolution: "@react-native-firebase/messaging@npm:12.7.3"
   peerDependencies:
-    "@react-native-firebase/app": 12.4.0
-  checksum: 36c4dbedb50b430802234d9ac677a226427d1c5c4f9be21bcd43a9b06396d23ff570262ee4d72c995ef0d860739c39995b4951779407da780c590f69850de632
+    "@react-native-firebase/app": 12.7.3
+  checksum: ab89d8f3b67b22bbbbc5d277e00567024a1e30a65a018a9e4124ab2d8d771a18939dbcf97f9dc7eb220d39db5d5ca694613404568cc82c91c78a80f204890d9e
+  languageName: node
+  linkType: hard
+
+"@react-native-firebase/storage@npm:^12.7.3":
+  version: 12.7.3
+  resolution: "@react-native-firebase/storage@npm:12.7.3"
+  peerDependencies:
+    "@react-native-firebase/app": 12.7.3
+  checksum: ff699d59719ec60c16d93783c6ea10f8e07c484d4b81f659865594441d433383cbe334e760a1312bb2d9ee7f9360f3acf9534cef5346d12cc843880adc4e8bf7
   languageName: node
   linkType: hard
 
@@ -2832,6 +2842,13 @@ __metadata:
   peerDependencies:
     react-native: ">= 0.41.2"
   checksum: d9fc58a12bd4bb3716f681249995a88064929e95a67c1cc88d2668c758b0df4c61d866992ea9aa41409dc1577cf0831aea1b95e4f3a411a89fe8fc2c280a0bb4
+  languageName: node
+  linkType: hard
+
+"@xmldom/xmldom@npm:~0.7.0":
+  version: 0.7.3
+  resolution: "@xmldom/xmldom@npm:0.7.3"
+  checksum: 37c9aeac7847b6ac79193c0ac8e1109db0018778a38fd45fd15ccd92b0b5ea85b5ef4f0c1d35e87563735bde78b1c52f02f61dfe77f80e3d7bfc2ed2fdb617ae
   languageName: node
   linkType: hard
 
@@ -3760,6 +3777,16 @@ __metadata:
     ansi-styles: ^4.1.0
     supports-color: ^7.1.0
   checksum: 036e973e665ba1a32c975e291d5f3d549bceeb7b1b983320d4598fb75d70fe20c5db5d62971ec0fe76cdbce83985a00ee42372416abfc3a5584465005a7855ed
+  languageName: node
+  linkType: hard
+
+"chalk@npm:^4.1.2":
+  version: 4.1.2
+  resolution: "chalk@npm:4.1.2"
+  dependencies:
+    ansi-styles: ^4.1.0
+    supports-color: ^7.1.0
+  checksum: fe75c9d5c76a7a98d45495b91b2172fa3b7a09e0cc9370e5c8feb1c567b85c4288e2b3fded7cfdd7359ac28d6b3844feb8b82b8686842e93d23c827c417e83fc
   languageName: node
   linkType: hard
 
@@ -8376,10 +8403,11 @@ __metadata:
     "@react-native-community/eslint-config": ^3.0.0
     "@react-native-community/geolocation": ^2.0.2
     "@react-native-community/masked-view": ^0.1.11
-    "@react-native-firebase/app": ^12.4.0
+    "@react-native-firebase/app": ^12.7.3
     "@react-native-firebase/auth": ^12.7.3
-    "@react-native-firebase/firestore": ^12.4.0
-    "@react-native-firebase/messaging": ^12.4.0
+    "@react-native-firebase/firestore": ^12.7.3
+    "@react-native-firebase/messaging": ^12.7.3
+    "@react-native-firebase/storage": ^12.7.3
     "@react-navigation/bottom-tabs": ^5.11.11
     "@react-navigation/drawer": ^5.12.5
     "@react-navigation/native": ^5.9.4
@@ -11784,7 +11812,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"xmldom@npm:^0.5.0, xmldom@npm:~0.5.0":
+"xmldom@npm:^0.5.0":
   version: 0.5.0
   resolution: "xmldom@npm:0.5.0"
   checksum: 6afbfc9f4de847d1e12a3a95e393750a55f6b074881cd3c6192c99421a8548b0687b7851113d6318ff0121615674d3b064924f1c478da1c840757626bdfe4c18

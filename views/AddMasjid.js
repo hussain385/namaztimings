@@ -1,9 +1,9 @@
-/* eslint-disable react-native/no-inline-styles */
 import {Formik} from 'formik';
 import React, {useState} from 'react';
 import {
   Dimensions,
   Image,
+  Platform,
   Text,
   TextInput,
   TouchableOpacity,
@@ -17,6 +17,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useFirestore} from 'react-redux-firebase';
 import * as Yup from 'yup';
 import Edit from './Edit';
+import storage from '@react-native-firebase/storage';
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
@@ -30,9 +31,7 @@ const ERROR = {
 const AddMasjidSchema = Yup.object().shape({
   name: Yup.string().required('Masjid name is required'),
   address: Yup.string().required('Masjid address is required'),
-  pictureURL: Yup.string()
-    .url('Not a valid url')
-    .required("Masjid's pictureURL is required"),
+  pictureURL: Yup.string().required("Masjid's pictureURL is required"),
   userEmail: Yup.string().email().required('Email is required'),
   userName: Yup.string().required('Your name is required'),
   userPhone: Yup.string()
@@ -63,7 +62,8 @@ export const AddMasjid = ({navigation}) => {
     jummuah: '00:00 AM',
   });
 
-  const chooseImage = () => {
+  const chooseImage = (event, value, handleChange, error) => {
+    console.log(value, error);
     let options = {
       title: 'Select Image',
       customButtons: [
@@ -75,11 +75,17 @@ export const AddMasjid = ({navigation}) => {
       },
     };
     ImagePicker.launchImageLibrary(options, response => {
-      if (response.assets[0].error) {
+      if (response.didCancel) {
+        return;
+      }
+      if (response?.assets[0]?.error) {
         alert('An error occurred: ', response.assets[0].error.message);
-      } else if (response.assets[0].uri) {
-        const source = response.assets[0].uri;
-        setImage(source);
+      } else if (response?.assets[0]?.uri) {
+        const {uri} = response.assets[0];
+        console.log(uri);
+        setImage(response.assets[0]);
+        handleChange(uri);
+        value.pictureURL = uri;
         setImageLoading(true);
       }
     });
@@ -149,22 +155,46 @@ export const AddMasjid = ({navigation}) => {
           // },
         }}
         validationSchema={AddMasjidSchema}
-        onSubmit={values => {
+        onSubmit={async values => {
           console.log(values);
-          firestore
+          const filename = image.uri.substring(image.uri.lastIndexOf('/') + 1);
+          const uploadUri =
+            Platform.OS === 'ios'
+              ? image.uri.replace('file://', '')
+              : image.uri;
+          console.log(filename, uploadUri);
+          const ref = storage().ref('/masjid/' + filename);
+          await ref.putFile(uploadUri);
+          const url = await ref.getDownloadURL();
+          console.log(url);
+          await firestore
             .collection('newMasjid')
-            .add(values)
-            .then(
-              value => {
-                console.log('the new masjid data has been sent', value);
-              },
-              reason => {
-                console.error(
-                  'caught error while submitting new masjid data',
-                  reason,
-                );
-              },
-            );
+            .add({...values, pictureURL: url, timing});
+          // .then(
+          //   snapshot => {
+          //     console.log(snapshot);
+          // firestore
+          //   .collection('newMasjid')
+          //   .add({...values, pictureURL: values, timing})
+          //   .then(
+          //     value1 => {
+          //       console.log('the new masjid data has been sent', value1);
+          //     },
+          //     reason => {
+          //       console.error(
+          //         'caught error while submitting new masjid data',
+          //         reason,
+          //       );
+          //     },
+          //   );
+          //   },
+          //   reason => {
+          //     console.error(
+          //       'caught error while submitting new masjid data',
+          //       reason,
+          //     );
+          //   },
+          // );
         }}>
         {({
           handleChange,
@@ -503,6 +533,9 @@ export const AddMasjid = ({navigation}) => {
                   <Text style={{fontSize: 17}}>{timing.eiduladha || '--'}</Text>
                 </View>
               </View>
+              {errors.timing && touched.timing && (
+                <Text style={ERROR}>{errors.timing}</Text>
+              )}
               <View
                 style={{
                   marginTop: 15,
@@ -521,14 +554,21 @@ export const AddMasjid = ({navigation}) => {
                   marginTop: 10,
                   borderRadius: 5,
                 }}>
-                {image ? (
+                {image.uri ? (
                   <>
                     <Image
                       style={{width: 150, height: 130, marginVertical: '3%'}}
-                      source={{uri: `${image}`}}
+                      source={{uri: `${image.uri}`}}
                     />
                     <TouchableOpacity
-                      onPress={chooseImage}
+                      onPress={e =>
+                        chooseImage(
+                          e,
+                          values,
+                          handleChange('pictureURL'),
+                          errors,
+                        )
+                      }
                       style={{
                         alignItems: 'center',
                         backgroundColor: '#1F441E',
@@ -555,7 +595,14 @@ export const AddMasjid = ({navigation}) => {
                       style={{marginVertical: '10%'}}
                     />
                     <TouchableOpacity
-                      onPress={chooseImage}
+                      onPress={e =>
+                        chooseImage(
+                          e,
+                          values,
+                          handleChange('pictureURL'),
+                          errors,
+                        )
+                      }
                       style={{
                         alignItems: 'center',
                         backgroundColor: '#1F441E',
@@ -574,6 +621,9 @@ export const AddMasjid = ({navigation}) => {
                       </Text>
                     </TouchableOpacity>
                   </>
+                )}
+                {errors.pictureURL && (
+                  <Text style={ERROR}>{errors.pictureURL}</Text>
                 )}
               </View>
               <View style={{alignItems: 'center', marginVertical: 15}}>
