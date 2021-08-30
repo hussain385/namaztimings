@@ -3,6 +3,7 @@ import {Formik} from 'formik';
 import React, {useState} from 'react';
 import {
   Dimensions,
+  Image,
   Text,
   TextInput,
   TouchableOpacity,
@@ -10,7 +11,9 @@ import {
 } from 'react-native';
 import {Header} from 'react-native-elements';
 import {ScrollView} from 'react-native-gesture-handler';
+import * as ImagePicker from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useFirestore} from 'react-redux-firebase';
 import * as Yup from 'yup';
 import Edit from './Edit';
@@ -49,6 +52,8 @@ const AddMasjidSchema = Yup.object().shape({
 
 export const AddMasjid = ({navigation}) => {
   const firestore = useFirestore();
+  const [image, setImage] = useState('');
+  const [imageLoading, setImageLoading] = useState(false);
   const [timing, setTiming] = useState({
     isha: '00:00 AM',
     fajar: '00:00 AM',
@@ -57,7 +62,29 @@ export const AddMasjid = ({navigation}) => {
     magrib: '00:00 AM',
     jummuah: '00:00 AM',
   });
-  // function submitData(data) {}
+
+  const chooseImage = () => {
+    let options = {
+      title: 'Select Image',
+      customButtons: [
+        {name: 'customOptionKey', title: 'Choose Photo from Custom Option'},
+      ],
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.launchImageLibrary(options, response => {
+      if (response.assets[0].error) {
+        alert('An error occurred: ', response.assets[0].error.message);
+      } else if (response.assets[0].uri) {
+        const source = response.assets[0].uri;
+        setImage(source);
+        setImageLoading(true);
+      }
+    });
+  };
+
   return (
     <>
       <Header
@@ -72,7 +99,12 @@ export const AddMasjid = ({navigation}) => {
           elevation: 5,
         }}
         leftComponent={
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('SearchStackScreen', {
+                screen: 'Find Masjid',
+              })
+            }>
             <Icon
               name="arrow-left"
               color="#ffff"
@@ -479,6 +511,71 @@ export const AddMasjid = ({navigation}) => {
                   borderBottomWidth: 1,
                 }}
               />
+              <View
+                style={{
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  height: 200,
+                  backgroundColor: '#DDDDDD',
+                  width: '90%',
+                  marginTop: 10,
+                  borderRadius: 5,
+                }}>
+                {image ? (
+                  <>
+                    <Image
+                      style={{width: 150, height: 130, marginVertical: '3%'}}
+                      source={{uri: `${image}`}}
+                    />
+                    <TouchableOpacity
+                      onPress={chooseImage}
+                      style={{
+                        alignItems: 'center',
+                        backgroundColor: '#1F441E',
+                        padding: 10,
+                        borderRadius: 5,
+                        width: '50%',
+                        marginHorizontal: 10,
+                      }}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color: '#CEE6B4',
+                        }}>
+                        Choose a different file
+                      </Text>
+                    </TouchableOpacity>
+                  </>
+                ) : (
+                  <>
+                    <MaterialIcons
+                      name="photo-camera-back"
+                      size={100}
+                      color="white"
+                      style={{marginVertical: '10%'}}
+                    />
+                    <TouchableOpacity
+                      onPress={chooseImage}
+                      style={{
+                        alignItems: 'center',
+                        backgroundColor: '#1F441E',
+                        padding: 10,
+                        borderRadius: 5,
+                        width: '35%',
+                        marginHorizontal: 10,
+                        marginTop: '-7%',
+                      }}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          color: '#CEE6B4',
+                        }}>
+                        Choose File
+                      </Text>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
               <View style={{alignItems: 'center', marginVertical: 15}}>
                 <TouchableOpacity
                   onPress={handleSubmit}

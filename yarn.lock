@@ -8414,6 +8414,7 @@ __metadata:
     react-native-gesture-handler: ^1.10.3
     react-native-get-location: ^2.1.1
     react-native-google-places-autocomplete: ^2.2.0
+    react-native-image-picker: ^4.0.6
     react-native-maps: 0.28.0
     react-native-modal-datetime-picker: ^10.2.0
     react-native-paper: ^4.9.2
@@ -9454,6 +9455,16 @@ __metadata:
   peerDependencies:
     react-native: ">= 0.59"
   checksum: 3b225a460c2663cf34a72d81854138d7f4c8137e75323ce3a4acb6dde91cd23b53660698eccecf8d6404e3811200dbd30ae7a4d989d1630ec61c59e34b9d38dc
+  languageName: node
+  linkType: hard
+
+"react-native-image-picker@npm:^4.0.6":
+  version: 4.0.6
+  resolution: "react-native-image-picker@npm:4.0.6"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 275ba92c66348a2d2842a6ddbec30063229b8318dac4651a143654f0a1a61e1e4efd7e8baf24dc1aef3e9431cef10eee7c7e7a5783b98d7947a21e1a6f48e93c
   languageName: node
   linkType: hard
 
