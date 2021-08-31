@@ -1,6 +1,8 @@
+import storage from '@react-native-firebase/storage';
 import {Formik} from 'formik';
 import React, {useState} from 'react';
 import {
+  Alert,
   Dimensions,
   Image,
   Platform,
@@ -17,7 +19,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useFirestore} from 'react-redux-firebase';
 import * as Yup from 'yup';
 import Edit from './Edit';
-import storage from '@react-native-firebase/storage';
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
@@ -30,7 +31,7 @@ const ERROR = {
 
 const AddMasjidSchema = Yup.object().shape({
   name: Yup.string().required('Masjid name is required'),
-  address: Yup.string().required('Masjid address is required'),
+  address: Yup.string().url().required('Masjid address is required'),
   pictureURL: Yup.string().required("Masjid's pictureURL is required"),
   userEmail: Yup.string().email().required('Email is required'),
   userName: Yup.string().required('Your name is required'),
@@ -169,7 +170,13 @@ export const AddMasjid = ({navigation}) => {
           console.log(url);
           await firestore
             .collection('newMasjid')
-            .add({...values, pictureURL: url, timing});
+            .add({...values, pictureURL: url, timing})
+            .then(
+              Alert.alert('Request', 'Your request has been send'),
+              navigation.navigate('SearchStackScreen', {
+                screen: 'Find Masjid',
+              }),
+            );
           // .then(
           //   snapshot => {
           //     console.log(snapshot);
@@ -236,9 +243,7 @@ export const AddMasjid = ({navigation}) => {
               {errors.name && touched.name && (
                 <Text style={ERROR}>{errors.name}</Text>
               )}
-              <Text style={{marginLeft: 10, marginTop: 10}}>
-                Contact Person
-              </Text>
+              <Text style={{marginLeft: 10, marginTop: 10}}>User Name</Text>
               <View
                 style={{
                   borderRadius: 10,
@@ -265,7 +270,7 @@ export const AddMasjid = ({navigation}) => {
               {errors.userName && touched.userName && (
                 <Text style={ERROR}>{errors.userName}</Text>
               )}
-              <Text style={{marginLeft: 10, marginTop: 10}}>Contact Email</Text>
+              <Text style={{marginLeft: 10, marginTop: 10}}>User Email</Text>
               <View
                 style={{
                   borderRadius: 10,
@@ -293,7 +298,7 @@ export const AddMasjid = ({navigation}) => {
                 <Text style={ERROR}>{errors.userEmail}</Text>
               )}
               <Text style={{marginLeft: 10, marginTop: 10}}>
-                Contact Person Number
+                User Phone Number
               </Text>
               <View
                 style={{
@@ -312,6 +317,7 @@ export const AddMasjid = ({navigation}) => {
                 <TextInput
                   onChangeText={handleChange('userPhone')}
                   value={values.userPhone}
+                  keyboardType="name-phone-pad"
                   onBlur={handleBlur('userPhone')}
                   style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
                   placeholder="Enter Your Phone Number..."
