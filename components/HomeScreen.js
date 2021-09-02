@@ -21,6 +21,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {GetRadMasjidData1} from '../store/firebase';
 import {headerStyles, textStyles} from '../theme/styles/Base';
+import AdminRequest from '../views/AdminRequest';
 // import Geocoder from 'react-native-geocoding';
 import Favbtn from '../views/Favbtn';
 import CoText from '../views/Text/Text';
@@ -295,22 +296,7 @@ function HomeScreen({navigation}) {
                           flexDirection: 'row',
                           marginTop: 5,
                         }}>
-                        <Icon
-                          name="user-alt"
-                          color="#1F441E"
-                          size={20}
-                          style={{paddingRight: 18, paddingLeft: 12}}
-                        />
-                        <TouchableOpacity>
-                          <Text
-                            style={{
-                              color: '#1F441E',
-                              fontWeight: 'bold',
-                              textDecorationLine: 'underline',
-                            }}>
-                            Become an Admin
-                          </Text>
-                        </TouchableOpacity>
+                        <AdminRequest id={masjidData[0].key} />
                       </View>
                       <Image
                         source={{

@@ -168,14 +168,13 @@ export const AddMasjid = ({navigation}) => {
           const ref = storage().ref('/masjid/' + filename);
           await ref.putFile(uploadUri);
           const url = await ref.getDownloadURL();
-          console.log(url);
           await firestore
             .collection('newMasjid')
             .add({...values, pictureURL: url, timing})
             .then(
               Alert.alert('Request', 'Your request has been send', [
                 {
-                  text: 'Go to Settings',
+                  text: 'Ok',
                   onPress: () => {
                     navigation.navigate('SearchStackScreen', {
                       screen: 'Find Masjid',

@@ -18,7 +18,7 @@ import {
 import {Header} from 'react-native-elements';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 import {isEmpty, isLoaded, useFirebase} from 'react-redux-firebase';
 import * as Yup from 'yup';
@@ -36,8 +36,21 @@ const LogInSchema = Yup.object().shape({
 const Login = ({navigation}) => {
   const forgotLoading = false;
   const firebaseApp = useFirebase();
+  const [loading, setLoading] = useState(false);
+  const [visibility, setVisibility] = useState(true);
   const auth = useSelector(state => state.firebase.auth);
   const [error, setError] = useState(null);
+  const [iconName, setIconName] = useState('eye-off-outline');
+
+  const handleIcon = () => {
+    if (iconName === 'eye-off-outline') {
+      setIconName('eye-outline');
+      setVisibility(false);
+    } else {
+      setIconName('eye-off-outline');
+      setVisibility(true);
+    }
+  };
 
   useEffect(() => {
     if (isLoaded(auth) && !isEmpty(auth)) {
@@ -87,13 +100,16 @@ const Login = ({navigation}) => {
           }}
           validationSchema={LogInSchema}
           onSubmit={async values => {
+            setLoading(true);
             try {
               await firebaseApp.login({
                 email: values.email,
                 password: values.password,
               });
+              setLoading(false);
             } catch (e) {
               setError(e.message);
+              setLoading(false);
             }
           }}>
           {({
@@ -120,7 +136,10 @@ const Login = ({navigation}) => {
                     flex: 0.5,
                     justifyContent: 'center',
                   }}>
-                  <CoText text="LOGO" textStyles={[{fontSize: 25}]} />
+                  <CoText
+                    text="Masjid Finder Pakistan"
+                    textStyles={[{fontSize: 30}]}
+                  />
                 </View>
 
                 <View
@@ -162,22 +181,21 @@ const Login = ({navigation}) => {
                         text="Password"
                       />
                     </View>
-                    <View>
-                      <TextInput
-                        style={textIn.input}
-                        autoCapitalize="none"
-                        onChangeText={handleChange('password')}
-                        onBlur={handleBlur('password')}
-                        value={values.password}
-                        placeholderTextColor="grey"
-                      />
-                      <Icon
-                        style={styles.icon}
-                        name="visibility-off"
-                        size={20}
-                        color="#000000"
-                      />
-                    </View>
+                    <TextInput
+                      style={textIn.input}
+                      secureTextEntry={visibility}
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                      placeholderTextColor="grey"
+                    />
+                    <MaterialCommunityIcons
+                      onPress={handleIcon}
+                      style={styles.icon}
+                      name={iconName}
+                      size={23}
+                      color="#000000"
+                    />
                   </View>
                   {errors.password && touched.password && (
                     <Text style={styles.error}>{errors.password}</Text>
@@ -220,10 +238,14 @@ const Login = ({navigation}) => {
                   <TouchableOpacity
                     onPress={handleSubmit}
                     style={btnStyles.basic}>
-                    <CoText
-                      textStyles={[textStyles.simple, {color: 'white'}]}
-                      text="SIGN IN "
-                    />
+                    {loading ? (
+                      <ActivityIndicator color="white" size="small" />
+                    ) : (
+                      <CoText
+                        textStyles={[textStyles.simple, {color: 'white'}]}
+                        text="SIGN IN "
+                      />
+                    )}
                   </TouchableOpacity>
                 </View>
                 {error && <Text style={styles.error}>{error}</Text>}

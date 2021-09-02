@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions, Platform} from 'react-native';
+import {Dimensions, Platform, StyleSheet} from 'react-native';
 
 const conStyles = StyleSheet.create({
   safeAreaMy: {
@@ -88,6 +88,7 @@ const textIn = StyleSheet.create({
     fontSize: 17,
     paddingBottom: 5,
     color: '#000000',
+    marginRight: 40,
   },
 });
 const btnStyles = StyleSheet.create({

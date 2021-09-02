@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import {Header} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import AdminRequest from './AdminRequest';
 import Edit from './Edit';
 import Favbtn from './Favbtn';
 
@@ -228,22 +229,7 @@ const MasjidInfo = ({route, navigation}) => {
                       flexDirection: 'row',
                       marginTop: 5,
                     }}>
-                    <Icon
-                      name="user-alt"
-                      color="#1F441E"
-                      size={20}
-                      style={{paddingRight: 18, paddingLeft: 12}}
-                    />
-                    <TouchableOpacity>
-                      <Text
-                        style={{
-                          color: '#1F441E',
-                          fontWeight: 'bold',
-                          textDecorationLine: 'underline',
-                        }}>
-                        Become an Admin
-                      </Text>
-                    </TouchableOpacity>
+                    <AdminRequest id={favId} />
                   </View>
                   <Image
                     source={{

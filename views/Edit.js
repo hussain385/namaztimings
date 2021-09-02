@@ -414,6 +414,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
+    backgroundColor: '#6d6d6d6b',
   },
   editTime: {
     paddingHorizontal: 10,
