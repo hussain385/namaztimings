@@ -455,7 +455,11 @@ const MasjidInfo = ({route, navigation}) => {
               paddingHorizontal: 5,
             }}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Notification')}
+              onPress={() =>
+                navigation.navigate('Notification', {
+                  masjidId: favId,
+                })
+              }
               style={{
                 alignItems: 'center',
                 backgroundColor: '#CEE6B4',

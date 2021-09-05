@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react-native/no-inline-styles */
 import Fuse from 'fuse.js';
 import React, {useEffect, useState} from 'react';
 import {

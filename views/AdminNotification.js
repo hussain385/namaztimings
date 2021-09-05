@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import firestore from '@react-native-firebase/firestore';
 import _ from 'lodash';
 import React from 'react';
@@ -14,8 +13,19 @@ import {Header} from 'react-native-elements';
 import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useSelector} from 'react-redux';
-import {isLoaded, populate} from 'react-redux-firebase';
+import {
+  isEmpty,
+  isLoaded,
+  populate,
+  useFirestoreConnect,
+} from 'react-redux-firebase';
 import Edit from './Edit';
+
+const markAsRead = async reqId => {
+  await firestore().collection('requests').doc(reqId).update({
+    isRead: true,
+  });
+};
 
 const deleteFunc = (masjidId, reqId) => {
   console.log(masjidId, reqId);
@@ -114,7 +124,9 @@ const Item = ({
             flexDirection: 'row',
             padding: 10,
           }}>
-          <Text style={{fontSize: 15, color: 'green'}}>Mark As Read</Text>
+          <TouchableOpacity onPress={() => markAsRead(id)}>
+            <Text style={{fontSize: 15, color: 'green'}}>Mark As Read</Text>
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => deleteFunc(MasjidId, id)}>
             <Text style={{fontSize: 15, color: 'red'}}>Delete Message</Text>
           </TouchableOpacity>
@@ -133,16 +145,18 @@ const AdminNotification = ({navigation}) => {
   // const [data, setData] = useState([]);
   // const {myMasjids} = useSelector(state => state.firestore.ordered);
   // const {auth} = useSelector(state => state.firebase);
-  // useFirestoreConnect([
-  //   {
-  //     collection: 'Masjid',
-  //     where: [
-  //       ['adminId', '==', isLoaded(auth) && !isEmpty(auth) ? auth.uid : ''],
-  //     ],
-  //     storeAs: 'myMasjids',
-  //     populates,
-  //   },
-  // ]);
+  const {profile, auth} = useSelector(state => state.firebase);
+  useFirestoreConnect([
+    {
+      collection: 'Masjid',
+      where: !profile.isAdmin && [
+        ['adminId', '==', isLoaded(auth) && !isEmpty(auth) ? auth.uid : ''],
+      ],
+      storeAs: 'myMasjids',
+      populates,
+    },
+  ]);
+
   const snapshot = populate(
     useSelector(state => state.firestore),
     'myMasjids',
@@ -165,7 +179,12 @@ const AdminNotification = ({navigation}) => {
       }
     });
   }
-  const data = _.sortBy(tempData, 'createdAt');
+  const data = _.sortBy(
+    _.filter(tempData, function (o) {
+      return !o.isRead;
+    }),
+    'createdAt',
+  );
 
   const renderItem = ({item}) => {
     console.log(item);

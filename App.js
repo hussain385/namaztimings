@@ -128,6 +128,13 @@ const HomeStackScreen = ({navigation}) => (
       }}
     />
     <HomeStack.Screen
+      name="Notification"
+      component={Notifications}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <HomeStack.Screen
       name="Map"
       component={Map}
       options={{
