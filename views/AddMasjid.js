@@ -2,6 +2,7 @@ import storage from '@react-native-firebase/storage';
 import {Formik} from 'formik';
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   Alert,
   Dimensions,
   Image,
@@ -24,15 +25,15 @@ const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const ERROR = {
-  color: 'red',
+  color: 'darkred',
   marginLeft: 10,
   marginTop: 10,
 };
 
 const AddMasjidSchema = Yup.object().shape({
   name: Yup.string().required('Masjid name is required'),
-  address: Yup.string().url().required('Masjid address is required'),
-  pictureURL: Yup.string().required("Masjid's pictureURL is required"),
+  gLink: Yup.string().url().required('Masjid address is required'),
+  pictureURL: Yup.string().required('Masjid picture is required'),
   userEmail: Yup.string().email().required('Email is required'),
   userName: Yup.string().required('Your name is required'),
   userPhone: Yup.string()
@@ -54,6 +55,7 @@ export const AddMasjid = ({navigation}) => {
   const firestore = useFirestore();
   const [image, setImage] = useState('');
   const [imageLoading, setImageLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [timing, setTiming] = useState({
     isha: '00:00 AM',
     fajar: '00:00 AM',
@@ -141,7 +143,7 @@ export const AddMasjid = ({navigation}) => {
       <Formik
         initialValues={{
           name: '',
-          address: '',
+          gLink: '',
           pictureURL: '',
           userEmail: '',
           userName: '',
@@ -157,25 +159,30 @@ export const AddMasjid = ({navigation}) => {
         }}
         validationSchema={AddMasjidSchema}
         onSubmit={async values => {
-          console.log(values);
+          setLoading(true);
           const filename = image.uri.substring(image.uri.lastIndexOf('/') + 1);
           const uploadUri =
             Platform.OS === 'ios'
               ? image.uri.replace('file://', '')
               : image.uri;
-          console.log(filename, uploadUri);
           const ref = storage().ref('/masjid/' + filename);
           await ref.putFile(uploadUri);
           const url = await ref.getDownloadURL();
-          console.log(url);
           await firestore
             .collection('newMasjid')
             .add({...values, pictureURL: url, timing})
             .then(
-              Alert.alert('Request', 'Your request has been send'),
-              navigation.navigate('SearchStackScreen', {
-                screen: 'Find Masjid',
-              }),
+              Alert.alert('Request', 'Your request has been send', [
+                {
+                  text: 'Ok',
+                  onPress: () => {
+                    navigation.navigate('SearchStackScreen', {
+                      screen: 'Find Masjid',
+                    });
+                    setLoading(false);
+                  },
+                },
+              ]),
             );
           // .then(
           //   snapshot => {
@@ -235,7 +242,11 @@ export const AddMasjid = ({navigation}) => {
                   onChangeText={handleChange('name')}
                   value={values.name}
                   onBlur={handleBlur('name')}
-                  style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
+                  style={{
+                    paddingHorizontal: 10,
+                    backgroundColor: '#EEEEEE',
+                    color: 'black',
+                  }}
                   placeholder="Enter Masjid Name..."
                   placeholderTextColor="grey"
                 />
@@ -262,7 +273,11 @@ export const AddMasjid = ({navigation}) => {
                   onChangeText={handleChange('userName')}
                   value={values.userName}
                   onBlur={handleBlur('userName')}
-                  style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
+                  style={{
+                    paddingHorizontal: 10,
+                    backgroundColor: '#EEEEEE',
+                    color: 'black',
+                  }}
                   placeholder="Enter Your Name..."
                   placeholderTextColor="grey"
                 />
@@ -289,7 +304,11 @@ export const AddMasjid = ({navigation}) => {
                   onChangeText={handleChange('userEmail')}
                   value={values.userEmail}
                   onBlur={handleBlur('userEmail')}
-                  style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
+                  style={{
+                    paddingHorizontal: 10,
+                    backgroundColor: '#EEEEEE',
+                    color: 'black',
+                  }}
                   placeholder="Enter Your Email..."
                   placeholderTextColor="grey"
                 />
@@ -317,9 +336,13 @@ export const AddMasjid = ({navigation}) => {
                 <TextInput
                   onChangeText={handleChange('userPhone')}
                   value={values.userPhone}
-                  keyboardType="name-phone-pad"
+                  keyboardType="number-pad"
                   onBlur={handleBlur('userPhone')}
-                  style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
+                  style={{
+                    paddingHorizontal: 10,
+                    backgroundColor: '#EEEEEE',
+                    color: 'black',
+                  }}
                   placeholder="Enter Your Phone Number..."
                   placeholderTextColor="grey"
                 />
@@ -345,10 +368,14 @@ export const AddMasjid = ({navigation}) => {
                   elevation: 5,
                 }}>
                 <TextInput
-                  onChangeText={handleChange('address')}
-                  value={values.address}
-                  onBlur={handleBlur('address')}
-                  style={{paddingHorizontal: 10, backgroundColor: '#EEEEEE'}}
+                  onChangeText={handleChange('gLink')}
+                  value={values.gLink}
+                  onBlur={handleBlur('gLink')}
+                  style={{
+                    paddingHorizontal: 10,
+                    backgroundColor: '#EEEEEE',
+                    color: 'black',
+                  }}
                   placeholder="Enter Masjid Address Google Link..."
                   placeholderTextColor="grey"
                 />
@@ -635,6 +662,7 @@ export const AddMasjid = ({navigation}) => {
               <View style={{alignItems: 'center', marginVertical: 15}}>
                 <TouchableOpacity
                   onPress={handleSubmit}
+                  disabled={loading}
                   style={{
                     alignItems: 'center',
                     backgroundColor: '#CEE6B4',
@@ -643,13 +671,17 @@ export const AddMasjid = ({navigation}) => {
                     width: '95%',
                     marginHorizontal: 10,
                   }}>
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      color: '#1F441E',
-                    }}>
-                    Submit
-                  </Text>
+                  {!loading ? (
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        color: '#1F441E',
+                      }}>
+                      Submit
+                    </Text>
+                  ) : (
+                    <ActivityIndicator color="#1F441E" size="small" />
+                  )}
                 </TouchableOpacity>
               </View>
             </ScrollView>
