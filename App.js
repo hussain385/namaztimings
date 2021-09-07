@@ -1,5 +1,5 @@
+import '@react-native-firebase/auth';
 import firebase from '@react-native-firebase/app';
-import auth from '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
