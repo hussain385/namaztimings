@@ -86,14 +86,15 @@ const Notification = ({navigation, route: {params}}) => {
         }
         backgroundColor="#1F441E"
       />
-      {isLoaded(masjidData) && !isEmpty(data) ? (
-        _.map(data, (d, id) => {
-          return <Text key={id}>{d.description}</Text>;
-        })
-      ) : isLoaded(masjidData) && isEmpty(data) ? (
-        <Text>... Empty ...</Text>
-      ) : (
+      {firestore.status.requested.tempAnnouncement ? (
+        // _.map(data, (d, id) => {
+        //   return <Text key={id}>{d.description}</Text>;
+        // })
+        <Text>{JSON.stringify(data, null, 2)}</Text>
+      ) : firestore.status.requesting.tempAnnouncement ? (
         <Text>Loading...</Text>
+      ) : (
+        <Text>... Empty ...</Text>
       )}
     </View>
   );
