@@ -4,8 +4,6 @@ import {
   ActivityIndicator,
   Dimensions,
   FlatList,
-  ImageBackground,
-  Linking,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -18,151 +16,11 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useSelector} from 'react-redux';
 import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
 import {getCurrentLocation, sortMasjidData1} from '../store/firebase';
-import Favbtn from '../views/Favbtn';
+import MasjidCard from '../views/MasjidCard';
 
 const populates = [
   {child: 'adminId', root: 'users', childAlias: 'user'}, // replace owner with user object
 ];
-
-const Item = ({
-  url,
-  title,
-  distance,
-  favId,
-  address,
-  timings,
-  nav,
-  onRefresh,
-  latitude,
-  longitude,
-  user,
-}) => (
-  <View
-    key={favId}
-    style={{
-      margin: 10,
-      backgroundColor: '#ffff',
-      borderRadius: 5,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 5,
-      },
-      shadowOpacity: 0.34,
-      shadowRadius: 6.27,
-      elevation: 5,
-    }}>
-    <TouchableOpacity
-      onPress={() =>
-        nav.navigate('More Info', {
-          name: title,
-          url: url,
-          address: address,
-          timing: timings,
-          favId: favId,
-          distance: distance,
-          latitude: latitude,
-          longitude: longitude,
-          user: user,
-        })
-      }>
-      <ImageBackground
-        source={{uri: `${url}`}}
-        style={{
-          flex: 1,
-          resizeMode: 'cover',
-          justifyContent: 'center',
-          width: '100%',
-          height: 200,
-        }}>
-        <View style={{flexDirection: 'row'}}>
-          <View style={{flexGrow: 1}} />
-          <View style={{top: -50}}>
-            <Favbtn favId={favId} onRefresh={onRefresh} isBig={true} />
-          </View>
-        </View>
-      </ImageBackground>
-    </TouchableOpacity>
-
-    <View style={{padding: 5}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          margin: 5,
-          justifyContent: 'space-between',
-        }}>
-        <View style={{maxWidth: 250}}>
-          <Text style={{fontSize: 17}}>{title}</Text>
-        </View>
-        <View>
-          <Text
-            onPress={() => {
-              Linking.openURL(
-                `https://maps.google.com/?q=${latitude},${longitude}`,
-              );
-            }}
-            style={{color: '#900000', textDecorationLine: 'underline'}}>
-            {distance}KM AWAY
-          </Text>
-        </View>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          paddingHorizontal: 5,
-        }}>
-        <TouchableOpacity
-          onPress={() =>
-            nav.navigate('More Info', {
-              name: title,
-              url: url,
-              address: address,
-              timing: timings,
-              favId: favId,
-              distance: distance,
-              latitude: latitude,
-              longitude: longitude,
-              user: user,
-            })
-          }
-          style={{
-            alignItems: 'center',
-            backgroundColor: '#1F441E',
-            padding: 10,
-            borderRadius: 5,
-            width: '47%',
-            marginVertical: 10,
-            marginHorizontal: 10,
-          }}>
-          <Text style={{color: '#CEE6B4'}}>More Info</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            Linking.openURL(
-              `https://maps.google.com/?q=${latitude},${longitude}`,
-            );
-          }}
-          style={{
-            alignItems: 'center',
-            padding: 10,
-            borderRadius: 5,
-            width: '47%',
-            marginVertical: 10,
-            marginHorizontal: 10,
-            backgroundColor: '#CEE6B4',
-          }}>
-          <Text
-            style={{
-              color: '#1F441E',
-            }}>
-            Location
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  </View>
-);
 
 const Search = ({navigation}) => {
   useFirestoreConnect([
@@ -200,7 +58,7 @@ const Search = ({navigation}) => {
   }, []);
 
   const renderItem = ({item}) => (
-    <Item
+    <MasjidCard
       title={item.name}
       address={item.address}
       url={item.pictureURL}
@@ -214,7 +72,7 @@ const Search = ({navigation}) => {
     />
   );
   const renderItem1 = ({item}) => (
-    <Item
+    <MasjidCard
       title={item.item.name}
       address={item.item.address}
       url={item.item.pictureURL}

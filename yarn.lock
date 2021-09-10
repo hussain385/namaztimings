@@ -2236,9 +2236,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/eslint-config@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@react-native-community/eslint-config@npm:3.0.0"
+"@react-native-community/eslint-config@npm:3.0.1":
+  version: 3.0.1
+  resolution: "@react-native-community/eslint-config@npm:3.0.1"
   dependencies:
     "@react-native-community/eslint-plugin": ^1.1.0
     "@typescript-eslint/eslint-plugin": ^4.22.1
@@ -2255,7 +2255,8 @@ __metadata:
     prettier: ^2.0.2
   peerDependencies:
     eslint: ">=7"
-  checksum: aca55056da7b37c149e4af6f81f510b411fe604ca0ac00e2b953e5e5ebdb5bee2624c5b68c828837cf611e677802bc1aca00a9e9fa4746813d73a165ec3c7371
+    prettier: ">=2"
+  checksum: 00b110590fecd926c55fe4e2e5c453fec9fa7813852811a887723990078ff69961fee59bd0f473bbb97705b84fe2434337a3a14ba4e900bef4ee2d9ff296c127
   languageName: node
   linkType: hard
 
@@ -4747,18 +4748,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:^3.4.1":
-  version: 3.4.1
-  resolution: "eslint-plugin-prettier@npm:3.4.1"
+"eslint-plugin-prettier@npm:4.0.0":
+  version: 4.0.0
+  resolution: "eslint-plugin-prettier@npm:4.0.0"
   dependencies:
     prettier-linter-helpers: ^1.0.0
   peerDependencies:
-    eslint: ">=5.0.0"
-    prettier: ">=1.13.0"
+    eslint: ">=7.28.0"
+    prettier: ">=2.0.0"
   peerDependenciesMeta:
     eslint-config-prettier:
       optional: true
-  checksum: fa6a89f0d7cba1cc87064352f5a4a68dc3739448dd279bec2bced1bfa3b704467e603d13b69dcec853f8fa30b286b8b715912898e9da776e1b016cf0ee48bd99
+  checksum: 03d69177a3c21fa2229c7e427ce604429f0b20ab7f411e2e824912f572a207c7f5a41fd1f0a95b9b8afe121e291c1b1f1dc1d44c7aad4b0837487f9c19f5210d
   languageName: node
   linkType: hard
 
@@ -8400,7 +8401,7 @@ __metadata:
     "@babel/runtime": ^7.14.8
     "@react-native-async-storage/async-storage": ^1.15.5
     "@react-native-community/datetimepicker": ^3.5.2
-    "@react-native-community/eslint-config": ^3.0.0
+    "@react-native-community/eslint-config": 3.0.1
     "@react-native-community/geolocation": ^2.0.2
     "@react-native-community/masked-view": ^0.1.11
     "@react-native-firebase/app": ^12.7.3
@@ -8418,7 +8419,7 @@ __metadata:
     babel-jest: ^27.0.6
     country-list: ^2.2.0
     eslint: ^7.32.0
-    eslint-plugin-prettier: ^3.4.1
+    eslint-plugin-prettier: 4.0.0
     eslint-plugin-react: latest
     eslint-plugin-react-native: ^3.11.0
     formik: ^2.2.9
@@ -8431,14 +8432,14 @@ __metadata:
     metro-react-native-babel-preset: ^0.66.2
     moment: ^2.29.1
     ngeohash: ^0.6.3
-    prettier: ^2.3.2
-    react: 17.0.2
+    prettier: 2.4.0
+    react: ^17.0.2
     react-firebase-hooks: ^3.0.4
     react-native: 0.64.2
     react-native-elements: ^3.4.2
     react-native-flags: ^1.0.0
     react-native-geocoding: ^0.5.0
-    react-native-geolocation-service: ^5.3.0-beta.1
+    react-native-geolocation-service: 5.3.0-beta.2
     react-native-gesture-handler: ^1.10.3
     react-native-get-location: ^2.1.1
     react-native-google-places-autocomplete: ^2.2.0
@@ -9161,7 +9162,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.0.2, prettier@npm:^2.3.2":
+"prettier@npm:2.4.0":
+  version: 2.4.0
+  resolution: "prettier@npm:2.4.0"
+  bin:
+    prettier: bin-prettier.js
+  checksum: ac1bf07566dad5f58469e6d8a954bd5c0f833935597deb00330e9f673e14e4cf81e07dee7eff5776c0edebe11358d199f332d9940be40c8b455516034e553ce0
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^2.0.2":
   version: 2.3.2
   resolution: "prettier@npm:2.3.2"
   bin:
@@ -9444,10 +9454,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-geolocation-service@npm:^5.3.0-beta.1":
-  version: 5.3.0-beta.1
-  resolution: "react-native-geolocation-service@npm:5.3.0-beta.1"
-  checksum: 8981f8e9dd5ad0892e437cb7d6edb3b103e802cf1429866d255817bf90c93a06666b71241fbcafdd02a708d48a2d300b866e4e38537f868ee2152289e6513d1e
+"react-native-geolocation-service@npm:5.3.0-beta.2":
+  version: 5.3.0-beta.2
+  resolution: "react-native-geolocation-service@npm:5.3.0-beta.2"
+  checksum: b5433c70a1800b4f752ff5e0e141a59d340be09c0f114c1c955038bcf5619390e7072dee213592b08e70dd291033c48096cc02e00d40fd29c297fbdd88bef800
   languageName: node
   linkType: hard
 
@@ -9755,7 +9765,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:17.0.2":
+"react@npm:^17.0.2":
   version: 17.0.2
   resolution: "react@npm:17.0.2"
   dependencies:

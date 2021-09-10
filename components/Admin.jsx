@@ -53,7 +53,7 @@ const Admin = ({navigation}) => {
     if (isLoaded(snapshot)) {
       setNotify(0);
       _.map(snapshot, doc => {
-        setNotify(prevState => (prevState += doc.requests?.length));
+        setNotify(prevState => prevState + doc.requests?.length);
       });
     }
 
@@ -358,7 +358,11 @@ const Admin = ({navigation}) => {
                         width: '70%',
                         marginHorizontal: 10,
                       }}
-                      onPress={() => navigation.navigate('Show More')}>
+                      onPress={() =>
+                        navigation.navigate('Notification', {
+                          masjidId: id,
+                        })
+                      }>
                       <Text style={{color: '#CEE6B4'}}>
                         NEWS & ANNOUNCMENTS
                       </Text>

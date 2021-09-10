@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Header} from 'react-native-elements';
 import {
@@ -20,7 +20,6 @@ const Notification = ({navigation, route: {params}}) => {
       root: 'announcement',
       childAlias: 'announcement',
     },
-    {child: 'requestList', root: 'requests', childAlias: 'requests'},
   ];
   useFirestoreConnect([
     {
@@ -37,7 +36,7 @@ const Notification = ({navigation, route: {params}}) => {
 
   console.log(masjidData);
 
-  const data = _.map(masjidData?.announcement, (rawData, id) => {
+  const data = _.map(masjidData?.announcement, rawData => {
     return {
       ...rawData,
       // createdAt: Date.parse(rawData.createdAt),
