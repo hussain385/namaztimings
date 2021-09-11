@@ -361,6 +361,7 @@ const Admin = ({navigation}) => {
                       onPress={() =>
                         navigation.navigate('Notification', {
                           masjidId: id,
+                          masjidName: data.name,
                         })
                       }>
                       <Text style={{color: '#CEE6B4'}}>

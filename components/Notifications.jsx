@@ -1,103 +1,272 @@
-import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {Header} from 'react-native-elements';
-import {
-  isEmpty,
-  isLoaded,
-  populate,
-  useFirestoreConnect,
-} from 'react-redux-firebase';
-import {useSelector} from 'react-redux';
 import _ from 'lodash';
+import React, {useState} from 'react';
+import {
+    Dimensions,
+    FlatList,
+    Modal,
+    Pressable,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from 'react-native';
+import {Header} from 'react-native-elements';
+import {ActivityIndicator, FAB} from 'react-native-paper';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {useSelector} from 'react-redux';
+import {populate, useFirestoreConnect} from 'react-redux-firebase';
+import NotificationCard from '../views/NotificationCard';
 
 const Notification = ({navigation, route: {params}}) => {
-  console.log(params);
-  const {masjidId} = params;
-  const populates = [
-    {
-      child: 'announcementList',
-      root: 'announcement',
-      childAlias: 'announcement',
-    },
-  ];
-  useFirestoreConnect([
-    {
-      collection: 'Masjid',
-      doc: masjidId,
-      populates,
-      storeAs: 'tempAnnouncement',
-    },
-  ]);
+    const [modalVisible, setModalVisible] = useState(false);
+    console.log(modalVisible, "sdasd");
+    const {masjidId, masjidName} = params;
+    const populates = [
+        {
+            child: 'announcementList',
+            root: 'announcement',
+            childAlias: 'announcement',
+        },
+    ];
+    useFirestoreConnect([
+        {
+            collection: 'Masjid',
+            doc: masjidId,
+            populates,
+            storeAs: 'tempAnnouncement',
+        },
+    ]);
 
-  const firestore = useSelector(state => state.firestore);
-  console.log(firestore);
-  const masjidData = populate(firestore, 'tempAnnouncement', populates);
+    const firestore = useSelector(state => state.firestore);
+    console.log(firestore);
+    const masjidData = populate(firestore, 'tempAnnouncement', populates);
 
-  console.log(masjidData);
+    console.log(masjidData);
 
-  const data = _.map(masjidData?.announcement, rawData => {
-    return {
-      ...rawData,
-      // createdAt: Date.parse(rawData.createdAt),
-    };
-  });
+    const data = _.map(masjidData?.announcement, rawData => {
+        return {
+            ...rawData,
+            // createdAt: Date.parse(rawData.createdAt),
+        };
+    });
 
-  console.log(data);
+    console.log(data);
 
-  return (
-    <View>
-      <Header
-        containerStyle={{
-          shadowOpacity: 50,
-          elevation: 50,
-        }}
-        leftComponent={
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon
-              name="arrow-left"
-              color="#ffff"
-              size={26}
-              style={{paddingLeft: 10}}
+    return (
+        <View>
+            <Header
+                containerStyle={{
+                    shadowOpacity: 50,
+                    elevation: 50,
+                }}
+                leftComponent={
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <Icon
+                            name="arrow-left"
+                            color="#ffff"
+                            size={26}
+                            style={{paddingLeft: 10}}
+                        />
+                    </TouchableOpacity>
+                }
+                centerComponent={
+                    <View style={{textAlign: 'center'}}>
+                        <Text
+                            style={{
+                                color: '#ffff',
+                                fontSize: 22,
+                                marginBottom: 5,
+                                marginTop: 5,
+                                textAlign: 'center',
+
+                            }}>
+                            Notification
+                        </Text>
+                    </View>
+                }
+                backgroundColor="#1F441E"
             />
-          </TouchableOpacity>
-        }
-        centerComponent={
-          <View style={{textAlign: 'center'}}>
-            <Text
-              style={{
-                color: '#ffff',
-                fontSize: 22,
-                marginBottom: 5,
-                marginTop: 5,
-                textAlign: 'center',
-              }}>
-              Notification
-            </Text>
-          </View>
-        }
-        rightComponent={
-          <Icon
-            name="shopping-cart"
-            color="#ffff"
-            size={26}
-            style={{paddingRight: 10}}
-          />
-        }
-        backgroundColor="#1F441E"
-      />
-      {firestore.status.requested.tempAnnouncement ? (
-        // _.map(data, (d, id) => {
-        //   return <Text key={id}>{d.description}</Text>;
-        // })
-        <Text>{JSON.stringify(data, null, 2)}</Text>
-      ) : firestore.status.requesting.tempAnnouncement ? (
-        <Text>Loading...</Text>
-      ) : (
-        <Text>... Empty ...</Text>
-      )}
-    </View>
-  );
+            {firestore.status.requested.tempAnnouncement ? (
+                <FlatList
+                    style={{height: Dimensions.get('screen').height * 0.82}}
+                    data={data}
+                    renderItem={({item, index}) => (<NotificationCard data={item} masjidName={masjidName} masjidId={masjidId}/>)
+                    }/>
+            ) : firestore.status.requesting.tempAnnouncement ? (
+                <View
+                    style={{
+                        height: Dimensions.get('screen').height,
+                    }}>
+                    <ActivityIndicator
+                        size={40}
+                        color="#1F441E"
+                    />
+                </View>
+
+            ) : (
+                <View
+                    style={{
+                        height: Dimensions.get('screen').height * 0.82,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                    <AntDesign color="#1F441E" name="folder1" size={70}/>
+                    <Text style={{fontSize: 20, color: '#1F441E'}}>No Notification</Text>
+                </View>
+            )}
+            <View>
+                <FAB
+                    style={styles.fab}
+                    small
+                    icon="plus"
+                    onPress={() => setModalVisible(true)}
+                />
+                <Modal animationType="slide" transparent={true} visible={modalVisible}>
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <Text style={styles.modalText}>
+                                New Notification
+                            </Text>
+                            <View
+                                style={{
+                                    width: Dimensions.get('screen').width * 0.75,
+                                    marginBottom: 10,
+                                }}>
+                                {/*<Text style={{marginLeft: 10, marginTop: 10}}>*/}
+                                {/*    New*/}
+                                {/*</Text>*/}
+                                <View
+                                    style={{
+                                        borderRadius: 10,
+                                        marginHorizontal: 10,
+                                        marginTop: 5,
+                                        shadowColor: '#000',
+                                        shadowOffset: {
+                                            width: 0,
+                                            height: 5,
+                                        },
+                                        shadowOpacity: 0.34,
+                                        shadowRadius: 6.27,
+                                        elevation: 5,
+                                    }}>
+                                    <TextInput
+                                        multiline={true}
+                                        onChangeText={notificationText => {
+                                            console.log(notificationText);
+                                        }}
+                                        scrollEnabled={true}
+                                        style={{
+                                            paddingHorizontal: 10,
+                                            backgroundColor: '#EEEEEE',
+                                            color: 'black',
+                                            maxHeight: 200,
+                                            overflow: 'scroll',
+                                        }}
+                                        keyboardType="numbers-and-punctuation"
+                                        placeholder="Enter Your Notification..."
+                                        placeholderTextColor="grey"
+                                    />
+                                </View>
+                            </View>
+                            <View style={{flexDirection: 'row', width: '100%' ,alignItems:'center', justifyContent:'center', marginTop: 10}}>
+                                <Pressable
+                                    style={[styles.button, styles.buttonOpen]}
+                                    onPress={() => {
+                                        setModalVisible(!modalVisible);
+                                    }}
+                                >
+                                    <Text style={styles.textStyle}>Cancel</Text>
+                                </Pressable>
+                                <Pressable
+                                    style={[
+                                        styles.button,
+                                        styles.buttonClose,
+                                    ]}
+                                    onPress={() => {
+                                        console.log("logged");
+                                    }}>
+                                    <Text
+                                        style={[
+                                            styles.textStyle1,
+                                        ]}>
+                                        Send
+                                    </Text>
+                                </Pressable>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+            </View>
+        </View>
+    );
 };
+
+const styles = StyleSheet.create({
+    fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 0,
+        padding: 10,
+        backgroundColor: '#1F441E',
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#6d6d6d6b',
+    },
+    editTime: {
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 8,
+        backgroundColor: '#dddd',
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 35,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    button: {
+        borderRadius: 10,
+        padding: 10,
+        elevation: 2,
+        width: '30%',
+    },
+    buttonOpen: {
+        backgroundColor: '#5C5C5C',
+        marginRight: 15,
+    },
+    buttonClose: {
+        backgroundColor: '#1F441E',
+        marginLeft: 15,
+    },
+    textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    textStyle1: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    modalText: {
+        marginBottom: 15,
+        fontSize: 20,
+        textAlign:"center"
+    },
+});
 
 export default Notification;
