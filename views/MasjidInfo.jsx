@@ -457,8 +457,9 @@ const MasjidInfo = ({route, navigation}) => {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Notification', {
-                    masjidId: favId, 
-                    masjidName: name,
+                  masjidId: favId,
+                  masjidName: name,
+                  adminId: user.id,
                 })
               }
               style={{

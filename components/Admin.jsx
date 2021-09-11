@@ -362,6 +362,7 @@ const Admin = ({navigation}) => {
                         navigation.navigate('Notification', {
                           masjidId: id,
                           masjidName: data.name,
+                          adminId: data.admin.id,
                         })
                       }>
                       <Text style={{color: '#CEE6B4'}}>
