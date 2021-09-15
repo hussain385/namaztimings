@@ -33,6 +33,7 @@ import Map from './views/Map';
 import Maps1 from './views/Maps1';
 import MasjidInfo from './views/MasjidInfo';
 import ShowMore from './views/ShowMore';
+import ForgotPassword from './views/forgotPassword';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -232,6 +233,7 @@ const HomeStackScreen = ({navigation}) => (
         headerShown: false,
       }}
     />
+    <HomeStack.Screen name="Forgot" component={ForgotPassword} />
   </HomeStack.Navigator>
 );
 
