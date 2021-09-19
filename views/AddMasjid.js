@@ -20,6 +20,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useFirestore} from 'react-redux-firebase';
 import * as Yup from 'yup';
 import Edit from './Edit';
+import {useSelector} from 'react-redux';
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
@@ -32,7 +33,7 @@ const ERROR = {
 
 const AddMasjidSchema = Yup.object().shape({
   name: Yup.string().required('Masjid name is required'),
-  gLink: Yup.string().url().required('Masjid address is required'),
+  gLink: Yup.string().url().required('Masjid address link is required'),
   pictureURL: Yup.string().required('Masjid picture is required'),
   userEmail: Yup.string().email().required('Email is required'),
   userName: Yup.string().required('Your name is required'),
@@ -56,6 +57,7 @@ export const AddMasjid = ({navigation}) => {
   const [image, setImage] = useState('');
   const [imageLoading, setImageLoading] = useState(false);
   const [loading, setLoading] = useState(false);
+  const {auth, profile} = useSelector(state => state.firebase);
   const [timing, setTiming] = useState({
     isha: '00:00 AM',
     fajar: '00:00 AM',
@@ -145,9 +147,9 @@ export const AddMasjid = ({navigation}) => {
           name: '',
           gLink: '',
           pictureURL: '',
-          userEmail: '',
-          userName: '',
-          userPhone: '',
+          userEmail: auth.email || '',
+          userName: profile.name || '',
+          userPhone: profile.phone || '',
           // timing: {
           //   isha: '',
           //   fajar: '',
@@ -171,7 +173,7 @@ export const AddMasjid = ({navigation}) => {
           await firestore
             .collection('newMasjid')
             .add({...values, pictureURL: url, timing})
-            .then(
+            .then(() =>
               Alert.alert('Request', 'Your request has been send', [
                 {
                   text: 'Ok',
@@ -380,8 +382,8 @@ export const AddMasjid = ({navigation}) => {
                   placeholderTextColor="grey"
                 />
               </View>
-              {errors.address && touched.address && (
-                <Text style={ERROR}>{errors.address}</Text>
+              {errors.gLink && touched.gLink && (
+                <Text style={ERROR}>{errors.gLink}</Text>
               )}
               <View
                 style={{
