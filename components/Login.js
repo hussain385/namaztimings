@@ -210,7 +210,7 @@ const Login = ({navigation}) => {
                     </View>
                   ) : (
                     <TouchableOpacity
-                      onPress={navigation.navigate('Forgot')}
+                      onPress={() => navigation.navigate('Forgot')}
                       style={{
                         justifyContent: 'flex-end',
                         alignItems: 'flex-end',

@@ -233,7 +233,14 @@ const HomeStackScreen = ({navigation}) => (
         headerShown: false,
       }}
     />
-    <HomeStack.Screen name="Forgot" component={ForgotPassword} />
+    <HomeStack.Screen
+      name="Forgot"
+      component={ForgotPassword}
+      options={{
+        title: 'Forgot',
+        headerShown: false,
+      }}
+    />
   </HomeStack.Navigator>
 );
 
