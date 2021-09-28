@@ -91,7 +91,7 @@ const Notification = ({navigation, route: {params}}) => {
         }
         backgroundColor="#1F441E"
       />
-      {firestore.status.requested.tempAnnouncement ? (
+      {firestore.status.requested.tempAnnouncement && data.length >= 1 ? (
         <FlatList
           style={{height: Dimensions.get('screen').height * 0.82}}
           data={data}

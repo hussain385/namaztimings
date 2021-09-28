@@ -21,6 +21,7 @@ import {useFirestore} from 'react-redux-firebase';
 import * as Yup from 'yup';
 import Edit from './Edit';
 import {useSelector} from 'react-redux';
+import _ from 'lodash';
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
@@ -161,6 +162,7 @@ export const AddMasjid = ({navigation}) => {
         }}
         validationSchema={AddMasjidSchema}
         onSubmit={async values => {
+          const data = _.omit(values, ['userName', 'userEmail', 'userPhone']);
           setLoading(true);
           const filename = image.uri.substring(image.uri.lastIndexOf('/') + 1);
           const uploadUri =
@@ -172,7 +174,16 @@ export const AddMasjid = ({navigation}) => {
           const url = await ref.getDownloadURL();
           await firestore
             .collection('newMasjid')
-            .add({...values, pictureURL: url, timing})
+            .add({
+              ...data,
+              user: {
+                email: values.userEmail,
+                name: values.userName,
+                phone: values.userPhone,
+              },
+              pictureURL: url,
+              timing,
+            })
             .then(() =>
               Alert.alert('Request', 'Your request has been send', [
                 {

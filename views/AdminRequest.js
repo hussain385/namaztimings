@@ -77,7 +77,7 @@ const AdminRequest = ({id}) => {
                 await firestore
                   .collection('adminRequest')
                   .add({...values})
-                  .then(
+                  .then(() =>
                     Alert.alert('Request', 'Your request has been send', [
                       {
                         text: 'Ok',
