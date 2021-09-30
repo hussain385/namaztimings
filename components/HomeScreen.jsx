@@ -319,9 +319,11 @@ function HomeScreen({navigation}) {
                       backgroundColor: '#E1E1E1',
                       padding: 10,
                     }}>
-                    <Text style={{fontSize: 17}}>
+                    <Text style={{fontSize: 17, flexGrow: 1}}>
                       Last Updated:
-                      <Text style={{color: '#008000'}}> 14th May 2021</Text>
+                    </Text>
+                    <Text style={{fontSize: 17, color: '#008000'}}>
+                      {masjidData[0].timeStamp || 'Not Available'}
                     </Text>
                   </View>
                 </View>

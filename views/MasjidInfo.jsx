@@ -28,6 +28,7 @@ const MasjidInfo = ({route, navigation}) => {
   const {latitude} = route.params;
   const {longitude} = route.params;
   const {user} = route.params;
+  const {timeStamp} = route.params;
 
   console.log(user);
 

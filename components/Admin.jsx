@@ -106,7 +106,7 @@ const Admin = ({navigation}) => {
                     textStyles.simple,
                     {fontSize: 10, color: '#1F441E'},
                   ]}
-                  text={notify}
+                  text={notify || 0}
                 />
               </View>
               <MaterialIcons name="bell" size={28} color="white" />

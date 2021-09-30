@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import _ from 'lodash';
 import React, {useState} from 'react';
 import {
@@ -160,7 +159,7 @@ const Favourites = ({navigation}) => {
   //   const [masjidData, loading, error] = GetRadMasjidData();
   const [masjidData, loading, error, GetData] = GetFavMasjidData();
   const favoriteId = useSelector(state => state.favorites.value);
-
+  console.log(masjidData);
   function onRefresh() {
     setRefreshing(true);
     GetData();
@@ -176,21 +175,24 @@ const Favourites = ({navigation}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favoriteId]);
 
-  const renderItem = ({item}) => (
-    <Item
-      title={item.name}
-      address={item.address}
-      url={item.pictureURL}
-      timings={item.timing}
-      nav={navigation}
-      distance={item.distance}
-      favId={item.key}
-      onRefresh={onRefresh}
-      longitude={item.g.geopoint.longitude}
-      user={item.user}
-      latitude={item.g.geopoint.latitude}
-    />
-  );
+  const renderItem = ({item}) => {
+    console.log(item);
+    return (
+      <Item
+        title={item.name}
+        address={item.address}
+        url={item.pictureURL}
+        timings={item.timing}
+        nav={navigation}
+        distance={item.distance}
+        favId={item.key}
+        onRefresh={onRefresh}
+        longitude={item.g.geopoint.longitude}
+        user={item.user}
+        latitude={item.g.geopoint.latitude}
+      />
+    );
+  };
   return (
     <>
       <Header
@@ -233,10 +235,10 @@ const Favourites = ({navigation}) => {
                   inverted={true}
                   renderItem={renderItem}
                   keyExtractor={x => x.key}
-                  style={{marginBottom: 60}}
+                  style={{marginBottom: 60, flex: 1}}
                   onRefresh={() => onRefresh()}
                   refreshing={refreshing}
-                  initialScrollIndex={masjidData.length - 1}
+                  initialScrollIndex={masjidData.length}
                 />
               );
             } else {

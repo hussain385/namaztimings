@@ -1244,7 +1244,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/config-plugins@npm:^3.0.7":
+"@expo/config-plugins@npm:^3.1.0":
   version: 3.1.0
   resolution: "@expo/config-plugins@npm:3.1.0"
   dependencies:
@@ -2287,53 +2287,53 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-firebase/app@npm:^12.7.3":
-  version: 12.7.3
-  resolution: "@react-native-firebase/app@npm:12.7.3"
+"@react-native-firebase/app@npm:^12.8.0":
+  version: 12.8.0
+  resolution: "@react-native-firebase/app@npm:12.8.0"
   dependencies:
-    "@expo/config-plugins": ^3.0.7
+    "@expo/config-plugins": ^3.1.0
     opencollective-postinstall: ^2.0.1
     superstruct: ^0.6.2
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 670477102d34267e6d0aa2ba63b4d32761cb87c28885c7a649c2a3651026002bfb0ea3bcb62eab639f0328cbf7f81e17568a9cba441688755c93de1aa1021c93
+  checksum: 1e01aab019f269fa69da065e7ff546a2ddf5d843dc7c03f31ed61702177fd9da605e35a49a9cf02c3154831b28a938a3908102b03a9c4759625f5b368db6248b
   languageName: node
   linkType: hard
 
-"@react-native-firebase/auth@npm:^12.7.3":
-  version: 12.7.3
-  resolution: "@react-native-firebase/auth@npm:12.7.3"
+"@react-native-firebase/auth@npm:^12.8.0":
+  version: 12.8.0
+  resolution: "@react-native-firebase/auth@npm:12.8.0"
   peerDependencies:
-    "@react-native-firebase/app": 12.7.3
-  checksum: 82e1d46d0101b6117d52c73eefac15d6db5b2e4a6eded6b03f4929f1ee858b1ea3d3e6bde7bb9353da7daf71826f0327b8731459da93927ec2b9a1a3192f5bf4
+    "@react-native-firebase/app": 12.8.0
+  checksum: 872dad8a69819d12da9b83a8c60e9eec9bdc606235d5d3a68a95cf4f35c15ee3d8e36e837862e224bfc6d851456f86b9c60aa6aab4aa4b39f26acf7999d01b31
   languageName: node
   linkType: hard
 
-"@react-native-firebase/firestore@npm:^12.7.3":
-  version: 12.7.3
-  resolution: "@react-native-firebase/firestore@npm:12.7.3"
+"@react-native-firebase/firestore@npm:^12.8.0":
+  version: 12.8.0
+  resolution: "@react-native-firebase/firestore@npm:12.8.0"
   peerDependencies:
-    "@react-native-firebase/app": 12.7.3
-  checksum: 86268214b07fdf4cc5dcc07c2681112ee76ec066c4965dba07dfaaf5f501be13ac302f50c12785af15da2bf00dd52de26e7a0412be5aacb0e06d8f55e67e4586
+    "@react-native-firebase/app": 12.8.0
+  checksum: 563c3444fd355e7d8cacdcd8db21f03fdebf713518005d9e00d8b61d6771fd281b3e1ea02364b75d31b847e7cee252be29daef02b5d2662ca15d649288ad36d1
   languageName: node
   linkType: hard
 
-"@react-native-firebase/messaging@npm:^12.7.3":
-  version: 12.7.3
-  resolution: "@react-native-firebase/messaging@npm:12.7.3"
+"@react-native-firebase/messaging@npm:^12.8.0":
+  version: 12.8.0
+  resolution: "@react-native-firebase/messaging@npm:12.8.0"
   peerDependencies:
-    "@react-native-firebase/app": 12.7.3
-  checksum: ab89d8f3b67b22bbbbc5d277e00567024a1e30a65a018a9e4124ab2d8d771a18939dbcf97f9dc7eb220d39db5d5ca694613404568cc82c91c78a80f204890d9e
+    "@react-native-firebase/app": 12.8.0
+  checksum: 2f647a2cad82d2495496328c68a0e7dfbbdda0186c699d77c5b7d24d9d336f717a3a6441b7804ad31aab1c7edf3680eed3d2c2be3bc597534adbf3df7d5532a6
   languageName: node
   linkType: hard
 
-"@react-native-firebase/storage@npm:^12.7.3":
-  version: 12.7.3
-  resolution: "@react-native-firebase/storage@npm:12.7.3"
+"@react-native-firebase/storage@npm:^12.8.0":
+  version: 12.8.0
+  resolution: "@react-native-firebase/storage@npm:12.8.0"
   peerDependencies:
-    "@react-native-firebase/app": 12.7.3
-  checksum: ff699d59719ec60c16d93783c6ea10f8e07c484d4b81f659865594441d433383cbe334e760a1312bb2d9ee7f9360f3acf9534cef5346d12cc843880adc4e8bf7
+    "@react-native-firebase/app": 12.8.0
+  checksum: 533a5d90fb5305a705ee66af2849a0c654fa974157bb3dc0b13a02a8c8668e719dd01dae307ede58afbf194a8b487a0f214a1c1f6556c8bc5f71f579bc3859d7
   languageName: node
   linkType: hard
 
@@ -8404,11 +8404,11 @@ __metadata:
     "@react-native-community/eslint-config": 3.0.1
     "@react-native-community/geolocation": ^2.0.2
     "@react-native-community/masked-view": ^0.1.11
-    "@react-native-firebase/app": ^12.7.3
-    "@react-native-firebase/auth": ^12.7.3
-    "@react-native-firebase/firestore": ^12.7.3
-    "@react-native-firebase/messaging": ^12.7.3
-    "@react-native-firebase/storage": ^12.7.3
+    "@react-native-firebase/app": ^12.8.0
+    "@react-native-firebase/auth": ^12.8.0
+    "@react-native-firebase/firestore": ^12.8.0
+    "@react-native-firebase/messaging": ^12.8.0
+    "@react-native-firebase/storage": ^12.8.0
     "@react-navigation/bottom-tabs": ^5.11.11
     "@react-navigation/drawer": ^5.12.5
     "@react-navigation/native": ^5.9.4
@@ -8433,7 +8433,7 @@ __metadata:
     moment: ^2.29.1
     ngeohash: ^0.6.3
     prettier: 2.4.0
-    react: ^17.0.2
+    react: 17.0.2
     react-firebase-hooks: ^3.0.4
     react-native: 0.64.2
     react-native-elements: ^3.4.2
@@ -8453,7 +8453,7 @@ __metadata:
     react-native-searchable-country-dropdown: ^1.0.1
     react-native-vector-icons: ^8.1.0
     react-native-webview: ^11.6.5
-    react-redux: ^7.2.4
+    react-redux: ^7.2.5
     react-redux-firebase: ^3.10.0
     react-test-renderer: 17.0.2
     redux-firestore: ^0.15.0
@@ -9711,9 +9711,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-redux@npm:^7.2.4":
-  version: 7.2.4
-  resolution: "react-redux@npm:7.2.4"
+"react-redux@npm:^7.2.5":
+  version: 7.2.5
+  resolution: "react-redux@npm:7.2.5"
   dependencies:
     "@babel/runtime": ^7.12.1
     "@types/react-redux": ^7.1.16
@@ -9728,7 +9728,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: 214fa1a4811f95090b77d96ec7114c322adf388b6d086ebebf50cdaf03549758037283f953d2b920cf6ee2f6ffad8f35e92f1ab959b3f2c957f5075d00e16d0a
+  checksum: 04ac4a4178067cbcfc05506dfea9f7e01730093a5752f050567f7ae4a38c03c96da9d8fed051f8ab1ecede5ea8a15ee41c5f6c5eeb7f04f37e4d13e431ec7830
   languageName: node
   linkType: hard
 
@@ -9765,7 +9765,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^17.0.2":
+"react@npm:17.0.2":
   version: 17.0.2
   resolution: "react@npm:17.0.2"
   dependencies:
