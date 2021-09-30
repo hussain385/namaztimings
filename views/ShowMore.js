@@ -116,7 +116,7 @@ const ShowMore = ({navigation}) => {
       populates,
     },
   ]);
-  const [location, setLocation] = React.useState();
+  const [location, setLocation] = React.useState({coords: {latitude: null, longitude: null},});
   const firestore = useSelector(state => state.firestore);
   const masjid = populate(firestore, 'Masjid', populates);
   const masjidData = sortMasjidData1(masjid, location.coords);

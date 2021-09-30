@@ -66,11 +66,6 @@ const Edit = ({
       console.log(isRequest);
       Alert.alert('Cannot Process', 'Please fill the form correctly');
     } else {
-      // setTime(prevState => ({
-      //   ...prevState,
-      //   isRead: false,
-      //   createdAt: firestore.Timestamp.now(),
-      // }));
       if (isAdd) {
         setModalVisible(!modalVisible);
         return handleChange(time);
