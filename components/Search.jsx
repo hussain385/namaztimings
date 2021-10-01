@@ -13,31 +13,34 @@ import {
 } from 'react-native';
 import {Header} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {useSelector} from 'react-redux';
-import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
+import {connect, useSelector} from 'react-redux';
+import {
+  firestoreConnect,
+  isLoaded,
+  populate,
+  useFirestore,
+  useFirestoreConnect,
+} from 'react-redux-firebase';
 import {getCurrentLocation, sortMasjidData1} from '../store/firebase';
 import MasjidCard from '../views/MasjidCard';
+import {compose} from '@reduxjs/toolkit';
 
 const populates = [
   {child: 'adminId', root: 'users', childAlias: 'user'}, // replace owner with user object
 ];
 
-const Search = ({navigation}) => {
-  useFirestoreConnect([
-    {
-      collection: 'Masjid',
-      populates,
-    },
-  ]);
+const Search = props => {
+  const {navigation, masjid} = props;
   const [textSearch, setTextSearch] = useState('');
   const [location, setLocation] = useState({
     coords: {latitude: null, longitude: null},
   });
   const [result, setResult] = useState(null);
   const firestore = useSelector(state => state.firestore);
-  const masjid = populate(firestore, 'Masjid', populates);
+  // const masjid = populate(firestore, 'Masjid', populates);
   const masjidData = sortMasjidData1(masjid, location.coords);
-
+  console.log(props, '<==== props');
+  console.log(firestore, '<==== firestore');
   function onChangeSearch(text) {
     const fuse = new Fuse(masjidData, {keys: ['address'], distance: 400});
     const resultf = fuse.search(text);
@@ -243,4 +246,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Search;
+export default compose(
+  firestoreConnect(() => [{collection: 'Masjid', populates}]),
+  connect((state, props) => {
+    const masjid = populate(state.firestore, 'Masjid', populates);
+    return {
+      ...props,
+      masjid,
+    };
+  }),
+)(Search);

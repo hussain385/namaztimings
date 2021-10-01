@@ -2,7 +2,7 @@ import firestore from '@react-native-firebase/firestore';
 import * as geofirestore from 'geofirestore';
 import haversine from 'haversine';
 import _ from 'lodash';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {
   Alert,
   Linking,
@@ -47,24 +47,15 @@ export function modifyData(data, id, d) {
     key: id,
     distance: Number(d.toFixed(2)),
     timing: {
-      asar: !_.isUndefined(data.timing)
-        ? !_.isUndefined(data.timing.asar) && data.timing.asar
-        : '01:00 PM',
-      fajar: !_.isUndefined(data.timing)
-        ? !_.isUndefined(data.timing.fajar) && data.timing.fajar
-        : '04:30 PM',
-      isha: !_.isUndefined(data.timing)
-        ? !_.isUndefined(data.timing.isha) && data.timing.isha
-        : '09:30 PM',
-      magrib: !_.isUndefined(data.timing)
-        ? !_.isUndefined(data.timing.magrib) && data.timing.magrib
-        : '07:00 PM',
-      zohar: !_.isUndefined(data.timing)
-        ? !_.isUndefined(data.timing.zohar) && data.timing.zohar
-        : '05:30 PM',
+      asar: data.timing?.asar || '01:00 PM',
+      fajar: data.timing?.fajar || '04:30 PM',
+      isha: data.timing?.isha || '09:30 PM',
+      magrib: data.timing.magrib || '07:00 PM',
+      zohar: data.timing.zohar || '05:30 PM',
     },
   };
 }
+
 export function sortMasjidData1(snapshot, {latitude, longitude}) {
   const masjids = [];
 
@@ -76,7 +67,7 @@ export function sortMasjidData1(snapshot, {latitude, longitude}) {
     return [];
   }
 
-  _.map(snapshot, (data, key) => {
+  _.forEach(snapshot, (data, key) => {
     const loc1 = data.g.geopoint;
     const d = haversine(loc1, {latitude, longitude});
     const tempData = modifyData(data, key, d);
@@ -96,7 +87,7 @@ export function sortMasjidData1(snapshot, {latitude, longitude}) {
       masjids.push(tempData);
     }
   });
-  console.log('sortMasjidData1', masjids);
+  // console.log('sortMasjidData1', masjids);
   return _.sortBy(masjids, 'distance');
 }
 
@@ -110,7 +101,7 @@ export async function sortMasjidData(snapshot, {latitude, longitude}) {
     const tempData = modifyData(data, docSnapshot.id, d);
     // console.log(tempData, '<======== tempData');
     const adminId = tempData.adminId;
-    console.log(adminId, _.isEmpty(adminId), typeof adminId);
+    // console.log(adminId, _.isEmpty(adminId), typeof adminId);
     if (_.isEmpty(adminId)) {
       // console.log('when True');
       masjids.push({
@@ -135,7 +126,7 @@ export async function sortMasjidData(snapshot, {latitude, longitude}) {
 
 export function GetRadMasjidData1(radius = 50) {
   const [loading, setLoading] = useState(true);
-  const [masjid, setMasjid] = useState(null);
+  const [masjid, setMasjid] = useState([]);
   const [error, setError] = useState({
     message: '',
   });
@@ -151,39 +142,12 @@ export function GetRadMasjidData1(radius = 50) {
       setLoading(true);
     }
 
-    const hasPermission = await hasLocationPermission();
-
-    if (!hasPermission) {
-      return;
-    }
-
-    Geolocation.getCurrentPosition(
-      position => {
-        setLocation(position);
-        console.log(position, '<=========== In GetCurr');
-      },
-      error1 => {
-        Alert.alert(`Code ${error1.code}`, error1.message);
-        setLocation(null);
-        console.log(error1);
-      },
-      {
-        accuracy: {
-          android: 'high',
-          ios: 'best',
-        },
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 10000,
-        distanceFilter: 0,
-        forceRequestLocation: true,
-        forceLocationManager: false,
-        showLocationDialog: true,
-      },
-    );
+    getCurrentLocation()
+      .then(setLocation, error1 => console.warn(error1))
+      .then(() => setLoading(false));
   };
 
-  async function GetData() {
+  async function GetDataRadMasjid() {
     let latitude, longitude;
     latitude = location.coords.latitude;
     longitude = location.coords.longitude;
@@ -194,8 +158,9 @@ export function GetRadMasjidData1(radius = 50) {
       })
       .get()
       .then(async snapshot => {
+        console.log(snapshot);
         const masjids1 = await sortMasjidData(snapshot, location.coords);
-        setMasjid(masjids1);
+        setMasjid(masjids1, '<====GetDataRadMasjid');
         setLoading(false);
       })
       .catch(e => {
@@ -204,7 +169,7 @@ export function GetRadMasjidData1(radius = 50) {
       });
   }
 
-  return {masjid, loading, location, error, getLocation, GetData};
+  return {masjid, loading, location, error, getLocation, GetDataRadMasjid};
 }
 
 function GetUsers() {
@@ -228,12 +193,12 @@ function GetUsers() {
 
 export function GetFavMasjidData() {
   const [loading, setLoading] = useState(true);
-  const [masjid, setMasjid] = useState(null);
+  const [masjid, setMasjid] = useState([]);
   const [error, setError] = useState(null);
   const favoriteId = useSelector(state => state.favorites.value);
   const subs = firestore().collection('Masjid');
 
-  async function GetData() {
+  async function GetDataFavMasjid() {
     if (_.isNull(masjid)) {
       setLoading(true);
     }
@@ -276,7 +241,7 @@ export function GetFavMasjidData() {
             return o.uid === adminId;
           });
           masjids.push({
-            ...docSnapshot.data(),
+            ...tempData,
             user: {...u},
           });
         }
@@ -288,7 +253,7 @@ export function GetFavMasjidData() {
     }
   }
 
-  return [masjid, loading, error, GetData];
+  return {masjid, loading, error, GetDataFavMasjid};
 }
 
 const hasPermissionIOS = async () => {

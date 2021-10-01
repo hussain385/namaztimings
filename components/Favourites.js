@@ -16,18 +16,33 @@ import {useSelector} from 'react-redux';
 import {GetFavMasjidData} from '../store/firebase';
 import Favbtn from '../views/Favbtn';
 
+// title={item.name}
+// address={item.address}
+// url={item.pictureURL}
+// timings={item.timing}
+// nav={navigation}
+// distance={item.distance}
+// favId={item.key}
+// onRefresh={onRefresh}
+// longitude={item.g.geopoint.longitude}
+// user={item.user}
+// latitude={item.g.geopoint.latitude}
+
 const Item = ({
-  url,
-  title,
-  distance,
-  favId,
-  address,
-  timings,
-  nav,
-  onRefresh,
-  latitude,
-  longitude,
-  user,
+  navigation: nav,
+  item: {
+    pictureURL: url,
+    name: title,
+    distance,
+    key: favId,
+    address,
+    timings,
+    onRefresh,
+    g: {
+      geopoint: {latitude, longitude},
+    },
+    user,
+  },
 }) => (
   <View
     style={{
@@ -157,12 +172,16 @@ const Item = ({
 const Favourites = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
   //   const [masjidData, loading, error] = GetRadMasjidData();
-  const [masjidData, loading, error, GetData] = GetFavMasjidData();
+  const {
+    masjid: masjidData,
+    loading,
+    error,
+    GetDataFavMasjid: GetData,
+  } = GetFavMasjidData();
   const favoriteId = useSelector(state => state.favorites.value);
-  console.log(masjidData);
-  function onRefresh() {
+  async function onRefresh() {
     setRefreshing(true);
-    GetData();
+    await GetData();
     setRefreshing(false);
   }
 
@@ -175,24 +194,6 @@ const Favourites = ({navigation}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favoriteId]);
 
-  const renderItem = ({item}) => {
-    console.log(item);
-    return (
-      <Item
-        title={item.name}
-        address={item.address}
-        url={item.pictureURL}
-        timings={item.timing}
-        nav={navigation}
-        distance={item.distance}
-        favId={item.key}
-        onRefresh={onRefresh}
-        longitude={item.g.geopoint.longitude}
-        user={item.user}
-        latitude={item.g.geopoint.latitude}
-      />
-    );
-  };
   return (
     <>
       <Header
@@ -227,18 +228,22 @@ const Favourites = ({navigation}) => {
       />
       <>
         {(() => {
+          if (error) {
+            return <Text>{JSON.stringify(error, null, 2)}</Text>;
+          }
           if (!loading) {
             if (!_.isNull(masjidData) && !_.isEmpty(masjidData)) {
+              console.log(masjidData, '<==== from fav page');
               return (
                 <FlatList
                   data={masjidData}
                   inverted={true}
-                  renderItem={renderItem}
+                  renderItem={Item}
                   keyExtractor={x => x.key}
                   style={{marginBottom: 60, flex: 1}}
-                  onRefresh={() => onRefresh()}
+                  onRefresh={onRefresh}
                   refreshing={refreshing}
-                  initialScrollIndex={masjidData.length}
+                  initialScrollIndex={masjidData.length - 1}
                 />
               );
             } else {

@@ -18,12 +18,14 @@ import {
   isEmpty,
   isLoaded,
   populate,
+  useFirestore,
   useFirestoreConnect,
 } from 'react-redux-firebase';
 import {modifyData} from '../store/firebase';
 import {headerStyles, textStyles} from '../theme/styles/Base';
 import Edit from '../views/Edit';
 import CoText from '../views/Text/Text';
+import firestore from '@react-native-firebase/firestore';
 
 const populates = [
   {child: 'requestList', root: 'requests', childAlias: 'requests'},
@@ -33,6 +35,8 @@ const populates = [
 const Admin = ({navigation}) => {
   const [notify, setNotify] = React.useState(0);
   const {auth, profile} = useSelector(state => state.firebase);
+  const firestore = useSelector(state => state.firestore);
+  const Firestore = useFirestore();
   useFirestoreConnect([
     {
       collection: 'Masjid',
@@ -43,11 +47,7 @@ const Admin = ({navigation}) => {
       populates,
     },
   ]);
-  const snapshot = populate(
-    useSelector(state => state.firestore),
-    'myMasjids',
-    populates,
-  );
+  const snapshot = populate(firestore, 'myMasjids', populates);
   console.log('From admin', snapshot);
   React.useEffect(() => {
     if (isLoaded(snapshot)) {
@@ -55,6 +55,8 @@ const Admin = ({navigation}) => {
       _.map(snapshot, doc => {
         setNotify(prevState => prevState + doc.requests?.length);
       });
+      // Firestore.unsetListeners([{collection: 'Masjid'}]);
+      // firestore.unsetListener('Masjid');
     }
 
     return () => {
