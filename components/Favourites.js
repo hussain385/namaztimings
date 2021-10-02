@@ -178,11 +178,7 @@ const Favourites = ({navigation}) => {
     GetDataFavMasjid: GetData,
   } = GetFavMasjidData();
   const favoriteId = useSelector(state => state.favorites.value);
-<<<<<<< HEAD
-  function onRefresh() {
-=======
   async function onRefresh() {
->>>>>>> ac5d340b7268333eaa7d2dbe2962786c11be6d80
     setRefreshing(true);
     await GetData();
     setRefreshing(false);
@@ -200,26 +196,6 @@ const Favourites = ({navigation}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favoriteId]);
 
-<<<<<<< HEAD
-  const renderItem = ({item}) => {
-    return (
-      <Item
-        title={item.name}
-        address={item.address}
-        url={item.pictureURL}
-        timings={item.timing}
-        nav={navigation}
-        distance={item.distance}
-        favId={item.key}
-        onRefresh={onRefresh}
-        longitude={item.g.geopoint.longitude}
-        user={item.user}
-        latitude={item.g.geopoint.latitude}
-      />
-    );
-  };
-=======
->>>>>>> ac5d340b7268333eaa7d2dbe2962786c11be6d80
   return (
     <>
       <HeaderComp navigation={navigation} heading="Favourites" />
@@ -240,7 +216,6 @@ const Favourites = ({navigation}) => {
                   style={{marginBottom: 60, flex: 1}}
                   onRefresh={onRefresh}
                   refreshing={refreshing}
-                  initialScrollIndex={masjidData.length - 1}
                 />
               );
             } else {
