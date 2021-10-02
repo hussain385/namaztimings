@@ -29,6 +29,7 @@ const MasjidInfo = ({route, navigation}) => {
   const {longitude} = route.params;
   const {user} = route.params;
   const {timeStamp} = route.params;
+  const {gLink} = route.params;
 
   console.log(user);
 
@@ -142,9 +143,7 @@ const MasjidInfo = ({route, navigation}) => {
                 />
                 <Text
                   onPress={() => {
-                    Linking.openURL(
-                      `https://maps.google.com/?q=${latitude},${longitude}`,
-                    );
+                    Linking.openURL(`${gLink}`);
                   }}
                   style={{
                     color: '#900000',
@@ -255,12 +254,12 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   flexDirection: 'row',
                   backgroundColor: '#E1E1E1',
-                  flexGrow: 1,
                   padding: 10,
+                  width: '100%',
                 }}>
-                <Text style={{fontSize: 17}}>
-                  Last Updated:
-                  <Text style={{color: '#008000'}}>14th May 2021</Text>
+                <Text style={{fontSize: 17}}>Last Updated:</Text>
+                <Text style={{fontSize: 17, marginLeft: 10, color: '#008000'}}>
+                  {timeStamp || 'Not Available'}
                 </Text>
               </View>
             </View>

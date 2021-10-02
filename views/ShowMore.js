@@ -12,9 +12,9 @@ import {
 import {Header} from 'react-native-elements';
 import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {getCurrentLocation, sortMasjidData1} from '../store/firebase';
-import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
 import {useSelector} from 'react-redux';
+import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
+import {getCurrentLocation, sortMasjidData1} from '../store/firebase';
 
 const Item = props => (
   <Card
@@ -36,6 +36,8 @@ const Item = props => (
           latitude: props.latitude,
           longitude: props.longitude,
           user: props.user,
+          gLink: props.gLink,
+          timeStamp: props.timeStamp,
         })
       }>
       <Card.Cover
@@ -56,17 +58,15 @@ const Item = props => (
           <View style={{maxWidth: 250}}>
             <Text style={{fontSize: 17}}>{props.title}</Text>
           </View>
-          <View>
+          <TouchableOpacity>
             <Text
               onPress={() => {
-                Linking.openURL(
-                  `https://maps.google.com/?q=${props.latitude},${props.longitude}`,
-                );
+                Linking.openURL(`${props.gLink}`);
               }}
               style={{color: '#900000', textDecorationLine: 'underline'}}>
               {props.distance}KM AWAY
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row', marginTop: 10}}>
           <View style={{flexGrow: 5}}>
@@ -147,6 +147,8 @@ const ShowMore = ({navigation}) => {
       longitude={item.g.geopoint.longitude}
       latitude={item.g.geopoint.latitude}
       user={item.user}
+      gLink={item.gLink}
+      timeStamp={item.timeStamp}
     />
   );
   return (

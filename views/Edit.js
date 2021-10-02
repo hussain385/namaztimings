@@ -1,4 +1,5 @@
 import {Formik} from 'formik';
+import _ from 'lodash';
 import moment from 'moment';
 import React, {useState} from 'react';
 import {
@@ -13,12 +14,11 @@ import {
   View,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {Button, HelperText, TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
-import * as Yup from 'yup';
-import {Button, HelperText, TextInput} from 'react-native-paper';
-import _ from 'lodash';
 import {useFirestore} from 'react-redux-firebase';
+import * as Yup from 'yup';
 
 const Edit = ({
   timing,
@@ -524,14 +524,13 @@ const Edit = ({
     </SafeAreaView>
   );
 };
-
+//00000071
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
-    backgroundColor: '#6d6d6d6b',
+    backgroundColor: '#00000071',
   },
   editTime: {
     paddingHorizontal: 10,

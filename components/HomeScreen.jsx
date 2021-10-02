@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 // import Entypo from 'react-native-vector-icons/Entypo';
 import {Header} from 'react-native-elements';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 // import {NavigationContainer} from '@react-navigation/native';
 // import {Divider} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -34,7 +35,7 @@ function HomeScreen({navigation}) {
   const [refreshing, setRefreshing] = useState(false);
   const masjidData = masjid;
   // Geocoder.init('AIzaSyCrsNBX-pWunuPeL-ziP99aXhetdZL2VKs');
-
+  console.log(loading);
   useEffect(() => {
     onRefresh();
     // const willFocusSubscription = navigation.addListener('focus', () => {
@@ -141,9 +142,12 @@ function HomeScreen({navigation}) {
             <Alert>Error: {JSON.stringify(error)}</Alert>
           </View>
         )}
-        {loading ? (
-          <ActivityIndicator color="#1F441E" size="large" />
-        ) : masjidData.length !== 0 ? (
+        {!masjidData[0] && (
+          <View>
+            <ActivityIndicator color="#1F441E" size="large" />
+          </View>
+        )}
+        {masjidData.length !== 0 && !loading && (
           <SafeAreaView style={styles.container}>
             <ScrollView
               style={styles.scrollView}
@@ -450,6 +454,8 @@ function HomeScreen({navigation}) {
                         latitude: masjidData[0].g.geopoint.latitude,
                         longitude: masjidData[0].g.geopoint.longitude,
                         user: masjidData[0].user,
+                        gLink: masjidData[0].gLink,
+                        timeStamp: masjidData[0].timeStamp,
                       })
                     }
                     style={{
@@ -491,13 +497,21 @@ function HomeScreen({navigation}) {
               </View>
             </ScrollView>
           </SafeAreaView>
-        ) : (
+        )}
+        {masjidData === 0 && (
           <SafeAreaView>
             <ScrollView
               refreshControl={
                 <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
               }>
-              <Text>Data not found try refreshing</Text>
+              <View
+                style={{
+                  alignItems: 'center',
+                  marginVertical: '50%',
+                }}>
+                <AntDesign name="folder1" size={50} />
+                <Text>No Favourites</Text>
+              </View>
             </ScrollView>
           </SafeAreaView>
         )}

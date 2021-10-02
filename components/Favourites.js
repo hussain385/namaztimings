@@ -64,6 +64,8 @@ const Favourites = ({navigation}) => {
       address,
       timing: timing,
       onRefresh,
+      gLink,
+      timeStamp,
       g: {
         geopoint: {latitude, longitude},
       },
@@ -96,6 +98,8 @@ const Favourites = ({navigation}) => {
             latitude: latitude,
             longitude: longitude,
             user: user,
+            gLink: gLink,
+            timeStamp: timeStamp,
           })
         }>
         <ImageBackground
@@ -128,9 +132,7 @@ const Favourites = ({navigation}) => {
           <View>
             <Text
               onPress={() => {
-                Linking.openURL(
-                  `https://maps.google.com/?q=${latitude},${longitude}`,
-                );
+                Linking.openURL(`${gLink}`);
               }}
               style={{color: '#900000', textDecorationLine: 'underline'}}>
               {distance}KM AWAY
@@ -155,6 +157,8 @@ const Favourites = ({navigation}) => {
                 latitude: latitude,
                 longitude: longitude,
                 user: user,
+                gLink: gLink,
+                timeStamp: timeStamp,
               })
             }
             style={{
@@ -170,9 +174,7 @@ const Favourites = ({navigation}) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              Linking.openURL(
-                `https://maps.google.com/?q=${latitude},${longitude}`,
-              );
+              Linking.openURL(`${gLink}`);
             }}
             style={{
               alignItems: 'center',

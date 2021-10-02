@@ -64,6 +64,8 @@ export default class MasjidCard extends PureComponent {
               latitude: this.props.latitude,
               longitude: this.props.longitude,
               user: this.props.user,
+              gLink: this.props.gLink,
+              timeStamp: this.props.timeStamp,
             })
           }>
           <ImageBackground
@@ -101,9 +103,7 @@ export default class MasjidCard extends PureComponent {
             <View>
               <Text
                 onPress={() => {
-                  Linking.openURL(
-                    `https://maps.google.com/?q=${this.props.latitude},${this.props.longitude}`,
-                  );
+                  Linking.openURL(`${this.props.gLink}`);
                 }}
                 style={{color: '#900000', textDecorationLine: 'underline'}}>
                 {this.props.distance}KM AWAY
@@ -128,6 +128,8 @@ export default class MasjidCard extends PureComponent {
                   latitude: this.props.latitude,
                   longitude: this.props.longitude,
                   user: this.props.user,
+                  gLink: this.props.gLink,
+                  timeStamp: this.props.timeStamp,
                 })
               }
               style={{
@@ -143,9 +145,7 @@ export default class MasjidCard extends PureComponent {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                Linking.openURL(
-                  `https://maps.google.com/?q=${this.props.latitude},${this.props.longitude}`,
-                );
+                Linking.openURL(`${this.props.gLink}`);
               }}
               style={{
                 alignItems: 'center',

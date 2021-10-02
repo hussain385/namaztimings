@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#6d6d6d6b',
+    backgroundColor: '#00000071',
   },
   modalView: {
     margin: 22,

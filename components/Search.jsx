@@ -1,3 +1,4 @@
+import {compose} from '@reduxjs/toolkit';
 import Fuse from 'fuse.js';
 import React, {useEffect, useState} from 'react';
 import {
@@ -14,16 +15,9 @@ import {
 import {Header} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {connect, useSelector} from 'react-redux';
-import {
-  firestoreConnect,
-  isLoaded,
-  populate,
-  useFirestore,
-  useFirestoreConnect,
-} from 'react-redux-firebase';
+import {firestoreConnect, isLoaded, populate} from 'react-redux-firebase';
 import {getCurrentLocation, sortMasjidData1} from '../store/firebase';
 import MasjidCard from '../views/MasjidCard';
-import {compose} from '@reduxjs/toolkit';
 
 const populates = [
   {child: 'adminId', root: 'users', childAlias: 'user'}, // replace owner with user object
@@ -72,6 +66,8 @@ const Search = props => {
       latitude={item.g.geopoint.latitude}
       longitude={item.g.geopoint.longitude}
       user={item.user}
+      gLink={item.gLink}
+      timeStamp={item.timeStamp}
     />
   );
   const renderItem1 = ({item}) => (
@@ -85,6 +81,8 @@ const Search = props => {
       favId={item.item.key}
       latitude={item.item.g.geopoint.latitude}
       user={item.item.user}
+      gLink={item.item.gLink}
+      timeStamp={item.item.timeStamp}
       longitude={item.item.g.geopoint.longitude}
     />
   );
