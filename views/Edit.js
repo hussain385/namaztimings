@@ -1,6 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
 import {Formik} from 'formik';
-import _ from 'lodash';
 import moment from 'moment';
 import React, {useState} from 'react';
 import {
@@ -11,42 +9,40 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
+import * as Yup from 'yup';
+import {Button, HelperText, TextInput} from 'react-native-paper';
+import _ from 'lodash';
 import {useFirestore} from 'react-redux-firebase';
 
 const Edit = ({
-  isha,
-  fajar,
-  zohar,
-  asar,
-  magrib,
+  timing,
   uid,
   adminId = '',
   isRequest = true,
   value = 'Edit',
   isAdd = false,
-  handleChange = null,
+  handleChange: returnChange = null,
   userInfo = true,
 }) => {
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [namazTime, setNamazTime] = useState('');
-  const [disabled, setDisabled] = useState(userInfo);
-  const [time, setTime] = useState({
-    userName: '',
-    userContact: '',
-    isha: isha,
-    fajar: fajar,
-    zohar: zohar,
-    asar: asar,
-    magrib: magrib,
-  });
+  // const [disabled, setDisabled] = useState(userInfo);
+  // const [time, setTime] = useState({
+  //   userName: '',
+  //   userContact: '',
+  //   isha: isha,
+  //   fajar: fajar,
+  //   zohar: zohar,
+  //   asar: asar,
+  //   magrib: magrib,
+  // });
   const firestore = useFirestore();
 
   const showTimePicker = namazName => {
@@ -56,127 +52,88 @@ const Edit = ({
 
   const {auth, profile} = useSelector(state => state.firebase);
 
-  async function submitRequest() {
-    const prevTime = {
-      userName: '',
-      userContact: '',
-      isha: isha,
-      fajar: fajar,
-      zohar: zohar,
-      asar: asar,
-      magrib: magrib,
-    };
-    if (_.isEqual(time, prevTime) && isRequest) {
-      console.log(isRequest);
-      Alert.alert('Cannot Process', 'Please fill the form correctly');
-    } else {
-      if (isAdd) {
-        setModalVisible(!modalVisible);
-        return handleChange(time);
-      }
-      if (isRequest) {
-        try {
-          await firestore
-            .collection('requests')
-            .add({
-              timing: time,
-              adminId,
-              isRead: false,
-              createdAt: firestore.Timestamp.now(),
-            })
-            .then(a => {
-              firestore
-                .collection('Masjid')
-                .doc(uid)
-                .update({
-                  requestList: firestore.FieldValue.arrayUnion(a.id),
-                })
-                .then(value1 => {
-                  Alert.alert(
-                    'Request Send!',
-                    'Request has been forwarded to the admin',
-                    [
-                      {
-                        text: 'Ok',
-                        onPress: () => setModalVisible(!modalVisible),
-                      },
-                    ],
-                    {cancelable: false},
-                  );
-                });
-            });
-        } catch (e) {
-          console.log(e);
-        }
-      } else {
-        try {
-          await firestore
-            .collection('Masjid')
-            .doc(uid)
-            .update({
-              timing: {
-                ...time,
-              },
-            })
-            .then(a => {
-              console.log('data sent');
-              setModalVisible(!modalVisible);
-              // GetRadMasjidData1().GetData();
-            });
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    }
-  }
+  // async function submitRequest() {
+  //   const prevTime = {
+  //     userName: '',
+  //     userContact: '',
+  //     isha: isha,
+  //     fajar: fajar,
+  //     zohar: zohar,
+  //     asar: asar,
+  //     magrib: magrib,
+  //   };
+  //   if (_.isEqual(time, prevTime) && isRequest) {
+  //     console.log(isRequest);
+  //     Alert.alert('Cannot Process', 'Please fill the form correctly');
+  //   } else {
+  //     if (isAdd) {
+  //       setModalVisible(!modalVisible);
+  //       return handleChange(time);
+  //     }
+  //     if (isRequest) {
+  //       try {
+  //         await firestore
+  //           .collection('requests')
+  //           .add({
+  //             timing: time,
+  //             adminId,
+  //             isRead: false,
+  //             createdAt: firestore.Timestamp.now(),
+  //           })
+  //           .then(a => {
+  //             firestore
+  //               .collection('Masjid')
+  //               .doc(uid)
+  //               .update({
+  //                 requestList: firestore.FieldValue.arrayUnion(a.id),
+  //               })
+  //               .then(value1 => {
+  //                 Alert.alert(
+  //                   'Request Send!',
+  //                   'Request has been forwarded to the admin',
+  //                   [
+  //                     {
+  //                       text: 'Ok',
+  //                       onPress: () => setModalVisible(!modalVisible),
+  //                     },
+  //                   ],
+  //                   {cancelable: false},
+  //                 );
+  //               });
+  //           });
+  //       } catch (e) {
+  //         console.log(e);
+  //       }
+  //     } else {
+  //       try {
+  //         await firestore
+  //           .collection('Masjid')
+  //           .doc(uid)
+  //           .update({
+  //             timing: {
+  //               ...time,
+  //             },
+  //           })
+  //           .then(a => {
+  //             console.log('data sent');
+  //             setModalVisible(!modalVisible);
+  //             // GetRadMasjidData1().GetData();
+  //           });
+  //       } catch (e) {
+  //         console.error(e);
+  //       }
+  //     }
+  //   }
+  // }
 
   const hideTimePicker = () => {
     setTimePickerVisibility(false);
   };
 
-  const handleConfirm = newTime => {
+  const handleConfirm = (newTime, setFieldValue) => {
     const timeString = moment(newTime).format('hh:mm A');
     console.log(timeString);
-    if (namazTime === 'Magrib') {
-      setTime(pre => {
-        return {
-          ...pre,
-          magrib: timeString,
-        };
-      });
-    }
-    if (namazTime === 'Fajr') {
-      setTime(pre => {
-        return {
-          ...pre,
-          fajar: timeString,
-        };
-      });
-    }
-    if (namazTime === 'Zohr') {
-      setTime(pre => {
-        return {
-          ...pre,
-          zohar: timeString,
-        };
-      });
-    }
-    if (namazTime === 'Asar') {
-      setTime(pre => {
-        return {
-          ...pre,
-          asar: timeString,
-        };
-      });
-    }
-    if (namazTime === 'Isha') {
-      setTime(pre => {
-        return {
-          ...pre,
-          isha: timeString,
-        };
-      });
-    }
+    setFieldValue('timing.' + namazTime, timeString);
     console.log('A Time has been picked: ', timeString);
     hideTimePicker();
   };
@@ -199,21 +156,137 @@ const Edit = ({
             <Text style={styles.modalText}>Namaz Timings</Text>
             <Formik
               initialValues={{
-                name: '',
-                gLink: '',
-                pictureURL: '',
-                userEmail: auth.email || '',
                 userName: profile.name || '',
                 userPhone: profile.phone || '',
-                // timing: {
-                //   isha: '',
-                //   fajar: '',
-                //   zohar: '',
-                //   asar: '',
-                //   magrib: '',
-                //   jummuah: '',
-                // },
-              }}>
+                timing: {
+                  isha: timing?.isha || '',
+                  fajar: timing?.fajar || '',
+                  zohar: timing?.zohar || '',
+                  asar: timing?.asar || '',
+                  magrib: timing?.magrib || '',
+                  jummah: timing?.jummah || '',
+                  eidUlAddah: timing?.eidUlAddah || '',
+                  eidUlFitr: timing?.eidUlFitr || '',
+                },
+              }}
+              onSubmit={async (values, {setSubmitting}) => {
+                setSubmitting(true);
+                // if (returnChange) {
+                //   setSubmitting(false);
+                //   return returnChange(values.timing);
+                // }
+                console.log(values);
+
+                if (_.isEqual(values.timing, timing) && isRequest) {
+                  console.log(isRequest);
+                  Alert.alert(
+                    'Cannot Process',
+                    'Please fill the form correctly',
+                  );
+                } else {
+                  if (isAdd) {
+                    setModalVisible(!modalVisible);
+                    setSubmitting(false);
+                    return returnChange(values.timing);
+                  }
+                  if (isRequest) {
+                    try {
+                      await firestore
+                        .collection('requests')
+                        .add({
+                          ...values,
+                          isRead: false,
+                          timeStamp: firestore.Timestamp.now(),
+                        })
+                        .then(a => {
+                          firestore
+                            .collection('Masjid')
+                            .doc(uid)
+                            .update({
+                              requestList: firestore.FieldValue.arrayUnion(
+                                a.id,
+                              ),
+                            })
+                            .then(value1 => {
+                              setSubmitting(false);
+                              Alert.alert(
+                                'Request Send!',
+                                'Request has been forwarded to the admin',
+                                [
+                                  {
+                                    text: 'Ok',
+                                    onPress: () =>
+                                      setModalVisible(!modalVisible),
+                                  },
+                                ],
+                                {cancelable: false},
+                              );
+                            });
+                        });
+                    } catch (e) {
+                      console.log(e);
+                    }
+                  } else {
+                    try {
+                      await firestore
+                        .collection('Masjid')
+                        .doc(uid)
+                        .update({
+                          timing: {
+                            ...values.timing,
+                          },
+                        })
+                        .then(a => {
+                          setSubmitting(false);
+                          console.log('data sent');
+                          setModalVisible(!modalVisible);
+                        });
+                    } catch (e) {
+                      console.error(e);
+                    }
+                  }
+                }
+              }}
+              validationSchema={Yup.object().shape({
+                userName: Yup.string().required('your name is required'),
+                userPhone: Yup.string()
+                  .matches(
+                    /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/,
+                    'Phone number is not valid',
+                  )
+                  .min(11, 'phone no. is short, please check again')
+                  .max(16, 'phone no. is long, please check again'),
+                timing: Yup.object()
+                  .shape({
+                    isha: Yup.string().test(
+                      'isDateTime',
+                      'not a valid Time',
+                      value => moment(value, 'hh:mm A').isValid(),
+                    ),
+                    fajar: Yup.string().test(
+                      'isDateTime',
+                      'not a valid Time',
+                      value => moment(value, 'hh:mm A').isValid(),
+                    ),
+                    zohar: Yup.string().test(
+                      'isDateTime',
+                      'not a valid Time',
+                      value => moment(value, 'hh:mm A').isValid(),
+                    ),
+                    asar: Yup.string().test(
+                      'isDateTime',
+                      'not a valid Time',
+                      value => moment(value, 'hh:mm A').isValid(),
+                    ),
+                    magrib: Yup.string().test(
+                      'isDateTime',
+                      'not a valid Time',
+                      value => moment(value, 'hh:mm A').isValid(),
+                    ),
+                    // jummuah: Yup.string().test('isDateTime','not a valid Time', value => moment(value, 'hh:mm A').isValid()),
+                  })
+                  .required(),
+              })}>
               {({
                 handleChange,
                 handleSubmit,
@@ -221,103 +294,67 @@ const Edit = ({
                 values,
                 errors,
                 touched,
+                isSubmitting,
+                setFieldValue,
               }) => (
                 <>
                   {userInfo && (
                     <>
                       <View
                         style={{width: Dimensions.get('screen').width * 0.75}}>
-                        <Text style={{marginLeft: 10, marginTop: 10}}>
-                          User Name
-                        </Text>
-                        <View
+                        <TextInput
+                          label={'User Name'}
+                          mode={'outlined'}
+                          onChangeText={handleChange('userName')}
+                          onBlur={handleBlur('userName')}
+                          value={values.userName}
                           style={{
-                            borderRadius: 10,
-                            marginHorizontal: 10,
-                            marginTop: 5,
-                            shadowColor: '#000',
-                            shadowOffset: {
-                              width: 0,
-                              height: 5,
-                            },
-                            shadowOpacity: 0.34,
-                            shadowRadius: 6.27,
-                            elevation: 5,
-                          }}>
-                          <TextInput
-                            onChangeText={userName => {
-                              setTime(pre => {
-                                return {
-                                  ...pre,
-                                  userName: userName,
-                                };
-                              });
-                              if (userName !== '' && time.userContact !== '') {
-                                setDisabled(false);
-                              } else {
-                                setDisabled(true);
-                              }
-                            }}
-                            style={{
-                              paddingHorizontal: 10,
-                              backgroundColor: '#EEEEEE',
-                              color: 'black',
-                            }}
-                            placeholder="Enter Your Name..."
-                            placeholderTextColor="grey"
-                          />
-                        </View>
+                            paddingHorizontal: 10,
+                            backgroundColor: '#EEEEEE',
+                            color: 'black',
+                          }}
+                          placeholder="Enter Your Name..."
+                          placeholderTextColor="grey"
+                          error={touched.userName && Boolean(errors.userName)}
+                        />
+                        <HelperText
+                          type="error"
+                          visible={
+                            touched.userName && Boolean(errors.userName)
+                          }>
+                          {touched.userName && errors.userName}
+                        </HelperText>
                       </View>
                       <View
                         style={{
                           width: Dimensions.get('screen').width * 0.75,
-                          marginBottom: 10,
                         }}>
-                        <Text style={{marginLeft: 10, marginTop: 10}}>
-                          User Contact
-                        </Text>
-                        <View
+                        <TextInput
+                          label={'User Phone'}
+                          mode={'outlined'}
+                          onChangeText={handleChange('userPhone')}
+                          onBlur={handleBlur('userPhone')}
+                          value={values.userPhone}
                           style={{
-                            borderRadius: 10,
-                            marginHorizontal: 10,
-                            marginTop: 5,
-                            shadowColor: '#000',
-                            shadowOffset: {
-                              width: 0,
-                              height: 5,
-                            },
-                            shadowOpacity: 0.34,
-                            shadowRadius: 6.27,
-                            elevation: 5,
-                          }}>
-                          <TextInput
-                            onChangeText={userContact => {
-                              setTime(pre => {
-                                return {
-                                  ...pre,
-                                  userContact: userContact,
-                                };
-                              });
-                              if (userContact !== '' && time.userName !== '') {
-                                setDisabled(false);
-                              } else {
-                                setDisabled(true);
-                              }
-                            }}
-                            style={{
-                              paddingHorizontal: 10,
-                              backgroundColor: '#EEEEEE',
-                              color: 'black',
-                            }}
-                            keyboardType="numeric"
-                            placeholder="Enter Your Name..."
-                            placeholderTextColor="grey"
-                          />
-                        </View>
+                            paddingHorizontal: 10,
+                            backgroundColor: '#EEEEEE',
+                            color: 'black',
+                          }}
+                          placeholder="Enter Your Phone Number..."
+                          placeholderTextColor="grey"
+                          error={touched.userPhone && Boolean(errors.userPhone)}
+                        />
+                        <HelperText
+                          type="error"
+                          visible={
+                            touched.userPhone && Boolean(errors.userPhone)
+                          }>
+                          {touched.userPhone && errors.userPhone}
+                        </HelperText>
                       </View>
                     </>
                   )}
-                  <View style={{flexDirection: 'row', marginTop: 10}}>
+                  <View style={{flexDirection: 'row'}}>
                     <View
                       style={{
                         flexGrow: 1,
@@ -326,8 +363,10 @@ const Edit = ({
                       <Text style={{fontSize: 17}}>Fajr :</Text>
                     </View>
                     <View style={styles.editTime}>
-                      <Pressable onPress={() => showTimePicker('Fajr')}>
-                        <Text style={{fontSize: 17}}>{time.fajar}</Text>
+                      <Pressable onPress={() => showTimePicker('fajar')}>
+                        <Text style={{fontSize: 17}}>
+                          {values.timing.fajar}
+                        </Text>
                       </Pressable>
                     </View>
                   </View>
@@ -340,8 +379,10 @@ const Edit = ({
                       <Text style={{fontSize: 17}}>Zohr :</Text>
                     </View>
                     <View style={styles.editTime}>
-                      <Pressable onPress={() => showTimePicker('Zohr')}>
-                        <Text style={{fontSize: 17}}>{time.zohar}</Text>
+                      <Pressable onPress={() => showTimePicker('zohar')}>
+                        <Text style={{fontSize: 17}}>
+                          {values.timing.zohar}
+                        </Text>
                       </Pressable>
                     </View>
                   </View>
@@ -354,8 +395,8 @@ const Edit = ({
                       <Text style={{fontSize: 17}}>Asar :</Text>
                     </View>
                     <View style={styles.editTime}>
-                      <Pressable onPress={() => showTimePicker('Asar')}>
-                        <Text style={{fontSize: 17}}>{time.asar}</Text>
+                      <Pressable onPress={() => showTimePicker('asar')}>
+                        <Text style={{fontSize: 17}}>{values.timing.asar}</Text>
                       </Pressable>
                     </View>
                   </View>
@@ -368,8 +409,10 @@ const Edit = ({
                       <Text style={{fontSize: 17}}>Magrib :</Text>
                     </View>
                     <View style={styles.editTime}>
-                      <Pressable onPress={() => showTimePicker('Magrib')}>
-                        <Text style={{fontSize: 17}}>{time.magrib}</Text>
+                      <Pressable onPress={() => showTimePicker('magrib')}>
+                        <Text style={{fontSize: 17}}>
+                          {values.timing.magrib}
+                        </Text>
                       </Pressable>
                     </View>
                   </View>
@@ -382,8 +425,62 @@ const Edit = ({
                       <Text style={{fontSize: 17}}>Isha :</Text>
                     </View>
                     <View style={styles.editTime}>
-                      <Pressable onPress={() => showTimePicker('Isha')}>
-                        <Text style={{fontSize: 17}}>{time.isha}</Text>
+                      <Pressable onPress={() => showTimePicker('isha')}>
+                        <Text style={{fontSize: 17}}>{values.timing.isha}</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                  <View style={{flexDirection: 'row', marginTop: 10}}>
+                    <View
+                      style={{
+                        flexGrow: 1,
+                        paddingLeft: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>jummah :</Text>
+                    </View>
+                    <View style={styles.editTime}>
+                      <Pressable
+                        onPress={() => showTimePicker('jummah')}
+                        style={{minWidth: 70}}>
+                        <Text style={{fontSize: 17}}>
+                          {values.timing.jummah}
+                        </Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                  <View style={{flexDirection: 'row', marginTop: 10}}>
+                    <View
+                      style={{
+                        flexGrow: 1,
+                        paddingLeft: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>eidUlAddah :</Text>
+                    </View>
+                    <View style={styles.editTime}>
+                      <Pressable
+                        onPress={() => showTimePicker('eidUlAddah')}
+                        style={{minWidth: 70}}>
+                        <Text style={{fontSize: 17}}>
+                          {values.timing.eidUlAddah}
+                        </Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                  <View style={{flexDirection: 'row', marginTop: 10}}>
+                    <View
+                      style={{
+                        flexGrow: 1,
+                        paddingLeft: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>eidUlFitr :</Text>
+                    </View>
+                    <View style={styles.editTime}>
+                      <Pressable
+                        onPress={() => showTimePicker('eidUlFitr')}
+                        style={{minWidth: 70}}>
+                        <Text style={{fontSize: 17}}>
+                          {values.timing.eidUlFitr}
+                        </Text>
                       </Pressable>
                     </View>
                   </View>
@@ -402,39 +499,28 @@ const Edit = ({
                       }}>
                       <Text style={styles.textStyle}>Cancel</Text>
                     </Pressable>
-                    <Pressable
-                      disabled={disabled}
-                      style={[
-                        styles.button,
-                        styles.buttonClose,
-                        {
-                          backgroundColor: disabled ? '#5C5C5C' : '#1F441E',
-                        },
-                      ]}
-                      onPress={() => submitRequest()}>
-                      <Text
-                        style={[
-                          styles.textStyle1,
-                          {
-                            color: disabled ? 'white' : '#CEE6B4',
-                          },
-                        ]}>
-                        {isRequest ? 'Request' : 'Confirm'}
-                      </Text>
-                    </Pressable>
+                    <Button
+                      loading={isSubmitting}
+                      onPress={handleSubmit}
+                      mode={'contained'}
+                      disabled={isSubmitting}
+                      uppercase={false}
+                      style={[styles.buttonClose, {borderRadius: 10}]}>
+                      {isRequest ? 'Request' : 'Confirm'}
+                    </Button>
                   </View>
+                  <DateTimePickerModal
+                    isVisible={isTimePickerVisible}
+                    mode="time"
+                    onConfirm={e => handleConfirm(e, setFieldValue)}
+                    onCancel={hideTimePicker}
+                  />
                 </>
               )}
             </Formik>
           </View>
         </View>
       </Modal>
-      <DateTimePickerModal
-        isVisible={isTimePickerVisible}
-        mode="time"
-        onConfirm={handleConfirm}
-        onCancel={hideTimePicker}
-      />
     </SafeAreaView>
   );
 };

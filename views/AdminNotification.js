@@ -46,18 +46,7 @@ const deleteFunc = (masjidId, reqId) => {
     });
 };
 
-const Item = ({
-  fajar,
-  zohar,
-  asar,
-  magrib,
-  isha,
-  id,
-  MasjidId,
-  admin,
-  userName,
-  userContact,
-}) => (
+const Item = ({timing, id, MasjidId, admin, userName, userContact}) => (
   <Card
     style={{
       borderRadius: 5,
@@ -82,11 +71,7 @@ const Item = ({
             <View style={{flexGrow: 1}} />
             <View>
               <Edit
-                fajar={fajar}
-                zohar={zohar}
-                asar={asar}
-                magrib={magrib}
-                isha={isha}
+                timing={timing}
                 uid={MasjidId}
                 isRequest={false}
                 userInfo={false}
@@ -97,23 +82,33 @@ const Item = ({
           <View style={{flexDirection: 'row', marginTop: 10}}>
             <View style={{flexGrow: 5}}>
               <Text style={{textAlign: 'center', fontSize: 14}}>Fajar</Text>
-              <Text style={{textAlign: 'center', fontSize: 14}}>{fajar}</Text>
+              <Text style={{textAlign: 'center', fontSize: 14}}>
+                {timing.fajar}
+              </Text>
             </View>
             <View style={{flexGrow: 5}}>
               <Text style={{textAlign: 'center', fontSize: 14}}>Zohar</Text>
-              <Text style={{textAlign: 'center', fontSize: 14}}>{zohar}</Text>
+              <Text style={{textAlign: 'center', fontSize: 14}}>
+                {timing.zohar}
+              </Text>
             </View>
             <View style={{flexGrow: 5}}>
               <Text style={{textAlign: 'center', fontSize: 14}}>Asar</Text>
-              <Text style={{textAlign: 'center', fontSize: 14}}>{asar}</Text>
+              <Text style={{textAlign: 'center', fontSize: 14}}>
+                {timing.asar}
+              </Text>
             </View>
             <View style={{flexGrow: 5}}>
               <Text style={{textAlign: 'center', fontSize: 14}}>Magrib</Text>
-              <Text style={{textAlign: 'center', fontSize: 14}}>{magrib}</Text>
+              <Text style={{textAlign: 'center', fontSize: 14}}>
+                {timing.magrib}
+              </Text>
             </View>
             <View style={{flexGrow: 5}}>
               <Text style={{textAlign: 'center', fontSize: 14}}>Isha</Text>
-              <Text style={{textAlign: 'center', fontSize: 14}}>{isha}</Text>
+              <Text style={{textAlign: 'center', fontSize: 14}}>
+                {timing.isha}
+              </Text>
             </View>
           </View>
         </View>
@@ -191,11 +186,7 @@ const AdminNotification = ({navigation}) => {
     if (!_.isUndefined(item.timing)) {
       return (
         <Item
-          fajar={item.timing.fajar}
-          zohar={item.timing.zohar}
-          asar={item.timing.asar}
-          magrib={item.timing.magrib}
-          isha={item.timing.isha}
+          timing={item.timing}
           id={item.id} //Own ID
           MasjidId={item.masjidId}
           admin={item.admin}

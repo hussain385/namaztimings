@@ -279,15 +279,7 @@ const MasjidInfo = ({route, navigation}) => {
                   Namaz Timings
                 </Text>
               </View>
-              <Edit
-                fajar={timing.fajar}
-                zohar={timing.zohar}
-                asar={timing.asar}
-                magrib={timing.magrib}
-                isha={timing.isha}
-                uid={favId}
-                adminId={user.id}
-              />
+              <Edit timing={timing} uid={favId} adminId={user.id} />
             </View>
             <View
               style={{

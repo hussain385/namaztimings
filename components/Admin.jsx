@@ -253,11 +253,7 @@ const Admin = ({navigation}) => {
                       </Text>
                     </View>
                     <Edit
-                      fajar={data.timing.fajar}
-                      zohar={data.timing.zohar}
-                      asar={data.timing.asar}
-                      magrib={data.timing.magrib}
-                      isha={data.timing.isha}
+                      timing={data.timing}
                       uid={id}
                       isRequest={false}
                       userInfo={false}

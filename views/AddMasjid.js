@@ -376,11 +376,7 @@ export const AddMasjid = ({navigation}) => {
                   </Text>
                 </View>
                 <Edit
-                  fajar={timing.fajar}
-                  zohar={timing.zohar}
-                  asar={timing.asar}
-                  magrib={timing.magrib}
-                  isha={timing.isha}
+                  timing={timing}
                   isAdd={true}
                   userInfo={false}
                   handleChange={setTiming}
