@@ -18,7 +18,7 @@ import HeaderComp from '../views/HeaderComp';
 // title={item.name}
 // address={item.address}
 // url={item.pictureURL}
-// timings={item.timing}
+// timing={item.timing}
 // nav={navigation}
 // distance={item.distance}
 // favId={item.key}
@@ -26,147 +26,6 @@ import HeaderComp from '../views/HeaderComp';
 // longitude={item.g.geopoint.longitude}
 // user={item.user}
 // latitude={item.g.geopoint.latitude}
-
-const Item = ({
-  navigation: nav,
-  item: {
-    pictureURL: url,
-    name: title,
-    distance,
-    key: favId,
-    address,
-    timings,
-    onRefresh,
-    g: {
-      geopoint: {latitude, longitude},
-    },
-    user,
-  },
-}) => (
-  <View
-    style={{
-      margin: 10,
-      backgroundColor: '#ffff',
-      borderRadius: 5,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 5,
-      },
-      shadowOpacity: 0.34,
-      shadowRadius: 6.27,
-      elevation: 5,
-    }}>
-    <TouchableOpacity
-      onPress={() =>
-        nav.navigate('More Info', {
-          name: title,
-          url: url,
-          address: address,
-          timing: timings,
-          favId: favId,
-          distance: distance,
-          latitude: latitude,
-          longitude: longitude,
-          user: user,
-        })
-      }>
-      <ImageBackground
-        source={{uri: `${url}`}}
-        style={{
-          flex: 1,
-          resizeMode: 'cover',
-          justifyContent: 'center',
-          width: '100%',
-          height: 200,
-        }}>
-        <View style={{flexDirection: 'row'}}>
-          <View style={{flexGrow: 1}} />
-          <View style={{top: -50}}>
-            <Favbtn favId={favId} onRefresh={onRefresh} isBig={true} />
-          </View>
-        </View>
-      </ImageBackground>
-    </TouchableOpacity>
-    <View style={{padding: 5}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          margin: 5,
-          justifyContent: 'space-between',
-        }}>
-        <View style={{maxWidth: 250}}>
-          <Text style={{fontSize: 17}}>{title}</Text>
-        </View>
-        <View>
-          <Text
-            onPress={() => {
-              Linking.openURL(
-                `https://maps.google.com/?q=${latitude},${longitude}`,
-              );
-            }}
-            style={{color: '#900000', textDecorationLine: 'underline'}}>
-            {distance}KM AWAY
-          </Text>
-        </View>
-      </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          paddingHorizontal: 5,
-        }}>
-        <TouchableOpacity
-          onPress={() =>
-            nav.navigate('More Info', {
-              name: title,
-              url: url,
-              address: address,
-              timing: timings,
-              favId: favId,
-              distance: distance,
-              latitude: latitude,
-              longitude: longitude,
-              user: user,
-            })
-          }
-          style={{
-            alignItems: 'center',
-            backgroundColor: '#1F441E',
-            padding: 10,
-            borderRadius: 5,
-            width: '47%',
-            marginVertical: 10,
-            marginHorizontal: 10,
-          }}>
-          <Text style={{color: '#CEE6B4'}}>More Info</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            Linking.openURL(
-              `https://maps.google.com/?q=${latitude},${longitude}`,
-            );
-          }}
-          style={{
-            alignItems: 'center',
-            padding: 10,
-            borderRadius: 5,
-            width: '47%',
-            marginVertical: 10,
-            marginHorizontal: 10,
-            backgroundColor: '#CEE6B4',
-          }}>
-          <Text
-            style={{
-              color: '#1F441E',
-            }}>
-            Location
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  </View>
-);
 
 const Favourites = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -196,6 +55,146 @@ const Favourites = ({navigation}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [favoriteId]);
 
+  const Item = ({
+    item: {
+      pictureURL: url,
+      name: title,
+      distance,
+      key: favId,
+      address,
+      timing: timing,
+      onRefresh,
+      g: {
+        geopoint: {latitude, longitude},
+      },
+      user,
+    },
+  }) => (
+    <View
+      style={{
+        margin: 10,
+        backgroundColor: '#ffff',
+        borderRadius: 5,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 5,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+        elevation: 5,
+      }}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('More Info', {
+            name: title,
+            url: url,
+            address: address,
+            timing: timing,
+            favId: favId,
+            distance: distance,
+            latitude: latitude,
+            longitude: longitude,
+            user: user,
+          })
+        }>
+        <ImageBackground
+          source={{uri: `${url}`}}
+          style={{
+            flex: 1,
+            resizeMode: 'cover',
+            justifyContent: 'center',
+            width: '100%',
+            height: 200,
+          }}>
+          <View style={{flexDirection: 'row'}}>
+            <View style={{flexGrow: 1}} />
+            <View style={{top: -50}}>
+              <Favbtn favId={favId} onRefresh={onRefresh} isBig={true} />
+            </View>
+          </View>
+        </ImageBackground>
+      </TouchableOpacity>
+      <View style={{padding: 5}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            margin: 5,
+            justifyContent: 'space-between',
+          }}>
+          <View style={{maxWidth: 250}}>
+            <Text style={{fontSize: 17}}>{title}</Text>
+          </View>
+          <View>
+            <Text
+              onPress={() => {
+                Linking.openURL(
+                  `https://maps.google.com/?q=${latitude},${longitude}`,
+                );
+              }}
+              style={{color: '#900000', textDecorationLine: 'underline'}}>
+              {distance}KM AWAY
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            paddingHorizontal: 5,
+          }}>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('More Info', {
+                name: title,
+                url: url,
+                address: address,
+                timing: timing,
+                favId: favId,
+                distance: distance,
+                latitude: latitude,
+                longitude: longitude,
+                user: user,
+              })
+            }
+            style={{
+              alignItems: 'center',
+              backgroundColor: '#1F441E',
+              padding: 10,
+              borderRadius: 5,
+              width: '47%',
+              marginVertical: 10,
+              marginHorizontal: 10,
+            }}>
+            <Text style={{color: '#CEE6B4'}}>More Info</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              Linking.openURL(
+                `https://maps.google.com/?q=${latitude},${longitude}`,
+              );
+            }}
+            style={{
+              alignItems: 'center',
+              padding: 10,
+              borderRadius: 5,
+              width: '47%',
+              marginVertical: 10,
+              marginHorizontal: 10,
+              backgroundColor: '#CEE6B4',
+            }}>
+            <Text
+              style={{
+                color: '#1F441E',
+              }}>
+              Location
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+
   return (
     <>
       <HeaderComp navigation={navigation} heading="Favourites" />
@@ -210,10 +209,9 @@ const Favourites = ({navigation}) => {
               return (
                 <FlatList
                   data={masjidData}
-                  inverted={true}
                   renderItem={Item}
                   keyExtractor={x => x.key}
-                  style={{marginBottom: 60, flex: 1}}
+                  style={{marginBottom: 70, flex: 1}}
                   onRefresh={onRefresh}
                   refreshing={refreshing}
                 />

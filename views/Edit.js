@@ -1,4 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
+import {Formik} from 'formik';
 import _ from 'lodash';
 import moment from 'moment';
 import React, {useState} from 'react';
@@ -16,6 +17,7 @@ import {
 } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useSelector} from 'react-redux';
 import {useFirestore} from 'react-redux-firebase';
 
 const Edit = ({
@@ -51,6 +53,8 @@ const Edit = ({
     setTimePickerVisibility(true);
     setNamazTime(namazName);
   };
+
+  const {auth, profile} = useSelector(state => state.firebase);
 
   async function submitRequest() {
     const prevTime = {
@@ -193,203 +197,235 @@ const Edit = ({
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Namaz Timings</Text>
-            {userInfo && (
-              <>
-                <View style={{width: Dimensions.get('screen').width * 0.75}}>
-                  <Text style={{marginLeft: 10, marginTop: 10}}>User Name</Text>
+            <Formik
+              initialValues={{
+                name: '',
+                gLink: '',
+                pictureURL: '',
+                userEmail: auth.email || '',
+                userName: profile.name || '',
+                userPhone: profile.phone || '',
+                // timing: {
+                //   isha: '',
+                //   fajar: '',
+                //   zohar: '',
+                //   asar: '',
+                //   magrib: '',
+                //   jummuah: '',
+                // },
+              }}>
+              {({
+                handleChange,
+                handleSubmit,
+                handleBlur,
+                values,
+                errors,
+                touched,
+              }) => (
+                <>
+                  {userInfo && (
+                    <>
+                      <View
+                        style={{width: Dimensions.get('screen').width * 0.75}}>
+                        <Text style={{marginLeft: 10, marginTop: 10}}>
+                          User Name
+                        </Text>
+                        <View
+                          style={{
+                            borderRadius: 10,
+                            marginHorizontal: 10,
+                            marginTop: 5,
+                            shadowColor: '#000',
+                            shadowOffset: {
+                              width: 0,
+                              height: 5,
+                            },
+                            shadowOpacity: 0.34,
+                            shadowRadius: 6.27,
+                            elevation: 5,
+                          }}>
+                          <TextInput
+                            onChangeText={userName => {
+                              setTime(pre => {
+                                return {
+                                  ...pre,
+                                  userName: userName,
+                                };
+                              });
+                              if (userName !== '' && time.userContact !== '') {
+                                setDisabled(false);
+                              } else {
+                                setDisabled(true);
+                              }
+                            }}
+                            style={{
+                              paddingHorizontal: 10,
+                              backgroundColor: '#EEEEEE',
+                              color: 'black',
+                            }}
+                            placeholder="Enter Your Name..."
+                            placeholderTextColor="grey"
+                          />
+                        </View>
+                      </View>
+                      <View
+                        style={{
+                          width: Dimensions.get('screen').width * 0.75,
+                          marginBottom: 10,
+                        }}>
+                        <Text style={{marginLeft: 10, marginTop: 10}}>
+                          User Contact
+                        </Text>
+                        <View
+                          style={{
+                            borderRadius: 10,
+                            marginHorizontal: 10,
+                            marginTop: 5,
+                            shadowColor: '#000',
+                            shadowOffset: {
+                              width: 0,
+                              height: 5,
+                            },
+                            shadowOpacity: 0.34,
+                            shadowRadius: 6.27,
+                            elevation: 5,
+                          }}>
+                          <TextInput
+                            onChangeText={userContact => {
+                              setTime(pre => {
+                                return {
+                                  ...pre,
+                                  userContact: userContact,
+                                };
+                              });
+                              if (userContact !== '' && time.userName !== '') {
+                                setDisabled(false);
+                              } else {
+                                setDisabled(true);
+                              }
+                            }}
+                            style={{
+                              paddingHorizontal: 10,
+                              backgroundColor: '#EEEEEE',
+                              color: 'black',
+                            }}
+                            keyboardType="numeric"
+                            placeholder="Enter Your Name..."
+                            placeholderTextColor="grey"
+                          />
+                        </View>
+                      </View>
+                    </>
+                  )}
+                  <View style={{flexDirection: 'row', marginTop: 10}}>
+                    <View
+                      style={{
+                        flexGrow: 1,
+                        paddingLeft: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>Fajr :</Text>
+                    </View>
+                    <View style={styles.editTime}>
+                      <Pressable onPress={() => showTimePicker('Fajr')}>
+                        <Text style={{fontSize: 17}}>{time.fajar}</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                  <View style={{flexDirection: 'row', marginTop: 10}}>
+                    <View
+                      style={{
+                        flexGrow: 1,
+                        paddingLeft: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>Zohr :</Text>
+                    </View>
+                    <View style={styles.editTime}>
+                      <Pressable onPress={() => showTimePicker('Zohr')}>
+                        <Text style={{fontSize: 17}}>{time.zohar}</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                  <View style={{flexDirection: 'row', marginTop: 10}}>
+                    <View
+                      style={{
+                        flexGrow: 1,
+                        paddingLeft: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>Asar :</Text>
+                    </View>
+                    <View style={styles.editTime}>
+                      <Pressable onPress={() => showTimePicker('Asar')}>
+                        <Text style={{fontSize: 17}}>{time.asar}</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                  <View style={{flexDirection: 'row', marginTop: 10}}>
+                    <View
+                      style={{
+                        flexGrow: 1,
+                        paddingLeft: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>Magrib :</Text>
+                    </View>
+                    <View style={styles.editTime}>
+                      <Pressable onPress={() => showTimePicker('Magrib')}>
+                        <Text style={{fontSize: 17}}>{time.magrib}</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                  <View style={{flexDirection: 'row', marginTop: 10}}>
+                    <View
+                      style={{
+                        flexGrow: 1,
+                        paddingLeft: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>Isha :</Text>
+                    </View>
+                    <View style={styles.editTime}>
+                      <Pressable onPress={() => showTimePicker('Isha')}>
+                        <Text style={{fontSize: 17}}>{time.isha}</Text>
+                      </Pressable>
+                    </View>
+                  </View>
                   <View
                     style={{
-                      borderRadius: 10,
-                      marginHorizontal: 10,
-                      marginTop: 5,
-                      shadowColor: '#000',
-                      shadowOffset: {
-                        width: 0,
-                        height: 5,
-                      },
-                      shadowOpacity: 0.34,
-                      shadowRadius: 6.27,
-                      elevation: 5,
-                    }}>
-                    <TextInput
-                      onChangeText={userName => {
-                        setTime(pre => {
-                          return {
-                            ...pre,
-                            userName: userName,
-                          };
-                        });
-                        if (userName !== '' && time.userContact !== '') {
-                          setDisabled(false);
-                        } else {
-                          setDisabled(true);
-                        }
-                      }}
-                      style={{
-                        paddingHorizontal: 10,
-                        backgroundColor: '#EEEEEE',
-                        color: 'black',
-                      }}
-                      placeholder="Enter Your Name..."
-                      placeholderTextColor="grey"
-                    />
+                      margin: 15,
+                      borderBottomColor: '#C4C4C4',
+                      borderBottomWidth: 1,
+                    }}
+                  />
+                  <View style={{flexDirection: 'row'}}>
+                    <Pressable
+                      style={[styles.button, styles.buttonOpen]}
+                      onPress={() => {
+                        setModalVisible(!modalVisible);
+                      }}>
+                      <Text style={styles.textStyle}>Cancel</Text>
+                    </Pressable>
+                    <Pressable
+                      disabled={disabled}
+                      style={[
+                        styles.button,
+                        styles.buttonClose,
+                        {
+                          backgroundColor: disabled ? '#5C5C5C' : '#1F441E',
+                        },
+                      ]}
+                      onPress={() => submitRequest()}>
+                      <Text
+                        style={[
+                          styles.textStyle1,
+                          {
+                            color: disabled ? 'white' : '#CEE6B4',
+                          },
+                        ]}>
+                        {isRequest ? 'Request' : 'Confirm'}
+                      </Text>
+                    </Pressable>
                   </View>
-                </View>
-                <View
-                  style={{
-                    width: Dimensions.get('screen').width * 0.75,
-                    marginBottom: 10,
-                  }}>
-                  <Text style={{marginLeft: 10, marginTop: 10}}>
-                    User Contact
-                  </Text>
-                  <View
-                    style={{
-                      borderRadius: 10,
-                      marginHorizontal: 10,
-                      marginTop: 5,
-                      shadowColor: '#000',
-                      shadowOffset: {
-                        width: 0,
-                        height: 5,
-                      },
-                      shadowOpacity: 0.34,
-                      shadowRadius: 6.27,
-                      elevation: 5,
-                    }}>
-                    <TextInput
-                      onChangeText={userContact => {
-                        setTime(pre => {
-                          return {
-                            ...pre,
-                            userContact: userContact,
-                          };
-                        });
-                        if (userContact !== '' && time.userName !== '') {
-                          setDisabled(false);
-                        } else {
-                          setDisabled(true);
-                        }
-                      }}
-                      style={{
-                        paddingHorizontal: 10,
-                        backgroundColor: '#EEEEEE',
-                        color: 'black',
-                      }}
-                      keyboardType="numeric"
-                      placeholder="Enter Your Name..."
-                      placeholderTextColor="grey"
-                    />
-                  </View>
-                </View>
-              </>
-            )}
-            <View style={{flexDirection: 'row', marginTop: 10}}>
-              <View
-                style={{
-                  flexGrow: 1,
-                  paddingLeft: 10,
-                }}>
-                <Text style={{fontSize: 17}}>Fajr :</Text>
-              </View>
-              <View style={styles.editTime}>
-                <Pressable onPress={() => showTimePicker('Fajr')}>
-                  <Text style={{fontSize: 17}}>{time.fajar}</Text>
-                </Pressable>
-              </View>
-            </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
-              <View
-                style={{
-                  flexGrow: 1,
-                  paddingLeft: 10,
-                }}>
-                <Text style={{fontSize: 17}}>Zohr :</Text>
-              </View>
-              <View style={styles.editTime}>
-                <Pressable onPress={() => showTimePicker('Zohr')}>
-                  <Text style={{fontSize: 17}}>{time.zohar}</Text>
-                </Pressable>
-              </View>
-            </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
-              <View
-                style={{
-                  flexGrow: 1,
-                  paddingLeft: 10,
-                }}>
-                <Text style={{fontSize: 17}}>Asar :</Text>
-              </View>
-              <View style={styles.editTime}>
-                <Pressable onPress={() => showTimePicker('Asar')}>
-                  <Text style={{fontSize: 17}}>{time.asar}</Text>
-                </Pressable>
-              </View>
-            </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
-              <View
-                style={{
-                  flexGrow: 1,
-                  paddingLeft: 10,
-                }}>
-                <Text style={{fontSize: 17}}>Magrib :</Text>
-              </View>
-              <View style={styles.editTime}>
-                <Pressable onPress={() => showTimePicker('Magrib')}>
-                  <Text style={{fontSize: 17}}>{time.magrib}</Text>
-                </Pressable>
-              </View>
-            </View>
-            <View style={{flexDirection: 'row', marginTop: 10}}>
-              <View
-                style={{
-                  flexGrow: 1,
-                  paddingLeft: 10,
-                }}>
-                <Text style={{fontSize: 17}}>Isha :</Text>
-              </View>
-              <View style={styles.editTime}>
-                <Pressable onPress={() => showTimePicker('Isha')}>
-                  <Text style={{fontSize: 17}}>{time.isha}</Text>
-                </Pressable>
-              </View>
-            </View>
-            <View
-              style={{
-                margin: 15,
-                borderBottomColor: '#C4C4C4',
-                borderBottomWidth: 1,
-              }}
-            />
-            <View style={{flexDirection: 'row'}}>
-              <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}>
-                <Text style={styles.textStyle}>Cancel</Text>
-              </Pressable>
-              <Pressable
-                disabled={disabled}
-                style={[
-                  styles.button,
-                  styles.buttonClose,
-                  {
-                    backgroundColor: disabled ? '#5C5C5C' : '#1F441E',
-                  },
-                ]}
-                onPress={() => submitRequest()}>
-                <Text
-                  style={[
-                    styles.textStyle1,
-                    {
-                      color: disabled ? 'white' : '#CEE6B4',
-                    },
-                  ]}>
-                  {isRequest ? 'Request' : 'Confirm'}
-                </Text>
-              </Pressable>
-            </View>
+                </>
+              )}
+            </Formik>
           </View>
         </View>
       </Modal>
