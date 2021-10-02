@@ -1,3 +1,4 @@
+import {Formik} from 'formik';
 import _ from 'lodash';
 import React, {useState} from 'react';
 import {
@@ -8,21 +9,18 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from 'react-native';
-import {Header} from 'react-native-elements';
 import {ActivityIndicator, FAB} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {useSelector} from 'react-redux';
-import {Formik} from 'formik';
-import * as Yup from 'yup';
 import {
   populate,
   useFirestore,
   useFirestoreConnect,
 } from 'react-redux-firebase';
+import * as Yup from 'yup';
+import HeaderComp from '../views/HeaderComp';
 import NotificationCard from '../views/NotificationCard';
 
 const Notification = ({navigation, route: {params}}) => {
@@ -60,37 +58,7 @@ const Notification = ({navigation, route: {params}}) => {
 
   return (
     <View>
-      <Header
-        containerStyle={{
-          shadowOpacity: 50,
-          elevation: 50,
-        }}
-        leftComponent={
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon
-              name="arrow-left"
-              color="#ffff"
-              size={26}
-              style={{paddingLeft: 10}}
-            />
-          </TouchableOpacity>
-        }
-        centerComponent={
-          <View style={{textAlign: 'center'}}>
-            <Text
-              style={{
-                color: '#ffff',
-                fontSize: 22,
-                marginBottom: 5,
-                marginTop: 5,
-                textAlign: 'center',
-              }}>
-              Notification
-            </Text>
-          </View>
-        }
-        backgroundColor="#1F441E"
-      />
+      <HeaderComp heading="Notification" navigation={navigation} />
       {firestore.status.requested.tempAnnouncement && data.length >= 1 ? (
         <FlatList
           style={{height: Dimensions.get('screen').height * 0.82}}

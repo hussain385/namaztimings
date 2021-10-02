@@ -1,5 +1,6 @@
 import storage from '@react-native-firebase/storage';
 import {Formik} from 'formik';
+import _ from 'lodash';
 import React, {useState} from 'react';
 import {
   ActivityIndicator,
@@ -12,16 +13,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Header} from 'react-native-elements';
 import {ScrollView} from 'react-native-gesture-handler';
 import * as ImagePicker from 'react-native-image-picker';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useSelector} from 'react-redux';
 import {useFirestore} from 'react-redux-firebase';
 import * as Yup from 'yup';
 import Edit from './Edit';
-import {useSelector} from 'react-redux';
-import _ from 'lodash';
+import HeaderComp from './HeaderComp';
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
@@ -99,47 +98,7 @@ export const AddMasjid = ({navigation}) => {
 
   return (
     <>
-      <Header
-        containerStyle={{
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 5,
-          },
-          shadowOpacity: 0.34,
-          shadowRadius: 6.27,
-          elevation: 5,
-        }}
-        leftComponent={
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('SearchStackScreen', {
-                screen: 'Find Masjid',
-              })
-            }>
-            <Icon
-              name="arrow-left"
-              color="#ffff"
-              size={26}
-              style={{paddingLeft: 10}}
-            />
-          </TouchableOpacity>
-        }
-        centerComponent={
-          <View style={{textAlign: 'center'}}>
-            <Text
-              style={{
-                color: '#ffff',
-                fontSize: 22,
-                marginBottom: 5,
-                textAlign: 'center',
-              }}>
-              Add Masjid
-            </Text>
-          </View>
-        }
-        backgroundColor="#1F441E"
-      />
+      <HeaderComp navigation={navigation} heading="Add Masjid" />
       <View style={{alignItems: 'center'}}>
         <Text style={{fontSize: 20}}>Enter Masjid Details</Text>
       </View>

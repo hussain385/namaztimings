@@ -5,9 +5,9 @@ import {TouchableOpacity, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import CoText from '../views/Text/Text';
-import {isEmpty, isLoaded, useFirebase} from 'react-redux-firebase';
 import {useSelector} from 'react-redux';
+import {isEmpty, isLoaded, useFirebase} from 'react-redux-firebase';
+import CoText from '../views/Text/Text';
 
 const CustomDrawerContent = ({navigation}) => {
   const auth = useSelector(state => state.firebase.auth);
@@ -84,7 +84,7 @@ const CustomDrawerContent = ({navigation}) => {
           <CoText textStyles={[{color: '#1F441E'}]} text="Favourites" />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => navigation.navigate('Notifications')}
         style={{
           paddingHorizontal: 20,
@@ -102,7 +102,7 @@ const CustomDrawerContent = ({navigation}) => {
         <View style={{marginLeft: 30}}>
           <CoText textStyles={[{color: '#1F441E'}]} text="Notifications" />
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity
         onPress={() => navigation.navigate('Invite Your Friends')}
         style={{

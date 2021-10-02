@@ -1,8 +1,13 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
+import HeaderComp from '../views/HeaderComp';
 
-const Announcement = () => {
-  return <Text />;
+const Announcement = ({navigation}) => {
+  return (
+    <View>
+      <HeaderComp navigation={navigation} heading="Announcements" />
+    </View>
+  );
 };
 
 export default Announcement;

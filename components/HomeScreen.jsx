@@ -17,13 +17,10 @@ import {Header} from 'react-native-elements';
 // import {NavigationContainer} from '@react-navigation/native';
 // import {Divider} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {GetRadMasjidData1} from '../store/firebase';
-import {headerStyles, textStyles} from '../theme/styles/Base';
 import AdminRequest from '../views/AdminRequest';
 // import Geocoder from 'react-native-geocoding';
 import Favbtn from '../views/Favbtn';
-import CoText from '../views/Text/Text';
 
 function HomeScreen({navigation}) {
   const {masjid, loading, location, error, getLocation, GetData} =
@@ -111,25 +108,25 @@ function HomeScreen({navigation}) {
             </TouchableOpacity> */}
           </View>
         }
-        rightComponent={
-          <TouchableOpacity
-            style={{
-              paddingRight: 10,
-            }}>
-            <View>
-              <View style={headerStyles.cartTxt}>
-                <CoText
-                  textStyles={[
-                    textStyles.simple,
-                    {fontSize: 10, color: '#1F441E'},
-                  ]}
-                  text="0"
-                />
-              </View>
-              <MaterialIcons name="bell" size={28} color="white" />
-            </View>
-          </TouchableOpacity>
-        }
+        // rightComponent={
+        //   <TouchableOpacity
+        //     style={{
+        //       paddingRight: 10,
+        //     }}>
+        //     <View>
+        //       <View style={headerStyles.cartTxt}>
+        //         <CoText
+        //           textStyles={[
+        //             textStyles.simple,
+        //             {fontSize: 10, color: '#1F441E'},
+        //           ]}
+        //           text="0"
+        //         />
+        //       </View>
+        //       <MaterialIcons name="bell" size={28} color="white" />
+        //     </View>
+        //   </TouchableOpacity>
+        // }
         backgroundColor="#1F441E"
       />
       <>
@@ -194,7 +191,7 @@ function HomeScreen({navigation}) {
                         marginTop: 3,
                       }}
                     />
-                    <Text style={{maxWidth: 200}}>{masjidData[0].address}</Text>
+                    <Text style={{maxWidth: 160}}>{masjidData[0].address}</Text>
                   </View>
                   <View style={{flexDirection: 'row', marginTop: 5}}>
                     <Icon
@@ -205,9 +202,7 @@ function HomeScreen({navigation}) {
                     />
                     <Text
                       onPress={() => {
-                        Linking.openURL(
-                          `https://maps.google.com/?q=${masjidData[0].g.geopoint.latitude},${masjidData[0].g.geopoint.longitude}`,
-                        );
+                        Linking.openURL(`${masjidData[0].gLink}`);
                       }}
                       style={{
                         color: '#900000',
@@ -314,15 +309,14 @@ function HomeScreen({navigation}) {
                 <View style={{flexDirection: 'row', marginTop: 10}}>
                   <View
                     style={{
-                      flexGrow: 1,
                       flexDirection: 'row',
                       backgroundColor: '#E1E1E1',
                       padding: 10,
+                      width: '100%',
                     }}>
-                    <Text style={{fontSize: 17, flexGrow: 1}}>
-                      Last Updated:
-                    </Text>
-                    <Text style={{fontSize: 17, color: '#008000'}}>
+                    <Text style={{fontSize: 17}}>Last Updated:</Text>
+                    <Text
+                      style={{fontSize: 17, paddingLeft: 10, color: '#008000'}}>
                       {masjidData[0].timeStamp || 'Not Available'}
                     </Text>
                   </View>

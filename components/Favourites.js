@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -9,12 +9,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Header} from 'react-native-elements';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import {useSelector} from 'react-redux';
 import {GetFavMasjidData} from '../store/firebase';
 import Favbtn from '../views/Favbtn';
+import HeaderComp from '../views/HeaderComp';
 
 const Item = ({
   url,
@@ -159,15 +158,17 @@ const Favourites = ({navigation}) => {
   //   const [masjidData, loading, error] = GetRadMasjidData();
   const [masjidData, loading, error, GetData] = GetFavMasjidData();
   const favoriteId = useSelector(state => state.favorites.value);
-  console.log(masjidData);
   function onRefresh() {
     setRefreshing(true);
     GetData();
     setRefreshing(false);
   }
 
-  React.useEffect(() => {
-    GetData();
+  useEffect(() => {
+    async function fetchData() {
+      await GetData();
+    }
+    fetchData();
     // const willFocusSubscription = navigation.addListener('focus', () => {
     //   GetData();
     // });
@@ -176,7 +177,6 @@ const Favourites = ({navigation}) => {
   }, [favoriteId]);
 
   const renderItem = ({item}) => {
-    console.log(item);
     return (
       <Item
         title={item.name}
@@ -195,36 +195,7 @@ const Favourites = ({navigation}) => {
   };
   return (
     <>
-      <Header
-        containerStyle={{
-          shadowOpacity: 30,
-          elevation: 10,
-        }}
-        leftComponent={
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon1
-              name="arrow-left"
-              color="#ffff"
-              size={26}
-              style={{paddingLeft: 10}}
-            />
-          </TouchableOpacity>
-        }
-        centerComponent={
-          <View style={{textAlign: 'center'}}>
-            <Text
-              style={{
-                color: '#ffff',
-                fontSize: 22,
-                marginBottom: 5,
-                textAlign: 'center',
-              }}>
-              Favourites
-            </Text>
-          </View>
-        }
-        backgroundColor="#1F441E"
-      />
+      <HeaderComp navigation={navigation} heading="Favourites" />
       <>
         {(() => {
           if (!loading) {
