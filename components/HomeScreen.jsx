@@ -23,8 +23,14 @@ import AdminRequest from '../views/AdminRequest';
 import Favbtn from '../views/Favbtn';
 
 function HomeScreen({navigation}) {
-  const {masjid, loading, location, error, getLocation, GetData} =
-    new GetRadMasjidData1();
+  const {
+    masjid,
+    loading,
+    location,
+    error,
+    getLocation,
+    GetDataRadMasjid: GetData,
+  } = new GetRadMasjidData1();
   const [refreshing, setRefreshing] = useState(false);
   const masjidData = masjid;
   // Geocoder.init('AIzaSyCrsNBX-pWunuPeL-ziP99aXhetdZL2VKs');
@@ -46,10 +52,10 @@ function HomeScreen({navigation}) {
   }, [location.coords.latitude, location.coords.longitude]);
 
   // #E1E1E1
-  function onRefresh() {
+  async function onRefresh() {
     setRefreshing(true);
-    getLocation();
-    GetData();
+    await getLocation();
+    await GetData();
     setRefreshing(false);
   }
   console.log(masjidData);
