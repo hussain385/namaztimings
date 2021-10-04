@@ -1,5 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 import _ from 'lodash';
 import React, {useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
@@ -7,7 +5,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import {add, remove} from '../redux/favSlicer';
 
-const Favbtn = ({favId, onRefresh, isBig = true}) => {
+const Favbtn = ({favId, isBig = true}) => {
   // const [isFav, setIsFav] = useState(false);
   const [isFound, setIsFound] = useState(false); // is Fav already exist in storage?
   const favoriteId = useSelector(state => state.favorites.value);

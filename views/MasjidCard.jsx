@@ -55,11 +55,7 @@ export default class MasjidCard extends PureComponent {
             <View style={{flexDirection: 'row'}}>
               <View style={{flexGrow: 1}} />
               <View style={{top: -50}}>
-                <Favbtn
-                  favId={this.props.masjid.key}
-                  onRefresh={this.props.onRefresh}
-                  isBig={true}
-                />
+                <Favbtn favId={this.props.masjid.key} isBig={true} />
               </View>
             </View>
           </ImageBackground>
