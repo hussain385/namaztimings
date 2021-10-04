@@ -30,17 +30,6 @@ export default class MasjidCard extends PureComponent {
           onPress={() =>
             this.props.nav.navigate('More Info', {
               masjid: this.props.masjid,
-              // name: this.props.masjid.name,
-              // url: this.props.masjid.pictureURL,
-              // address: this.props.masjid.address,
-              // timing: this.props.masjid.timings,
-              // favId: this.props.masjid.favId,
-              // distance: this.props.masjid.distance,
-              // latitude: this.props.masjid.g.geopoint.latitude,
-              // longitude: this.props.masjid.g.geopoint.longitude,
-              // user: this.props.masjid.user,
-              // gLink: this.props.masjid.gLink,
-              // timeStamp: this.props.masjid.timeStamp,
             })
           }>
           <ImageBackground
@@ -89,17 +78,6 @@ export default class MasjidCard extends PureComponent {
               onPress={() =>
                 this.props.nav.navigate('More Info', {
                   masjid: this.props.masjid,
-                  // name: this.props.masjid.title,
-                  // url: this.props.masjid.pictureURL,
-                  // address: this.props.masjid.address,
-                  // timing: this.props.masjid.timings,
-                  // favId: this.props.masjid.favId,
-                  // distance: this.props.masjid.distance,
-                  // latitude: this.props.masjid.g.geopoint.latitude,
-                  // longitude: this.props.masjid.g.geopoint.longitude,
-                  // user: this.props.masjid.user,
-                  // gLink: this.props.masjid.gLink,
-                  // timeStamp: this.props.masjid.timeStamp,
                 })
               }
               style={{

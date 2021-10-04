@@ -27,17 +27,19 @@ const Item = props => (
     <TouchableOpacity
       onPress={() =>
         props.nav.navigate('More Info', {
-          name: props.title,
-          url: props.url,
-          address: props.address,
-          timing: props.timings,
-          favId: props.favId,
-          distance: props.distance,
-          latitude: props.latitude,
-          longitude: props.longitude,
-          user: props.user,
-          gLink: props.gLink,
-          timeStamp: props.timeStamp,
+          masjid: {
+            name: props.title,
+            pictureURL: props.url,
+            address: props.address,
+            timing: props.timings,
+            favId: props.favId,
+            distance: props.distance,
+            latitude: props.latitude,
+            longitude: props.longitude,
+            user: props.user,
+            gLink: props.gLink,
+            timeStamp: props.timeStamp,
+          },
         })
       }>
       <Card.Cover

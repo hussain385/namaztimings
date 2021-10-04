@@ -333,7 +333,7 @@ const Edit = ({
                           value={values.userName}
                           style={{
                             paddingHorizontal: 10,
-                            backgroundColor: '#EEEEEE',
+                            backgroundColor: '#ffff',
                             color: 'black',
                           }}
                           placeholder="Enter Your Name..."
@@ -358,9 +358,10 @@ const Edit = ({
                           onChangeText={handleChange('userPhone')}
                           onBlur={handleBlur('userPhone')}
                           value={values.userPhone}
+                          keyboardType="phone-pad"
                           style={{
                             paddingHorizontal: 10,
-                            backgroundColor: '#EEEEEE',
+                            backgroundColor: '#ffff',
                             color: 'black',
                           }}
                           placeholder="Enter Your Phone Number..."

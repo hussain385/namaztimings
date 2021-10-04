@@ -20,8 +20,6 @@ import Favbtn from './Favbtn';
 const MasjidInfo = ({route, navigation}) => {
   const {masjid} = route.params;
 
-  console.log(masjid.timing);
-
   return (
     <>
       <Header
