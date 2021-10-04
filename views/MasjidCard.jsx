@@ -9,36 +9,10 @@ import {
 import Favbtn from './Favbtn';
 
 export default class MasjidCard extends PureComponent {
-  // constructor({
-  //   url,
-  //   title,
-  //   distance,
-  //   favId,
-  //   address,
-  //   timings,
-  //   nav,
-  //   onRefresh,
-  //   latitude,
-  //   longitude,
-  //   user,
-  // }) {
-  //   super();
-  //   this.url = url;
-  //   this.title = title;
-  //   this.distance = distance;
-  //   this.favId = favId;
-  //   this.address = address;
-  //   this.timings = timings;
-  //   this.nav = nav;
-  //   this.onRefresh = onRefresh;
-  //   this.latitude = latitude;
-  //   this.longitude = longitude;
-  //   this.user = user;
-  // }
   render() {
     return (
       <View
-        key={this.props.favId}
+        key={this.props.masjid.key}
         style={{
           margin: 10,
           backgroundColor: '#ffff',
@@ -55,21 +29,22 @@ export default class MasjidCard extends PureComponent {
         <TouchableOpacity
           onPress={() =>
             this.props.nav.navigate('More Info', {
-              name: this.props.title,
-              url: this.props.url,
-              address: this.props.address,
-              timing: this.props.timings,
-              favId: this.props.favId,
-              distance: this.props.distance,
-              latitude: this.props.latitude,
-              longitude: this.props.longitude,
-              user: this.props.user,
-              gLink: this.props.gLink,
-              timeStamp: this.props.timeStamp,
+              masjid: this.props.masjid,
+              // name: this.props.masjid.name,
+              // url: this.props.masjid.pictureURL,
+              // address: this.props.masjid.address,
+              // timing: this.props.masjid.timings,
+              // favId: this.props.masjid.favId,
+              // distance: this.props.masjid.distance,
+              // latitude: this.props.masjid.g.geopoint.latitude,
+              // longitude: this.props.masjid.g.geopoint.longitude,
+              // user: this.props.masjid.user,
+              // gLink: this.props.masjid.gLink,
+              // timeStamp: this.props.masjid.timeStamp,
             })
           }>
           <ImageBackground
-            source={{uri: `${this.props.url}`}}
+            source={{uri: `${this.props.masjid.pictureURL}`}}
             style={{
               flex: 1,
               resizeMode: 'cover',
@@ -81,7 +56,7 @@ export default class MasjidCard extends PureComponent {
               <View style={{flexGrow: 1}} />
               <View style={{top: -50}}>
                 <Favbtn
-                  favId={this.props.favId}
+                  favId={this.props.masjid.key}
                   onRefresh={this.props.onRefresh}
                   isBig={true}
                 />
@@ -98,15 +73,13 @@ export default class MasjidCard extends PureComponent {
               justifyContent: 'space-between',
             }}>
             <View style={{maxWidth: 250}}>
-              <Text style={{fontSize: 17}}>{this.props.title}</Text>
+              <Text style={{fontSize: 17}}>{this.props.masjid.name}</Text>
             </View>
             <View>
               <Text
-                onPress={() => {
-                  Linking.openURL(`${this.props.gLink}`);
-                }}
+                onPress={() => Linking.openURL(`${this.props.masjid.gLink}`)}
                 style={{color: '#900000', textDecorationLine: 'underline'}}>
-                {this.props.distance}KM AWAY
+                {this.props.masjid.distance}KM AWAY
               </Text>
             </View>
           </View>
@@ -119,17 +92,18 @@ export default class MasjidCard extends PureComponent {
             <TouchableOpacity
               onPress={() =>
                 this.props.nav.navigate('More Info', {
-                  name: this.props.title,
-                  url: this.props.url,
-                  address: this.props.address,
-                  timing: this.props.timings,
-                  favId: this.props.favId,
-                  distance: this.props.distance,
-                  latitude: this.props.latitude,
-                  longitude: this.props.longitude,
-                  user: this.props.user,
-                  gLink: this.props.gLink,
-                  timeStamp: this.props.timeStamp,
+                  masjid: this.props.masjid,
+                  // name: this.props.masjid.title,
+                  // url: this.props.masjid.pictureURL,
+                  // address: this.props.masjid.address,
+                  // timing: this.props.masjid.timings,
+                  // favId: this.props.masjid.favId,
+                  // distance: this.props.masjid.distance,
+                  // latitude: this.props.masjid.g.geopoint.latitude,
+                  // longitude: this.props.masjid.g.geopoint.longitude,
+                  // user: this.props.masjid.user,
+                  // gLink: this.props.masjid.gLink,
+                  // timeStamp: this.props.masjid.timeStamp,
                 })
               }
               style={{

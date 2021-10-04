@@ -47,6 +47,7 @@ export function modifyData(data, id, d) {
     key: id,
     distance: Number(d.toFixed(2)),
     timing: {
+      ...data.timing,
       asar: data.timing?.asar || '01:00 PM',
       fajar: data.timing?.fajar || '04:30 PM',
       isha: data.timing?.isha || '09:30 PM',

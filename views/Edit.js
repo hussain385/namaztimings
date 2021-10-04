@@ -207,21 +207,37 @@ const Edit = ({
                                 a.id,
                               ),
                             })
-                            .then(value1 => {
-                              setSubmitting(false);
-                              Alert.alert(
-                                'Request Send!',
-                                'Request has been forwarded to the admin',
-                                [
-                                  {
-                                    text: 'Ok',
-                                    onPress: () =>
-                                      setModalVisible(!modalVisible),
-                                  },
-                                ],
-                                {cancelable: false},
-                              );
-                            });
+                            .then(
+                              value1 => {
+                                setSubmitting(false);
+                                Alert.alert(
+                                  'Request Send!',
+                                  'Request has been forwarded to the admin',
+                                  [
+                                    {
+                                      text: 'Ok',
+                                      onPress: () =>
+                                        setModalVisible(!modalVisible),
+                                    },
+                                  ],
+                                  {cancelable: false},
+                                );
+                              },
+                              reason => {
+                                Alert.alert(
+                                  'Error',
+                                  JSON.stringify(reason, null, 2),
+                                  [
+                                    {
+                                      text: 'Ok',
+                                      onPress: () =>
+                                        setModalVisible(!modalVisible),
+                                    },
+                                  ],
+                                  {cancelable: false},
+                                );
+                              },
+                            );
                         });
                     } catch (e) {
                       console.log(e);

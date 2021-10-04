@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import moment from 'moment';
 import * as React from 'react';
 import {
@@ -19,20 +18,9 @@ import Edit from './Edit';
 import Favbtn from './Favbtn';
 
 const MasjidInfo = ({route, navigation}) => {
-  console.log(route, navigation);
-  const {name} = route.params;
-  const {url} = route.params;
-  const {address} = route.params;
-  const {timing} = route.params;
-  const {distance} = route.params;
-  const {favId} = route.params;
-  const {latitude} = route.params;
-  const {longitude} = route.params;
-  const {user} = route.params;
-  const {timeStamp} = route.params;
-  const {gLink} = route.params;
+  const {masjid} = route.params;
 
-  // console.log(timing);
+  console.log(masjid.timing);
 
   return (
     <>
@@ -74,9 +62,9 @@ const MasjidInfo = ({route, navigation}) => {
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('Map1', {
-                latitude: latitude,
-                longitude: longitude,
-                name: name,
+                latitude: masjid.g.geopoint.latitude,
+                longitude: masjid.g.geopoint.longitude,
+                name: masjid.name,
               })
             }>
             <Icon
@@ -111,10 +99,10 @@ const MasjidInfo = ({route, navigation}) => {
                     fontWeight: 'bold',
                     maxWidth: 200,
                   }}>
-                  {name}
+                  {masjid.name}
                 </Text>
               </View>
-              <Favbtn favId={favId} isBig={false} />
+              <Favbtn favId={masjid.key} isBig={false} />
             </View>
             <View
               style={{
@@ -133,7 +121,7 @@ const MasjidInfo = ({route, navigation}) => {
                     marginTop: 3,
                   }}
                 />
-                <Text style={{maxWidth: 200}}>{address}</Text>
+                <Text style={{maxWidth: 200}}>{masjid.address}</Text>
               </View>
               <View style={{flexDirection: 'row'}}>
                 <Icon
@@ -143,9 +131,7 @@ const MasjidInfo = ({route, navigation}) => {
                   style={{paddingRight: 7}}
                 />
                 <Text
-                  onPress={() => {
-                    Linking.openURL(`${gLink}`);
-                  }}
+                  onPress={() => Linking.openURL(`${masjid.gLink}`)}
                   style={{
                     color: '#900000',
                     fontSize: 16,
@@ -153,11 +139,11 @@ const MasjidInfo = ({route, navigation}) => {
                     fontWeight: 'bold',
                     textDecorationLine: 'underline',
                   }}>
-                  {distance} Km Away
+                  {masjid.distance} Km Away
                 </Text>
               </View>
             </View>
-            {user.name !== 'No Admin' ? (
+            {masjid.user.name !== 'No Admin' ? (
               <>
                 <View
                   style={{
@@ -172,7 +158,7 @@ const MasjidInfo = ({route, navigation}) => {
                       size={22}
                       style={{paddingRight: 15, paddingLeft: 13}}
                     />
-                    <Text style={{maxWidth: 280}}>{user.name}</Text>
+                    <Text style={{maxWidth: 280}}>{masjid.user.name}</Text>
                   </View>
                 </View>
                 <View
@@ -194,16 +180,16 @@ const MasjidInfo = ({route, navigation}) => {
                     />
                     <Text
                       style={{maxWidth: 280}}
-                      onPress={() => {
-                        Linking.openURL(`tel:${user.phone}`);
-                      }}>
-                      {user.phone}
+                      onPress={() =>
+                        Linking.openURL(`tel:${masjid.user.phone}`)
+                      }>
+                      {masjid.user.phone}
                     </Text>
                   </View>
                   <View>
                     <Image
                       source={{
-                        uri: `${url}`,
+                        uri: `${masjid.pictureURL}`,
                       }}
                       style={{
                         width: 141,
@@ -230,11 +216,11 @@ const MasjidInfo = ({route, navigation}) => {
                       flexDirection: 'row',
                       marginTop: 5,
                     }}>
-                    <AdminRequest id={favId} />
+                    <AdminRequest id={masjid.key} />
                   </View>
                   <Image
                     source={{
-                      uri: `${url}`,
+                      uri: `${masjid.pictureURL}`,
                     }}
                     style={{
                       width: 141,
@@ -260,10 +246,13 @@ const MasjidInfo = ({route, navigation}) => {
                 }}>
                 <Text style={{fontSize: 17}}>Last Updated:</Text>
                 <Text style={{fontSize: 17, marginLeft: 10, color: '#008000'}}>
-                  {moment(timeStamp?.seconds * 1000).format('MMMM Do YYYY') ===
-                  'Invalid date'
+                  {moment(masjid.timeStamp?.seconds * 1000).format(
+                    'MMMM Do YYYY',
+                  ) === 'Invalid date'
                     ? 'Not Available'
-                    : moment(timeStamp?.seconds * 1000).format('MMMM, Do YYYY')}
+                    : moment(masjid.timeStamp?.seconds * 1000).format(
+                        'MMMM, Do YYYY',
+                      )}
                 </Text>
               </View>
             </View>
@@ -282,7 +271,11 @@ const MasjidInfo = ({route, navigation}) => {
                   Namaz Timings
                 </Text>
               </View>
-              <Edit timing={timing} uid={favId} adminId={user.id} />
+              <Edit
+                timing={masjid.timing}
+                uid={masjid.key}
+                adminId={masjid.user.id}
+              />
             </View>
             <View
               style={{
@@ -300,7 +293,7 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{timing.fajar}</Text>
+                <Text style={{fontSize: 17}}>{masjid.timing.fajar}</Text>
               </View>
             </View>
             <View
@@ -319,7 +312,7 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{timing.zohar}</Text>
+                <Text style={{fontSize: 17}}>{masjid.timing.zohar}</Text>
               </View>
             </View>
             <View
@@ -338,7 +331,7 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{timing.asar}</Text>
+                <Text style={{fontSize: 17}}>{masjid.timing.asar}</Text>
               </View>
             </View>
             <View
@@ -357,7 +350,7 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{timing.magrib}</Text>
+                <Text style={{fontSize: 17}}>{masjid.timing.magrib}</Text>
               </View>
             </View>
             <View
@@ -376,7 +369,7 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{timing.isha}</Text>
+                <Text style={{fontSize: 17}}>{masjid.timing.isha}</Text>
               </View>
             </View>
             <View
@@ -395,7 +388,9 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{timing.jummah || '--'}</Text>
+                <Text style={{fontSize: 17}}>
+                  {masjid.timing.jummah || '--'}
+                </Text>
               </View>
             </View>
             <View
@@ -414,7 +409,9 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{timing.eidUlFitr || '--'}</Text>
+                <Text style={{fontSize: 17}}>
+                  {masjid.timing.eidUlFitr || '--'}
+                </Text>
               </View>
             </View>
             <View
@@ -433,7 +430,9 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{timing.eidUlAddha || '--'}</Text>
+                <Text style={{fontSize: 17}}>
+                  {masjid.timing.eidUlAddah || '--'}
+                </Text>
               </View>
             </View>
           </View>
@@ -453,9 +452,9 @@ const MasjidInfo = ({route, navigation}) => {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Notification', {
-                  masjidId: favId,
-                  masjidName: name,
-                  adminId: user.id,
+                  masjidId: masjid.key,
+                  masjidName: masjid.name,
+                  adminId: masjid.user.id,
                 })
               }
               style={{

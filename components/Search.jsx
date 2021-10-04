@@ -33,8 +33,7 @@ const Search = props => {
   const firestore = useSelector(state => state.firestore);
   // const masjid = populate(firestore, 'Masjid', populates);
   const masjidData = sortMasjidData1(masjid, location.coords);
-  console.log(props, '<==== props');
-  console.log(firestore, '<==== firestore');
+  console.log(masjidData, '<==== masjidData from search');
   function onChangeSearch(text) {
     const fuse = new Fuse(masjidData, {keys: ['address'], distance: 400});
     const resultf = fuse.search(text);
@@ -56,34 +55,36 @@ const Search = props => {
 
   const renderItem = ({item}) => (
     <MasjidCard
-      title={item.name}
-      address={item.address}
-      url={item.pictureURL}
-      timings={item.timing}
+      // title={item.name}
+      // address={item.address}
+      // url={item.pictureURL}
+      // timings={item.timing}
+      masjid={item}
       nav={navigation}
-      distance={item.distance}
-      favId={item.key}
-      latitude={item.g.geopoint.latitude}
-      longitude={item.g.geopoint.longitude}
-      user={item.user}
-      gLink={item.gLink}
-      timeStamp={item.timeStamp}
+      // distance={item.distance}
+      // favId={item.key}
+      // latitude={item.g.geopoint.latitude}
+      // longitude={item.g.geopoint.longitude}
+      // user={item.user}
+      // gLink={item.gLink}
+      // timeStamp={item.timeStamp}
     />
   );
   const renderItem1 = ({item}) => (
     <MasjidCard
-      title={item.item.name}
-      address={item.item.address}
-      url={item.item.pictureURL}
-      timings={item.item.timing}
+      // title={item.item.name}
+      // address={item.item.address}
+      // url={item.item.pictureURL}
+      // timings={item.item.timing}
+      masjid={item.item}
       nav={navigation}
-      distance={item.item.distance}
-      favId={item.item.key}
-      latitude={item.item.g.geopoint.latitude}
-      user={item.item.user}
-      gLink={item.item.gLink}
-      timeStamp={item.item.timeStamp}
-      longitude={item.item.g.geopoint.longitude}
+      // distance={item.item.distance}
+      // favId={item.item.key}
+      // latitude={item.item.g.geopoint.latitude}
+      // user={item.item.user}
+      // gLink={item.item.gLink}
+      // timeStamp={item.item.timeStamp}
+      // longitude={item.item.g.geopoint.longitude}
     />
   );
   return (
