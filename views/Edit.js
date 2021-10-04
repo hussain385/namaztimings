@@ -17,8 +17,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {Button, HelperText, TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
-import {useFirestore} from 'react-redux-firebase';
 import * as Yup from 'yup';
+import firestore from '@react-native-firebase/firestore';
 
 const Edit = ({
   timing,
@@ -43,14 +43,14 @@ const Edit = ({
   //   asar: asar,
   //   magrib: magrib,
   // });
-  const firestore = useFirestore();
+  // const firestore = useFirestore();
 
   const showTimePicker = namazName => {
     setTimePickerVisibility(true);
     setNamazTime(namazName);
   };
 
-  const {auth, profile} = useSelector(state => state.firebase);
+  const {profile} = useSelector(state => state.firebase);
 
   // async function submitRequest() {
   //   const prevTime = {
@@ -190,16 +190,16 @@ const Edit = ({
                     return returnChange(values.timing);
                   }
                   if (isRequest) {
-                    try {
-                      await firestore
-                        .collection('requests')
-                        .add({
-                          ...values,
-                          isRead: false,
-                          timeStamp: firestore.Timestamp.now(),
-                        })
-                        .then(a => {
-                          firestore
+                    firestore()
+                      .collection('requests')
+                      .add({
+                        ...values,
+                        isRead: false,
+                        timeStamp: firestore.Timestamp.now(),
+                      })
+                      .then(
+                        a => {
+                          firestore()
                             .collection('Masjid')
                             .doc(uid)
                             .update({
@@ -208,7 +208,7 @@ const Edit = ({
                               ),
                             })
                             .then(
-                              value1 => {
+                              () => {
                                 setSubmitting(false);
                                 Alert.alert(
                                   'Request Send!',
@@ -224,15 +224,16 @@ const Edit = ({
                                 );
                               },
                               reason => {
-                                firestore
+                                firestore()
                                   .collection('requests')
                                   .doc(a.id)
                                   .delete()
-                                  .then(value1 => {
+                                  .then(() => {
                                     setSubmitting(false);
+                                    console.warn(reason);
                                     Alert.alert(
                                       'Error',
-                                      JSON.stringify(reason, null, 2),
+                                      reason.message,
                                       [
                                         {
                                           text: 'Ok',
@@ -245,13 +246,24 @@ const Edit = ({
                                   });
                               },
                             );
-                        });
-                    } catch (e) {
-                      console.log(e);
-                    }
+                        },
+                        reason => {
+                          Alert.alert(
+                            'Error',
+                            reason.message,
+                            [
+                              {
+                                text: 'Ok',
+                                onPress: () => setModalVisible(!modalVisible),
+                              },
+                            ],
+                            {cancelable: false},
+                          );
+                        },
+                      );
                   } else {
                     try {
-                      await firestore
+                      await firestore()
                         .collection('Masjid')
                         .doc(uid)
                         .update({
@@ -259,7 +271,7 @@ const Edit = ({
                             ...values.timing,
                           },
                         })
-                        .then(a => {
+                        .then(() => {
                           setSubmitting(false);
                           console.log('data sent');
                           setModalVisible(!modalVisible);
@@ -284,27 +296,27 @@ const Edit = ({
                     isha: Yup.string().test(
                       'isDateTime',
                       'not a valid Time',
-                      value => moment(value, 'hh:mm A').isValid(),
+                      value1 => moment(value1, 'hh:mm A').isValid(),
                     ),
                     fajar: Yup.string().test(
                       'isDateTime',
                       'not a valid Time',
-                      value => moment(value, 'hh:mm A').isValid(),
+                      value1 => moment(value1, 'hh:mm A').isValid(),
                     ),
                     zohar: Yup.string().test(
                       'isDateTime',
                       'not a valid Time',
-                      value => moment(value, 'hh:mm A').isValid(),
+                      value1 => moment(value1, 'hh:mm A').isValid(),
                     ),
                     asar: Yup.string().test(
                       'isDateTime',
                       'not a valid Time',
-                      value => moment(value, 'hh:mm A').isValid(),
+                      value1 => moment(value1, 'hh:mm A').isValid(),
                     ),
                     magrib: Yup.string().test(
                       'isDateTime',
                       'not a valid Time',
-                      value => moment(value, 'hh:mm A').isValid(),
+                      value1 => moment(value1, 'hh:mm A').isValid(),
                     ),
                     // jummuah: Yup.string().test('isDateTime','not a valid Time', value => moment(value, 'hh:mm A').isValid()),
                   })
