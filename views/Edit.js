@@ -190,7 +190,7 @@ const Edit = ({
                     return returnChange(values.timing);
                   }
                   if (isRequest) {
-                    firestore()
+                    await firestore()
                       .collection('requests')
                       .add({
                         ...values,
