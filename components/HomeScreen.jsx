@@ -437,18 +437,7 @@ function HomeScreen({navigation}) {
                   <TouchableOpacity
                     onPress={() =>
                       navigation.navigate('More Info', {
-                        name: masjidData[0].name,
-                        url: masjidData[0].pictureURL,
-                        address: masjidData[0].address,
-                        isha: masjidData[0].timing.isha,
-                        timing: masjidData[0].timing,
-                        distance: masjidData[0].distance,
-                        favId: masjidData[0].key,
-                        latitude: masjidData[0].g.geopoint.latitude,
-                        longitude: masjidData[0].g.geopoint.longitude,
-                        user: masjidData[0].user,
-                        gLink: masjidData[0].gLink,
-                        timeStamp: masjidData[0].timeStamp,
+                        masjid: masjidData[0],
                       })
                     }
                     style={{

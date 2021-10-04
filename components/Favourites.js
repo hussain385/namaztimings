@@ -89,17 +89,21 @@ const Favourites = ({navigation}) => {
       <TouchableOpacity
         onPress={() =>
           navigation.navigate('More Info', {
-            name: title,
-            url: url,
-            address: address,
-            timing: timing,
-            favId: favId,
-            distance: distance,
-            latitude: latitude,
-            longitude: longitude,
-            user: user,
-            gLink: gLink,
-            timeStamp: timeStamp,
+            masjid: {
+              pictureURL: url,
+              name: title,
+              distance,
+              favId,
+              address,
+              timing,
+              onRefresh,
+              gLink,
+              timeStamp,
+              g: {
+                geopoint: {latitude, longitude},
+              },
+              user,
+            },
           })
         }>
         <ImageBackground
@@ -148,17 +152,21 @@ const Favourites = ({navigation}) => {
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('More Info', {
-                name: title,
-                url: url,
-                address: address,
-                timing: timing,
-                favId: favId,
-                distance: distance,
-                latitude: latitude,
-                longitude: longitude,
-                user: user,
-                gLink: gLink,
-                timeStamp: timeStamp,
+                masjid: {
+                  pictureURL: url,
+                  name: title,
+                  distance,
+                  favId,
+                  address,
+                  timing,
+                  onRefresh,
+                  gLink,
+                  timeStamp,
+                  g: {
+                    geopoint: {latitude, longitude},
+                  },
+                  user,
+                },
               })
             }
             style={{
