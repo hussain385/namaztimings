@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
@@ -34,22 +35,8 @@ function HomeScreen({navigation}) {
   } = new GetRadMasjidData1();
   const [refreshing, setRefreshing] = useState(false);
   const masjidData = masjid;
-  // Geocoder.init('AIzaSyCrsNBX-pWunuPeL-ziP99aXhetdZL2VKs');
-  console.log(loading);
   useEffect(() => {
     onRefresh();
-    // const willFocusSubscription = navigation.addListener('focus', () => {
-    //   onRefresh();
-    // });
-
-    // console.log(location.coords.longitude, '<========== location ');
-    // Geocoder.from(location.coords.longitude, location.coords.latitude)
-    //   .then(json => {
-    //     var addressComponent = json.results[0].address_components[0];
-    //     console.log(addressComponent);
-    //   })
-    //   .catch(error1 => console.warn(error1));
-    // return willFocusSubscription;
   }, [location.coords.latitude, location.coords.longitude]);
 
   // #E1E1E1
@@ -327,7 +314,13 @@ function HomeScreen({navigation}) {
                     <Text style={{fontSize: 17}}>Last Updated:</Text>
                     <Text
                       style={{fontSize: 17, paddingLeft: 10, color: '#008000'}}>
-                      {masjidData[0].timeStamp || 'Not Available'}
+                      {moment(masjidData[0].timeStamp?.seconds * 1000).format(
+                        'MMMM Do YYYY',
+                      ) === 'Invalid date'
+                        ? 'Not Available'
+                        : moment(
+                            masjidData[0].timeStamp?.seconds * 1000,
+                          ).format('MMMM, Do YYYY')}
                     </Text>
                   </View>
                 </View>

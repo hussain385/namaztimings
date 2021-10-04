@@ -1,4 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
+import moment from 'moment';
 import * as React from 'react';
 import {
   Dimensions,
@@ -31,7 +32,7 @@ const MasjidInfo = ({route, navigation}) => {
   const {timeStamp} = route.params;
   const {gLink} = route.params;
 
-  console.log(user);
+  // console.log(timing);
 
   return (
     <>
@@ -259,7 +260,10 @@ const MasjidInfo = ({route, navigation}) => {
                 }}>
                 <Text style={{fontSize: 17}}>Last Updated:</Text>
                 <Text style={{fontSize: 17, marginLeft: 10, color: '#008000'}}>
-                  {timeStamp || 'Not Available'}
+                  {moment(timeStamp?.seconds * 1000).format('MMMM Do YYYY') ===
+                  'Invalid date'
+                    ? 'Not Available'
+                    : moment(timeStamp?.seconds * 1000).format('MMMM, Do YYYY')}
                 </Text>
               </View>
             </View>
@@ -391,7 +395,7 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{timing.jummuah || '--'}</Text>
+                <Text style={{fontSize: 17}}>{timing.jummah || '--'}</Text>
               </View>
             </View>
             <View
@@ -410,7 +414,7 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{timing.eidulfitr || '--'}</Text>
+                <Text style={{fontSize: 17}}>{timing.eidUlFitr || '--'}</Text>
               </View>
             </View>
             <View
@@ -429,7 +433,7 @@ const MasjidInfo = ({route, navigation}) => {
                 style={{
                   paddingRight: 10,
                 }}>
-                <Text style={{fontSize: 17}}>{timing.eiduladha || '--'}</Text>
+                <Text style={{fontSize: 17}}>{timing.eidUlAddha || '--'}</Text>
               </View>
             </View>
           </View>

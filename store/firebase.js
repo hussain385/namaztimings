@@ -158,7 +158,7 @@ export function GetRadMasjidData1(radius = 50) {
       })
       .get()
       .then(async snapshot => {
-        console.log(snapshot);
+        // console.log(snapshot);
         const masjids1 = await sortMasjidData(snapshot, location.coords);
         setMasjid(masjids1, '<====GetDataRadMasjid');
         setLoading(false);
