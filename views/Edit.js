@@ -227,19 +227,22 @@ const Edit = ({
                                 firestore
                                   .collection('requests')
                                   .doc(a.id)
-                                  .delete();
-                                Alert.alert(
-                                  'Error',
-                                  JSON.stringify(reason, null, 2),
-                                  [
-                                    {
-                                      text: 'Ok',
-                                      onPress: () =>
-                                        setModalVisible(!modalVisible),
-                                    },
-                                  ],
-                                  {cancelable: false},
-                                );
+                                  .delete()
+                                  .then(value1 => {
+                                    setSubmitting(false);
+                                    Alert.alert(
+                                      'Error',
+                                      JSON.stringify(reason, null, 2),
+                                      [
+                                        {
+                                          text: 'Ok',
+                                          onPress: () =>
+                                            setModalVisible(!modalVisible),
+                                        },
+                                      ],
+                                      {cancelable: false},
+                                    );
+                                  });
                               },
                             );
                         });
