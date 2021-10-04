@@ -224,6 +224,10 @@ const Edit = ({
                                 );
                               },
                               reason => {
+                                firestore
+                                  .collection('requests')
+                                  .doc(a.id)
+                                  .delete();
                                 Alert.alert(
                                   'Error',
                                   JSON.stringify(reason, null, 2),
