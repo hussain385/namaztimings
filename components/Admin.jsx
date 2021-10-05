@@ -26,6 +26,7 @@ import {headerStyles, textStyles} from '../theme/styles/Base';
 import Edit from '../views/Edit';
 import CoText from '../views/Text/Text';
 import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
 
 const populates = [
   {child: 'requestList', root: 'requests', childAlias: 'requests'},
@@ -52,7 +53,7 @@ const Admin = ({navigation}) => {
   React.useEffect(() => {
     if (isLoaded(snapshot)) {
       setNotify(0);
-      _.map(snapshot, doc => {
+      _.forEach(snapshot, doc => {
         setNotify(prevState => prevState + doc.requests?.length);
       });
       // Firestore.unsetListeners([{collection: 'Masjid'}]);
@@ -237,7 +238,15 @@ const Admin = ({navigation}) => {
                       }}>
                       <Text style={{fontSize: 17}}>
                         Last Updated:
-                        <Text style={{color: '#008000'}}>14th May 2021</Text>
+                        <Text style={{color: '#008000'}}>
+                          {moment(doc.timeStamp?.seconds * 1000).format(
+                            'MMMM Do YYYY',
+                          ) === 'Invalid date'
+                            ? 'Not Available'
+                            : moment(doc.timeStamp?.seconds * 1000).format(
+                                'MMMM, Do YYYY',
+                              )}
+                        </Text>
                       </Text>
                     </View>
                   </View>
@@ -332,6 +341,69 @@ const Admin = ({navigation}) => {
                         paddingRight: 10,
                       }}>
                       <Text style={{fontSize: 17}}>{data.timing.isha}</Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      marginTop: 10,
+                    }}>
+                    <View
+                      style={{
+                        paddingLeft: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>Jumu&apos;ah</Text>
+                    </View>
+                    <View
+                      style={{
+                        paddingRight: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>
+                        {data.timing.jummah || '--'}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      marginTop: 10,
+                    }}>
+                    <View
+                      style={{
+                        paddingLeft: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>Eid Ul Fitr</Text>
+                    </View>
+                    <View
+                      style={{
+                        paddingRight: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>
+                        {data.timing.eidUlFitr || '--'}
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      justifyContent: 'space-between',
+                      flexDirection: 'row',
+                      marginTop: 10,
+                    }}>
+                    <View
+                      style={{
+                        paddingLeft: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>Eid Ul Adha</Text>
+                    </View>
+                    <View
+                      style={{
+                        paddingRight: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>
+                        {data.timing.eidUlAddah || '--'}
+                      </Text>
                     </View>
                   </View>
                   <View
