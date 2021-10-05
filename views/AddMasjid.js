@@ -493,7 +493,7 @@ export const AddMasjid = ({navigation}) => {
                   style={{
                     paddingRight: 10,
                   }}>
-                  <Text style={{fontSize: 17}}>{timing.jummuah || '--'}</Text>
+                  <Text style={{fontSize: 17}}>{timing.jummah || '--'}</Text>
                 </View>
               </View>
               <View
@@ -512,7 +512,7 @@ export const AddMasjid = ({navigation}) => {
                   style={{
                     paddingRight: 10,
                   }}>
-                  <Text style={{fontSize: 17}}>{timing.eidulfitr || '--'}</Text>
+                  <Text style={{fontSize: 17}}>{timing.eidUlFitr || '--'}</Text>
                 </View>
               </View>
               <View
@@ -531,7 +531,9 @@ export const AddMasjid = ({navigation}) => {
                   style={{
                     paddingRight: 10,
                   }}>
-                  <Text style={{fontSize: 17}}>{timing.eiduladha || '--'}</Text>
+                  <Text style={{fontSize: 17}}>
+                    {timing.eidUlAddah || '--'}
+                  </Text>
                 </View>
               </View>
               {errors.timing && touched.timing && (

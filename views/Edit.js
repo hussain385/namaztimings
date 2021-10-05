@@ -283,14 +283,19 @@ const Edit = ({
                 }
               }}
               validationSchema={Yup.object().shape({
-                userName: Yup.string().required('your name is required'),
-                userPhone: Yup.string()
-                  .matches(
-                    /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/,
-                    'Phone number is not valid',
-                  )
-                  .min(11, 'phone no. is short, please check again')
-                  .max(16, 'phone no. is long, please check again'),
+                userName: !isAdd
+                  ? Yup.string().required('your name is required')
+                  : Yup.string().nullable(true),
+                userPhone: !isAdd
+                  ? Yup.string()
+                      .matches(
+                        /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/,
+                        'Phone number is not valid',
+                      )
+                      .min(11, 'phone no. is short, please check again')
+                      .max(16, 'phone no. is long, please check again')
+                      .required('phone number is required')
+                  : Yup.string().nullable(true),
                 timing: Yup.object()
                   .shape({
                     isha: Yup.string().test(
@@ -542,7 +547,7 @@ const Edit = ({
                       disabled={isSubmitting}
                       uppercase={false}
                       style={[styles.buttonClose, {borderRadius: 10}]}>
-                      {isRequest ? 'Request' : 'Confirm'}
+                      {!isAdd ? 'Request' : 'Confirm'}
                     </Button>
                   </View>
                   <DateTimePickerModal
