@@ -262,23 +262,26 @@ const Edit = ({
                         },
                       );
                   } else {
-                    try {
-                      await firestore()
-                        .collection('Masjid')
-                        .doc(uid)
-                        .update({
-                          timing: {
-                            ...values.timing,
-                          },
-                        })
-                        .then(() => {
+                    await firestore()
+                      .collection('Masjid')
+                      .doc(uid)
+                      .update({
+                        timeStamp: firestore.Timestamp.now(),
+                        timing: {
+                          ...values.timing,
+                        },
+                      })
+                      .then(
+                        () => {
                           setSubmitting(false);
                           console.log('data sent');
                           setModalVisible(!modalVisible);
-                        });
-                    } catch (e) {
-                      console.error(e);
-                    }
+                        },
+                        reason => {
+                          Alert.alert(reason.message);
+                          setModalVisible(!modalVisible);
+                        },
+                      );
                   }
                 }
               }}
@@ -547,7 +550,7 @@ const Edit = ({
                       disabled={isSubmitting}
                       uppercase={false}
                       style={[styles.buttonClose, {borderRadius: 10}]}>
-                      {!isAdd ? 'Request' : 'Confirm'}
+                      {!isAdd ? (isRequest ? 'Request' : 'Confirm') : 'Confirm'}
                     </Button>
                   </View>
                   <DateTimePickerModal
