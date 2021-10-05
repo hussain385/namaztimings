@@ -313,7 +313,7 @@ function HomeScreen({navigation}) {
                     }}>
                     <Text style={{fontSize: 17}}>Last Updated:</Text>
                     <Text
-                      style={{fontSize: 17, paddingLeft: 10, color: '#008000'}}>
+                      style={{fontSize: 17, paddingLeft: 5, color: '#008000'}}>
                       {moment(masjidData[0].timeStamp?.seconds * 1000).format(
                         'MMMM Do YYYY',
                       ) === 'Invalid date'

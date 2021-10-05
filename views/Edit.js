@@ -1,3 +1,4 @@
+import firestore from '@react-native-firebase/firestore';
 import {Formik} from 'formik';
 import _ from 'lodash';
 import moment from 'moment';
@@ -18,7 +19,6 @@ import {Button, HelperText, TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 import * as Yup from 'yup';
-import firestore from '@react-native-firebase/firestore';
 
 const Edit = ({
   timing,
@@ -477,7 +477,7 @@ const Edit = ({
                         flexGrow: 1,
                         paddingLeft: 10,
                       }}>
-                      <Text style={{fontSize: 17}}>jummah :</Text>
+                      <Text style={{fontSize: 17}}>Jumu&apos;ah :</Text>
                     </View>
                     <View style={styles.editTime}>
                       <Pressable
@@ -495,7 +495,7 @@ const Edit = ({
                         flexGrow: 1,
                         paddingLeft: 10,
                       }}>
-                      <Text style={{fontSize: 17}}>eidUlAddah :</Text>
+                      <Text style={{fontSize: 17}}>Eid Ul Adah :</Text>
                     </View>
                     <View style={styles.editTime}>
                       <Pressable
@@ -513,7 +513,7 @@ const Edit = ({
                         flexGrow: 1,
                         paddingLeft: 10,
                       }}>
-                      <Text style={{fontSize: 17}}>eidUlFitr :</Text>
+                      <Text style={{fontSize: 17}}>Eid Ul Fitr :</Text>
                     </View>
                     <View style={styles.editTime}>
                       <Pressable

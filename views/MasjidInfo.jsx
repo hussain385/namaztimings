@@ -243,7 +243,7 @@ const MasjidInfo = ({route, navigation}) => {
                   width: '100%',
                 }}>
                 <Text style={{fontSize: 17}}>Last Updated:</Text>
-                <Text style={{fontSize: 17, marginLeft: 10, color: '#008000'}}>
+                <Text style={{fontSize: 17, marginLeft: 5, color: '#008000'}}>
                   {moment(masjid.timeStamp?.seconds * 1000).format(
                     'MMMM Do YYYY',
                   ) === 'Invalid date'

@@ -58,7 +58,7 @@ const Notification = ({navigation, route: {params}}) => {
 
   return (
     <View>
-      <HeaderComp heading="Notification" navigation={navigation} />
+      <HeaderComp heading="Announcements" navigation={navigation} />
       {firestore.status.requested.tempAnnouncement && data.length >= 1 ? (
         <FlatList
           style={{height: Dimensions.get('screen').height * 0.82}}
@@ -87,7 +87,9 @@ const Notification = ({navigation, route: {params}}) => {
             alignItems: 'center',
           }}>
           <AntDesign color="#1F441E" name="folder1" size={70} />
-          <Text style={{fontSize: 20, color: '#1F441E'}}>No Notification</Text>
+          <Text style={{fontSize: 20, color: '#1F441E'}}>
+            No News & Announcements
+          </Text>
         </View>
       )}
       {auth.uid === adminId ||
