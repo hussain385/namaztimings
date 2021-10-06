@@ -2,6 +2,7 @@ import firestore from '@react-native-firebase/firestore';
 import _ from 'lodash';
 import React from 'react';
 import {
+  Alert,
   Dimensions,
   FlatList,
   SafeAreaView,
@@ -11,191 +12,299 @@ import {
 } from 'react-native';
 import {Header} from 'react-native-elements';
 import {Card} from 'react-native-paper';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useSelector} from 'react-redux';
-import {
-  isEmpty,
-  isLoaded,
-  populate,
-  useFirestoreConnect,
-} from 'react-redux-firebase';
+import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
 import Edit from './Edit';
 
 const markAsRead = async reqId => {
-  await firestore().collection('requests').doc(reqId).update({
-    isRead: true,
-  });
-};
-
-const deleteFunc = (masjidId, reqId) => {
-  console.log(masjidId, reqId);
-  firestore()
-    .collection('Masjid')
-    .doc(masjidId)
+  await firestore()
+    .collection('requests')
+    .doc(reqId)
     .update({
-      requestList: firestore.FieldValue.arrayRemove(reqId),
+      isRead: true,
     })
-    .then(() => {
-      firestore()
-        .collection('requests')
-        .doc(reqId)
-        .delete()
-        .then(value1 => {
-          console.log('deleted', value1);
-        });
-    });
+    .then(
+      () => {
+        console.log('sent');
+      },
+      reason => {
+        console.warn(reason.message);
+      },
+    );
 };
 
-const Item = ({timing, id, MasjidId, admin, userName, userContact}) => (
-  <Card
-    style={{
-      borderRadius: 5,
-      margin: 10,
-      shadowOpacity: 10,
-      elevation: 5,
-    }}>
-    <Card.Actions>
-      <View style={{width: '100%'}}>
-        <View style={{flexDirection: 'row', margin: 5}}>
-          <View style={{flexGrow: 1}}>
-            <Text style={{fontSize: 17}}>User Name: {userName}</Text>
-          </View>
-        </View>
-        <View style={{flexDirection: 'row', margin: 5}}>
-          <View style={{flexGrow: 1}}>
-            <Text style={{fontSize: 17}}>User Contact: {userContact}</Text>
-          </View>
-        </View>
-        <View style={{backgroundColor: '#eeee', padding: 5, borderRadius: 8}}>
-          <View style={{flexDirection: 'row'}}>
-            <View style={{flexGrow: 1}} />
-            <View>
-              <Edit
-                timing={timing}
-                uid={MasjidId}
-                isRequest={false}
-                userInfo={false}
-                value="View"
-              />
-            </View>
-          </View>
-          <View style={{flexDirection: 'row', marginTop: 10}}>
-            <View style={{flexGrow: 5}}>
-              <Text style={{textAlign: 'center', fontSize: 14}}>Fajar</Text>
-              <Text style={{textAlign: 'center', fontSize: 14}}>
-                {timing.fajar}
-              </Text>
-            </View>
-            <View style={{flexGrow: 5}}>
-              <Text style={{textAlign: 'center', fontSize: 14}}>Zohar</Text>
-              <Text style={{textAlign: 'center', fontSize: 14}}>
-                {timing.zohar}
-              </Text>
-            </View>
-            <View style={{flexGrow: 5}}>
-              <Text style={{textAlign: 'center', fontSize: 14}}>Asar</Text>
-              <Text style={{textAlign: 'center', fontSize: 14}}>
-                {timing.asar}
-              </Text>
-            </View>
-            <View style={{flexGrow: 5}}>
-              <Text style={{textAlign: 'center', fontSize: 14}}>Magrib</Text>
-              <Text style={{textAlign: 'center', fontSize: 14}}>
-                {timing.magrib}
-              </Text>
-            </View>
-            <View style={{flexGrow: 5}}>
-              <Text style={{textAlign: 'center', fontSize: 14}}>Isha</Text>
-              <Text style={{textAlign: 'center', fontSize: 14}}>
-                {timing.isha}
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        <View
-          style={{
-            justifyContent: 'space-between',
-            flexDirection: 'row',
-            padding: 10,
-          }}>
-          <TouchableOpacity onPress={() => markAsRead(id)}>
-            <Text style={{fontSize: 15, color: 'green'}}>Mark As Read</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => deleteFunc(MasjidId, id)}>
-            <Text style={{fontSize: 15, color: 'red'}}>Delete Message</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Card.Actions>
-  </Card>
-);
+const deleteFunc = (masjidId, reqId, uid) => {
+  console.log(masjidId, reqId);
+  console.log(masjidId, uid, 'is equal ?', masjidId === uid);
+  Alert.alert('Confirmation', 'Do you want to delete the request?', [
+    {
+      text: 'Confirm',
+      onPress: () => {
+        firestore()
+          .collection('Masjid')
+          .doc(masjidId)
+          .update({
+            requestList: firestore.FieldValue.arrayRemove(reqId),
+          })
+          .then(
+            () => {
+              firestore()
+                .collection('requests')
+                .doc(reqId)
+                .delete()
+                .then(
+                  value1 => {
+                    console.log('deleted', value1);
+                  },
+                  reason => {
+                    console.warn(reason.message, 'from requests');
+                  },
+                );
+            },
+            reason => {
+              console.warn(reason.message, 'from docs');
+            },
+          );
+      },
+    },
+    {
+      text: 'Cancel',
+    },
+  ]);
+};
 
 const populates = [
   {child: 'requestList', root: 'requests', childAlias: 'requests'},
   {child: 'adminId', root: 'users', childAlias: 'admin'},
 ];
 
-const AdminNotification = ({navigation}) => {
+const AdminNotification = ({
+  navigation,
+  route: {
+    params: {masjid},
+  },
+}) => {
   // const [data, setData] = useState([]);
   // const {myMasjids} = useSelector(state => state.firestore.ordered);
   // const {auth} = useSelector(state => state.firebase);
   const {profile, auth} = useSelector(state => state.firebase);
+  console.log(masjid, '<========= AdminNotification');
   useFirestoreConnect([
     {
       collection: 'Masjid',
-      where: !profile.isAdmin && [
-        ['adminId', '==', isLoaded(auth) && !isEmpty(auth) ? auth.uid : ''],
-      ],
-      storeAs: 'myMasjids',
+      doc: masjid,
+      storeAs: 'myMasjidsView',
       populates,
     },
   ]);
 
   const snapshot = populate(
     useSelector(state => state.firestore),
-    'myMasjids',
+    'myMasjidsView',
     populates,
   );
+  console.log(snapshot);
+  // const tempData = [];
+  // if (isLoaded(snapshot)) {
+  //   // console.log(snapshot);
+  //   if (snapshot.requests) {
+  //     snapshot.requests.forEach(d => {
+  //       tempData.push({
+  //         ...d,
+  //         // createdAt: Date.parse(d.timeStamp),
+  //         masjidId: snapshot.id,
+  //         admin: snapshot.admin,
+  //       });
+  //     });
+  //   }
+  // }
+  // const data = _.sortBy(
+  //   // _.filter(tempData, function (o) {
+  //   //   return !o.isRead;
+  //   // }),
+  //   tempData,
+  //   'createdAt',
+  // );
 
-  const tempData = [];
-  if (isLoaded(snapshot)) {
-    console.log(snapshot);
-    _.map(snapshot, (doc, id) => {
-      if (doc.requests) {
-        doc.requests.map(d => {
-          tempData.push({
-            ...d,
-            createdAt: Date.parse(d.createdAt),
-            masjidId: id,
-            admin: doc.admin,
-          });
-        });
-      }
-    });
-  }
-  const data = _.sortBy(
-    _.filter(tempData, function (o) {
-      return !o.isRead;
-    }),
-    'createdAt',
-  );
+  // console.log(data, 'from notify');
 
   const renderItem = ({item}) => {
-    console.log(item);
+    const {timing, id, userName, userPhone, isRead} = item;
     if (!_.isUndefined(item.timing)) {
       return (
-        <Item
-          timing={item.timing}
-          id={item.id} //Own ID
-          MasjidId={item.masjidId}
-          admin={item.admin}
-          userName={item.timing.userName}
-          userContact={item.timing.userContact}
-        />
+        <Card
+          style={{
+            borderRadius: 5,
+            margin: 10,
+            shadowOpacity: 10,
+            elevation: 5,
+          }}
+          key={item.key}>
+          <Card.Actions>
+            <View style={{width: '100%'}}>
+              <View style={{flexDirection: 'row', margin: 5}}>
+                <View style={{flexGrow: 1}}>
+                  <Text
+                    style={{
+                      fontSize: 17,
+                      fontWeight: `${isRead ? 200 : 700}`,
+                    }}>
+                    User Name: {userName}
+                  </Text>
+                </View>
+              </View>
+              <View style={{flexDirection: 'row', margin: 5}}>
+                <View style={{flexGrow: 1}}>
+                  <Text
+                    style={{
+                      fontSize: 17,
+                      fontWeight: `${isRead ? 200 : 700}`,
+                    }}>
+                    User Contact: {userPhone}
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{backgroundColor: '#eeee', padding: 5, borderRadius: 8}}>
+                <View style={{flexDirection: 'row'}}>
+                  <View style={{flexGrow: 1}} />
+                  <View>
+                    <Edit
+                      timing={timing}
+                      uid={masjid}
+                      isRequest={false}
+                      userInfo={false}
+                      value="View"
+                    />
+                  </View>
+                </View>
+                <View style={{flexDirection: 'row', marginTop: 10}}>
+                  <View style={{flexGrow: 5}}>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontSize: 14,
+                        fontWeight: `${isRead ? 200 : 700}`,
+                      }}>
+                      Fajar
+                    </Text>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontSize: 14,
+                        fontWeight: `${isRead ? 200 : 700}`,
+                      }}>
+                      {timing.fajar}
+                    </Text>
+                  </View>
+                  <View style={{flexGrow: 5}}>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontSize: 14,
+                        fontWeight: `${isRead ? 200 : 700}`,
+                      }}>
+                      Zohar
+                    </Text>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontSize: 14,
+                        fontWeight: `${isRead ? 200 : 700}`,
+                      }}>
+                      {timing.zohar}
+                    </Text>
+                  </View>
+                  <View style={{flexGrow: 5}}>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontSize: 14,
+                        fontWeight: `${isRead ? 200 : 700}`,
+                      }}>
+                      Asar
+                    </Text>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontSize: 14,
+                        fontWeight: `${isRead ? 200 : 700}`,
+                      }}>
+                      {timing.asar}
+                    </Text>
+                  </View>
+                  <View style={{flexGrow: 5}}>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontSize: 14,
+                        fontWeight: `${isRead ? 200 : 700}`,
+                      }}>
+                      Magrib
+                    </Text>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontSize: 14,
+                        fontWeight: `${isRead ? 200 : 700}`,
+                      }}>
+                      {timing.magrib}
+                    </Text>
+                  </View>
+                  <View style={{flexGrow: 5}}>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontSize: 14,
+                        fontWeight: `${isRead ? 200 : 700}`,
+                      }}>
+                      Isha
+                    </Text>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontSize: 14,
+                        fontWeight: `${isRead ? 200 : 700}`,
+                      }}>
+                      {timing.isha}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View
+                style={{
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  padding: 10,
+                }}>
+                <TouchableOpacity onPress={() => markAsRead(id)}>
+                  <Text style={{fontSize: 15, color: 'green'}}>
+                    Mark As Read
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => deleteFunc(masjid, id, auth.uid)}>
+                  <Text style={{fontSize: 15, color: 'red'}}>
+                    Delete Message
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Card.Actions>
+        </Card>
       );
     }
   };
+
+  if (!isLoaded(snapshot)) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView>
@@ -231,14 +340,22 @@ const AdminNotification = ({navigation}) => {
         backgroundColor="#1F441E"
       />
       <FlatList
-        data={data}
-        inverted={true}
+        data={snapshot.requests}
         renderItem={renderItem}
+        ListEmptyComponent={() => (
+          <View
+            style={{
+              alignItems: 'center',
+              marginVertical: '50%',
+            }}>
+            <AntDesign name="folder1" size={50} />
+            <Text>No Favourites</Text>
+          </View>
+        )}
         keyExtractor={item => item.id}
         style={{
           height: Dimensions.get('window').height - 80,
         }}
-        initialScrollIndex={data.length - 1}
         initialNumToRender={5}
       />
     </SafeAreaView>

@@ -16,7 +16,7 @@ const CustomDrawerContent = ({navigation}) => {
   async function handleSignOut() {
     console.log('logging Out...', auth);
     await firebaseApp.logout();
-    navigation.navigate('Home');
+    navigation.navigate('home');
   }
 
   return (
@@ -110,7 +110,7 @@ const CustomDrawerContent = ({navigation}) => {
           flexDirection: 'row',
           alignItems: 'center',
           marginTop: 25,
-          marginLeft: 4,
+          marginLeft: 2,
         }}>
         <MaterialCommunityIcons name="share" size={26} color="#1F441E" />
         <View style={{marginLeft: 30}}>
@@ -120,7 +120,7 @@ const CustomDrawerContent = ({navigation}) => {
           />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => navigation.navigate('Contact Us')}
         style={{
           paddingHorizontal: 20,
@@ -147,7 +147,7 @@ const CustomDrawerContent = ({navigation}) => {
         <View style={{marginLeft: 30}}>
           <CoText textStyles={[{color: '#1F441E'}]} text="Terms & Conditions" />
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       {(() => {
         if (isLoaded(auth) && !isEmpty(auth)) {
           return (

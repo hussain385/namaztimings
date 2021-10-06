@@ -1,13 +1,12 @@
-import '@react-native-firebase/auth';
 import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/auth';
 import messaging from '@react-native-firebase/messaging';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import * as React from 'react';
-import {Dimensions, Text, TouchableOpacity, View} from 'react-native';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
+import {Text, TouchableOpacity, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Provider} from 'react-redux';
@@ -28,12 +27,13 @@ import {store} from './redux/store';
 // import {AuthContext, AuthContextProvider} from './store/fireAuth';
 import {AddMasjid} from './views/AddMasjid';
 import AdminNotification from './views/AdminNotification';
+import AdminView from './views/AdminView';
 import CustomDrawerContent from './views/CustomDrawerContent';
+import ForgotPassword from './views/forgotPassword';
 import Map from './views/Map';
 import Maps1 from './views/Maps1';
 import MasjidInfo from './views/MasjidInfo';
 import ShowMore from './views/ShowMore';
-import ForgotPassword from './views/forgotPassword';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -152,9 +152,9 @@ const HomeStackScreen = ({navigation}) => (
             <TouchableOpacity
               onPress={() => navigation.goBack()}
               style={{marginHorizontal: 15, marginTop: 7}}>
-              <Icon name="arrow-left" color="#ffff" size={25} />
+              <Icon name="arrow-left" color="#1F441E" size={25} />
             </TouchableOpacity>
-            <GooglePlacesAutocomplete
+            {/* <GooglePlacesAutocomplete
               styles={{
                 textInput: {
                   width: Dimensions.get('window').width - 60,
@@ -174,7 +174,7 @@ const HomeStackScreen = ({navigation}) => (
                 language: 'en',
                 types: '(cities)',
               }}
-            />
+            /> */}
           </View>
         ),
       }}
@@ -197,9 +197,9 @@ const HomeStackScreen = ({navigation}) => (
             <TouchableOpacity
               onPress={() => navigation.goBack()}
               style={{marginHorizontal: 15, marginTop: 7}}>
-              <Icon name="arrow-left" color="#ffff" size={25} />
+              <Icon name="arrow-left" color="#1F441E" size={25} />
             </TouchableOpacity>
-            <GooglePlacesAutocomplete
+            {/* <GooglePlacesAutocomplete
               styles={{
                 textInput: {
                   width: Dimensions.get('window').width - 60,
@@ -219,7 +219,7 @@ const HomeStackScreen = ({navigation}) => (
                 language: 'en',
                 types: '(cities)',
               }}
-            />
+            /> */}
           </View>
         ),
       }}
@@ -360,6 +360,7 @@ function MyDrawer() {
       <Drawer.Screen name="Terms & Conditions" component={Terms} />
       <Drawer.Screen name="login" component={Login} />
       <Drawer.Screen name="Admin view" component={Admin} />
+      <Drawer.Screen name="Admin" component={AdminView} />
       {/* <Drawer.Screen name="More Info" component={MasjidInfo} /> */}
     </Drawer.Navigator>
   );

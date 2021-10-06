@@ -32,7 +32,7 @@ const Item = props => (
             pictureURL: props.url,
             address: props.address,
             timing: props.timings,
-            favId: props.favId,
+            key: props.favId,
             distance: props.distance,
             latitude: props.latitude,
             longitude: props.longitude,

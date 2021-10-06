@@ -28,6 +28,7 @@ const Notification = ({navigation, route: {params}}) => {
   const {masjidId, masjidName, adminId} = params;
   const {auth, profile} = useSelector(state => state.firebase);
   const firestoreData = useFirestore();
+  const [loading, setLoading] = useState(false);
   const populates = [
     {
       child: 'announcementList',
@@ -47,14 +48,14 @@ const Notification = ({navigation, route: {params}}) => {
   const firestore = useSelector(state => state.firestore);
   const masjidData = populate(firestore, 'tempAnnouncement', populates);
 
-  console.log(masjidData);
-
   const data = _.map(masjidData?.announcement, rawData => {
     return {
       ...rawData,
       // createdAt: Date.parse(rawData.createdAt),
     };
   });
+
+  console.log(masjidId, '==anno');
 
   return (
     <View>
@@ -92,130 +93,141 @@ const Notification = ({navigation, route: {params}}) => {
           </Text>
         </View>
       )}
-      {auth.uid === adminId ||
-        (profile.isAdmin && (
-          <View>
-            <FAB
-              style={styles.fab}
-              small
-              icon="plus"
-              onPress={() => setModalVisible(true)}
-            />
-            <Modal
-              animationType="slide"
-              transparent={true}
-              visible={modalVisible}>
-              <Formik
-                initialValues={{
-                  description: '',
-                }}
-                validationSchema={Yup.object().shape({
-                  description: Yup.string().required('description is required'),
-                })}
-                onSubmit={values => {
-                  firestoreData
-                    .collection('announcement')
-                    .add({
-                      createdAt: new firestoreData.Timestamp.now(),
-                      description: values.description,
-                    })
-                    .then(r => {
-                      firestoreData
-                        .collection('Masjid')
-                        .doc(masjidId)
-                        .update({
-                          announcementList: firestoreData.FieldValue.arrayUnion(
-                            r.id,
-                          ),
-                        })
-                        .then(r => setModalVisible(false));
-                    });
-                }}>
-                {({
-                  values,
-                  handleChange,
-                  errors,
-                  handleBlur,
-                  handleSubmit,
-                  touched,
-                }) => (
-                  <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                      <Text style={styles.modalText}>New Notification</Text>
+      {auth.uid === adminId && (
+        <View>
+          <FAB
+            style={styles.fab}
+            small
+            icon="plus"
+            onPress={() => setModalVisible(true)}
+          />
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}>
+            <Formik
+              initialValues={{
+                description: '',
+              }}
+              validationSchema={Yup.object().shape({
+                description: Yup.string().required('description is required'),
+              })}
+              onSubmit={values => {
+                setLoading(true);
+                firestoreData
+                  .collection('announcement')
+                  .add({
+                    createdAt: new firestoreData.Timestamp.now(),
+                    description: values.description,
+                  })
+                  .then(r => {
+                    console.log('somethings');
+                    firestoreData
+                      .collection('Masjid')
+                      .doc(masjidId)
+                      .update({
+                        announcementList: firestoreData.FieldValue.arrayUnion(
+                          r.id,
+                        ),
+                      })
+                      .then(() => {
+                        setModalVisible(false);
+                        setLoading(false);
+                      });
+                  });
+              }}>
+              {({
+                values,
+                handleChange,
+                errors,
+                handleBlur,
+                handleSubmit,
+                touched,
+              }) => (
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>New Notification</Text>
+                    <View
+                      style={{
+                        width: Dimensions.get('screen').width * 0.75,
+                        marginBottom: 10,
+                      }}>
                       <View
                         style={{
-                          width: Dimensions.get('screen').width * 0.75,
-                          marginBottom: 10,
+                          borderRadius: 10,
+                          marginHorizontal: 10,
+                          marginTop: 5,
+                          shadowColor: '#000',
+                          shadowOffset: {
+                            width: 0,
+                            height: 5,
+                          },
+                          shadowOpacity: 0.34,
+                          shadowRadius: 6.27,
+                          elevation: 5,
                         }}>
-                        {/*<Text style={{marginLeft: 10, marginTop: 10}}>*/}
-                        {/*    New*/}
-                        {/*</Text>*/}
-                        <View
+                        <TextInput
+                          multiline={true}
+                          onChangeText={handleChange('description')}
+                          onBlur={handleBlur('description')}
+                          value={values.description}
+                          scrollEnabled={true}
                           style={{
-                            borderRadius: 10,
-                            marginHorizontal: 10,
-                            marginTop: 5,
-                            shadowColor: '#000',
-                            shadowOffset: {
-                              width: 0,
-                              height: 5,
-                            },
-                            shadowOpacity: 0.34,
-                            shadowRadius: 6.27,
-                            elevation: 5,
-                          }}>
-                          <TextInput
-                            multiline={true}
-                            onChangeText={handleChange('description')}
-                            onBlur={handleBlur('description')}
-                            value={values.description}
-                            scrollEnabled={true}
-                            style={{
-                              paddingHorizontal: 10,
-                              backgroundColor: '#EEEEEE',
-                              color: 'black',
-                              maxHeight: 200,
-                              overflow: 'scroll',
-                            }}
-                            keyboardType="numbers-and-punctuation"
-                            placeholder="Enter Your Notification..."
-                            placeholderTextColor="grey"
-                          />
-                          {errors.description && touched.email && (
-                            <Text style={styles.error}>
-                              {errors.description}
-                            </Text>
-                          )}
-                        </View>
-                      </View>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          width: '100%',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          marginTop: 10,
-                        }}>
-                        <Pressable
-                          style={[styles.button, styles.buttonOpen]}
-                          onPress={() => {
-                            setModalVisible(!modalVisible);
-                          }}>
-                          <Text style={styles.textStyle}>Cancel</Text>
-                        </Pressable>
-                        <Pressable
-                          style={[styles.button, styles.buttonClose]}
-                          onPress={handleSubmit}>
-                          <Text style={[styles.textStyle1]}>Send</Text>
-                        </Pressable>
+                            paddingHorizontal: 10,
+                            backgroundColor: '#EEEEEE',
+                            color: 'black',
+                            maxHeight: 200,
+                            overflow: 'scroll',
+                          }}
+                          keyboardType="numbers-and-punctuation"
+                          placeholder="Enter Your Notification..."
+                          placeholderTextColor="grey"
+                        />
+                        {errors.description && touched.email && (
+                          <Text style={styles.error}>{errors.description}</Text>
+                        )}
                       </View>
                     </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        width: '100%',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginTop: 10,
+                      }}>
+                      <Pressable
+                        style={[styles.button, styles.buttonOpen]}
+                        onPress={() => {
+                          setModalVisible(!modalVisible);
+                          setLoading(false);
+                        }}>
+                        <Text style={styles.textStyle}>Cancel</Text>
+                      </Pressable>
+                      <Pressable
+                        disabled={loading}
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={handleSubmit}>
+                        {!loading ? (
+                          <Text
+                            style={{
+                              textAlign: 'center',
+                              color: '#ffff',
+                            }}>
+                            Submit
+                          </Text>
+                        ) : (
+                          <ActivityIndicator color="#ffff" size="small" />
+                        )}
+                      </Pressable>
+                    </View>
                   </View>
-                )}
-              </Formik>
-            </Modal>
-          </View>
-        ))}
+                </View>
+              )}
+            </Formik>
+          </Modal>
+        </View>
+      )}
     </View>
   );
 };

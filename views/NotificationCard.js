@@ -1,3 +1,4 @@
+import moment from 'moment';
 import React, {useState} from 'react';
 import {
   Modal,
@@ -7,10 +8,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Card} from 'react-native-paper';
-import {useFirestore} from 'react-redux-firebase';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
+import {useFirestore} from 'react-redux-firebase';
 
 const NotificationCard = ({data, masjidName, masjidId, adminId}) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -57,7 +58,10 @@ const NotificationCard = ({data, masjidName, masjidId, adminId}) => {
                 <Text style={{fontSize: 20}}>{masjidName}</Text>
               </View>
               <View>
-                <Text style={{marginTop: 6}}>Dated: 02/09/2021</Text>
+                <Text style={{marginTop: 6}}>
+                  Dated:{' '}
+                  {moment(data.createdAt.seconds * 1000).format('DD/MM/YYYY')}
+                </Text>
               </View>
             </View>
             <View
@@ -72,78 +76,73 @@ const NotificationCard = ({data, masjidName, masjidId, adminId}) => {
                 <Text
                   numberOfLines={1}
                   ellipsizeMode="tail"
-                  style={{fontSize: 17, maxWidth: '91.5%'}}>
+                  style={{fontSize: 17, minWidth: '90%'}}>
                   {data.description}
                 </Text>
               </View>
-              {auth.uid === adminId ||
-                (profile.isAdmin && (
-                  <TouchableOpacity
-                    onPress={Delete}
-                    style={{
-                      backgroundColor: 'darkred',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      padding: 5,
-                      height: 30,
-                      borderRadius: 5,
-                    }}>
-                    <MaterialCommunityIcons
-                      color="white"
-                      name="trash-can-outline"
-                      size={20}
-                    />
-                  </TouchableOpacity>
-                ))}
+              {auth.uid === adminId && (
+                <TouchableOpacity
+                  onPress={Delete}
+                  style={{
+                    backgroundColor: 'darkred',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    padding: 5,
+                    height: 30,
+                    borderRadius: 5,
+                  }}>
+                  <MaterialCommunityIcons
+                    color="white"
+                    name="trash-can-outline"
+                    size={20}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </Card.Actions>
       </Card>
-      {auth.uid === adminId ||
-        (profile.isAdmin && (
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>Namaz Timings</Text>
-                <View
-                  style={{
-                    marginBottom: 10,
-                    backgroundColor: '#eeee',
-                    padding: 10,
-                    borderRadius: 5,
+      {auth.uid === adminId && (
+        <Modal animationType="slide" transparent={true} visible={modalVisible}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Masjid Finder Karachi</Text>
+              <View
+                style={{
+                  marginBottom: 10,
+                  backgroundColor: '#eeee',
+                  padding: 10,
+                  borderRadius: 5,
+                }}>
+                <Text>{data.description}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginLeft: -30,
+                }}>
+                <Pressable
+                  style={[styles.button, styles.buttonOpen]}
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
                   }}>
-                  <Text>{data.description}</Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginLeft: -30,
+                  <Text style={styles.textStyle}>Cancel</Text>
+                </Pressable>
+                <Pressable
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => {
+                    console.log('logged');
                   }}>
-                  <Pressable
-                    style={[styles.button, styles.buttonOpen]}
-                    onPress={() => {
-                      setModalVisible(!modalVisible);
-                    }}>
-                    <Text style={styles.textStyle}>Cancel</Text>
-                  </Pressable>
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => {
-                      console.log('logged');
-                    }}>
-                    <Text style={[styles.textStyle1]}>Delete</Text>
-                  </Pressable>
-                </View>
+                  <Text style={[styles.textStyle1]}>Delete</Text>
+                </Pressable>
               </View>
             </View>
-          </Modal>
-        ))}
+          </View>
+        </Modal>
+      )}
     </>
   );
 };

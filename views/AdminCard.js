@@ -6,11 +6,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Favbtn from './Favbtn';
 
-export default class MasjidCard extends PureComponent {
+export default class AdminCard extends PureComponent {
   render() {
     return (
+      // <View>
+      //   <Text>{JSON.stringify(this.props.masjid)}</Text>
+      // </View>
       <View
         key={this.props.masjid.key}
         style={{
@@ -28,8 +30,9 @@ export default class MasjidCard extends PureComponent {
         }}>
         <TouchableOpacity
           onPress={() =>
-            this.props.nav.navigate('More Info', {
-              masjid: this.props.masjid,
+            this.props.nav.navigate('Admin', {
+              data: this.props.masjid,
+              masjidId: this.props.masjid.key,
             })
           }>
           <ImageBackground
@@ -40,14 +43,8 @@ export default class MasjidCard extends PureComponent {
               justifyContent: 'center',
               width: '100%',
               height: 200,
-            }}>
-            <View style={{flexDirection: 'row'}}>
-              <View style={{flexGrow: 1}} />
-              <View style={{top: -50}}>
-                <Favbtn favId={this.props.masjid.key} isBig={true} />
-              </View>
-            </View>
-          </ImageBackground>
+            }}
+          />
         </TouchableOpacity>
 
         <View style={{padding: 5}}>
@@ -60,13 +57,6 @@ export default class MasjidCard extends PureComponent {
             <View style={{maxWidth: 250}}>
               <Text style={{fontSize: 17}}>{this.props.masjid.name}</Text>
             </View>
-            <View>
-              <Text
-                onPress={() => Linking.openURL(`${this.props.masjid.gLink}`)}
-                style={{color: '#900000', textDecorationLine: 'underline'}}>
-                {this.props.masjid.distance}KM AWAY
-              </Text>
-            </View>
           </View>
           <View
             style={{
@@ -76,8 +66,9 @@ export default class MasjidCard extends PureComponent {
             }}>
             <TouchableOpacity
               onPress={() =>
-                this.props.nav.navigate('More Info', {
-                  masjid: this.props.masjid,
+                this.props.nav.navigate('Admin', {
+                  data: this.props.masjid,
+                  masjidId: this.props.masjid.key,
                 })
               }
               style={{
@@ -93,7 +84,7 @@ export default class MasjidCard extends PureComponent {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                Linking.openURL(`${this.props.masjid.gLink}`);
+                Linking.openURL(`${this.props.gLink}`);
               }}
               style={{
                 alignItems: 'center',
