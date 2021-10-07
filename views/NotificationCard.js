@@ -60,7 +60,7 @@ const NotificationCard = ({data, masjidName, masjidId, adminId}) => {
               <View>
                 <Text style={{marginTop: 6}}>
                   Dated:{' '}
-                  {moment(data.createdAt.seconds * 1000).format('DD/MM/YYYY')}
+                  {moment(data.createdAt?.seconds * 1000).format('DD/MM/YYYY')}
                 </Text>
               </View>
             </View>
@@ -133,9 +133,7 @@ const NotificationCard = ({data, masjidName, masjidId, adminId}) => {
                 </Pressable>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => {
-                    console.log('logged');
-                  }}>
+                  onPress={Delete}>
                   <Text style={[styles.textStyle1]}>Delete</Text>
                 </Pressable>
               </View>
