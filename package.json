@@ -13,20 +13,19 @@
     "format": "prettier --check ."
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.15.5",
+    "@react-native-async-storage/async-storage": "^1.15.9",
     "@react-native-community/datetimepicker": "^3.5.2",
-    "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/masked-view": "^0.1.11",
-    "@react-native-firebase/app": "^12.8.0",
-    "@react-native-firebase/auth": "^12.8.0",
-    "@react-native-firebase/firestore": "^12.8.0",
-    "@react-native-firebase/messaging": "^12.8.0",
-    "@react-native-firebase/storage": "^12.8.0",
+    "@react-native-firebase/app": "^12.9.3",
+    "@react-native-firebase/auth": "^12.9.3",
+    "@react-native-firebase/firestore": "^12.9.3",
+    "@react-native-firebase/messaging": "^12.9.3",
+    "@react-native-firebase/storage": "^12.9.3",
     "@react-navigation/bottom-tabs": "^5.11.11",
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",
-    "@reduxjs/toolkit": "^1.6.1",
+    "@reduxjs/toolkit": "^1.6.2",
     "@voximplant/react-native-foreground-service": "^2.0.0",
     "babel-eslint": "^10.1.0",
     "country-list": "^2.2.0",
@@ -41,18 +40,18 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "ngeohash": "^0.6.3",
-    "prettier": "2.4.0",
+    "prettier": "2.4.1",
     "react": "17.0.2",
     "react-firebase-hooks": "^3.0.4",
     "react-native": "0.64.2",
     "react-native-elements": "^3.4.2",
     "react-native-flags": "^1.0.0",
     "react-native-geocoding": "^0.5.0",
-    "react-native-geolocation-service": "5.3.0-beta.2",
+    "react-native-geolocation-service": "5.3.0-beta.3",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-get-location": "^2.1.1",
-    "react-native-google-places-autocomplete": "^2.2.0",
-    "react-native-image-picker": "^4.0.6",
+    "react-native-google-places-autocomplete": "^2.4.1",
+    "react-native-image-picker": "^4.1.2",
     "react-native-maps": "0.28.0",
     "react-native-modal-datetime-picker": "^10.2.0",
     "react-native-paper": "^4.9.2",
@@ -62,12 +61,12 @@
     "react-native-searchable-country-dropdown": "^1.0.1",
     "react-native-vector-icons": "^8.1.0",
     "react-native-webview": "^11.6.5",
-    "react-redux": "^7.2.5",
+    "react-redux": "^7.2.6",
     "react-redux-firebase": "^3.10.0",
     "redux-firestore": "^0.15.0",
     "redux-persist": "^6.0.0",
-    "rxjs": "^7.3.0",
-    "yup": "^0.32.9"
+    "rxjs": "^7.4.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.14.8",
@@ -82,5 +81,5 @@
   "jest": {
     "preset": "react-native"
   },
-  "packageManager": "yarn@3.0.0"
+  "packageManager": "yarn@3.1.0"
 }

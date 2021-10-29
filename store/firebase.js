@@ -10,9 +10,10 @@ import {
   Platform,
   ToastAndroid,
 } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
-import {useSelector} from 'react-redux';
+import Geolocation, {SuccessCallback} from 'react-native-geolocation-service';
+import {useDispatch, useSelector} from 'react-redux';
 import appConfig from '../app.json';
+import {selectCords, setLocation} from '../redux/locationSlicer';
 
 const GeoFirestore = geofirestore.initializeApp(firestore());
 const geoCollection = GeoFirestore.collection('Masjid');
@@ -24,7 +25,7 @@ export const getCurrentLocation = async () => {
     return null;
   }
 
-  return new Promise((resolve, reject) =>
+  return new Promise((resolve: SuccessCallback, reject) =>
     Geolocation.getCurrentPosition(resolve, reject, {
       accuracy: {
         android: 'high',
@@ -131,12 +132,8 @@ export function GetRadMasjidData1(radius = 50) {
   const [error, setError] = useState({
     message: '',
   });
-  const [location, setLocation] = useState({
-    coords: {
-      latitude: 24.8607,
-      longitude: 67.0011,
-    },
-  });
+  const dispatch = useDispatch();
+  const location = useSelector(selectCords);
 
   const getLocation = async () => {
     if (_.isNull(masjid)) {
@@ -144,23 +141,32 @@ export function GetRadMasjidData1(radius = 50) {
     }
 
     getCurrentLocation()
-      .then(setLocation, error1 => console.warn(error1))
+      .then(
+        value => {
+          if (_.isNull(value)) {
+            return;
+          }
+          dispatch(setLocation(value.coords));
+          console.log(value);
+        },
+        error1 => console.warn(error1),
+      )
       .then(() => setLoading(false));
   };
 
   async function GetDataRadMasjid() {
-    let latitude, longitude;
-    latitude = location.coords.latitude;
-    longitude = location.coords.longitude;
+    // let latitude, longitude;
+    // latitude = location.coords.latitude;
+    // longitude = location.coords.longitude;
     geoCollection
       .near({
-        center: new firestore.GeoPoint(latitude, longitude),
+        center: new firestore.GeoPoint(location.latitude, location.longitude),
         radius: radius,
       })
       .get()
       .then(async snapshot => {
         // console.log(snapshot);
-        const masjids1 = await sortMasjidData(snapshot, location.coords);
+        const masjids1 = await sortMasjidData(snapshot, location);
         setMasjid(masjids1, '<====GetDataRadMasjid');
         setLoading(false);
       })
@@ -170,7 +176,7 @@ export function GetRadMasjidData1(radius = 50) {
       });
   }
 
-  return {masjid, loading, location, error, getLocation, GetDataRadMasjid};
+  return {masjid, loading, error, getLocation, GetDataRadMasjid};
 }
 
 function GetUsers() {
@@ -196,6 +202,7 @@ export function GetFavMasjidData() {
   const [loading, setLoading] = useState(true);
   const [masjid, setMasjid] = useState([]);
   const [error, setError] = useState(null);
+  const location = useSelector(selectCords);
   const favoriteId = useSelector(state => state.favorites.value);
   const subs = firestore().collection('Masjid');
 
@@ -219,14 +226,14 @@ export function GetFavMasjidData() {
       }
     });
     try {
-      const pos = await getCurrentLocation();
+      // const pos = await getCurrentLocation();
       const doc = await Promise.all(collections);
       const masjids = [];
       const users = await GetUsers();
       doc.forEach(docSnapshot => {
         const data = docSnapshot.data();
         const loc1 = data.g.geopoint;
-        const d = haversine(loc1, pos.coords);
+        const d = haversine(loc1, location);
         const tempData = modifyData(data, docSnapshot.id, d);
         const adminId = tempData.adminId;
         if (_.isEmpty(adminId)) {

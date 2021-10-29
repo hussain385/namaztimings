@@ -13,31 +13,30 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-// import Entypo from 'react-native-vector-icons/Entypo';
 import {Header} from 'react-native-elements';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-// import {NavigationContainer} from '@react-navigation/native';
-// import {Divider} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {GetRadMasjidData1} from '../store/firebase';
 import AdminRequest from '../views/AdminRequest';
-// import Geocoder from 'react-native-geocoding';
 import Favbtn from '../views/Favbtn';
+import {useSelector} from 'react-redux';
+import {selectCords} from '../redux/locationSlicer';
 
 function HomeScreen({navigation}) {
   const {
     masjid,
     loading,
-    location,
     error,
     getLocation,
     GetDataRadMasjid: GetData,
   } = new GetRadMasjidData1();
   const [refreshing, setRefreshing] = useState(false);
   const masjidData = masjid;
+  const location = useSelector(selectCords);
+
   useEffect(() => {
     onRefresh();
-  }, [location.coords.latitude, location.coords.longitude]);
+  }, [location.latitude, location.longitude]);
 
   // #E1E1E1
   async function onRefresh() {

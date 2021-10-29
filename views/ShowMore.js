@@ -1,9 +1,7 @@
-/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  // StyleSheet,
   Linking,
   Text,
   TouchableOpacity,
@@ -12,9 +10,10 @@ import {
 import {Header} from 'react-native-elements';
 import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
 import {getCurrentLocation, sortMasjidData1} from '../store/firebase';
+import {selectCords, setLocation} from '../redux/locationSlicer';
 
 const Item = props => (
   <Card
@@ -118,24 +117,24 @@ const ShowMore = ({navigation}) => {
       populates,
     },
   ]);
-  const [location, setLocation] = React.useState({
-    coords: {latitude: null, longitude: null},
-  });
+  const location = useSelector(selectCords);
   const firestore = useSelector(state => state.firestore);
   const masjid = populate(firestore, 'Masjid', populates);
-  const masjidData = sortMasjidData1(masjid, location.coords);
+  const dispatch = useDispatch();
+  const masjidData = sortMasjidData1(masjid, location);
   console.log(firestore, '<===== firebase');
 
   React.useEffect(() => {
     getCurrentLocation()
       .then(loc => {
-        setLocation(loc);
+        // setLocation(loc);
+        dispatch(setLocation(loc.coords));
         console.log(loc.coords.longitude, '<========== location ');
       })
       .catch(e => {
         console.log(e);
       });
-  }, []);
+  }, [dispatch]);
 
   const renderItem = ({item}) => (
     <Item

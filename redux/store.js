@@ -10,23 +10,25 @@ import {
   REHYDRATE,
 } from 'redux-persist';
 import favoriteReducer from './favSlicer';
+import locationSlicer from './locationSlicer';
 import {
-  getFirebase,
   actionTypes as rrfActionTypes,
   firebaseReducer,
+  getFirebase,
 } from 'react-redux-firebase';
-import {firestoreReducer, constants as rfConstants} from 'redux-firestore';
+import {constants as rfConstants, firestoreReducer} from 'redux-firestore';
 
 const reducer = combineReducers({
   favorites: favoriteReducer,
   firebase: firebaseReducer,
   firestore: firestoreReducer,
+  location: locationSlicer,
 });
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['favorites'],
+  whitelist: ['favorites', 'location'],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);

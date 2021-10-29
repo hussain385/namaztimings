@@ -14,10 +14,11 @@ import {
 } from 'react-native';
 import {Header} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {connect, useSelector} from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import {firestoreConnect, isLoaded, populate} from 'react-redux-firebase';
 import {getCurrentLocation, sortMasjidData1} from '../store/firebase';
 import MasjidCard from '../views/MasjidCard';
+import {selectCords, setLocation} from '../redux/locationSlicer';
 
 const populates = [
   {child: 'adminId', root: 'users', childAlias: 'user'}, // replace owner with user object
@@ -26,13 +27,10 @@ const populates = [
 const Search = props => {
   const {navigation, masjid} = props;
   const [textSearch, setTextSearch] = useState('');
-  const [location, setLocation] = useState({
-    coords: {latitude: null, longitude: null},
-  });
+  const location = useSelector(selectCords);
   const [result, setResult] = useState(null);
-  const firestore = useSelector(state => state.firestore);
-  // const masjid = populate(firestore, 'Masjid', populates);
-  const masjidData = sortMasjidData1(masjid, location.coords);
+  const dispatch = useDispatch();
+  const masjidData = sortMasjidData1(masjid, location);
   console.log(masjidData, '<==== masjidData from search');
   function onChangeSearch(text) {
     const fuse = new Fuse(masjidData, {keys: ['address'], distance: 400});
@@ -45,13 +43,14 @@ const Search = props => {
   useEffect(() => {
     getCurrentLocation()
       .then(loc => {
-        setLocation(loc);
+        // setLocation(loc);
+        dispatch(setLocation(loc.coords));
         // console.log(loc.coords.longitude, '<========== location ');
       })
       .catch(e => {
         console.error(e);
       });
-  }, []);
+  }, [dispatch]);
 
   const renderItem = ({item}) => (
     <MasjidCard
@@ -142,8 +141,8 @@ const Search = props => {
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('Map', {
-                latitude: location.coords.latitude || 0.0,
-                longitude: location.coords.longitude || 0.0,
+                latitude: location.latitude || 0.0,
+                longitude: location.longitude || 0.0,
               })
             }>
             <Icon
