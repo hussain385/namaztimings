@@ -281,7 +281,9 @@ const hasPermissionIOS = async () => {
         {text: 'Go to Settings', onPress: openSetting},
         {
           text: "Don't Use Location",
-          onPress: () => {},
+          onPress: () => {
+            return null;
+          },
         },
       ],
     );
