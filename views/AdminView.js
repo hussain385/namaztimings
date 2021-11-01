@@ -63,7 +63,7 @@ const AdminView = ({navigation, route}) => {
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('adminNotification', {
-                masjid: data.id,
+                masjid: masjidId,
               })
             }
             style={{
