@@ -67,7 +67,7 @@ const Admin = ({navigation}) => {
   return (
     <SafeAreaView>
       {adminMasjid.length > 1 && (
-        <HeaderComp navigation={navigation} heading="Admin" />
+        <HeaderComp navigation={navigation} to={'home'} heading="Admin" />
       )}
       {!isLoaded(snapshot) && (
         <ActivityIndicator color="#1F441E" size="large" />
@@ -80,6 +80,7 @@ const Admin = ({navigation}) => {
               <AdminView
                 route={{params: {data, masjidId: id}}}
                 navigation={navigation}
+                isSingle={true}
               />
             );
           })}

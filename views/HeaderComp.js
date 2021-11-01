@@ -11,7 +11,12 @@ const HeaderComp = props => {
         elevation: 10,
       }}
       leftComponent={
-        <TouchableOpacity onPress={() => props.navigation.goBack()}>
+        <TouchableOpacity
+          onPress={() =>
+            props.to
+              ? props.navigation.navigate(props.to)
+              : props.navigation.goBack()
+          }>
           <Icon1
             name="arrow-left"
             color="#ffff"

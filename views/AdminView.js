@@ -19,7 +19,7 @@ import {populate} from 'react-redux-firebase';
 import {useSelector} from 'react-redux';
 
 const AdminView = ({navigation, route}) => {
-  const {masjidId} = route.params;
+  const {masjidId, isSingle = false} = route.params;
   const populates = [
     {child: 'requestList', root: 'requests', childAlias: 'requests'},
     {child: 'adminId', root: 'users', childAlias: 'admin'},
@@ -36,7 +36,10 @@ const AdminView = ({navigation, route}) => {
           elevation: 50,
         }}
         leftComponent={
-          <TouchableOpacity onPress={() => navigation.navigate('home')}>
+          <TouchableOpacity
+            onPress={() =>
+              isSingle ? navigation.navigate('home') : navigation.goBack()
+            }>
             <Icon
               name="arrow-left"
               color="#ffff"
