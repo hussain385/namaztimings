@@ -171,7 +171,7 @@ const Edit = ({
               }}
               onSubmit={async (values, {setSubmitting}) => {
                 setSubmitting(true);
-                console.log(values);
+                console.log(values, uid, 'in onSubmit');
 
                 if (_.isEqual(values.timing, timing) && isRequest) {
                   console.log(isRequest);
@@ -184,8 +184,7 @@ const Edit = ({
                     setModalVisible(!modalVisible);
                     setSubmitting(false);
                     return returnChange(values.timing);
-                  }
-                  if (isRequest) {
+                  } else if (isRequest) {
                     await firestore()
                       .collection('requests')
                       .add({

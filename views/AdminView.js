@@ -15,10 +15,18 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {headerStyles, textStyles} from '../theme/styles/Base';
 import Edit from './Edit';
 import CoText from './Text/Text';
+import {populate} from 'react-redux-firebase';
+import {useSelector} from 'react-redux';
 
 const AdminView = ({navigation, route}) => {
-  const {data, masjidId} = route.params;
-  // const [notify, setNotify] = React.useState(0);
+  const {masjidId} = route.params;
+  const populates = [
+    {child: 'requestList', root: 'requests', childAlias: 'requests'},
+    {child: 'adminId', root: 'users', childAlias: 'admin'},
+  ];
+  const firestore = useSelector(state => state.firestore);
+  const snapshot = populate(firestore, 'myMasjids', populates);
+  const data = snapshot[masjidId];
   console.log(masjidId);
   return (
     <>
@@ -202,7 +210,7 @@ const AdminView = ({navigation, route}) => {
             <Edit
               timing={data.timing}
               uid={masjidId}
-              isAdd={true}
+              isRequest={false}
               userInfo={false}
             />
           </View>

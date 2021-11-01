@@ -299,7 +299,7 @@ const hasPermissionIOS = async () => {
   return false;
 };
 
-const hasLocationPermission = async () => {
+export const hasLocationPermission = async () => {
   if (Platform.OS === 'ios') {
     return await hasPermissionIOS();
   }

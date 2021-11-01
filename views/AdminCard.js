@@ -31,8 +31,7 @@ export default class AdminCard extends PureComponent {
         <TouchableOpacity
           onPress={() =>
             this.props.nav.navigate('Admin', {
-              data: this.props.masjid,
-              masjidId: this.props.masjid.key,
+              masjidId: this.props.masjid.id,
             })
           }>
           <ImageBackground
