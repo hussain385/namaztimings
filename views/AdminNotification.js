@@ -99,9 +99,9 @@ const AdminNotification = ({
       populates,
     },
   ]);
-  const firestore = useSelector(state => state.firestore);
-  const snapshot = populate(firestore, 'myMasjidsView', populates);
-  console.log(firestore.status);
+  const Firestore = useSelector(state => state.firestore);
+  const snapshot = populate(Firestore, 'myMasjidsView', populates);
+  console.log(Firestore.status);
   // const tempData = [];
   // if (isLoaded(snapshot)) {
   //   // console.log(snapshot);
@@ -295,9 +295,9 @@ const AdminNotification = ({
   };
 
   if (
-    !isLoaded(snapshot) ||
-    firestore.status.requesting.myMasjidsView ||
-    !firestore.status.requested.myMasjidsView
+    Firestore.status.requesting.myMasjidsView ||
+    !Firestore.status.requested.myMasjidsView ||
+    !isLoaded(snapshot)
   ) {
     return (
       <View>
