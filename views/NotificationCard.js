@@ -1,25 +1,29 @@
 import moment from 'moment';
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
+  Alert,
+  Dimensions,
   Modal,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import {Card} from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 import {useFirestore} from 'react-redux-firebase';
 
 const NotificationCard = ({data, masjidName, masjidId, adminId}) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const firestore = useFirestore();
   const {auth, profile} = useSelector(state => state.firebase);
 
-  const Delete = () => {
-    firestore
+  const Delete = async () => {
+    setLoading(true);
+    await firestore
       .collection('announcement')
       .doc(data.id)
       .delete()
@@ -31,8 +35,20 @@ const NotificationCard = ({data, masjidName, masjidId, adminId}) => {
             announcementList: firestore.FieldValue.arrayRemove(data.id),
           })
           .then(value1 => {
-            console.log(value1);
+            Alert.alert(
+              'Announcement',
+              'Your announcement has been deleted Successfully!',
+              [
+                {
+                  text: 'Ok',
+                  onPress: () => {
+                    setModalVisible(false);
+                  },
+                },
+              ],
+            );
           });
+        setLoading(false);
       });
   };
 
@@ -76,71 +92,62 @@ const NotificationCard = ({data, masjidName, masjidId, adminId}) => {
                 <Text
                   numberOfLines={1}
                   ellipsizeMode="tail"
-                  style={{fontSize: 17, minWidth: '90%'}}>
+                  style={{
+                    fontSize: 17,
+                    width: Dimensions.get('screen').width * 0.72,
+                  }}>
                   {data.description}
                 </Text>
               </View>
-              {auth.uid === adminId && (
-                <TouchableOpacity
-                  onPress={Delete}
-                  style={{
-                    backgroundColor: 'darkred',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: 5,
-                    height: 30,
-                    borderRadius: 5,
-                  }}>
-                  <MaterialCommunityIcons
-                    color="white"
-                    name="trash-can-outline"
-                    size={20}
-                  />
-                </TouchableOpacity>
-              )}
             </View>
           </View>
         </Card.Actions>
       </Card>
-      {auth.uid === adminId && (
-        <Modal animationType="slide" transparent={true} visible={modalVisible}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Masjid Finder Karachi</Text>
-              <View
-                style={{
-                  marginBottom: 10,
-                  backgroundColor: '#eeee',
-                  padding: 10,
-                  borderRadius: 5,
-                }}>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Masjid Finder Karachi</Text>
+            <View
+              style={{
+                marginBottom: 10,
+                backgroundColor: '#eeee',
+                padding: 10,
+                borderRadius: 5,
+              }}>
+              <ScrollView style={{maxHeight: 200}}>
                 <Text>{data.description}</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  width: '100%',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginLeft: -30,
+              </ScrollView>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Pressable
+                style={[styles.button, styles.buttonOpen]}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
                 }}>
+                <Text style={styles.textStyle}>Cancel</Text>
+              </Pressable>
+
+              {auth.uid === adminId && (
                 <Pressable
-                  style={[styles.button, styles.buttonOpen]}
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                  }}>
-                  <Text style={styles.textStyle}>Cancel</Text>
-                </Pressable>
-                <Pressable
+                  disabled={loading}
                   style={[styles.button, styles.buttonClose]}
                   onPress={Delete}>
-                  <Text style={[styles.textStyle1]}>Delete</Text>
+                  {!loading ? (
+                    <Text style={[styles.textStyle1]}>Delete</Text>
+                  ) : (
+                    <ActivityIndicator color="#ffff" size={18} />
+                  )}
                 </Pressable>
-              </View>
+              )}
             </View>
           </View>
-        </Modal>
-      )}
+        </View>
+      </Modal>
     </>
   );
 };
@@ -175,7 +182,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     elevation: 2,
-    width: '30%',
+    width: '40%',
+    marginTop: 10,
   },
   buttonOpen: {
     backgroundColor: '#5C5C5C',

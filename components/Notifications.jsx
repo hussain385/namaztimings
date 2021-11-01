@@ -2,6 +2,7 @@ import {Formik} from 'formik';
 import _ from 'lodash';
 import React, {useState} from 'react';
 import {
+  Alert,
   Dimensions,
   FlatList,
   Modal,
@@ -131,8 +132,19 @@ const Notification = ({navigation, route: {params}}) => {
                         ),
                       })
                       .then(() => {
-                        setModalVisible(false);
-                        setLoading(false);
+                        Alert.alert(
+                          'Announcement',
+                          'Your announcement has been send Successfully!',
+                          [
+                            {
+                              text: 'Ok',
+                              onPress: () => {
+                                setModalVisible(false);
+                                setLoading(false);
+                              },
+                            },
+                          ],
+                        );
                       });
                   });
               }}>
@@ -217,7 +229,7 @@ const Notification = ({navigation, route: {params}}) => {
                             Submit
                           </Text>
                         ) : (
-                          <ActivityIndicator color="#ffff" size="small" />
+                          <ActivityIndicator color="#ffff" size={18} />
                         )}
                       </Pressable>
                     </View>

@@ -348,8 +348,8 @@ const AdminNotification = ({
               alignItems: 'center',
               marginVertical: '50%',
             }}>
-            <AntDesign name="folder1" size={50} />
-            <Text>No Favourites</Text>
+            <AntDesign name="folder1" size={80} />
+            <Text style={{fontSize: 20}}>No Requests</Text>
           </View>
         )}
         keyExtractor={item => item.id}

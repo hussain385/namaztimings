@@ -18,7 +18,6 @@ import Admin from './components/Admin';
 import ContactUS from './components/ContactUs';
 import Favourites from './components/Favourites';
 import HomeScreen from './components/HomeScreen';
-import Invite from './components/Invite';
 import Login from './components/Login';
 import Notifications from './components/Notifications';
 import Search from './components/Search';
@@ -355,7 +354,6 @@ function MyDrawer() {
       <Drawer.Screen name="Find Masjid" component={SearchStackScreen} />
       <Drawer.Screen name="Favourites" component={FavouriteStackScreen} />
       <Drawer.Screen name="Notifications" component={Notifications} />
-      <Drawer.Screen name="Invite Your Friends" component={Invite} />
       <Drawer.Screen name="Contact Us" component={ContactUS} />
       <Drawer.Screen name="Terms & Conditions" component={Terms} />
       <Drawer.Screen name="login" component={Login} />

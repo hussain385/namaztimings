@@ -171,10 +171,6 @@ const Edit = ({
               }}
               onSubmit={async (values, {setSubmitting}) => {
                 setSubmitting(true);
-                // if (returnChange) {
-                //   setSubmitting(false);
-                //   return returnChange(values.timing);
-                // }
                 console.log(values);
 
                 if (_.isEqual(values.timing, timing) && isRequest) {

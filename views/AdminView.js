@@ -1,6 +1,7 @@
 import moment from 'moment';
 import React from 'react';
 import {
+  Dimensions,
   Image,
   ScrollView,
   StyleSheet,
@@ -395,6 +396,9 @@ const styles = StyleSheet.create({
     padding: 16,
     fontSize: 15,
     textAlign: 'center',
+  },
+  scrollView: {
+    height: Dimensions.get('screen').height * 0.817,
   },
 });
 
