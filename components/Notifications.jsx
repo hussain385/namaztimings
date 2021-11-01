@@ -48,7 +48,7 @@ const Notification = ({navigation, route: {params}}) => {
 
   const firestore = useSelector(state => state.firestore);
   const masjidData = populate(firestore, 'tempAnnouncement', populates);
-  console.log(firestore.status);
+  console.log(firestore.status, 'on notify');
 
   const data = _.map(masjidData?.announcement, rawData => {
     return {
