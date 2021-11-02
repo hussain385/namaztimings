@@ -136,7 +136,7 @@ const CustomDrawerContent = ({navigation}) => {
         }}>
         <MaterialCommunityIcons name="share" size={26} color="#1F441E" />
         <View style={{marginLeft: 30}}>
-          <CoText textStyles={[{color: '#1F441E'}]} text="Share App" />
+          <CoText textStyles={[{color: '#1F441E'}]} text="Invite Your Friends" />
         </View>
       </TouchableOpacity>
       {/* <TouchableOpacity
