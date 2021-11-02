@@ -20,20 +20,31 @@ import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
 import Edit from './Edit';
 
 const markAsRead = async reqId => {
-  await firestore()
-    .collection('requests')
-    .doc(reqId)
-    .update({
-      isRead: true,
-    })
-    .then(
-      () => {
-        console.log('sent');
-      },
-      reason => {
-        console.warn(reason.message);
-      },
-    );
+    Alert.alert('Confirmation', 'Do you want to change the status to mark as read?', [
+        {
+            text: 'Confirm',
+            onPress: () => {
+                firestore()
+                    .collection('requests')
+                    .doc(reqId)
+                    .update({
+                        isRead: true,
+                    })
+                    .then(
+                        value => {
+                            console.log('sent',value);
+                        },
+                        reason => {
+                            console.warn(reason.message);
+                        },
+                    );
+            }
+        },
+        {
+            text: 'Cancel',
+        },
+        ]
+    )
 };
 
 const deleteFunc = (masjidId, reqId, uid) => {
@@ -132,6 +143,7 @@ const AdminNotification = ({
   // console.log(data, 'from notify');
 
   const renderItem = ({item}) => {
+      console.log(item);
     const {timing, id, userName, userPhone, isRead} = item;
     if (!_.isUndefined(item.timing)) {
       return (
@@ -280,8 +292,8 @@ const AdminNotification = ({
                   flexDirection: 'row',
                   padding: 10,
                 }}>
-                <TouchableOpacity onPress={() => markAsRead(id)}>
-                  <Text style={{fontSize: 15, color: 'green'}}>
+                <TouchableOpacity disabled={isRead} onPress={() => markAsRead(id)}>
+                  <Text style={{fontSize: 15, color: `${isRead? 'grey':'green'}`}}>
                     Mark As Read
                   </Text>
                 </TouchableOpacity>
