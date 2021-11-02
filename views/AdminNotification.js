@@ -2,6 +2,7 @@ import firestore from '@react-native-firebase/firestore';
 import _ from 'lodash';
 import React from 'react';
 import {
+  ActivityIndicator,
   Alert,
   Dimensions,
   FlatList,
@@ -99,9 +100,13 @@ const AdminNotification = ({
       populates,
     },
   ]);
-  const Firestore = useSelector(state => state.firestore);
-  const snapshot = populate(Firestore, 'myMasjidsView', populates);
-  console.log(Firestore.status);
+
+  const snapshot = populate(
+    useSelector(state => state.firestore),
+    'myMasjidsView',
+    populates,
+  );
+  console.log(snapshot);
   // const tempData = [];
   // if (isLoaded(snapshot)) {
   //   // console.log(snapshot);
@@ -294,14 +299,10 @@ const AdminNotification = ({
     }
   };
 
-  if (
-    Firestore.status.requesting.myMasjidsView ||
-    !Firestore.status.requested.myMasjidsView ||
-    !isLoaded(snapshot)
-  ) {
+  if (!isLoaded(snapshot)) {
     return (
       <View>
-        <Text>Loading...</Text>
+        <ActivityIndicator color="#1F441E" size="large" />
       </View>
     );
   }
