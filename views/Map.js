@@ -18,9 +18,9 @@ const Map = ({route}) => {
   ]);
   // const [masjidData, loading] = GetAllMasjidData();
   const {longitude} = route.params;
-  const { latitude } = route.params;
+  const {latitude} = route.params;
   const firestore = useSelector(selectFirestore);
-  const masjid = populate(firestore, 'Mas"Masjid"pulates);
+  const masjid = populate(firestore, 'Masjid', populates);
   const masjidData = sortMasjidData1(masjid, {latitude, longitude});
 
   return (
@@ -37,16 +37,16 @@ const Map = ({route}) => {
         }}>
         {masjidData !== null
           ? masjidData.map((masjid1, id) => (
-            <SafeAreaView key={id}>
-              <Marker
-                title={`${masjid1.name}`}
-                coordinate={{
-                  latitude: Number(masjid1.g.geopoint.latitude),
-                  longitude: Number(masjid1.g.geopoint.longitude),
-                }}>
-                {/* <Text>{masjid1.name}</Text> */}
-                <Icon
-                  name="mosque"
+              <SafeAreaView key={id}>
+                <Marker
+                  title={`${masjid1.name}`}
+                  coordinate={{
+                    latitude: Number(masjid1.g.geopoint.latitude),
+                    longitude: Number(masjid1.g.geopoint.longitude),
+                  }}>
+                  {/* <Text>{masjid1.name}</Text> */}
+                  <Icon
+                    name="mosque"
                     color="#1F441E"
                     size={20}
                     style={{paddingRight: 10, paddingLeft: 10}}

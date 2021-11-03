@@ -208,10 +208,13 @@ export function GetFavMasjidData() {
   const [error, setError] = useState(null);
   const location = useSelector(selectCords);
   const favoriteId = useSelector(useFavorites);
-  const subs = firestore().collection('Masjid'"Masjid"ync function GetDataFavMasjid() {
+  const subs = firestore().collection('Masjid');
+
+  async function GetDataFavMasjid() {
     if (_.isNull(masjid)) {
       setLoading(true);
     }
+
     console.log('%c triggered the GetData from Faves', 'color: #bada55');
     const favorites = favoriteId;
     console.log(favorites, '<=========== favs from redux');

@@ -68,7 +68,7 @@ const Item = props => (
               onPress={async () => {
                 await Linking.openURL(`${props.gLink}`);
               }}
-              style={{ color: '#90"#900000"xtDecorationLine: 'und"underline"
+              style={{color: '#900000', textDecorationLine: 'underline'}}>
               {props.distance}KM AWAY
             </Text>
           </TouchableOpacity>
@@ -123,7 +123,7 @@ const ShowMore = ({navigation}) => {
   ]);
   const location = useSelector(selectCords);
   const firestore = useSelector(selectFirestore);
-  const masjid = populate(firestore, "Masjid", populates);
+  const masjid = populate(firestore, 'Masjid', populates);
   const dispatch = useDispatch();
   const masjidData = sortMasjidData1(masjid, location);
   console.log(firestore, '<===== firebase');

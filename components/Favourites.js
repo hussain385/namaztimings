@@ -138,7 +138,7 @@ const Favourites = ({navigation}) => {
               onPress={async () => {
                 await Linking.openURL(`${gLink}`);
               }}
-              style={{color: '"#900000" textDecorationLine: '"underline"}>
+              style={{color: '#900000', textDecorationLine: 'underline'}}>
               {distance}KM AWAY
             </Text>
           </View>
@@ -171,27 +171,27 @@ const Favourites = ({navigation}) => {
             }
             style={{
               alignItems: 'center',
-              backgroundColor: "#1F441E",
+              backgroundColor: '#1F441E',
               padding: 10,
               borderRadius: 5,
-              width: "47%",
+              width: '47%',
               marginVertical: 10,
               marginHorizontal: 10,
             }}>
-            <Text style={{color: "#CEE6B4"}}>More Info</Text>
+            <Text style={{color: '#CEE6B4'}}>More Info</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={async () => {
               await Linking.openURL(`${gLink}`);
             }}
             style={{
-              alignItems: "center",
+              alignItems: 'center',
               padding: 10,
               borderRadius: 5,
-              width: "47%",
+              width: '47%',
               marginVertical: 10,
               marginHorizontal: 10,
-              backgroundColor: "#CEE6B4",
+              backgroundColor: '#CEE6B4',
             }}>
             <Text
               style={{
@@ -222,6 +222,7 @@ const Favourites = ({navigation}) => {
                   renderItem={Item}
                   keyExtractor={x => x.key}
                   style={{marginBottom: 70, flex: 1}}
+                  onRefresh={onRefresh}
                   refreshing={refreshing}
                 />
               );

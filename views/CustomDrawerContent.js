@@ -6,9 +6,11 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 import {isEmpty, isLoaded, useFirebase} from 'react-redux-firebase';
-import CoText from '."../views/Text/Text"import { selectFirebase } from '."../store/firebase"
+import CoText from '../views/Text/Text';
+import {selectFirebase} from '../store/firebase';
+
 const CustomDrawerContent = ({navigation}) => {
-  const { auth } = useSelector(selectFirebase);
+  const {auth} = useSelector(selectFirebase);
   const firebaseApp = useFirebase();
 
   async function handleSignOut() {
@@ -133,9 +135,9 @@ const CustomDrawerContent = ({navigation}) => {
           marginLeft: 2,
         }}>
         <MaterialCommunityIcons name="share" size={26} color="#1F441E" />
-        <View style={{ marginLeft: 30 }}>
+        <View style={{marginLeft: 30}}>
           <CoText
-            textStyles={[{ color: "#1F441E" }]}
+            textStyles={[{color: '#1F441E'}]}
             text="Invite Your Friends"
           />
         </View>

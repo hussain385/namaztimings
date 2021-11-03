@@ -22,9 +22,11 @@ import {selectFirestore} from '../store/firebase';
 const AdminView = ({navigation, route}) => {
   const {masjidId, isSingle = false} = route.params;
   const populates = [
-    { child: 'req"requestList"ot: 'req"requests"ildAlias: 'req"requests"    { child: 'adm"adminId"ot: 'use"users"ildAlias: 'adm"admin"  ];
+    {child: 'requestList', root: 'requests', childAlias: 'requests'},
+    {child: 'adminId', root: 'users', childAlias: 'admin'},
+  ];
   const firestore = useSelector(selectFirestore);
-  const snapshot = populate(firestore, 'myM"myMasjids"pulates);
+  const snapshot = populate(firestore, 'myMasjids', populates);
   const data = snapshot[masjidId];
   console.log(masjidId);
   return (

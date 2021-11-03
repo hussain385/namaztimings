@@ -203,9 +203,12 @@ function HomeScreen({navigation}) {
                         await Linking.openURL(`${masjidData[0].gLink}`);
                       }}
                       style={{
-                        color: '#"#900000"                        fontSize: 17,
+                        color: '#900000',
+                        fontSize: 17,
                         marginRight: 12,
-                        fontWeight: 'b"bold"                        textDecorationLine: 'u"underline"                      }}>
+                        fontWeight: 'bold',
+                        textDecorationLine: 'underline',
+                      }}>
                       {masjidData[0].distance} Km Away
                     </Text>
                   </View>
@@ -254,7 +257,7 @@ function HomeScreen({navigation}) {
                               `tel:${masjidData[0].user.phone}`,
                             );
                           }}>
-                          {masjidData[0].user.phone || "+920000000000"}
+                          {masjidData[0].user.phone || '+920000000000'}
                         </Text>
                       </View>
                       <View>

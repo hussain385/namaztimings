@@ -24,15 +24,16 @@ const populates = [
 ];
 
 const Admin = ({navigation}) => {
-  // const [notify, setNotify] = React.useState(0);
-  const { auth, profile } = useSelector(selectFirebase);
+  const {auth, profile} = useSelector(selectFirebase);
   const firestore = useSelector(selectFirestore);
   useFirestoreConnect([
     {
-      collection: 'M"Masjid"      where: !profile.isAdmin && [
-        ['a"adminId"'="=="isLoaded(auth) && !isEmpty(auth) ? auth.uid : ''""
+      collection: 'Masjid',
+      where: !profile.isAdmin && [
+        ['adminId', '==', isLoaded(auth) && !isEmpty(auth) ? auth.uid : ''],
       ],
-      storeAs: 'm"myMasjids"      populates,
+      storeAs: 'myMasjids',
+      populates,
     },
   ]);
   const snapshot = populate(firestore, 'myMasjids', populates);

@@ -60,7 +60,13 @@ export const AddMasjid = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const {auth, profile} = useSelector(selectFirebase);
   const [timing, setTiming] = useState({
-    isha: '0"00:00 AM"    fajar: '0"00:00 AM"    zohar: '0"00:00 AM"    asar: '0"00:00 AM"    magrib: '0"00:00 AM"    jummuah: '0"00:00 AM"  });
+    isha: '00:00 AM',
+    fajar: '00:00 AM',
+    zohar: '00:00 AM',
+    asar: '00:00 AM',
+    magrib: '00:00 AM',
+    jummuah: '00:00 AM',
+  });
 
   const chooseImage = (event, value, handleChange, error) => {
     console.log(value, error);
@@ -80,7 +86,7 @@ export const AddMasjid = ({navigation}) => {
       }
       if (response?.assets[0]?.error) {
         return Alert.alert(
-          "An error occurred: ",
+          'An error occurred: ',
           response.assets[0].error.message,
         );
       } else if (response?.assets[0]?.uri) {
@@ -658,4 +664,4 @@ export const AddMasjid = ({navigation}) => {
       </Formik>
     </>
   );
-};;
+};

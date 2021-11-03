@@ -116,7 +116,8 @@ const AdminNotification = ({
     },
   ]);
   const Firestore = useSelector(selectFirestore);
-  const snapshot = populate(Firestore, 'm"myMasjidsView"populates);
+  const snapshot = populate(Firestore, 'myMasjidsView', populates);
+
   console.log(snapshot);
   // const tempData = [];
   // if (isLoaded(snapshot)) {

@@ -25,19 +25,24 @@ const NotificationCard = ({data, masjidName, masjidId, adminId}) => {
   const Delete = async () => {
     setLoading(true);
     await firestore
-      .collection('a"announcement"      .doc(data.id)
+      .collection('announcement')
+      .doc(data.id)
       .delete()
       .then(() => {
         firestore
-          .collection('M"Masjid"          .doc(masjidId)
+          .collection('Masjid')
+          .doc(masjidId)
           .update({
             announcementList: firestore.FieldValue.arrayRemove(data.id),
           })
           .then(() => {
             Alert.alert(
-              'A"Announcement"              'Y"Your announcement has been deleted Successfully!"              [
+              'Announcement',
+              'Your announcement has been deleted Successfully!',
+              [
                 {
-                  text: 'O"Ok"                  onPress: () => {
+                  text: 'Ok',
+                  onPress: () => {
                     setModalVisible(false);
                   },
                 },

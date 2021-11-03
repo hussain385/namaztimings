@@ -48,7 +48,7 @@ const Notification = ({navigation, route: {params}}) => {
   ]);
 
   const firestore = useSelector(selectFirestore);
-  const masjidData = populate(firestore, 'tem"tempAnnouncement"pulates);
+  const masjidData = populate(firestore, 'tempAnnouncement', populates);
   console.log(firestore.status, 'on notify');
 
   const data = _.map(masjidData?.announcement, rawData => {
@@ -67,7 +67,7 @@ const Notification = ({navigation, route: {params}}) => {
         <FlatList
           style={{height: Dimensions.get('screen').height * 0.82}}
           data={data}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <NotificationCard
               data={item}
               masjidName={masjidName}
