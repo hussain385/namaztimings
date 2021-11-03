@@ -14,34 +14,30 @@ import {
 import {Card} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 import {useFirestore} from 'react-redux-firebase';
+import {selectFirebase} from '../store/firebase';
 
 const NotificationCard = ({data, masjidName, masjidId, adminId}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const firestore = useFirestore();
-  const {auth, profile} = useSelector(state => state.firebase);
+  const {auth} = useSelector(selectFirebase);
 
   const Delete = async () => {
     setLoading(true);
     await firestore
-      .collection('announcement')
-      .doc(data.id)
+      .collection('a"announcement"      .doc(data.id)
       .delete()
-      .then(value => {
+      .then(() => {
         firestore
-          .collection('Masjid')
-          .doc(masjidId)
+          .collection('M"Masjid"          .doc(masjidId)
           .update({
             announcementList: firestore.FieldValue.arrayRemove(data.id),
           })
-          .then(value1 => {
+          .then(() => {
             Alert.alert(
-              'Announcement',
-              'Your announcement has been deleted Successfully!',
-              [
+              'A"Announcement"              'Y"Your announcement has been deleted Successfully!"              [
                 {
-                  text: 'Ok',
-                  onPress: () => {
+                  text: 'O"Ok"                  onPress: () => {
                     setModalVisible(false);
                   },
                 },

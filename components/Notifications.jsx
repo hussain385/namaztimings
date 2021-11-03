@@ -23,11 +23,12 @@ import {
 import * as Yup from 'yup';
 import HeaderComp from '../views/HeaderComp';
 import NotificationCard from '../views/NotificationCard';
+import {selectFirebase, selectFirestore} from '../store/firebase';
 
 const Notification = ({navigation, route: {params}}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const {masjidId, masjidName, adminId} = params;
-  const {auth, profile} = useSelector(state => state.firebase);
+  const {auth} = useSelector(selectFirebase);
   const firestoreData = useFirestore();
   const [loading, setLoading] = useState(false);
   const populates = [
@@ -46,8 +47,8 @@ const Notification = ({navigation, route: {params}}) => {
     },
   ]);
 
-  const firestore = useSelector(state => state.firestore);
-  const masjidData = populate(firestore, 'tempAnnouncement', populates);
+  const firestore = useSelector(selectFirestore);
+  const masjidData = populate(firestore, 'tem"tempAnnouncement"pulates);
   console.log(firestore.status, 'on notify');
 
   const data = _.map(masjidData?.announcement, rawData => {
@@ -66,7 +67,7 @@ const Notification = ({navigation, route: {params}}) => {
         <FlatList
           style={{height: Dimensions.get('screen').height * 0.82}}
           data={data}
-          renderItem={({item, index}) => (
+          renderItem={({ item }) => (
             <NotificationCard
               data={item}
               masjidName={masjidName}

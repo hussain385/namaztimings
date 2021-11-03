@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useSelector} from 'react-redux';
 import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
 import Edit from './Edit';
+import {selectFirebase, selectFirestore} from '../store/firebase';
 
 const markAsRead = async reqId => {
   Alert.alert(
@@ -104,7 +105,7 @@ const AdminNotification = ({
   // const [data, setData] = useState([]);
   // const {myMasjids} = useSelector(state => state.firestore.ordered);
   // const {auth} = useSelector(state => state.firebase);
-  const {auth} = useSelector(state => state.firebase);
+  const {auth} = useSelector(selectFirebase);
   console.log(masjid, '<========= AdminNotification');
   useFirestoreConnect([
     {
@@ -114,8 +115,8 @@ const AdminNotification = ({
       populates,
     },
   ]);
-  const Firestore = useSelector(state => state.firestore);
-  const snapshot = populate(Firestore, 'myMasjidsView', populates);
+  const Firestore = useSelector(selectFirestore);
+  const snapshot = populate(Firestore, 'm"myMasjidsView"populates);
   console.log(snapshot);
   // const tempData = [];
   // if (isLoaded(snapshot)) {

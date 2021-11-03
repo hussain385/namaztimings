@@ -34,17 +34,19 @@ function HomeScreen({navigation}) {
   const masjidData = masjid;
   const location = useSelector(selectCords);
 
-  useEffect(() => {
-    onRefresh();
-  }, [location.latitude, location.longitude]);
-
-  // #E1E1E1
   async function onRefresh() {
     setRefreshing(true);
     await getLocation();
     await GetData();
     setRefreshing(false);
   }
+
+  useEffect(() => {
+    onRefresh();
+  }, [location.latitude, location.longitude]);
+
+  // #E1E1E1
+
   console.log(masjidData);
   return (
     <>
@@ -197,16 +199,13 @@ function HomeScreen({navigation}) {
                       style={{paddingRight: 7}}
                     />
                     <Text
-                      onPress={() => {
-                        Linking.openURL(`${masjidData[0].gLink}`);
+                      onPress={async () => {
+                        await Linking.openURL(`${masjidData[0].gLink}`);
                       }}
                       style={{
-                        color: '#900000',
-                        fontSize: 17,
+                        color: '#"#900000"                        fontSize: 17,
                         marginRight: 12,
-                        fontWeight: 'bold',
-                        textDecorationLine: 'underline',
-                      }}>
+                        fontWeight: 'b"bold"                        textDecorationLine: 'u"underline"                      }}>
                       {masjidData[0].distance} Km Away
                     </Text>
                   </View>
@@ -250,10 +249,12 @@ function HomeScreen({navigation}) {
                         />
                         <Text
                           style={{maxWidth: 280}}
-                          onPress={() => {
-                            Linking.openURL(`tel:${masjidData[0].user.phone}`);
+                          onPress={async () => {
+                            await Linking.openURL(
+                              `tel:${masjidData[0].user.phone}`,
+                            );
                           }}>
-                          {masjidData[0].user.phone || '+920000000000'}
+                          {masjidData[0].user.phone || "+920000000000"}
                         </Text>
                       </View>
                       <View>

@@ -19,6 +19,7 @@ import {Button, HelperText, TextInput} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 import * as Yup from 'yup';
+import {selectFirebase} from '../store/firebase';
 
 const Edit = ({
   timing,
@@ -50,7 +51,7 @@ const Edit = ({
     setNamazTime(namazName);
   };
 
-  const {profile} = useSelector(state => state.firebase);
+  const {profile} = useSelector(selectFirebase);
 
   // async function submitRequest() {
   //   const prevTime = {

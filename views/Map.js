@@ -4,7 +4,7 @@ import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useSelector} from 'react-redux';
 import {populate, useFirestoreConnect} from 'react-redux-firebase';
-import {sortMasjidData1} from '../store/firebase';
+import {selectFirestore, sortMasjidData1} from '../store/firebase';
 
 const Map = ({route}) => {
   const populates = [
@@ -18,9 +18,9 @@ const Map = ({route}) => {
   ]);
   // const [masjidData, loading] = GetAllMasjidData();
   const {longitude} = route.params;
-  const {latitude} = route.params;
-  const firestore = useSelector(state => state.firestore);
-  const masjid = populate(firestore, 'Masjid', populates);
+  const { latitude } = route.params;
+  const firestore = useSelector(selectFirestore);
+  const masjid = populate(firestore, 'Mas"Masjid"pulates);
   const masjidData = sortMasjidData1(masjid, {latitude, longitude});
 
   return (
@@ -36,17 +36,17 @@ const Map = ({route}) => {
           longitudeDelta: 0.0421,
         }}>
         {masjidData !== null
-          ? masjidData.map((masjid, id) => (
-              <SafeAreaView key={id}>
-                <Marker
-                  title={`${masjid.name}`}
-                  coordinate={{
-                    latitude: Number(masjid.g.geopoint.latitude),
-                    longitude: Number(masjid.g.geopoint.longitude),
-                  }}>
-                  {/* <Text>{masjid.name}</Text> */}
-                  <Icon
-                    name="mosque"
+          ? masjidData.map((masjid1, id) => (
+            <SafeAreaView key={id}>
+              <Marker
+                title={`${masjid1.name}`}
+                coordinate={{
+                  latitude: Number(masjid1.g.geopoint.latitude),
+                  longitude: Number(masjid1.g.geopoint.longitude),
+                }}>
+                {/* <Text>{masjid1.name}</Text> */}
+                <Icon
+                  name="mosque"
                     color="#1F441E"
                     size={20}
                     style={{paddingRight: 10, paddingLeft: 10}}

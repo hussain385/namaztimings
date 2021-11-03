@@ -3,12 +3,12 @@ import React, {useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
-import {add, remove} from '../redux/favSlicer';
+import {add, remove, useFavorites} from '../redux/favSlicer';
 
 const Favbtn = ({favId, isBig = true}) => {
   // const [isFav, setIsFav] = useState(false);
   const [isFound, setIsFound] = useState(false); // is Fav already exist in storage?
-  const favoriteId = useSelector(state => state.favorites.value);
+  const favoriteId = useSelector(useFavorites);
   const dispatch = useDispatch();
 
   const handleFavorite = async key => {

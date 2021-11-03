@@ -82,8 +82,8 @@ export default class AdminCard extends PureComponent {
               <Text style={{color: '#CEE6B4'}}>More Info</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => {
-                Linking.openURL(`${this.props.gLink}`);
+              onPress={async () => {
+                await Linking.openURL(`${this.props.gLink}`);
               }}
               style={{
                 alignItems: 'center',

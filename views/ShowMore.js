@@ -12,7 +12,11 @@ import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useDispatch, useSelector} from 'react-redux';
 import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
-import {getCurrentLocation, sortMasjidData1} from '../store/firebase';
+import {
+  getCurrentLocation,
+  selectFirestore,
+  sortMasjidData1,
+} from '../store/firebase';
 import {selectCords, setLocation} from '../redux/locationSlicer';
 
 const Item = props => (
@@ -61,10 +65,10 @@ const Item = props => (
           </View>
           <TouchableOpacity>
             <Text
-              onPress={() => {
-                Linking.openURL(`${props.gLink}`);
+              onPress={async () => {
+                await Linking.openURL(`${props.gLink}`);
               }}
-              style={{color: '#900000', textDecorationLine: 'underline'}}>
+              style={{ color: '#90"#900000"xtDecorationLine: 'und"underline"
               {props.distance}KM AWAY
             </Text>
           </TouchableOpacity>
@@ -118,8 +122,8 @@ const ShowMore = ({navigation}) => {
     },
   ]);
   const location = useSelector(selectCords);
-  const firestore = useSelector(state => state.firestore);
-  const masjid = populate(firestore, 'Masjid', populates);
+  const firestore = useSelector(selectFirestore);
+  const masjid = populate(firestore, "Masjid", populates);
   const dispatch = useDispatch();
   const masjidData = sortMasjidData1(masjid, location);
   console.log(firestore, '<===== firebase');

@@ -49,7 +49,7 @@ const ForgotPassword = ({navigation}) => {
         })}
         initialValues={{email: ''}}
         onSubmit={values => {
-          firebase.resetPassword(values.email).then(value => {
+          firebase.resetPassword(values.email).then(() => {
             navigation.goBack();
           });
         }}>

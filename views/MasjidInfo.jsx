@@ -6,7 +6,6 @@ import {
   Linking,
   SafeAreaView,
   ScrollView,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -497,24 +496,5 @@ const MasjidInfo = ({route, navigation}) => {
     </>
   );
 };
-//'#364547'
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginBottom: 6,
-  },
-  mncontainer: {
-    flex: 1,
-    marginTop: 30,
-  },
-  navigationContainer: {
-    backgroundColor: '#1F441E',
-  },
-  paragraph: {
-    padding: 16,
-    fontSize: 15,
-    textAlign: 'center',
-  },
-});
 
 export default MasjidInfo;

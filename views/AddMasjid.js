@@ -21,6 +21,7 @@ import {useFirestore} from 'react-redux-firebase';
 import * as Yup from 'yup';
 import Edit from './Edit';
 import HeaderComp from './HeaderComp';
+import {selectFirebase} from '../store/firebase';
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
@@ -55,17 +56,11 @@ const AddMasjidSchema = Yup.object().shape({
 export const AddMasjid = ({navigation}) => {
   const firestore = useFirestore();
   const [image, setImage] = useState('');
-  const [imageLoading, setImageLoading] = useState(false);
+  // const [imageLoading, setImageLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-  const {auth, profile} = useSelector(state => state.firebase);
+  const {auth, profile} = useSelector(selectFirebase);
   const [timing, setTiming] = useState({
-    isha: '00:00 AM',
-    fajar: '00:00 AM',
-    zohar: '00:00 AM',
-    asar: '00:00 AM',
-    magrib: '00:00 AM',
-    jummuah: '00:00 AM',
-  });
+    isha: '0"00:00 AM"    fajar: '0"00:00 AM"    zohar: '0"00:00 AM"    asar: '0"00:00 AM"    magrib: '0"00:00 AM"    jummuah: '0"00:00 AM"  });
 
   const chooseImage = (event, value, handleChange, error) => {
     console.log(value, error);
@@ -84,14 +79,17 @@ export const AddMasjid = ({navigation}) => {
         return;
       }
       if (response?.assets[0]?.error) {
-        alert('An error occurred: ', response.assets[0].error.message);
+        return Alert.alert(
+          "An error occurred: ",
+          response.assets[0].error.message,
+        );
       } else if (response?.assets[0]?.uri) {
         const {uri} = response.assets[0];
         console.log(uri);
         setImage(response.assets[0]);
         handleChange(uri);
         value.pictureURL = uri;
-        setImageLoading(true);
+        // setImageLoading(true);
       }
     });
   };
@@ -660,4 +658,4 @@ export const AddMasjid = ({navigation}) => {
       </Formik>
     </>
   );
-};
+};;

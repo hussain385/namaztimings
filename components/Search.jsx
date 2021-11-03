@@ -33,13 +33,17 @@ const Search = props => {
   const masjidData = sortMasjidData1(masjid, location);
   console.log(masjidData, '<==== masjidData from search');
   function onChangeSearch(text) {
-    const fuse = new Fuse(masjidData, {keys: ['address'], distance: 400, shouldSort: true,
-        tokenize: true,
-        matchAllTokens: true,
-        findAllMatches: true,
-        threshold: 1,
-        maxPatternLength: 32,
-        minMatchCharLength: 5,});
+    const fuse = new Fuse(masjidData, {
+      keys: ['address'],
+      distance: 400,
+      shouldSort: true,
+      tokenize: true,
+      matchAllTokens: true,
+      findAllMatches: true,
+      threshold: 1,
+      maxPatternLength: 32,
+      minMatchCharLength: 5,
+    });
     const resultf = fuse.search(text);
     setTextSearch(text);
     setResult(resultf);

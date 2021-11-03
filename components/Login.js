@@ -23,6 +23,7 @@ import {isEmpty, isLoaded, useFirebase} from 'react-redux-firebase';
 import * as Yup from 'yup';
 import {btnStyles, conStyles, textIn, textStyles} from '../theme/styles/Base';
 import CoText from '../views/Text/Text';
+import {selectFirebase} from '../store/firebase';
 
 // const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
@@ -37,7 +38,7 @@ const Login = ({navigation}) => {
   const firebaseApp = useFirebase();
   const [loading, setLoading] = useState(false);
   const [visibility, setVisibility] = useState(true);
-  const auth = useSelector(state => state.firebase.auth);
+  const {auth} = useSelector(selectFirebase);
   const [error, setError] = useState(null);
   const [iconName, setIconName] = useState('eye-off-outline');
 

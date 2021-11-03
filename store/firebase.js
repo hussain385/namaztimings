@@ -14,9 +14,13 @@ import Geolocation, {SuccessCallback} from 'react-native-geolocation-service';
 import {useDispatch, useSelector} from 'react-redux';
 import appConfig from '../app.json';
 import {selectCords, setLocation} from '../redux/locationSlicer';
+import {useFavorites} from '../redux/favSlicer';
 
 const GeoFirestore = geofirestore.initializeApp(firestore());
 const geoCollection = GeoFirestore.collection('Masjid');
+
+export const selectFirebase = state => state.firebase;
+export const selectFirestore = state => state.firestore;
 
 export const getCurrentLocation = async () => {
   const hasPermission = await hasLocationPermission();
@@ -203,10 +207,8 @@ export function GetFavMasjidData() {
   const [masjid, setMasjid] = useState([]);
   const [error, setError] = useState(null);
   const location = useSelector(selectCords);
-  const favoriteId = useSelector(state => state.favorites.value);
-  const subs = firestore().collection('Masjid');
-
-  async function GetDataFavMasjid() {
+  const favoriteId = useSelector(useFavorites);
+  const subs = firestore().collection('Masjid'"Masjid"ync function GetDataFavMasjid() {
     if (_.isNull(masjid)) {
       setLoading(true);
     }

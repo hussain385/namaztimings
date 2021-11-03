@@ -6,7 +6,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import * as React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Text, TouchableOpacity, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Provider} from 'react-redux';
@@ -476,10 +476,7 @@ export default function App() {
 
   React.useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      React.Alert.alert(
-        'A new FCM message arrived!',
-        JSON.stringify(remoteMessage),
-      );
+      Alert.alert('A"A new FCM message arrived!"JSON.stringify(remoteMessage));
     });
 
     return () => {
