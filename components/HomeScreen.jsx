@@ -16,11 +16,11 @@ import {
 import {Header} from 'react-native-elements';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {useSelector} from 'react-redux';
+import {selectCords} from '../redux/locationSlicer';
 import {GetRadMasjidData1} from '../store/firebase';
 import AdminRequest from '../views/AdminRequest';
 import Favbtn from '../views/Favbtn';
-import {useSelector} from 'react-redux';
-import {selectCords} from '../redux/locationSlicer';
 
 function HomeScreen({navigation}) {
   const {
@@ -153,6 +153,7 @@ function HomeScreen({navigation}) {
                   style={{
                     justifyContent: 'space-between',
                     flexDirection: 'row',
+                    maxWidth: '99%',
                   }}>
                   <View style={{flexDirection: 'row'}}>
                     <Icon
@@ -177,6 +178,7 @@ function HomeScreen({navigation}) {
                   style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
+                    maxWidth: '96%',
                   }}>
                   <View style={{flexDirection: 'row'}}>
                     <Icon
@@ -196,7 +198,7 @@ function HomeScreen({navigation}) {
                       name="directions"
                       color="#900000"
                       size={24}
-                      style={{paddingRight: 7}}
+                      // style={{paddingRight: 7}}
                     />
                     <Text
                       onPress={async () => {
@@ -205,7 +207,7 @@ function HomeScreen({navigation}) {
                       style={{
                         color: '#900000',
                         fontSize: 17,
-                        marginRight: 12,
+                        // marginRight: 12,
                         fontWeight: 'bold',
                         textDecorationLine: 'underline',
                       }}>
@@ -220,6 +222,7 @@ function HomeScreen({navigation}) {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                         marginTop: 10,
+                        maxWidth: '96%',
                       }}>
                       <View style={{flexDirection: 'row'}}>
                         <Icon

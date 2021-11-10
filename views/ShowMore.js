@@ -12,12 +12,12 @@ import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useDispatch, useSelector} from 'react-redux';
 import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
+import {selectCords, setLocation} from '../redux/locationSlicer';
 import {
   getCurrentLocation,
   selectFirestore,
   sortMasjidData1,
 } from '../store/firebase';
-import {selectCords, setLocation} from '../redux/locationSlicer';
 
 const Item = props => (
   <Card
@@ -126,14 +126,12 @@ const ShowMore = ({navigation}) => {
   const masjid = populate(firestore, 'Masjid', populates);
   const dispatch = useDispatch();
   const masjidData = sortMasjidData1(masjid, location);
-  console.log(firestore, '<===== firebase');
 
   React.useEffect(() => {
     getCurrentLocation()
       .then(loc => {
         // setLocation(loc);
         dispatch(setLocation(loc.coords));
-        console.log(loc.coords.longitude, '<========== location ');
       })
       .catch(e => {
         console.log(e);
@@ -191,8 +189,8 @@ const ShowMore = ({navigation}) => {
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('Map', {
-                latitude: location.coords.latitude || 0.0,
-                longitude: location.coords.longitude || 0.0,
+                latitude: location.latitude || 0.0,
+                longitude: location.longitude || 0.0,
               })
             }>
             <Icon

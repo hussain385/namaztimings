@@ -17,8 +17,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useSelector} from 'react-redux';
 import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
-import Edit from './Edit';
 import {selectFirebase, selectFirestore} from '../store/firebase';
+import Edit from './Edit';
 
 const markAsRead = async reqId => {
   Alert.alert(
@@ -165,7 +165,7 @@ const AdminNotification = ({
                       fontSize: 17,
                       fontWeight: `${isRead ? 200 : 700}`,
                     }}>
-                    User Name: {userName}
+                    Requestor Name: {userName}
                   </Text>
                 </View>
               </View>
@@ -176,7 +176,7 @@ const AdminNotification = ({
                       fontSize: 17,
                       fontWeight: `${isRead ? 200 : 700}`,
                     }}>
-                    User Contact: {userPhone}
+                    Requestor Contact: {userPhone}
                   </Text>
                 </View>
               </View>

@@ -342,7 +342,7 @@ const Edit = ({
                       <View
                         style={{width: Dimensions.get('screen').width * 0.75}}>
                         <TextInput
-                          label={'User Name'}
+                          label={'Requestor Name'}
                           mode={'outlined'}
                           onChangeText={handleChange('userName')}
                           onBlur={handleBlur('userName')}
@@ -369,7 +369,7 @@ const Edit = ({
                           width: Dimensions.get('screen').width * 0.75,
                         }}>
                         <TextInput
-                          label={'User Phone'}
+                          label={'Requestor Phone'}
                           mode={'outlined'}
                           onChangeText={handleChange('userPhone')}
                           onBlur={handleBlur('userPhone')}
