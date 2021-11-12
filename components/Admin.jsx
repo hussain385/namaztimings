@@ -5,7 +5,12 @@ import {
   Dimensions,
   FlatList,
   SafeAreaView,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import {Header} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useSelector} from 'react-redux';
 import {
   isEmpty,
@@ -16,7 +21,6 @@ import {
 import {modifyData, selectFirebase, selectFirestore} from '../store/firebase';
 import AdminCard from '../views/AdminCard';
 import AdminView from '../views/AdminView';
-import HeaderComp from '../views/HeaderComp';
 
 const populates = [
   {child: 'requestList', root: 'requests', childAlias: 'requests'},
@@ -45,7 +49,36 @@ const Admin = ({navigation}) => {
   return (
     <SafeAreaView>
       {adminMasjid.length > 1 && (
-        <HeaderComp navigation={navigation} to={'home'} heading="Admin" />
+        <Header
+          containerStyle={{
+            shadowOpacity: 50,
+            elevation: 50,
+          }}
+          leftComponent={
+            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+              <Icon
+                name="bars"
+                color="#ffff"
+                size={26}
+                style={{paddingLeft: 10}}
+              />
+            </TouchableOpacity>
+          }
+          centerComponent={
+            <View style={{textAlign: 'center'}}>
+              <Text
+                style={{
+                  color: '#ffff',
+                  fontSize: 22,
+                  marginBottom: 5,
+                  textAlign: 'center',
+                }}>
+                Admin
+              </Text>
+            </View>
+          }
+          backgroundColor="#1F441E"
+        />
       )}
       {!isLoaded(snapshot) && (
         <ActivityIndicator color="#1F441E" size="large" />
@@ -56,7 +89,7 @@ const Admin = ({navigation}) => {
             const data = modifyData(doc, id, 0);
             return (
               <AdminView
-                route={{params: {data, masjidId: id}}}
+                route={{params: {Masjid: data, masjidId: id}}}
                 navigation={navigation}
                 isSingle={true}
               />

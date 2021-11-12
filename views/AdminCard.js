@@ -9,6 +9,7 @@ import {
 
 export default class AdminCard extends PureComponent {
   render() {
+    console.log(this.props.masjid.id);
     return (
       // <View>
       //   <Text>{JSON.stringify(this.props.masjid)}</Text>
@@ -66,8 +67,8 @@ export default class AdminCard extends PureComponent {
             <TouchableOpacity
               onPress={() =>
                 this.props.nav.navigate('Admin', {
-                  data: this.props.masjid,
-                  masjidId: this.props.masjid.key,
+                  masjidData: this.props.masjid,
+                  masjidId: this.props.masjid.id,
                 })
               }
               style={{
@@ -83,7 +84,7 @@ export default class AdminCard extends PureComponent {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={async () => {
-                await Linking.openURL(`${this.props.gLink}`);
+                await Linking.openURL(`${this.props.masjid.gLink}`);
               }}
               style={{
                 alignItems: 'center',

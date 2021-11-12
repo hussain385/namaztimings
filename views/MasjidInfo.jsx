@@ -1,9 +1,6 @@
-import moment from 'moment';
 import * as React from 'react';
 import {
   Dimensions,
-  Image,
-  Linking,
   SafeAreaView,
   ScrollView,
   Text,
@@ -12,13 +9,13 @@ import {
 } from 'react-native';
 import {Header} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import AdminRequest from './AdminRequest';
 import Edit from './Edit';
-import Favbtn from './Favbtn';
+import LastUpdated from './LastUpdated';
+import TopPart from './TopPart';
 
 const MasjidInfo = ({route, navigation}) => {
   const {masjid} = route.params;
-  console.log(masjid);
+  console.log(masjid.user);
   return (
     <>
       <Header
@@ -80,178 +77,13 @@ const MasjidInfo = ({route, navigation}) => {
             <View>
               <Text />
             </View>
-            <View
-              style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-              <View style={{flexDirection: 'row', marginTop: 10}}>
-                <Icon
-                  name="mosque"
-                  color="#5C5C5C"
-                  size={20}
-                  style={{paddingRight: 10, paddingLeft: 10}}
-                />
-                <Text
-                  style={{
-                    fontSize: 17,
-                    color: '#5C5C5C',
-                    fontWeight: 'bold',
-                    maxWidth: 200,
-                  }}>
-                  {masjid.name}
-                </Text>
-              </View>
-              <Favbtn favId={masjid.key} isBig={false} />
-            </View>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                marginTop: 10,
-              }}>
-              <View style={{flexDirection: 'row'}}>
-                <Icon
-                  name="map-marker-alt"
-                  color="#5C5C5C"
-                  size={24}
-                  style={{
-                    paddingRight: 16,
-                    paddingLeft: 15,
-                    marginTop: 3,
-                  }}
-                />
-                <Text style={{maxWidth: 200}}>{masjid.address}</Text>
-              </View>
-              <View style={{flexDirection: 'row'}}>
-                <Icon
-                  name="directions"
-                  color="#900000"
-                  size={24}
-                  style={{paddingRight: 7}}
-                />
-                <Text
-                  onPress={() => Linking.openURL(`${masjid.gLink}`)}
-                  style={{
-                    color: '#900000',
-                    fontSize: 16,
-                    marginRight: 12,
-                    fontWeight: 'bold',
-                    textDecorationLine: 'underline',
-                  }}>
-                  {masjid.distance} Km Away
-                </Text>
-              </View>
-            </View>
-            {masjid.user.name !== 'No Admin' ? (
-              <>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    marginTop: 10,
-                  }}>
-                  <View style={{flexDirection: 'row'}}>
-                    <Icon
-                      name="user-alt"
-                      color="#5C5C5C"
-                      size={22}
-                      style={{paddingRight: 15, paddingLeft: 13}}
-                    />
-                    <Text style={{maxWidth: 280}}>{masjid.user.name}</Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    marginTop: 10,
-                  }}>
-                  <View style={{flexDirection: 'row'}}>
-                    <Icon
-                      name="phone-alt"
-                      color="#5C5C5C"
-                      size={22}
-                      style={{
-                        paddingRight: 15,
-                        paddingLeft: 13,
-                        marginTop: 3,
-                      }}
-                    />
-                    <Text
-                      style={{maxWidth: 280}}
-                      onPress={() =>
-                        Linking.openURL(`tel:${masjid.user.phone}`)
-                      }>
-                      {masjid.user.phone}
-                    </Text>
-                  </View>
-                  <View>
-                    <Image
-                      source={{
-                        uri: `${masjid.pictureURL}`,
-                      }}
-                      style={{
-                        width: 141,
-                        height: 76,
-                        marginTop: -30,
-                        marginRight: 10,
-                        borderRadius: 10,
-                      }}
-                    />
-                  </View>
-                </View>
-              </>
-            ) : (
-              <>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    paddingBottom: 10,
-                    marginTop: 10,
-                    justifyContent: 'space-between',
-                  }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginTop: 5,
-                    }}>
-                    <AdminRequest id={masjid.key} />
-                  </View>
-                  <Image
-                    source={{
-                      uri: `${masjid.pictureURL}`,
-                    }}
-                    style={{
-                      width: 141,
-                      height: 76,
-                      marginRight: 10,
-                      borderRadius: 10,
-                    }}
-                  />
-                </View>
-              </>
-            )}
+            <TopPart masjidData={masjid} />
             <View
               style={{
                 flexDirection: 'row',
                 marginTop: 10,
               }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  backgroundColor: '#E1E1E1',
-                  padding: 10,
-                  width: '100%',
-                }}>
-                <Text style={{fontSize: 17}}>Last Updated:</Text>
-                <Text style={{fontSize: 17, marginLeft: 5, color: '#008000'}}>
-                  {moment(masjid.timeStamp?.seconds * 1000).format(
-                    'MMMM Do YYYY',
-                  ) === 'Invalid date'
-                    ? 'Not Available'
-                    : moment(masjid.timeStamp?.seconds * 1000).format(
-                        'MMMM, Do YYYY',
-                      )}
-                </Text>
-              </View>
+              <LastUpdated timeStamp={masjid.timeStamp} />
             </View>
             <View
               style={{

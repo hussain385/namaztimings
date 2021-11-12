@@ -1,10 +1,7 @@
-import moment from 'moment';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Alert,
-  Image,
-  Linking,
   RefreshControl,
   SafeAreaView,
   ScrollView,
@@ -19,8 +16,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useSelector} from 'react-redux';
 import {selectCords} from '../redux/locationSlicer';
 import {GetRadMasjidData1} from '../store/firebase';
-import AdminRequest from '../views/AdminRequest';
-import Favbtn from '../views/Favbtn';
+import LastUpdated from '../views/LastUpdated';
+import TopPart from '../views/TopPart';
 
 function HomeScreen({navigation}) {
   const {
@@ -149,186 +146,9 @@ function HomeScreen({navigation}) {
                     MASJID NEAR YOUR LOCATION
                   </Text>
                 </View>
-                <View
-                  style={{
-                    justifyContent: 'space-between',
-                    flexDirection: 'row',
-                    maxWidth: '99%',
-                  }}>
-                  <View style={{flexDirection: 'row'}}>
-                    <Icon
-                      name="mosque"
-                      color="#5C5C5C"
-                      size={20}
-                      style={{paddingRight: 10, paddingLeft: 10}}
-                    />
-                    <Text
-                      style={{
-                        fontSize: 17,
-                        color: '#5C5C5C',
-                        fontWeight: 'bold',
-                        maxWidth: 200,
-                      }}>
-                      {masjidData[0].name}
-                    </Text>
-                  </View>
-                  <Favbtn favId={masjidData[0].key} isBig={false} />
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    maxWidth: '96%',
-                  }}>
-                  <View style={{flexDirection: 'row'}}>
-                    <Icon
-                      name="map-marker-alt"
-                      color="#5C5C5C"
-                      size={24}
-                      style={{
-                        paddingRight: 16,
-                        paddingLeft: 15,
-                        marginTop: 3,
-                      }}
-                    />
-                    <Text style={{maxWidth: 160}}>{masjidData[0].address}</Text>
-                  </View>
-                  <View style={{flexDirection: 'row', marginTop: 5}}>
-                    <Icon
-                      name="directions"
-                      color="#900000"
-                      size={24}
-                      // style={{paddingRight: 7}}
-                    />
-                    <Text
-                      onPress={async () => {
-                        await Linking.openURL(`${masjidData[0].gLink}`);
-                      }}
-                      style={{
-                        color: '#900000',
-                        fontSize: 17,
-                        // marginRight: 12,
-                        fontWeight: 'bold',
-                        textDecorationLine: 'underline',
-                      }}>
-                      {masjidData[0].distance} Km Away
-                    </Text>
-                  </View>
-                </View>
-                {masjidData[0].user.name !== 'No Admin' ? (
-                  <>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginTop: 10,
-                        maxWidth: '96%',
-                      }}>
-                      <View style={{flexDirection: 'row'}}>
-                        <Icon
-                          name="user-alt"
-                          color="#5C5C5C"
-                          size={22}
-                          style={{paddingRight: 15, paddingLeft: 13}}
-                        />
-                        <Text style={{maxWidth: 280, marginTop: 3}}>
-                          {masjidData[0].user.name || 'hussain'}
-                        </Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        marginTop: 10,
-                      }}>
-                      <View style={{flexDirection: 'row'}}>
-                        <Icon
-                          name="phone-alt"
-                          color="#5C5C5C"
-                          size={22}
-                          style={{
-                            paddingRight: 15,
-                            paddingLeft: 13,
-                            marginTop: 3,
-                          }}
-                        />
-                        <Text
-                          style={{maxWidth: 280}}
-                          onPress={async () => {
-                            await Linking.openURL(
-                              `tel:${masjidData[0].user.phone}`,
-                            );
-                          }}>
-                          {masjidData[0].user.phone || '+920000000000'}
-                        </Text>
-                      </View>
-                      <View>
-                        <Image
-                          source={{
-                            uri: `${masjidData[0].pictureURL}`,
-                          }}
-                          style={{
-                            width: 141,
-                            height: 76,
-                            marginTop: -30,
-                            marginRight: 10,
-                            borderRadius: 10,
-                          }}
-                        />
-                      </View>
-                    </View>
-                  </>
-                ) : (
-                  <>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        paddingBottom: 10,
-                        marginTop: 10,
-                        justifyContent: 'space-between',
-                      }}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          marginTop: 5,
-                        }}>
-                        <AdminRequest id={masjidData[0].key} />
-                      </View>
-                      <Image
-                        source={{
-                          uri: `${masjidData[0].pictureURL}`,
-                        }}
-                        style={{
-                          width: 141,
-                          height: 76,
-                          marginRight: 10,
-                          borderRadius: 10,
-                        }}
-                      />
-                    </View>
-                  </>
-                )}
+                <TopPart masjidData={masjidData[0]} />
                 <View style={{flexDirection: 'row', marginTop: 10}}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      backgroundColor: '#E1E1E1',
-                      padding: 10,
-                      width: '100%',
-                    }}>
-                    <Text style={{fontSize: 17}}>Last Updated:</Text>
-                    <Text
-                      style={{fontSize: 17, paddingLeft: 5, color: '#008000'}}>
-                      {moment(masjidData[0].timeStamp?.seconds * 1000).format(
-                        'MMMM Do YYYY',
-                      ) === 'Invalid date'
-                        ? 'Not Available'
-                        : moment(
-                            masjidData[0].timeStamp?.seconds * 1000,
-                          ).format('MMMM, Do YYYY')}
-                    </Text>
-                  </View>
+                  <LastUpdated timeStamp={masjidData[0].timeStamp} />
                 </View>
                 <View style={{flexDirection: 'row', marginTop: 10}}>
                   <View
@@ -498,7 +318,7 @@ function HomeScreen({navigation}) {
                   marginVertical: '50%',
                 }}>
                 <AntDesign name="folder1" size={50} />
-                <Text>No Favourites</Text>
+                <Text>Not Available</Text>
               </View>
             </ScrollView>
           </SafeAreaView>

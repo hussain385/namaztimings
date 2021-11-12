@@ -15,20 +15,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {headerStyles, textStyles} from '../theme/styles/Base';
 import Edit from './Edit';
 import CoText from './Text/Text';
-import {populate} from 'react-redux-firebase';
-import {useSelector} from 'react-redux';
-import {selectFirestore} from '../store/firebase';
 
 const AdminView = ({navigation, route}) => {
-  const {masjidId, isSingle = false} = route.params;
-  const populates = [
-    {child: 'requestList', root: 'requests', childAlias: 'requests'},
-    {child: 'adminId', root: 'users', childAlias: 'admin'},
-  ];
-  const firestore = useSelector(selectFirestore);
-  const snapshot = populate(firestore, 'myMasjids', populates);
-  const data = snapshot[masjidId];
-  console.log(masjidId);
+  const {masjidId, isSingle = false, masjidData} = route.params;
+  console.log(masjidData.timeStamp.seconds, '===>AdminView');
+  const pastTime = moment(masjidData.timeStamp?.seconds * 1000);
+  const now = moment();
+
   return (
     <>
       <Header
@@ -39,10 +32,10 @@ const AdminView = ({navigation, route}) => {
         leftComponent={
           <TouchableOpacity
             onPress={() =>
-              isSingle ? navigation.navigate('home') : navigation.goBack()
+              isSingle ? navigation.openDrawer : navigation.goBack()
             }>
             <Icon
-              name="arrow-left"
+              name={isSingle ? 'bars' : 'arrow-left'}
               color="#ffff"
               size={26}
               style={{paddingLeft: 10}}
@@ -80,7 +73,7 @@ const AdminView = ({navigation, route}) => {
                     textStyles.simple,
                     {fontSize: 10, color: '#1F441E'},
                   ]}
-                  text={data.requestList?.length || 0}
+                  text={masjidData.requestList?.length || 0}
                 />
               </View>
               <MaterialIcons name="bell" size={28} color="white" />
@@ -115,7 +108,7 @@ const AdminView = ({navigation, route}) => {
                   color: '#5C5C5C',
                   fontWeight: 'bold',
                 }}>
-                {data.name}
+                {masjidData.name}
               </Text>
             </View>
           </View>
@@ -131,7 +124,9 @@ const AdminView = ({navigation, route}) => {
                   marginTop: 10,
                 }}
               />
-              <Text style={{maxWidth: 170, marginTop: 5}}>{data.address}</Text>
+              <Text style={{maxWidth: 170, marginTop: 5}}>
+                {masjidData.address}
+              </Text>
             </View>
           </View>
           <View style={{flexDirection: 'row', marginTop: 5}}>
@@ -143,7 +138,7 @@ const AdminView = ({navigation, route}) => {
                 style={{paddingRight: 18, paddingLeft: 13}}
               />
               <Text style={{maxWidth: 280, marginTop: 2}}>
-                {data.admin && data.admin.name}
+                {masjidData.admin && masjidData.admin.name}
               </Text>
             </View>
           </View>
@@ -160,13 +155,13 @@ const AdminView = ({navigation, route}) => {
                 }}
               />
               <Text style={{maxWidth: 280, marginTop: 0}}>
-                {data.admin && data.admin.phone}
+                {masjidData.admin && masjidData.admin.phone}
               </Text>
             </View>
             <View>
               <Image
                 source={{
-                  uri: `${data.pictureURL}`,
+                  uri: `${masjidData.pictureURL}`,
                 }}
                 style={{
                   width: 160,
@@ -188,12 +183,18 @@ const AdminView = ({navigation, route}) => {
               }}>
               <Text style={{fontSize: 17}}>
                 Last Updated:
-                <Text style={{color: '#008000'}}>
-                  {moment(data.timeStamp?.seconds * 1000).format(
+                <Text
+                  style={{
+                    color: `${
+                      now.diff(pastTime, 'days') <= 30 ? '#008000' : 'darkred'
+                    }`,
+                  }}>
+                  {' '}
+                  {moment(masjidData.timeStamp?.seconds * 1000).format(
                     'MMMM Do YYYY',
                   ) === 'Invalid date'
                     ? 'Not Available'
-                    : moment(data.timeStamp?.seconds * 1000).format(
+                    : moment(masjidData.timeStamp?.seconds * 1000).format(
                         'MMMM, Do YYYY',
                       )}
                 </Text>
@@ -212,7 +213,7 @@ const AdminView = ({navigation, route}) => {
               </Text>
             </View>
             <Edit
-              timing={data.timing}
+              timing={masjidData.timing}
               uid={masjidId}
               isRequest={false}
               userInfo={false}
@@ -230,7 +231,7 @@ const AdminView = ({navigation, route}) => {
               style={{
                 paddingRight: 10,
               }}>
-              <Text style={{fontSize: 17}}>{data.timing.fajar}</Text>
+              <Text style={{fontSize: 17}}>{masjidData.timing.fajar}</Text>
             </View>
           </View>
           <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -245,7 +246,7 @@ const AdminView = ({navigation, route}) => {
               style={{
                 paddingRight: 10,
               }}>
-              <Text style={{fontSize: 17}}>{data.timing.zohar}</Text>
+              <Text style={{fontSize: 17}}>{masjidData.timing.zohar}</Text>
             </View>
           </View>
           <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -260,7 +261,7 @@ const AdminView = ({navigation, route}) => {
               style={{
                 paddingRight: 10,
               }}>
-              <Text style={{fontSize: 17}}>{data.timing.asar}</Text>
+              <Text style={{fontSize: 17}}>{masjidData.timing.asar}</Text>
             </View>
           </View>
           <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -275,7 +276,7 @@ const AdminView = ({navigation, route}) => {
               style={{
                 paddingRight: 10,
               }}>
-              <Text style={{fontSize: 17}}>{data.timing.magrib}</Text>
+              <Text style={{fontSize: 17}}>{masjidData.timing.magrib}</Text>
             </View>
           </View>
           <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -290,7 +291,7 @@ const AdminView = ({navigation, route}) => {
               style={{
                 paddingRight: 10,
               }}>
-              <Text style={{fontSize: 17}}>{data.timing.isha}</Text>
+              <Text style={{fontSize: 17}}>{masjidData.timing.isha}</Text>
             </View>
           </View>
           <View
@@ -309,7 +310,9 @@ const AdminView = ({navigation, route}) => {
               style={{
                 paddingRight: 10,
               }}>
-              <Text style={{fontSize: 17}}>{data.timing.jummah || '--'}</Text>
+              <Text style={{fontSize: 17}}>
+                {masjidData.timing.jummah || '--'}
+              </Text>
             </View>
           </View>
           <View
@@ -329,7 +332,7 @@ const AdminView = ({navigation, route}) => {
                 paddingRight: 10,
               }}>
               <Text style={{fontSize: 17}}>
-                {data.timing.eidUlFitr || '--'}
+                {masjidData.timing.eidUlFitr || '--'}
               </Text>
             </View>
           </View>
@@ -350,7 +353,7 @@ const AdminView = ({navigation, route}) => {
                 paddingRight: 10,
               }}>
               <Text style={{fontSize: 17}}>
-                {data.timing.eidUlAddah || '--'}
+                {masjidData.timing.eidUlAddah || '--'}
               </Text>
             </View>
           </View>
@@ -379,8 +382,8 @@ const AdminView = ({navigation, route}) => {
               onPress={() =>
                 navigation.navigate('Notification', {
                   masjidId: masjidId,
-                  masjidName: data.name,
-                  adminId: data.admin.id,
+                  masjidName: masjidData.name,
+                  adminId: masjidData.admin.id,
                 })
               }>
               <Text style={{color: '#CEE6B4'}}>NEWS & ANNOUNCMENTS</Text>
@@ -410,7 +413,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   scrollView: {
-    height: Dimensions.get('screen').height * 0.817,
+    height: Dimensions.get('screen').height * 0.77,
+    marginBottom: 10,
   },
 });
 

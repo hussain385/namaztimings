@@ -117,8 +117,6 @@ const AdminNotification = ({
   ]);
   const Firestore = useSelector(selectFirestore);
   const snapshot = populate(Firestore, 'myMasjidsView', populates);
-
-  console.log(snapshot);
   // const tempData = [];
   // if (isLoaded(snapshot)) {
   //   // console.log(snapshot);
@@ -127,7 +125,7 @@ const AdminNotification = ({
   //       tempData.push({
   //         ...d,
   //         // createdAt: Date.parse(d.timeStamp),
-  //         masjidId: snapshot.id,
+  //         masjid: snapshot.id,
   //         admin: snapshot.admin,
   //       });
   //     });
@@ -289,11 +287,10 @@ const AdminNotification = ({
               </View>
               <View
                 style={{
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
+                  alignItems: 'flex-end',
                   padding: 10,
                 }}>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   disabled={isRead}
                   onPress={() => markAsRead(id)}>
                   <Text
@@ -303,7 +300,7 @@ const AdminNotification = ({
                     }}>
                     Mark As Read
                   </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <TouchableOpacity
                   onPress={() => deleteFunc(masjid, id, auth.uid)}>
                   <Text style={{fontSize: 15, color: 'red'}}>
@@ -325,6 +322,27 @@ const AdminNotification = ({
   ) {
     return (
       <View>
+        <Header
+          containerStyle={{
+            shadowOpacity: 50,
+            elevation: 50,
+          }}
+          centerComponent={
+            <View style={{textAlign: 'center'}}>
+              <Text
+                style={{
+                  color: '#ffff',
+                  fontSize: 22,
+                  marginBottom: 5,
+                  marginTop: 5,
+                  textAlign: 'center',
+                }}>
+                Admin
+              </Text>
+            </View>
+          }
+          backgroundColor="#1F441E"
+        />
         <ActivityIndicator color="#1F441E" size="large" />
       </View>
     );
