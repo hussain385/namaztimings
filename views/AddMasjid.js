@@ -148,7 +148,7 @@ export const AddMasjid = ({navigation}) => {
               timing,
             })
             .then(() =>
-              Alert.alert('Request', 'Your request has been send', [
+              Alert.alert('Request send successfully', 'Jazak Allah u Khairan for your contribution. Admin will review and approve the newly added masjid in 24 hours.', [
                 {
                   text: 'Ok',
                   onPress: () => {

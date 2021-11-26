@@ -78,7 +78,7 @@ const AdminRequest = ({id}) => {
                   .collection('adminRequest')
                   .add({...values})
                   .then(() =>
-                    Alert.alert('Request', 'Your request has been send', [
+                    Alert.alert('Request send successfully', 'Jazak Allah u Khairan for your contribution. Admin will review and contact you in 24 hours.', [
                       {
                         text: 'Ok',
                         onPress: () => {

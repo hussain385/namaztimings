@@ -209,7 +209,7 @@ const Edit = ({
                                 setSubmitting(false);
                                 Alert.alert(
                                   'Request Send!',
-                                  'Request has been forwarded to the admin',
+                                  'Jazak Allah u Khairan, your namaz timings updates are sent to admin, he will review and approve in 24 hours.',
                                   [
                                     {
                                       text: 'Ok',

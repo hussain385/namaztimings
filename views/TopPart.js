@@ -46,7 +46,7 @@ const TopPart = ({masjidData}) => {
               marginTop: 3,
             }}
           />
-          <Text style={{maxWidth: 160}}>{masjidData.address}</Text>
+          <Text numberOfLines={2} style={{maxWidth: '85%'}}>{masjidData.address}</Text>
         </View>
 
         {masjidData.user.name !== 'No Admin' ? (
@@ -55,7 +55,6 @@ const TopPart = ({masjidData}) => {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginTop: 10,
                 maxWidth: '96%',
               }}>
               <View style={{flexDirection: 'row'}}>

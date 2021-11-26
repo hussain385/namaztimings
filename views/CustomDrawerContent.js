@@ -142,7 +142,7 @@ const CustomDrawerContent = ({navigation}) => {
           />
         </View>
       </TouchableOpacity>
-      {/* <TouchableOpacity
+      <TouchableOpacity
         onPress={() => navigation.navigate('Contact Us')}
         style={{
           paddingHorizontal: 20,
@@ -156,20 +156,20 @@ const CustomDrawerContent = ({navigation}) => {
           <CoText textStyles={[{color: '#1F441E'}]} text="Contact Us" />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Terms & Conditions')}
-        style={{
-          paddingHorizontal: 20,
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginTop: 25,
-          marginLeft: 4,
-        }}>
-        <MaterialCommunityIcons name="newspaper" size={26} color="#1F441E" />
-        <View style={{marginLeft: 30}}>
-          <CoText textStyles={[{color: '#1F441E'}]} text="Terms & Conditions" />
-        </View>
-      </TouchableOpacity> */}
+      {/*<TouchableOpacity*/}
+      {/*  onPress={() => navigation.navigate('Terms & Conditions')}*/}
+      {/*  style={{*/}
+      {/*    paddingHorizontal: 20,*/}
+      {/*    flexDirection: 'row',*/}
+      {/*    alignItems: 'center',*/}
+      {/*    marginTop: 25,*/}
+      {/*    marginLeft: 4,*/}
+      {/*  }}>*/}
+      {/*  <MaterialCommunityIcons name="newspaper" size={26} color="#1F441E" />*/}
+      {/*  <View style={{marginLeft: 30}}>*/}
+      {/*    <CoText textStyles={[{color: '#1F441E'}]} text="Terms & Conditions" />*/}
+      {/*  </View>*/}
+      {/*</TouchableOpacity>*/}
       {(() => {
         if (isLoaded(auth) && !isEmpty(auth)) {
           return (
