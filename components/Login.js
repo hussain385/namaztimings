@@ -137,7 +137,7 @@ const Login = ({navigation}) => {
                     justifyContent: 'center',
                   }}>
                   <CoText
-                    text="Masjid Finder Pakistan"
+                    text="Namaz Timings"
                     textStyles={[{fontSize: 30}]}
                   />
                 </View>

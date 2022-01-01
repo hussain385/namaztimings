@@ -107,7 +107,7 @@ const NotificationCard = ({data, masjidName, masjidId, adminId}) => {
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Masjid Finder Karachi</Text>
+            <Text style={styles.modalText}>Namaz Timings</Text>
             <View
               style={{
                 marginBottom: 10,

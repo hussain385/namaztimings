@@ -71,7 +71,7 @@ function HomeScreen({navigation}) {
                 marginBottom: 5,
                 textAlign: 'center',
               }}>
-              Prayer Time
+              Namaz Timings
             </Text>
             {/* <TouchableOpacity
               onPress={() =>
