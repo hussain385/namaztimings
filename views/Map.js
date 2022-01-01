@@ -43,7 +43,7 @@ const Map = ({navigation, route}) => {
                                 onCalloutPress={() => {
                                     navigation.navigate('More Info', {masjid: masjid1});
                                 }}
-                                icon={require('./images/mosque3.png')}
+                                icon={require('./images/mosque4.png')}
                                 coordinate={{
                                     latitude: Number(masjid1.g.geopoint.latitude),
                                     longitude: Number(masjid1.g.geopoint.longitude),
