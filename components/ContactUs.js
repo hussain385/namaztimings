@@ -3,9 +3,10 @@ import {useState} from 'react';
 import HeaderComp from '../views/HeaderComp';
 import {Divider, Menu, Provider} from 'react-native-paper';
 import {Formik} from 'formik';
-import {ActivityIndicator, Dimensions, ScrollView, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {ActivityIndicator, Alert, Dimensions, ScrollView, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Yup from 'yup';
+import firestore from '@react-native-firebase/firestore';
 
 const ERROR = {
     color: 'darkred',
@@ -34,10 +35,22 @@ const ContactUs = ({navigation}) => {
                     userEmail: '',
                 }}
                 validationSchema={AddContactSchema}
-                onSubmit={values => {
-                    setLoading(true);
-                    console.log(values);
-                    setLoading(false);
+                onSubmit={async (values, {resetForm}) => {
+                    await firestore()
+                        .collection('contactForm')
+                        .add(values).then(
+                            a => {
+                                setLoading(false);
+                                Alert.alert('Request send successfully',
+                                    'Jazak Allah u Khairan for your message. Admin will review and reply in 24 hours.',
+                                    [{
+                                        text: 'OK',
+                                        onPress: () => {
+                                            resetForm();
+                                        },
+                                    }])
+                                ;
+                            });
                 }}>{({
                          handleChange,
                          handleBlur,
@@ -122,6 +135,14 @@ const ContactUs = ({navigation}) => {
                                 padding: 10,
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
+                                shadowColor: '#000',
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 5,
+                                },
+                                shadowOpacity: 0.34,
+                                shadowRadius: 6.27,
+                                elevation: 5,
                             }}>
                                 <Text style={{fontSize: 17}}>{values.options}</Text>
                                 <TouchableOpacity style={{backgroundColor: '#1F441E', padding: 5, borderRadius: 10}}
@@ -144,21 +165,30 @@ const ContactUs = ({navigation}) => {
                                 closeMenu();
                             }} title="Queries"/>
                         </Menu>
-                        <View style={{
-                            backgroundColor: '#EDEDED',
-                            margin: 10,
-                            borderRadius: 10,
-                            height: Dimensions.get('screen').height * 0.6,
-                        }}>
-                            <TextInput
-                                style={{paddingLeft: 10}}
-                                onChangeText={handleChange('message')}
-                                onBlur={handleBlur('message')}
-                                value={values.password}
-                                placeholderTextColor="grey"
-                                placeholder="Type Your Message Here"
-                            />
-                        </View>
+                        <Text style={{marginLeft: 10}}>Description</Text>
+                        <TextInput
+                            style={{
+                                paddingLeft: 10,
+                                backgroundColor: '#EDEDED',
+                                margin: 10,
+                                borderRadius: 10,
+                                height: Dimensions.get('screen').height * 0.4,
+                                textAlignVertical: 'top',
+                                shadowColor: '#000',
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 5,
+                                },
+                                shadowOpacity: 0.34,
+                                shadowRadius: 6.27,
+                                elevation: 5,
+                            }}
+                            onChangeText={handleChange('message')}
+                            onBlur={handleBlur('message')}
+                            value={values.password}
+                            placeholderTextColor="grey"
+                            placeholder="Type Your Message Here"
+                        />
                         <View style={{alignItems: 'center', marginVertical: 15}}>
                             <TouchableOpacity
                                 onPress={handleSubmit}

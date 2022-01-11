@@ -18,6 +18,7 @@ import {selectCords} from '../redux/locationSlicer';
 import {GetRadMasjidData1} from '../store/firebase';
 import LastUpdated from '../views/LastUpdated';
 import TopPart from '../views/TopPart';
+import {firebase} from '@react-native-firebase/auth';
 
 function HomeScreen({navigation}) {
   const {
@@ -43,8 +44,7 @@ function HomeScreen({navigation}) {
   }, [location.latitude, location.longitude]);
 
   // #E1E1E1
-
-  console.log(masjidData);
+  // console.log(masjidData);
   return (
     <>
       <Header

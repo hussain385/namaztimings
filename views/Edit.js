@@ -20,6 +20,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 import * as Yup from 'yup';
 import {selectFirebase} from '../store/firebase';
+import messaging from '@react-native-firebase/messaging';
+import axios from 'axios';
 
 const Edit = ({
   timing,
@@ -269,7 +271,45 @@ const Edit = ({
                         },
                       })
                       .then(
-                        () => {
+                        async () => {
+                          const masjid = await firestore()
+                            .collection('Masjid')
+                            .doc(uid)
+                            .get();
+                          if (masjid.data().tokens) {
+                            // console.log(masjid.data().tokens);
+                            for (let token of masjid.data().tokens) {
+                              await axios
+                                .post(
+                                  'https://fcm.googleapis.com/fcm/send',
+                                  {
+                                    to: token,
+                                    notification: {
+                                      title: masjid.data().name,
+                                      body: 'Timings has been updated',
+                                    },
+                                  },
+                                  {
+                                    headers: {
+                                      'Content-Type': 'application/json',
+                                      Authorization:
+                                        'key=AAAAE5W6Aqg:APA91bFw_t03bZFaOIdMQj-irRXr5eygS8UBqL3Vd7UYUpS9u3n96rCPxiwfTLBpyb69og2zOr7amP2bpgKVqjzY7qUdxd2Etdfkxm7qik013Z6cUrzji1P2Q-ehfl-RvcWQ91ROD_4G',
+                                    },
+                                  },
+                                )
+                                .then(
+                                  value1 => {
+                                    console.log(
+                                      value1.data,
+                                      'response from axios',
+                                    );
+                                  },
+                                  reason => {
+                                    console.log(reason);
+                                  },
+                                );
+                            }
+                          }
                           setSubmitting(false);
                           console.log('data sent');
                           setModalVisible(!modalVisible);

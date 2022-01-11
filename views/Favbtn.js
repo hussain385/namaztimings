@@ -4,6 +4,8 @@ import {TouchableOpacity} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import {add, remove, useFavorites} from '../redux/favSlicer';
+import firestore from '@react-native-firebase/firestore';
+import {getFcmToken} from '../store/token';
 
 const Favbtn = ({favId, isBig = true}) => {
   // const [isFav, setIsFav] = useState(false);
@@ -19,10 +21,32 @@ const Favbtn = ({favId, isBig = true}) => {
       return;
     }
 
+    // console.log(getFcmToken());
+    const token = await getFcmToken();
     if (isFound) {
-      dispatch(remove(favId));
+      try {
+        await firestore()
+          .collection('Masjid')
+          .doc(favId)
+          .update({
+            tokens: firestore.FieldValue.arrayRemove(token),
+          });
+        dispatch(remove(favId));
+      } catch (e) {
+        console.log(e, 'error on token remove');
+      }
     } else {
-      dispatch(add(favId));
+      try {
+        await firestore()
+          .collection('Masjid')
+          .doc(favId)
+          .update({
+            tokens: firestore.FieldValue.arrayUnion(token),
+          });
+        dispatch(add(favId));
+      } catch (e) {
+        console.log(e, 'error on token add');
+      }
     }
 
     // if (!_.isNull(favoriteId)) {
