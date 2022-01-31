@@ -20,8 +20,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 import * as Yup from 'yup';
 import {selectFirebase} from '../store/firebase';
-import messaging from '@react-native-firebase/messaging';
 import axios from 'axios';
+import {getFcmToken} from '../store/token';
 
 const Edit = ({
   timing,
@@ -188,12 +188,14 @@ const Edit = ({
                     setSubmitting(false);
                     return returnChange(values.timing);
                   } else if (isRequest) {
+                    const token = await getFcmToken();
                     await firestore()
                       .collection('requests')
                       .add({
                         ...values,
                         isRead: false,
                         timeStamp: firestore.Timestamp.now(),
+                        token,
                       })
                       .then(
                         a => {

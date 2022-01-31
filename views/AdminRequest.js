@@ -14,6 +14,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useFirestore} from 'react-redux-firebase';
 import * as Yup from 'yup';
+import {getFcmToken} from '../store/token';
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
@@ -68,9 +69,10 @@ const AdminRequest = ({id}) => {
               onSubmit={async values => {
                 console.log(values);
                 setLoading(true);
+                const token = await getFcmToken();
                 await firestore
                   .collection('adminRequest')
-                  .add({...values})
+                  .add({...values, token})
                   .then(() =>
                     Alert.alert(
                       'Request send successfully',
