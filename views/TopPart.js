@@ -1,147 +1,158 @@
 import React from 'react';
-import {Dimensions, Image, Linking, Text, View} from 'react-native';
+import {Dimensions, Image, Linking, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AdminRequest from '../views/AdminRequest';
 import Favbtn from '../views/Favbtn';
 
 const TopPart = ({masjidData}) => {
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        width: Dimensions.get('screen').width,
-        justifyContent: 'space-between',
-      }}>
-      <View
-        style={{
-          flexDirection: 'column',
-          width: Dimensions.get('screen').width * 0.5,
-        }}>
-        <View style={{flexDirection: 'row'}}>
-          <Icon
-            name="mosque"
-            color="#5C5C5C"
-            size={20}
-            style={{paddingRight: 10, paddingLeft: 10}}
-          />
-          <Text
-            style={{
-              fontSize: 17,
-              color: '#5C5C5C',
-              fontWeight: 'bold',
-              maxWidth: 200,
-            }}>
-            {masjidData.name}
-          </Text>
-        </View>
-
-        <View style={{flexDirection: 'row'}}>
-          <Icon
-            name="map-marker-alt"
-            color="#5C5C5C"
-            size={24}
-            style={{
-              paddingRight: 16,
-              paddingLeft: 15,
-              marginTop: 3,
-            }}
-          />
-          <Text numberOfLines={2} style={{maxWidth: '85%'}}>{masjidData.address}</Text>
-        </View>
-
-        {masjidData.user.name !== 'No Admin' ? (
-          <>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                maxWidth: '96%',
-              }}>
-              <View style={{flexDirection: 'row'}}>
+    <View style={styles.mainView1}>
+      <View style={styles.mainView2}>
+        <View style={styles.mainView3}>
+          <View style={styles.subView1}>
+            <Icon
+              style={styles.elementStyle}
+              name="mosque"
+              color="#5C5C5C"
+              size={20}
+            />
+            <Icon
+              style={styles.elementStyle}
+              name="map-marker-alt"
+              color="#5C5C5C"
+              size={20}
+            />
+            {masjidData.user.name !== 'No Admin' ? (
+              <>
                 <Icon
+                  style={styles.elementStyle}
                   name="user-alt"
                   color="#5C5C5C"
-                  size={22}
-                  style={{paddingRight: 15, paddingLeft: 13}}
+                  size={20}
                 />
-                <Text style={{maxWidth: 280, marginTop: 3}}>
+                <Icon
+                  style={styles.elementStyle}
+                  name="phone-alt"
+                  color="#5C5C5C"
+                  size={20}
+                />
+              </>
+            ) : (
+              <View style={styles.elementStyle}>
+                <Icon
+                  style={styles.elementStyle}
+                  name="user-alt"
+                  color="#1F441E"
+                  size={20}
+                />
+              </View>
+            )}
+          </View>
+          <View style={styles.subView2}>
+            <Text style={styles.elementStyle}>{masjidData.name}</Text>
+            <Text style={styles.elementStyle} numberOfLines={1}>
+              {masjidData.address}
+            </Text>
+            {masjidData.user.name !== 'No Admin' ? (
+              <>
+                <Text style={styles.elementStyle}>
                   {masjidData.user.name || 'hussain'}
                 </Text>
+                <Text
+                  style={styles.elementStyle}
+                  onPress={async () => {
+                    await Linking.openURL(`tel:${masjidData.user.phone}`);
+                  }}>
+                  {masjidData.user.phone || '+920000000000'}
+                </Text>
+              </>
+            ) : (
+              <View style={styles.elementStyle}>
+                <AdminRequest id={masjidData.key} />
               </View>
-            </View>
-            <View style={{flexDirection: 'row'}}>
-              <Icon
-                name="phone-alt"
-                color="#5C5C5C"
-                size={22}
-                style={{
-                  paddingRight: 15,
-                  paddingLeft: 13,
-                  marginTop: 3,
-                }}
-              />
-              <Text
-                style={{maxWidth: 280}}
-                onPress={async () => {
-                  await Linking.openURL(`tel:${masjidData.user.phone}`);
-                }}>
-                {masjidData.user.phone || '+920000000000'}
-              </Text>
-            </View>
-          </>
-        ) : (
-          <View
-            style={{
-              flexDirection: 'row',
-            }}>
-            <AdminRequest id={masjidData.key} />
+            )}
           </View>
-        )}
+        </View>
       </View>
-      <View
-        style={{
-          flexDirection: 'column',
-          width: Dimensions.get('screen').width * 0.5,
-          alignItems: 'flex-end',
-        }}>
-        <View style={{paddingLeft: 100, marginBottom: 5}}>
+      <View style={styles.mainView4}>
+        <View style={{alignItems: 'flex-end'}}>
           <Favbtn favId={masjidData.key} isBig={false} />
         </View>
-        <View style={{flexDirection: 'row', marginBottom: 5, marginRight: 10}}>
+        <View style={styles.direction}>
           <Icon
             name="directions"
             color="#900000"
             size={24}
-            style={{paddingRight: 7}}
+            style={{marginRight: 5}}
           />
           <Text
+            style={{textDecorationLine: 'underline', color: 'darkred'}}
             onPress={async () => {
               await Linking.openURL(`${masjidData.gLink}`);
-            }}
-            style={{
-              color: '#900000',
-              fontSize: 17,
-              // marginRight: 12,
-              fontWeight: 'bold',
-              textDecorationLine: 'underline',
             }}>
             {masjidData.distance} Km Away
           </Text>
         </View>
-        <Image
-          source={{
-            uri: `${masjidData.pictureURL}`,
-          }}
-          style={{
-            width: 141,
-            height: 76,
-            marginRight: 10,
-            borderRadius: 10,
-          }}
-        />
+        <View style={styles.imageView}>
+          <Image
+            source={{
+              uri: `${
+                masjidData.pictureURL ||
+                'data:image/jpeg;base64,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'
+              }`,
+            }}
+            style={{
+              width: Dimensions.get('screen').width * 0.3,
+              height: Dimensions.get('screen').height * 0.12,
+              backgroundColor: 'grey',
+              borderRadius: 10,
+            }}
+          />
+        </View>
       </View>
     </View>
   );
 };
 
 export default TopPart;
+
+const styles = StyleSheet.create({
+  mainView1: {
+    flexDirection: 'row',
+  },
+  mainView2: {
+    flexDirection: 'column',
+  },
+  subView1: {
+    width: Dimensions.get('screen').width * 0.1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  subView2: {
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    alignContent: 'center',
+    width: Dimensions.get('screen').width * 0.5,
+  },
+  mainView3: {
+    flexDirection: 'row',
+  },
+  mainView4: {
+    width: Dimensions.get('screen').width * 0.35,
+  },
+  imageView: {
+    alignItems: 'flex-end',
+    marginTop: 10,
+  },
+  direction: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    alignContent: 'center',
+    marginTop: 10,
+  },
+  elementStyle: {
+    height: 40,
+  },
+});

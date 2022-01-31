@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, {useEffect, useState} from 'react';
-import {TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import {add, remove, useFavorites} from '../redux/favSlicer';
@@ -140,38 +140,23 @@ const Favbtn = ({favId, isBig = true}) => {
       {isBig ? (
         <TouchableOpacity
           onPress={() => handleFavorite(favId)}
-          style={{
-            backgroundColor: '#E1E1E1',
-            borderRadius: 100,
-            marginRight: 10,
-            textAlign: 'center',
-            padding: 14,
-            marginTop: -10,
-            zIndex: 10,
-          }}>
+          style={styles.favBtn}>
           <Entypo
+            style={{padding: 15}}
             name="star"
             color={isFound ? '#8D2828' : '#5C5C5C'}
-            size={25}
+            size={30}
           />
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
           onPress={() => handleFavorite(favId)}
-          style={{
-            backgroundColor: '#E1E1E1',
-            height: 43,
-            borderRadius: 100,
-            marginRight: 10,
-            textAlign: 'center',
-            padding: 10,
-            marginTop: -10,
-            zIndex: 10,
-          }}>
+          style={styles.favBtn}>
           <Entypo
             name="star"
+            style={{padding: 10}}
             color={isFound ? '#8D2828' : '#5C5C5C'}
-            size={20}
+            size={25}
           />
         </TouchableOpacity>
       )}
@@ -180,3 +165,12 @@ const Favbtn = ({favId, isBig = true}) => {
 };
 
 export default Favbtn;
+const styles = StyleSheet.create({
+  favBtn: {
+    backgroundColor: '#d0d0d0',
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+});

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
-  ActivityIndicator,
   Alert,
+  Dimensions,
   RefreshControl,
   SafeAreaView,
   ScrollView,
@@ -18,7 +18,7 @@ import {selectCords} from '../redux/locationSlicer';
 import {GetRadMasjidData1} from '../store/firebase';
 import LastUpdated from '../views/LastUpdated';
 import TopPart from '../views/TopPart';
-import {firebase} from '@react-native-firebase/auth';
+import {ActivityIndicator} from 'react-native-paper';
 
 function HomeScreen({navigation}) {
   const {
@@ -128,7 +128,13 @@ function HomeScreen({navigation}) {
           </View>
         )}
         {!masjidData[0] && (
-          <View>
+          <View
+            style={{
+              height: Dimensions.get('screen').height * 0.8,
+              justifyContent: 'center',
+              alignItems: 'center',
+              alignContent: 'center',
+            }}>
             <ActivityIndicator color="#1F441E" size="large" />
           </View>
         )}

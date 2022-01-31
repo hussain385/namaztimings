@@ -33,6 +33,7 @@ import Map from './views/Map';
 import Maps1 from './views/Maps1';
 import MasjidInfo from './views/MasjidInfo';
 import ShowMore from './views/ShowMore';
+import {ToastProvider, useToast} from 'react-native-toast-notifications';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -462,6 +463,7 @@ function MyTabs() {
 }
 
 export default function App() {
+  const toast = useToast();
   const persistor = persistStore(store);
   const rrfConfig = {
     userProfile: 'users',
@@ -476,7 +478,20 @@ export default function App() {
 
   React.useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+      Alert.alert(
+        `${remoteMessage.notification.title}`,
+        `${remoteMessage.notification.body}`,
+      );
+      toast.show(
+        `${remoteMessage.notification.title} namaz timings are updated`,
+        {
+          type: 'success',
+          position: 'top',
+          duration: 4000,
+          offset: 30,
+          animationType: 'slide-in',
+        },
+      );
     });
 
     return () => {
@@ -485,14 +500,16 @@ export default function App() {
   }, []);
 
   return (
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <ReactReduxFirebaseProvider {...rrfProps}>
-          <NavigationContainer>
-            <RootStackScreen />
-          </NavigationContainer>
-        </ReactReduxFirebaseProvider>
-      </PersistGate>
-    </Provider>
+    <ToastProvider>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <ReactReduxFirebaseProvider {...rrfProps}>
+            <NavigationContainer>
+              <RootStackScreen />
+            </NavigationContainer>
+          </ReactReduxFirebaseProvider>
+        </PersistGate>
+      </Provider>
+    </ToastProvider>
   );
 }

@@ -23,11 +23,12 @@ const Maps1 = ({route}) => {
         <SafeAreaView>
           <Marker
             title={`${name}`}
-            icon={require('./images/mosque1.png')}
+            icon={require('./images/mosque5.png')}
             coordinate={{
               latitude: Number(latitude),
               longitude: Number(longitude),
-            }}/>
+            }}
+          />
         </SafeAreaView>
       </MapView>
     </SafeAreaView>

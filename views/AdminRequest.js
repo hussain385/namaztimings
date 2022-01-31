@@ -41,12 +41,6 @@ const AdminRequest = ({id}) => {
 
   return (
     <>
-      <Icon
-        name="user-alt"
-        color="#1F441E"
-        size={20}
-        style={{paddingRight: 15, paddingLeft: 14}}
-      />
       <TouchableOpacity
         onPress={() => {
           setModalVisible(!modalVisible);
@@ -78,15 +72,19 @@ const AdminRequest = ({id}) => {
                   .collection('adminRequest')
                   .add({...values})
                   .then(() =>
-                    Alert.alert('Request send successfully', 'Jazak Allah u Khairan for your contribution. Admin will review and contact you in 24 hours.', [
-                      {
-                        text: 'Ok',
-                        onPress: () => {
-                          setModalVisible(!modalVisible);
-                          setLoading(false);
+                    Alert.alert(
+                      'Request send successfully',
+                      'Jazak Allah u Khairan for your contribution. Admin will review and contact you in 24 hours.',
+                      [
+                        {
+                          text: 'Ok',
+                          onPress: () => {
+                            setModalVisible(!modalVisible);
+                            setLoading(false);
+                          },
                         },
-                      },
-                    ]),
+                      ],
+                    ),
                   );
               }}>
               {({

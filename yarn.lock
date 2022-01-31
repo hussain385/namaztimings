@@ -8462,6 +8462,7 @@ __metadata:
     react: 17.0.2
     react-firebase-hooks: ^3.0.5
     react-native: 0.64.2
+    react-native-easy-toast: ^2.0.0
     react-native-elements: ^3.4.2
     react-native-flags: ^1.0.0
     react-native-geocoding: ^0.5.0
@@ -8477,6 +8478,7 @@ __metadata:
     react-native-safe-area-context: ^3.2.0
     react-native-screens: ^3.4.0
     react-native-searchable-country-dropdown: ^1.0.1
+    react-native-toast-notifications: ^3.2.3
     react-native-vector-icons: ^8.1.0
     react-native-webview: ^11.6.5
     react-redux: ^7.2.6
@@ -9296,6 +9298,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prop-types@npm:^15.5.10":
+  version: 15.8.1
+  resolution: "prop-types@npm:15.8.1"
+  dependencies:
+    loose-envify: ^1.4.0
+    object-assign: ^4.1.1
+    react-is: ^16.13.1
+  checksum: c056d3f1c057cb7ff8344c645450e14f088a915d078dcda795041765047fa080d38e5d626560ccaac94a4e16e3aa15f3557c1a9a8d1174530955e992c675e459
+  languageName: node
+  linkType: hard
+
 "prop-types@npm:^15.7.2":
   version: 15.7.2
   resolution: "prop-types@npm:15.7.2"
@@ -9429,7 +9442,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.13.0, react-is@npm:^16.7.0, react-is@npm:^16.8.1":
+"react-is@npm:^16.13.0, react-is@npm:^16.13.1, react-is@npm:^16.7.0, react-is@npm:^16.8.1":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
@@ -9444,6 +9457,18 @@ __metadata:
     jscodeshift: ^0.11.0
     nullthrows: ^1.1.1
   checksum: 545d1e416be5bd0bc27a9bc4d58719317577fbcb38f80082857142f4946ba336df3f5fa3e87137709691acd809ee46e1f52834648399cb50219a70f441d6e6a3
+  languageName: node
+  linkType: hard
+
+"react-native-easy-toast@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "react-native-easy-toast@npm:2.0.0"
+  dependencies:
+    prop-types: ^15.5.10
+  peerDependencies:
+    prop-types: ^15.5.7
+    react-native: ">=0.20.0"
+  checksum: c672ae484f4803d8dd3df4ecda7e62b157b6814cb084fa7be77a4144120af7c86f17ea2a52ab7b36dc68b2eefabdcb8a30acac0074f6d01b9dc6a837262a8c77
   languageName: node
   linkType: hard
 
@@ -9646,6 +9671,16 @@ __metadata:
   peerDependencies:
     react-native: "*"
   checksum: f8fa7f301d97dae96df029771445648b4778562c982b3d0625ae78cb397b35efd0e2b482b240531dad68fde0d18cc23f5181a3904259c6e1ff155823ac34996d
+  languageName: node
+  linkType: hard
+
+"react-native-toast-notifications@npm:^3.2.3":
+  version: 3.2.3
+  resolution: "react-native-toast-notifications@npm:3.2.3"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: d2e8431399beaca4b04b474361416d7b6270d9f9a2332c4e63b3e8a5150c14504e005ae9a8b06fc4bd9b0a75fa054566f3d5679f86d6d9058e9f9c06e136c5b8
   languageName: node
   linkType: hard
 

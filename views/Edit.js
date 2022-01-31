@@ -591,8 +591,10 @@ const Edit = ({
                     </Button>
                   </View>
                   <DateTimePickerModal
+                    is24Hour={false}
                     isVisible={isTimePickerVisible}
                     mode="time"
+                    locale="en_GB"
                     onConfirm={e => handleConfirm(e, setFieldValue)}
                     onCancel={hideTimePicker}
                   />

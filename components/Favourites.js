@@ -117,7 +117,7 @@ const Favourites = ({navigation}) => {
           }}>
           <View style={{flexDirection: 'row'}}>
             <View style={{flexGrow: 1}} />
-            <View style={{top: -50}}>
+            <View style={{top: -60, right: 10}}>
               <Favbtn favId={favId} isBig={true} />
             </View>
           </View>
