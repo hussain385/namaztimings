@@ -16,6 +16,7 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Yup from 'yup';
 import firestore from '@react-native-firebase/firestore';
+import {getFcmToken} from '../store/token';
 
 const ERROR = {
   color: 'darkred',
@@ -45,9 +46,10 @@ const ContactUs = ({navigation}) => {
         }}
         validationSchema={AddContactSchema}
         onSubmit={async (values, {resetForm}) => {
+          const token = await getFcmToken();
           await firestore()
             .collection('contactForm')
-            .add(values)
+            .add({...values, token})
             .then(a => {
               setLoading(false);
               Alert.alert(
