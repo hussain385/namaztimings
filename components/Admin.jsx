@@ -48,38 +48,36 @@ const Admin = ({navigation}) => {
   console.log(adminMasjid.length, '===> new');
   return (
     <SafeAreaView>
-      {adminMasjid.length > 1 && (
-        <Header
-          containerStyle={{
-            shadowOpacity: 50,
-            elevation: 50,
-          }}
-          leftComponent={
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
-              <Icon
-                name="bars"
-                color="#ffff"
-                size={26}
-                style={{paddingLeft: 10}}
-              />
-            </TouchableOpacity>
-          }
-          centerComponent={
-            <View style={{textAlign: 'center'}}>
-              <Text
-                style={{
-                  color: '#ffff',
-                  fontSize: 22,
-                  marginBottom: 5,
-                  textAlign: 'center',
-                }}>
-                Admin
-              </Text>
-            </View>
-          }
-          backgroundColor="#1F441E"
-        />
-      )}
+      <Header
+        containerStyle={{
+          shadowOpacity: 50,
+          elevation: 50,
+        }}
+        leftComponent={
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <Icon
+              name="bars"
+              color="#ffff"
+              size={26}
+              style={{paddingLeft: 10}}
+            />
+          </TouchableOpacity>
+        }
+        centerComponent={
+          <View style={{textAlign: 'center'}}>
+            <Text
+              style={{
+                color: '#ffff',
+                fontSize: 22,
+                marginBottom: 5,
+                textAlign: 'center',
+              }}>
+              Admin
+            </Text>
+          </View>
+        }
+        backgroundColor="#1F441E"
+      />
       {!isLoaded(snapshot) && (
         <ActivityIndicator color="#1F441E" size="large" />
       )}

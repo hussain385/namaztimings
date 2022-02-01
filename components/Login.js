@@ -136,10 +136,7 @@ const Login = ({navigation}) => {
                     flex: 0.5,
                     justifyContent: 'center',
                   }}>
-                  <CoText
-                    text="Namaz Timings"
-                    textStyles={[{fontSize: 30}]}
-                  />
+                  <CoText text="Namaz Timings" textStyles={[{fontSize: 30}]} />
                 </View>
 
                 <View

@@ -1,6 +1,5 @@
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/auth';
-import messaging from '@react-native-firebase/messaging';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
@@ -34,6 +33,7 @@ import Maps1 from './views/Maps1';
 import MasjidInfo from './views/MasjidInfo';
 import ShowMore from './views/ShowMore';
 import {ToastProvider, useToast} from 'react-native-toast-notifications';
+import messaging from '@react-native-firebase/messaging';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -463,8 +463,8 @@ function MyTabs() {
 }
 
 export default function App() {
-  const toast = useToast();
   const persistor = persistStore(store);
+  const toast = useToast();
   const rrfConfig = {
     userProfile: 'users',
     useFirestoreForProfile: true, // Firestore for Profile instead of Realtime DB
@@ -494,22 +494,20 @@ export default function App() {
       );
     });
 
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+    return () => unsubscribe();
+  }, [toast]);
 
   return (
-    <ToastProvider>
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
-          <ReactReduxFirebaseProvider {...rrfProps}>
-            <NavigationContainer>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <ReactReduxFirebaseProvider {...rrfProps}>
+          <NavigationContainer>
+            <ToastProvider>
               <RootStackScreen />
-            </NavigationContainer>
-          </ReactReduxFirebaseProvider>
-        </PersistGate>
-      </Provider>
-    </ToastProvider>
+            </ToastProvider>
+          </NavigationContainer>
+        </ReactReduxFirebaseProvider>
+      </PersistGate>
+    </Provider>
   );
 }
