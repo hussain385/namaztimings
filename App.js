@@ -34,6 +34,7 @@ import MasjidInfo from './views/MasjidInfo';
 import ShowMore from './views/ShowMore';
 import {ToastProvider, useToast} from 'react-native-toast-notifications';
 import messaging from '@react-native-firebase/messaging';
+import {saveToken} from './store/token';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -494,7 +495,12 @@ export default function App() {
       );
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      messaging().onTokenRefresh(token => {
+        saveToken(token);
+      });
+    };
   }, [toast]);
 
   return (

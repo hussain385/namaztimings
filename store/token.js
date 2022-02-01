@@ -9,13 +9,18 @@ export const getFcmToken = async () => {
       fcmToken = await messaging().getToken();
       if (fcmToken) {
         console.log(fcmToken, 'Generated new token');
-        await AsyncStorage.setItem('fcmToken', fcmToken);
+        await saveToken(fcmToken);
       }
     } catch (error) {
       console.log(error, 'error raised in fcmToken');
     }
   }
   return fcmToken;
+};
+
+export const saveToken = async fcmToken => {
+  console.log('saving token ', fcmToken);
+  await AsyncStorage.setItem('fcmToken', fcmToken);
 };
 
 export const notificationListener = async () => {
