@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Dimensions, Image, Linking, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import AdminRequest from '../views/AdminRequest';
 import Favbtn from '../views/Favbtn';
 
 const TopPart = ({masjidData}) => {
+  const [more, setMore] = useState(false);
   return (
     <View style={styles.mainView1}>
       <View style={styles.mainView2}>
@@ -50,9 +51,23 @@ const TopPart = ({masjidData}) => {
           </View>
           <View style={styles.subView2}>
             <Text style={styles.elementStyle}>{masjidData.name}</Text>
-            <Text style={styles.elementStyle} numberOfLines={1}>
-              {masjidData.address}
-            </Text>
+            <View>
+              <Text numberOfLines={more ? undefined : 1}>
+                {masjidData.address}
+              </Text>
+              <Text
+                onPress={() => {
+                  setMore(!more);
+                }}
+                style={{color: '#1F441E'}}>
+                View {more ? 'more' : 'less'}
+              </Text>
+            </View>
+            {/*<Pressable*/}
+            {/*  onPress={() => {*/}
+            {/*    setMore(!more);*/}
+            {/*  }}>*/}
+            {/*</Pressable>*/}
             {masjidData.user.name !== 'No Admin' ? (
               <>
                 <Text style={styles.elementStyle}>

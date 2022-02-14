@@ -2,7 +2,6 @@ import {compose} from '@reduxjs/toolkit';
 import Fuse from 'fuse.js';
 import React, {useEffect, useState} from 'react';
 import {
-  ActivityIndicator,
   Dimensions,
   FlatList,
   SafeAreaView,
@@ -19,6 +18,7 @@ import {firestoreConnect, isLoaded, populate} from 'react-redux-firebase';
 import {getCurrentLocation, sortMasjidData1} from '../store/firebase';
 import MasjidCard from '../views/MasjidCard';
 import {selectCords, setLocation} from '../redux/locationSlicer';
+import {ActivityIndicator} from 'react-native-paper';
 
 const populates = [
   {child: 'adminId', root: 'users', childAlias: 'user'}, // replace owner with user object
@@ -32,6 +32,7 @@ const Search = props => {
   const dispatch = useDispatch();
   const masjidData = sortMasjidData1(masjid, location);
   console.log(masjidData, '<==== masjidData from search');
+
   function onChangeSearch(text) {
     const fuse = new Fuse(masjidData, {
       keys: ['address'],
@@ -168,7 +169,17 @@ const Search = props => {
       {/* <View>
       </View> */}
 
-      {!isLoaded(masjid) && <ActivityIndicator color="#1F441E" size="large" />}
+      {!isLoaded(masjid) && (
+        <View
+          style={{
+            height: Dimensions.get('screen').height * 0.7,
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignContent: 'center',
+          }}>
+          <ActivityIndicator color="#1F441E" size="large" />
+        </View>
+      )}
       {(() => {
         if (result === null) {
           return (

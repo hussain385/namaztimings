@@ -18,7 +18,7 @@ import CoText from './Text/Text';
 
 const AdminView = ({navigation, route}) => {
   const {masjidId, isSingle = false, Masjid} = route.params;
-  // console.log(Masjid.timeStamp.seconds, '===>AdminView');
+  console.log(Masjid, '===>AdminView');
   const pastTime = moment(Masjid.timeStamp?.seconds * 1000);
   const now = moment();
 

@@ -35,6 +35,7 @@ import ShowMore from './views/ShowMore';
 import {ToastProvider, useToast} from 'react-native-toast-notifications';
 import messaging from '@react-native-firebase/messaging';
 import {saveToken} from './store/token';
+import Donation from './components/Donation';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -237,6 +238,14 @@ const HomeStackScreen = ({navigation}) => (
     <HomeStack.Screen
       name="Forgot"
       component={ForgotPassword}
+      options={{
+        title: 'Forgot',
+        headerShown: false,
+      }}
+    />
+    <HomeStack.Screen
+      name="Donation"
+      component={Donation}
       options={{
         title: 'Forgot',
         headerShown: false,

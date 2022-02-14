@@ -124,6 +124,7 @@ const NotificationCard = ({data, masjidName, masjidId, adminId}) => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
+                width: Dimensions.get('screen').width * 0.7,
               }}>
               <Pressable
                 style={[styles.button, styles.buttonOpen]}

@@ -201,69 +201,76 @@ const MasjidInfo = ({route, navigation}) => {
                 <Text style={{fontSize: 17}}>{masjid.timing.isha}</Text>
               </View>
             </View>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                marginTop: 10,
-              }}>
+            {masjid.timing.jummah && (
               <View
                 style={{
-                  paddingLeft: 10,
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  marginTop: 10,
                 }}>
-                <Text style={{fontSize: 17}}>Jumu&apos;ah</Text>
+                <View
+                  style={{
+                    paddingLeft: 10,
+                  }}>
+                  <Text style={{fontSize: 17}}>Jumu&apos;ah</Text>
+                </View>
+                <View
+                  style={{
+                    paddingRight: 10,
+                  }}>
+                  <Text style={{fontSize: 17}}>
+                    {masjid.timing.jummah || '--'}
+                  </Text>
+                </View>
               </View>
+            )}
+
+            {masjid.timing.eidUlFitr && (
               <View
                 style={{
-                  paddingRight: 10,
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  marginTop: 10,
                 }}>
-                <Text style={{fontSize: 17}}>
-                  {masjid.timing.jummah || '--'}
-                </Text>
+                <View
+                  style={{
+                    paddingLeft: 10,
+                  }}>
+                  <Text style={{fontSize: 17}}>Eid Ul Fitr</Text>
+                </View>
+                <View
+                  style={{
+                    paddingRight: 10,
+                  }}>
+                  <Text style={{fontSize: 17}}>
+                    {masjid.timing.eidUlFitr || '--'}
+                  </Text>
+                </View>
               </View>
-            </View>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                marginTop: 10,
-              }}>
+            )}
+            {masjid.timing.eidUlAddah && (
               <View
                 style={{
-                  paddingLeft: 10,
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  marginTop: 10,
                 }}>
-                <Text style={{fontSize: 17}}>Eid Ul Fitr</Text>
+                <View
+                  style={{
+                    paddingLeft: 10,
+                  }}>
+                  <Text style={{fontSize: 17}}>Eid Ul Adha</Text>
+                </View>
+                <View
+                  style={{
+                    paddingRight: 10,
+                  }}>
+                  <Text style={{fontSize: 17}}>
+                    {masjid.timing.eidUlAddah || '--'}
+                  </Text>
+                </View>
               </View>
-              <View
-                style={{
-                  paddingRight: 10,
-                }}>
-                <Text style={{fontSize: 17}}>
-                  {masjid.timing.eidUlFitr || '--'}
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                marginTop: 10,
-              }}>
-              <View
-                style={{
-                  paddingLeft: 10,
-                }}>
-                <Text style={{fontSize: 17}}>Eid Ul Adha</Text>
-              </View>
-              <View
-                style={{
-                  paddingRight: 10,
-                }}>
-                <Text style={{fontSize: 17}}>
-                  {masjid.timing.eidUlAddah || '--'}
-                </Text>
-              </View>
-            </View>
+            )}
           </View>
           <View
             style={{
@@ -318,8 +325,7 @@ const MasjidInfo = ({route, navigation}) => {
                 width: '70%',
                 marginHorizontal: 10,
               }}
-              // onPress={() => navigation.navigate('Show More')}
-            >
+              onPress={() => navigation.navigate('Donation')}>
               <Text style={{color: '#CEE6B4'}}>Donation</Text>
             </TouchableOpacity>
           </View>

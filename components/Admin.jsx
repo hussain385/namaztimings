@@ -9,8 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Header} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useSelector} from 'react-redux';
 import {
   isEmpty,
@@ -21,6 +19,8 @@ import {
 import {modifyData, selectFirebase, selectFirestore} from '../store/firebase';
 import AdminCard from '../views/AdminCard';
 import AdminView from '../views/AdminView';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import {Header} from 'react-native-elements';
 
 const populates = [
   {child: 'requestList', root: 'requests', childAlias: 'requests'},
@@ -45,39 +45,41 @@ const Admin = ({navigation}) => {
   const adminMasjid = _.map(snapshot, (doc, id) => {
     return {...doc, id};
   });
-  console.log(adminMasjid.length, '===> new');
+  console.log(adminMasjid, '===> new');
   return (
     <SafeAreaView>
-      <Header
-        containerStyle={{
-          shadowOpacity: 50,
-          elevation: 50,
-        }}
-        leftComponent={
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <Icon
-              name="bars"
-              color="#ffff"
-              size={26}
-              style={{paddingLeft: 10}}
-            />
-          </TouchableOpacity>
-        }
-        centerComponent={
-          <View style={{textAlign: 'center'}}>
-            <Text
-              style={{
-                color: '#ffff',
-                fontSize: 22,
-                marginBottom: 5,
-                textAlign: 'center',
-              }}>
-              Admin
-            </Text>
-          </View>
-        }
-        backgroundColor="#1F441E"
-      />
+      {adminMasjid.length >= 1 && (
+        <Header
+          containerStyle={{
+            shadowOpacity: 50,
+            elevation: 50,
+          }}
+          leftComponent={
+            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+              <Icon
+                name="bars"
+                color="#ffff"
+                size={26}
+                style={{paddingLeft: 10}}
+              />
+            </TouchableOpacity>
+          }
+          centerComponent={
+            <View style={{textAlign: 'center'}}>
+              <Text
+                style={{
+                  color: '#ffff',
+                  fontSize: 22,
+                  marginBottom: 5,
+                  textAlign: 'center',
+                }}>
+                Admin
+              </Text>
+            </View>
+          }
+          backgroundColor="#1F441E"
+        />
+      )}
       {!isLoaded(snapshot) && (
         <ActivityIndicator color="#1F441E" size="large" />
       )}
