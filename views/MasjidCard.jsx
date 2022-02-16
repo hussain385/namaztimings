@@ -7,11 +7,19 @@ import {
   View,
 } from 'react-native';
 import Favbtn from './Favbtn';
+import Animated, {Layout, ZoomIn, ZoomOut} from 'react-native-reanimated';
+import styled from 'styled-components/native';
+
+const Card = styled(Animated.View)`
+  margin: 10px;
+  background-color: #ffff;
+  border-radius: 5px;
+`;
 
 export default class MasjidCard extends PureComponent {
   render() {
     return (
-      <View
+      <Card
         key={this.props.masjid.key}
         style={{
           margin: 10,
@@ -25,7 +33,10 @@ export default class MasjidCard extends PureComponent {
           shadowOpacity: 0.34,
           shadowRadius: 6.27,
           elevation: 5,
-        }}>
+        }}
+        entering={ZoomIn}
+        exiting={ZoomOut}
+        layout={Layout.delay(200)}>
         <TouchableOpacity
           onPress={() =>
             this.props.nav.navigate('More Info', {
@@ -113,7 +124,7 @@ export default class MasjidCard extends PureComponent {
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </Card>
     );
   }
 }

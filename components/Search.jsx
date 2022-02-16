@@ -19,6 +19,7 @@ import {getCurrentLocation, sortMasjidData1} from '../store/firebase';
 import MasjidCard from '../views/MasjidCard';
 import {selectCords, setLocation} from '../redux/locationSlicer';
 import {ActivityIndicator} from 'react-native-paper';
+import Animated, {FadeOut, Layout} from 'react-native-reanimated';
 
 const populates = [
   {child: 'adminId', root: 'users', childAlias: 'user'}, // replace owner with user object
@@ -170,15 +171,16 @@ const Search = props => {
       </View> */}
 
       {!isLoaded(masjid) && (
-        <View
+        <Animated.View
           style={{
             height: Dimensions.get('screen').height * 0.7,
             justifyContent: 'center',
             alignItems: 'center',
             alignContent: 'center',
-          }}>
+          }}
+          layout={Layout}>
           <ActivityIndicator color="#1F441E" size="large" />
-        </View>
+        </Animated.View>
       )}
       {(() => {
         if (result === null) {
