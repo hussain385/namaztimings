@@ -1,6 +1,6 @@
+package com.namaztimings;
 import expo.modules.ReactActivityDelegateWrapper;
 import com.facebook.react.ReactActivityDelegate;
-package com.namaztimings;
 
 import com.facebook.react.ReactActivity;
 

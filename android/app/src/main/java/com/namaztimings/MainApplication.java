@@ -1,7 +1,7 @@
+package com.namaztimings;
 import android.content.res.Configuration;
 import expo.modules.ApplicationLifecycleDispatcher;
 import expo.modules.ReactNativeHostWrapper;
-package com.namaztimings;
 
 import android.app.Application;
 import android.content.Context;
