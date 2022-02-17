@@ -9,7 +9,7 @@ const TopPart = ({masjidData}) => {
   return (
     <View style={styles.mainView1}>
       <View style={styles.mainView2}>
-        <View style={styles.elementStyle}>
+        <View style={[styles.elementStyle, {paddingTop: 0}]}>
           <Icon
             style={styles.iconStyle}
             name="mosque"
