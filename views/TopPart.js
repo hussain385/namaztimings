@@ -1,93 +1,77 @@
 import React, {useState} from 'react';
 import {Dimensions, Image, Linking, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import AdminRequest from '../views/AdminRequest';
 import Favbtn from '../views/Favbtn';
+import AdminRequest from './AdminRequest';
 
 const TopPart = ({masjidData}) => {
   const [more, setMore] = useState(false);
   return (
     <View style={styles.mainView1}>
       <View style={styles.mainView2}>
-        <View style={styles.mainView3}>
-          <View style={styles.subView1}>
-            <Icon
-              style={styles.elementStyle}
-              name="mosque"
-              color="#5C5C5C"
-              size={20}
-            />
-            <Icon
-              style={styles.elementStyle}
-              name="map-marker-alt"
-              color="#5C5C5C"
-              size={20}
-            />
-            {masjidData.user.name !== 'No Admin' ? (
-              <>
-                <Icon
-                  style={styles.elementStyle}
-                  name="user-alt"
-                  color="#5C5C5C"
-                  size={20}
-                />
-                <Icon
-                  style={styles.elementStyle}
-                  name="phone-alt"
-                  color="#5C5C5C"
-                  size={20}
-                />
-              </>
-            ) : (
-              <View style={styles.elementStyle}>
-                <Icon
-                  style={styles.elementStyle}
-                  name="user-alt"
-                  color="#1F441E"
-                  size={20}
-                />
-              </View>
-            )}
-          </View>
-          <View style={styles.subView2}>
-            <Text style={styles.elementStyle}>{masjidData.name}</Text>
-            <View>
-              <Text numberOfLines={more ? undefined : 1}>
-                {masjidData.address}
-              </Text>
-              <Text
-                onPress={() => {
-                  setMore(!more);
-                }}
-                style={{color: '#1F441E'}}>
-                View {more ? 'more' : 'less'}
-              </Text>
-            </View>
-            {/*<Pressable*/}
-            {/*  onPress={() => {*/}
-            {/*    setMore(!more);*/}
-            {/*  }}>*/}
-            {/*</Pressable>*/}
-            {masjidData.user.name !== 'No Admin' ? (
-              <>
-                <Text style={styles.elementStyle}>
-                  {masjidData.user.name || 'hussain'}
-                </Text>
-                <Text
-                  style={styles.elementStyle}
-                  onPress={async () => {
-                    await Linking.openURL(`tel:${masjidData.user.phone}`);
-                  }}>
-                  {masjidData.user.phone || '+920000000000'}
-                </Text>
-              </>
-            ) : (
-              <View style={styles.elementStyle}>
-                <AdminRequest id={masjidData.key} />
-              </View>
-            )}
+        <View style={styles.elementStyle}>
+          <Icon
+            style={styles.iconStyle}
+            name="mosque"
+            color="#5C5C5C"
+            size={20}
+          />
+          <Text>{masjidData.name}</Text>
+        </View>
+        <View style={styles.elementStyle}>
+          <Icon
+            style={styles.iconStyle}
+            name="map-marker-alt"
+            color="#5C5C5C"
+            size={20}
+          />
+          <View>
+            <Text
+              style={{width: Dimensions.get('screen').width * 0.45}}
+              numberOfLines={more ? undefined : 1}>
+              {masjidData.address}
+            </Text>
+            <Text
+              onPress={() => {
+                setMore(!more);
+              }}
+              style={{color: '#1F441E'}}>
+              View {more ? 'more' : 'less'}
+            </Text>
           </View>
         </View>
+        {masjidData.user.name !== 'No Admin' ? (
+          <>
+            <View style={styles.elementStyle}>
+              <Icon
+                style={styles.iconStyle}
+                name="user-alt"
+                color="#5C5C5C"
+                size={20}
+              />
+              <Text>{masjidData.user.name || 'hussain'}</Text>
+            </View>
+            <View style={styles.elementStyle}>
+              <Icon
+                style={styles.iconStyle}
+                name="phone-alt"
+                color="#5C5C5C"
+                size={20}
+              />
+              <Text>{masjidData.user.phone || '+920000000000'}</Text>
+            </View>
+          </>
+        ) : (
+          <View style={styles.elementStyle}>
+            <Icon
+              style={styles.iconStyle}
+              name="user-alt"
+              color="#1F441E"
+              size={20}
+            />
+            <AdminRequest id={masjidData.key} />
+          </View>
+        )}
       </View>
       <View style={styles.mainView4}>
         <View style={{alignItems: 'flex-end'}}>
@@ -168,6 +152,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   elementStyle: {
-    height: 40,
+    flexDirection: 'row',
+    width: Dimensions.get('screen').width * 0.6,
+    paddingTop: 17,
+  },
+  iconStyle: {
+    alignSelf: 'center',
+    textAlign: 'center',
+    width: 50,
   },
 });
