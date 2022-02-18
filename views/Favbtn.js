@@ -152,12 +152,14 @@ const Favbtn = ({favId, isBig = true}) => {
         <TouchableOpacity
           onPress={() => handleFavorite(favId)}
           style={styles.favBtn}>
+          {/*<Animated.View>*/}
           <Entypo
             name="star"
             style={{padding: 10}}
             color={isFound ? '#8D2828' : '#5C5C5C'}
             size={25}
           />
+          {/*</Animated.View>*/}
         </TouchableOpacity>
       )}
     </>

@@ -205,7 +205,6 @@ const Edit = ({
                               .collection('Masjid')
                               .doc(uid)
                               .update({
-                                timeStamp: firestore.Timestamp.now(),
                                 requestList: firestore.FieldValue.arrayUnion(
                                   a.id,
                                 ),

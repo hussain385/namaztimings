@@ -36,7 +36,7 @@ const TopPart = ({masjidData}) => {
                 setMore(!more);
               }}
               style={{color: '#1F441E'}}>
-              View {more ? 'more' : 'less'}
+              View {!more ? 'more' : 'less'}
             </Text>
           </View>
         </View>
