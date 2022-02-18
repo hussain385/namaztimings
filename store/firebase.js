@@ -65,15 +65,15 @@ export function modifyData(data, id, d) {
 export function sortMasjidData1(snapshot, {latitude, longitude}) {
   const masjids = [];
 
-  if (
-    _.isUndefined(snapshot) ||
-    _.isUndefined(latitude) ||
-    _.isUndefined(longitude)
-  ) {
+  if (_.isNil(snapshot) || _.isNil(latitude) || _.isNil(longitude)) {
     return [];
   }
 
   _.forEach(snapshot, (data, key) => {
+    console.log(data, 'sortMasjidData1');
+    if (_.isNil(data)) {
+      return;
+    }
     const loc1 = data.g.geopoint;
     const d = haversine(loc1, {latitude, longitude});
     const tempData = modifyData(data, key, d);
