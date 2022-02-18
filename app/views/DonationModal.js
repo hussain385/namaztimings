@@ -33,7 +33,7 @@ const DonationModal = props => {
                   width: Window_Width * 0.35,
                   height: Window_Height * 0.042,
                 }}
-                source={require('../assests/image/Easypaisa.png')}
+                source={require('../../assests/image/Easypaisa.png')}
               />
               <Input
                 style={styles.inputStyle}
@@ -48,7 +48,7 @@ const DonationModal = props => {
                   width: Window_Width * 0.24,
                   height: Window_Height * 0.042,
                 }}
-                source={require('../assests/image/Paytm.png')}
+                source={require('../../assests/image/Paytm.png')}
               />
               <Input
                 style={styles.inputStyle}
@@ -64,7 +64,7 @@ const DonationModal = props => {
                   width: Window_Width * 0.19,
                   height: Window_Height * 0.054,
                 }}
-                source={require('../assests/image/Jazz.png')}
+                source={require('../../assests/image/Jazz.png')}
               />
               <Input
                 style={styles.inputStyle}

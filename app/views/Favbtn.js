@@ -100,7 +100,7 @@ const Favbtn = ({favId, isBig = true}) => {
         setIsFound(false);
       }
     } else {
-      console.log('empty', favoriteId);
+      console.log('empty Fav Id', favoriteId);
       setIsFound(false);
     }
 

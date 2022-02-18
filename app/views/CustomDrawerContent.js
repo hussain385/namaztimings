@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useSelector} from 'react-redux';
 import {isEmpty, isLoaded, useFirebase} from 'react-redux-firebase';
-import CoText from '../views/Text/Text';
+import CoText from './Text/Text';
 import {selectFirebase} from '../store/firebase';
 
 const CustomDrawerContent = ({navigation}) => {

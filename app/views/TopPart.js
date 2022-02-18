@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Dimensions, Image, Linking, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Favbtn from '../views/Favbtn';
+import Favbtn from './Favbtn';
 import AdminRequest from './AdminRequest';
 
 const TopPart = ({masjidData}) => {

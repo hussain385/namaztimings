@@ -29,7 +29,7 @@ const Donation = ({navigation}) => {
             Masjid Name
           </Text>
           <Image
-            source={require('../assests/image/donation.png')}
+            source={require('../../assests/image/donation.png')}
             style={{
               width: Window_Width * 0.6,
               height: Window_Height * 0.4,

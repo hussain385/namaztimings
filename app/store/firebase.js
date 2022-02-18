@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import Geolocation, {SuccessCallback} from 'react-native-geolocation-service';
 import {useDispatch, useSelector} from 'react-redux';
-import appConfig from '../app.json';
+import appConfig from '../../app.json';
 import {selectCords, setLocation} from '../redux/locationSlicer';
 import {useFavorites} from '../redux/favSlicer';
 
