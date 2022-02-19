@@ -37,6 +37,7 @@ const Edit = ({
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [namazTime, setNamazTime] = useState('');
+  console.log(uid, '===> id');
   // const [disabled, setDisabled] = useState(userInfo);
   // const [time, setTime] = useState({
   //   userName: '',
@@ -149,7 +150,13 @@ const Edit = ({
         onPress={() => {
           setModalVisible(!modalVisible);
         }}>
-        <Text style={{fontSize: 16, marginTop: 3, fontWeight: '200'}}>
+        <Text
+          style={{
+            fontSize: 16,
+            marginTop: 3,
+            fontWeight: '200',
+            color: 'black',
+          }}>
           {value}
         </Text>
         <Icon name="square-edit-outline" size={24} style={{marginTop: 1}} />
@@ -656,7 +663,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     elevation: 2,
-    width: '30%',
+    width: '40%',
   },
   buttonOpen: {
     backgroundColor: '#5C5C5C',

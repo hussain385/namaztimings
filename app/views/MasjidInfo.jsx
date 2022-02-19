@@ -15,7 +15,6 @@ import TopPart from './TopPart';
 
 const MasjidInfo = ({route, navigation}) => {
   const {masjid} = route.params;
-  console.log(masjid.user);
   return (
     <>
       <Header
@@ -325,7 +324,15 @@ const MasjidInfo = ({route, navigation}) => {
                 width: '70%',
                 marginHorizontal: 10,
               }}
-              onPress={() => navigation.navigate('Donation')}>
+              onPress={() =>
+                navigation.navigate('Donation', {
+                  masjidId: undefined,
+                  donationInfo:
+                    masjid.donationInfo || 'No information set by admin',
+                  edit: true,
+                  masjidName: masjid.name,
+                })
+              }>
               <Text style={{color: '#CEE6B4'}}>Donation</Text>
             </TouchableOpacity>
           </View>

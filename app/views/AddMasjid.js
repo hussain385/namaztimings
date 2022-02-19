@@ -594,7 +594,7 @@ export const AddMasjid = ({navigation}) => {
                 style={{
                   alignItems: 'center',
                   alignSelf: 'center',
-                  height: 200,
+                  paddingBottom: 10,
                   backgroundColor: '#DDDDDD',
                   width: '90%',
                   marginTop: 10,

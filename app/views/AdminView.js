@@ -18,9 +18,10 @@ import CoText from './Text/Text';
 
 const AdminView = ({navigation, route}) => {
   const {masjidId, isSingle = false, Masjid} = route.params;
-  console.log(Masjid, '===>AdminView');
   const pastTime = moment(Masjid.timeStamp?.seconds * 1000);
   const now = moment();
+
+  // console.log(Masjid, '==> masjid info');
 
   return (
     <>
@@ -371,7 +372,7 @@ const AdminView = ({navigation, route}) => {
             <TouchableOpacity
               style={{
                 alignItems: 'center',
-                backgroundColor: '#1F441E',
+                backgroundColor: '#CEE6B4',
                 padding: 10,
                 borderRadius: 5,
                 width: '70%',
@@ -384,7 +385,34 @@ const AdminView = ({navigation, route}) => {
                   adminId: Masjid.admin.id,
                 })
               }>
-              <Text style={{color: '#CEE6B4'}}>NEWS & ANNOUNCMENTS</Text>
+              <Text style={{color: '#1F441E'}}>NEWS & ANNOUNCMENTS</Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginTop: 10,
+              justifyContent: 'center',
+            }}>
+            <TouchableOpacity
+              style={{
+                alignItems: 'center',
+                backgroundColor: '#1F441E',
+                padding: 10,
+                borderRadius: 5,
+                width: '70%',
+                marginHorizontal: 10,
+              }}
+              onPress={() =>
+                navigation.navigate('Donation', {
+                  masjidId: masjidId,
+                  donationInfo:
+                    Masjid.donationInfo || 'No information set by admin',
+                  edit: true,
+                  masjidName: Masjid.name,
+                })
+              }>
+              <Text style={{color: '#CEE6B4'}}>Donation</Text>
             </TouchableOpacity>
           </View>
         </View>

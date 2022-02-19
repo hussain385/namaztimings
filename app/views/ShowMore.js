@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   ActivityIndicator,
+  Dimensions,
   FlatList,
   Linking,
   Text,
@@ -64,7 +65,7 @@ const Item = props => {
               margin: 5,
               justifyContent: 'space-between',
             }}>
-            <View style={{maxWidth: 250}}>
+            <View style={{maxWidth: Dimensions.get('screen').width * 0.65}}>
               <Text style={{fontSize: 17}}>{props.title}</Text>
             </View>
             <TouchableOpacity>

@@ -488,10 +488,6 @@ export default function App() {
 
   React.useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      Alert.alert(
-        `${remoteMessage.notification.title}`,
-        `${remoteMessage.notification.body}`,
-      );
       toast.show(
         `${remoteMessage.notification.title} namaz timings are updated`,
         {

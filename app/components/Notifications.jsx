@@ -1,5 +1,6 @@
 import {Formik} from 'formik';
 import _ from 'lodash';
+import firestore from '@react-native-firebase/firestore';
 import React, {useState} from 'react';
 import {
   Alert,
@@ -24,10 +25,12 @@ import * as Yup from 'yup';
 import HeaderComp from '../views/HeaderComp';
 import NotificationCard from '../views/NotificationCard';
 import {selectFirebase, selectFirestore} from '../store/firebase';
+import axios from 'axios';
 
 const Notification = ({navigation, route: {params}}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const {masjidId, masjidName, adminId} = params;
+  console.log(masjidId, '====> id');
   const {auth} = useSelector(selectFirebase);
   const firestoreData = useFirestore();
   const [loading, setLoading] = useState(false);
@@ -47,9 +50,9 @@ const Notification = ({navigation, route: {params}}) => {
     },
   ]);
 
-  const firestore = useSelector(selectFirestore);
-  const masjidData = populate(firestore, 'tempAnnouncement', populates);
-  console.log(firestore.status, 'on notify');
+  const firestore1 = useSelector(selectFirestore);
+  const masjidData = populate(firestore1, 'tempAnnouncement', populates);
+  // console.log(firestore.status, 'on notify');
 
   const data = _.map(masjidData?.announcement, rawData => {
     return {
@@ -58,12 +61,12 @@ const Notification = ({navigation, route: {params}}) => {
     };
   });
 
-  console.log(auth.uid === adminId);
+  // console.log(auth.uid === adminId);
 
   return (
     <View>
       <HeaderComp heading="Announcements" navigation={navigation} />
-      {firestore.status.requested.tempAnnouncement && data.length >= 1 ? (
+      {firestore1.status.requested.tempAnnouncement && data.length >= 1 ? (
         <FlatList
           style={{height: Dimensions.get('screen').height * 0.82}}
           data={data}
@@ -76,7 +79,7 @@ const Notification = ({navigation, route: {params}}) => {
             />
           )}
         />
-      ) : firestore.status.requesting.tempAnnouncement ? (
+      ) : firestore1.status.requesting.tempAnnouncement ? (
         <View
           style={{
             height: Dimensions.get('screen').height,
@@ -123,8 +126,7 @@ const Notification = ({navigation, route: {params}}) => {
                     createdAt: new firestoreData.Timestamp.now(),
                     description: values.description,
                   })
-                  .then(r => {
-                    console.log('somethings');
+                  .then(async r => {
                     firestoreData
                       .collection('Masjid')
                       .doc(masjidId)
@@ -133,21 +135,50 @@ const Notification = ({navigation, route: {params}}) => {
                           r.id,
                         ),
                       })
-                      .then(() => {
-                        Alert.alert(
-                          'Announcement',
-                          'Your announcement has been added successfully. Admin will review and approve the announcement in 24 hours.',
-                          [
-                            {
-                              text: 'Ok',
-                              onPress: () => {
-                                setModalVisible(false);
-                                setLoading(false);
-                              },
-                            },
-                          ],
-                        );
-                      });
+                      .then(
+                        async () => {
+                          const masjidTokens = await firestore()
+                            .collection('Masjid')
+                            .doc(masjidId)
+                            .get();
+                          if (masjidTokens.data().tokens) {
+                            console.log(masjidTokens.data().tokens, '===>some');
+                            for (let token of masjidTokens.data().tokens) {
+                              await axios
+                                .post(
+                                  'https://fcm.googleapis.com/fcm/send',
+                                  {
+                                    to: token,
+                                    notification: {
+                                      title: masjidTokens.data().name,
+                                      body: values.description,
+                                    },
+                                  },
+                                  {
+                                    headers: {
+                                      'Content-Type': 'application/json',
+                                      Authorization:
+                                        'key=AAAAE5W6Aqg:APA91bFw_t03bZFaOIdMQj-irRXr5eygS8UBqL3Vd7UYUpS9u3n96rCPxiwfTLBpyb69og2zOr7amP2bpgKVqjzY7qUdxd2Etdfkxm7qik013Z6cUrzji1P2Q-ehfl-RvcWQ91ROD_4G',
+                                    },
+                                  },
+                                )
+                                .then(
+                                  () => {
+                                    setModalVisible(false);
+                                    setLoading(false);
+                                  },
+                                  reason => {
+                                    console.log(reason);
+                                  },
+                                );
+                            }
+                          }
+                        },
+                        reason => {
+                          Alert.alert(reason.message);
+                          setModalVisible(!modalVisible);
+                        },
+                      );
                   });
               }}>
               {({

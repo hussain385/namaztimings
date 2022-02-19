@@ -208,7 +208,7 @@ const AdminNotification = ({
                         fontSize: 14,
                         fontWeight: `${isRead ? 200 : 700}`,
                       }}>
-                      {timing.fajar}
+                      {timing.fajar.substring(0, 5)}
                     </Text>
                   </View>
                   <View style={{flexGrow: 5}}>
@@ -226,7 +226,7 @@ const AdminNotification = ({
                         fontSize: 14,
                         fontWeight: `${isRead ? 200 : 700}`,
                       }}>
-                      {timing.zohar}
+                      {timing.zohar.substring(0, 5)}
                     </Text>
                   </View>
                   <View style={{flexGrow: 5}}>
@@ -244,7 +244,7 @@ const AdminNotification = ({
                         fontSize: 14,
                         fontWeight: `${isRead ? 200 : 700}`,
                       }}>
-                      {timing.asar}
+                      {timing.asar.substring(0, 5)}
                     </Text>
                   </View>
                   <View style={{flexGrow: 5}}>
@@ -262,7 +262,7 @@ const AdminNotification = ({
                         fontSize: 14,
                         fontWeight: `${isRead ? 200 : 700}`,
                       }}>
-                      {timing.magrib}
+                      {timing.magrib.substring(0, 5)}
                     </Text>
                   </View>
                   <View style={{flexGrow: 5}}>
@@ -280,7 +280,7 @@ const AdminNotification = ({
                         fontSize: 14,
                         fontWeight: `${isRead ? 200 : 700}`,
                       }}>
-                      {timing.isha}
+                      {timing.isha.substring(0, 5)}
                     </Text>
                   </View>
                 </View>

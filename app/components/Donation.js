@@ -13,7 +13,8 @@ import DonationModal from '../views/DonationModal';
 const Window_Height = Dimensions.get('screen').height;
 const Window_Width = Dimensions.get('screen').width;
 
-const Donation = ({navigation}) => {
+const Donation = ({navigation, route}) => {
+  const {masjidId: masjidID, edit, donationInfo, masjidName} = route.params;
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <>
@@ -26,7 +27,7 @@ const Donation = ({navigation}) => {
             marginTop: 10,
           }}>
           <Text style={{fontSize: 25, fontWeight: '600', marginBottom: 10}}>
-            Masjid Name
+            {masjidName}
           </Text>
           <Image
             source={require('../../assests/image/donation.png')}
@@ -69,7 +70,9 @@ const Donation = ({navigation}) => {
           <DonationModal
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
-            editable={false}
+            editable={edit}
+            masjidId={masjidID}
+            donationInfo={donationInfo}
           />
         </View>
       </ScrollView>
