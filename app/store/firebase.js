@@ -3,18 +3,10 @@ import * as geofirestore from 'geofirestore';
 import haversine from 'haversine';
 import _ from 'lodash';
 import {useState} from 'react';
-import {
-  Alert,
-  Linking,
-  PermissionsAndroid,
-  Platform,
-  ToastAndroid,
-} from 'react-native';
-import Geolocation, {SuccessCallback} from 'react-native-geolocation-service';
 import {useDispatch, useSelector} from 'react-redux';
-import appConfig from '../../app.json';
 import {selectCords, setLocation} from '../redux/locationSlicer';
 import {useFavorites} from '../redux/favSlicer';
+import * as Location from 'expo-location';
 
 const GeoFirestore = geofirestore.initializeApp(firestore());
 const geoCollection = GeoFirestore.collection('Masjid');
@@ -23,25 +15,15 @@ export const selectFirebase = state => state.firebase;
 export const selectFirestore = state => state.firestore;
 
 export const getCurrentLocation = async () => {
-  const hasPermission = await hasLocationPermission();
+  const {status} = await Location.requestForegroundPermissionsAsync();
 
-  if (!hasPermission) {
-    return null;
+  if (status !== 'granted') {
+    return;
   }
 
-  return new Promise((resolve: SuccessCallback, reject) =>
-    Geolocation.getCurrentPosition(resolve, reject, {
-      accuracy: {
-        android: 'high',
-        ios: 'best',
-      },
-      enableHighAccuracy: true,
-      timeout: 15000,
-      maximumAge: 10000,
-      distanceFilter: 0,
-      forceRequestLocation: true,
-      forceLocationManager: false,
-      showLocationDialog: true,
+  return new Promise(() =>
+    Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.Balanced,
     }),
   );
 };
@@ -276,76 +258,4 @@ export function GetFavMasjidData() {
 const getAnnouncement = async id => {
   const data = await firestore().collection('announcement').doc(id).get();
   return {...data.data(), id: data.id};
-};
-
-const hasPermissionIOS = async () => {
-  const openSetting = () => {
-    Linking.openSettings().catch(() => {
-      Alert.alert('Unable to open settings');
-    });
-  };
-  const status = await Geolocation.requestAuthorization('whenInUse');
-
-  if (status === 'granted') {
-    return true;
-  }
-
-  if (status === 'denied') {
-    Alert.alert('Location permission denied');
-  }
-
-  if (status === 'disabled') {
-    Alert.alert(
-      `Turn on Location Services to allow "${appConfig.displayName}" to determine your location.`,
-      '',
-      [
-        {text: 'Go to Settings', onPress: openSetting},
-        {
-          text: "Don't Use Location",
-          onPress: () => {
-            return null;
-          },
-        },
-      ],
-    );
-  }
-
-  return false;
-};
-
-export const hasLocationPermission = async () => {
-  if (Platform.OS === 'ios') {
-    return await hasPermissionIOS();
-  }
-
-  if (Platform.OS === 'android' && Platform.Version < 23) {
-    return true;
-  }
-
-  const hasPermission = await PermissionsAndroid.check(
-    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  );
-
-  if (hasPermission) {
-    return true;
-  }
-
-  const status = await PermissionsAndroid.request(
-    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  );
-
-  if (status === PermissionsAndroid.RESULTS.GRANTED) {
-    return true;
-  }
-
-  if (status === PermissionsAndroid.RESULTS.DENIED) {
-    ToastAndroid.show('Location permission denied by user.', ToastAndroid.LONG);
-  } else if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-    ToastAndroid.show(
-      'Location permission revoked by user.',
-      ToastAndroid.LONG,
-    );
-  }
-
-  return false;
 };
