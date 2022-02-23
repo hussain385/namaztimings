@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
 import {
-  ActivityIndicator,
   Dimensions,
   FlatList,
   SafeAreaView,
@@ -21,6 +20,7 @@ import AdminCard from '../views/AdminCard';
 import AdminView from '../views/AdminView';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Header} from 'react-native-elements';
+import {ActivityIndicator} from 'react-native-paper';
 
 const populates = [
   {child: 'requestList', root: 'requests', childAlias: 'requests'},
@@ -39,6 +39,9 @@ const Admin = ({navigation}) => {
       storeAs: 'myMasjids',
       populates,
     },
+    {
+      collection: 'requests',
+    },
   ]);
   const snapshot = populate(firestore, 'myMasjids', populates);
 
@@ -48,7 +51,7 @@ const Admin = ({navigation}) => {
   console.log(adminMasjid, '===> new');
   return (
     <SafeAreaView>
-      {adminMasjid.length >= 1 && (
+      {adminMasjid.length > 1 && (
         <Header
           containerStyle={{
             shadowOpacity: 50,
@@ -81,7 +84,15 @@ const Admin = ({navigation}) => {
         />
       )}
       {!isLoaded(snapshot) && (
-        <ActivityIndicator color="#1F441E" size="large" />
+        <View
+          style={{
+            height: Dimensions.get('screen').height * 0.8,
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignContent: 'center',
+          }}>
+          <ActivityIndicator color="#1F441E" size="large" />
+        </View>
       )}
       {adminMasjid.length === 1 ? (
         <>
@@ -89,9 +100,8 @@ const Admin = ({navigation}) => {
             const data = modifyData(doc, id, 0);
             return (
               <AdminView
-                route={{params: {Masjid: data, masjidId: id}}}
+                route={{params: {Masjid: data, masjidId: id, isSingle: true}}}
                 navigation={navigation}
-                isSingle={true}
               />
             );
           })}

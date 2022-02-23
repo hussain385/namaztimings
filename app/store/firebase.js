@@ -235,11 +235,15 @@ export function GetFavMasjidData() {
       const doc = await Promise.all(collections);
       const masjids = [];
       const users = await GetUsers();
-      doc.forEach(docSnapshot => {
+      for (const docSnapshot of doc) {
         const data = docSnapshot.data();
         const loc1 = data.g.geopoint;
         const d = haversine(loc1, location);
         const tempData = modifyData(data, docSnapshot.id, d);
+        const announce = tempData.announcementList?.map(async id =>
+          getAnnouncement(id),
+        );
+        tempData.announcements = await Promise.all(announce);
         const adminId = tempData.adminId;
         if (_.isEmpty(adminId)) {
           masjids.push({
@@ -258,7 +262,7 @@ export function GetFavMasjidData() {
             user: {...u},
           });
         }
-      });
+      }
       setMasjid(_.sortBy(masjids, 'distance'));
       setLoading(false);
     } catch (e) {
@@ -268,6 +272,11 @@ export function GetFavMasjidData() {
 
   return {masjid, loading, error, GetDataFavMasjid};
 }
+
+const getAnnouncement = async id => {
+  const data = await firestore().collection('announcement').doc(id).get();
+  return {...data.data(), id: data.id};
+};
 
 const hasPermissionIOS = async () => {
   const openSetting = () => {

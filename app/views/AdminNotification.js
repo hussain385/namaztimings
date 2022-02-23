@@ -1,8 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
 import _ from 'lodash';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
-  ActivityIndicator,
   Alert,
   Dimensions,
   FlatList,
@@ -16,8 +15,7 @@ import {Card} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useSelector} from 'react-redux';
-import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
-import {selectFirebase, selectFirestore} from '../store/firebase';
+import {selectFirebase} from '../store/firebase';
 import Edit from './Edit';
 
 const markAsRead = async reqId => {
@@ -91,32 +89,13 @@ const deleteFunc = (masjidId, reqId, uid) => {
   ]);
 };
 
-const populates = [
-  {child: 'requestList', root: 'requests', childAlias: 'requests'},
-  {child: 'adminId', root: 'users', childAlias: 'admin'},
-];
-
-const AdminNotification = ({
-  navigation,
-  route: {
-    params: {masjid},
-  },
-}) => {
+const AdminNotification = ({navigation, route}) => {
+  const {masjid, masjidData} = route.params;
   // const [data, setData] = useState([]);
   // const {myMasjids} = useSelector(state => state.firestore.ordered);
   // const {auth} = useSelector(state => state.firebase);
   const {auth} = useSelector(selectFirebase);
-  console.log(masjid, '<========= AdminNotification');
-  useFirestoreConnect([
-    {
-      collection: 'Masjid',
-      doc: masjid,
-      storeAs: 'myMasjidsView',
-      populates,
-    },
-  ]);
-  const Firestore = useSelector(selectFirestore);
-  const snapshot = populate(Firestore, 'myMasjidsView', populates);
+  console.log(masjidData, 'from notification');
   // const tempData = [];
   // if (isLoaded(snapshot)) {
   //   // console.log(snapshot);
@@ -144,6 +123,25 @@ const AdminNotification = ({
   const renderItem = ({item}) => {
     console.log(item);
     const {timing, id, userName, userPhone, isRead} = item;
+    if (!isRead) {
+      firestore()
+        .collection('requests')
+        .doc(id)
+        .update({
+          isRead: true,
+        })
+        .then(value => {
+          console.log('updated to read notification');
+        });
+    }
+    // useEffect(() => {
+    //   (async () => {
+    //     await firestore().collection('requests').doc(id).update({
+    //       isRead: true,
+    //     });
+    //   })();
+    // }, []);
+
     if (!_.isUndefined(item.timing)) {
       return (
         <Card
@@ -315,38 +313,38 @@ const AdminNotification = ({
     }
   };
 
-  if (
-    Firestore.status.requesting.myMasjidsView ||
-    !Firestore.status.requested.myMasjidsView ||
-    !isLoaded(snapshot)
-  ) {
-    return (
-      <View>
-        <Header
-          containerStyle={{
-            shadowOpacity: 50,
-            elevation: 50,
-          }}
-          centerComponent={
-            <View style={{textAlign: 'center'}}>
-              <Text
-                style={{
-                  color: '#ffff',
-                  fontSize: 22,
-                  marginBottom: 5,
-                  marginTop: 5,
-                  textAlign: 'center',
-                }}>
-                Admin
-              </Text>
-            </View>
-          }
-          backgroundColor="#1F441E"
-        />
-        <ActivityIndicator color="#1F441E" size="large" />
-      </View>
-    );
-  }
+  // if (
+  //   Firestore.status.requesting.myMasjidsView ||
+  //   !Firestore.status.requested.myMasjidsView ||
+  //   !isLoaded(snapshot)
+  // ) {
+  //   return (
+  //     <View>
+  //       <Header
+  //         containerStyle={{
+  //           shadowOpacity: 50,
+  //           elevation: 50,
+  //         }}
+  //         centerComponent={
+  //           <View style={{textAlign: 'center'}}>
+  //             <Text
+  //               style={{
+  //                 color: '#ffff',
+  //                 fontSize: 22,
+  //                 marginBottom: 5,
+  //                 marginTop: 5,
+  //                 textAlign: 'center',
+  //               }}>
+  //               Admin
+  //             </Text>
+  //           </View>
+  //         }
+  //         backgroundColor="#1F441E"
+  //       />
+  //       <ActivityIndicator color="#1F441E" size="large" />
+  //     </View>
+  //   );
+  // }
 
   return (
     <SafeAreaView>
@@ -382,8 +380,9 @@ const AdminNotification = ({
         backgroundColor="#1F441E"
       />
       <FlatList
-        data={snapshot.requests}
+        data={_.orderBy(masjidData.requests, 'timeStamp', 'desc')}
         renderItem={renderItem}
+        // inverted={true}
         ListEmptyComponent={() => (
           <View
             style={{

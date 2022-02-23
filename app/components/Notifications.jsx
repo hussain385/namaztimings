@@ -30,7 +30,7 @@ import axios from 'axios';
 const Notification = ({navigation, route: {params}}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const {masjidId, masjidName, adminId} = params;
-  console.log(masjidId, '====> id');
+  console.log(masjidId, '====> id from noti');
   const {auth} = useSelector(selectFirebase);
   const firestoreData = useFirestore();
   const [loading, setLoading] = useState(false);

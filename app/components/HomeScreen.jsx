@@ -19,6 +19,9 @@ import {GetRadMasjidData1} from '../store/firebase';
 import LastUpdated from '../views/LastUpdated';
 import TopPart from '../views/TopPart';
 import {ActivityIndicator} from 'react-native-paper';
+import {headerStyles, textStyles} from '../theme/styles/Base';
+import CoText from '../views/Text/Text';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function HomeScreen({navigation}) {
   const {
@@ -100,25 +103,17 @@ function HomeScreen({navigation}) {
             </TouchableOpacity> */}
           </View>
         }
-        // rightComponent={
-        //   <TouchableOpacity
-        //     style={{
-        //       paddingRight: 10,
-        //     }}>
-        //     <View>
-        //       <View style={headerStyles.cartTxt}>
-        //         <CoText
-        //           textStyles={[
-        //             textStyles.simple,
-        //             {fontSize: 10, color: '#1F441E'},
-        //           ]}
-        //           text="0"
-        //         />
-        //       </View>
-        //       <MaterialIcons name="bell" size={28} color="white" />
-        //     </View>
-        //   </TouchableOpacity>
-        // }
+        rightComponent={
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Announcement')}
+            style={{
+              paddingRight: 10,
+            }}>
+            <View>
+              <MaterialIcons name="bell" size={28} color="white" />
+            </View>
+          </TouchableOpacity>
+        }
         backgroundColor="#1F441E"
       />
       <>

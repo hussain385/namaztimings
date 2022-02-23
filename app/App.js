@@ -5,7 +5,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import * as React from 'react';
-import {Alert, Text, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Provider} from 'react-redux';
@@ -36,6 +36,7 @@ import {ToastProvider, useToast} from 'react-native-toast-notifications';
 import messaging from '@react-native-firebase/messaging';
 import {saveToken} from './store/token';
 import Donation from './components/Donation';
+import Announcement from './components/Announcement';
 
 const HomeStack = createStackNavigator();
 const SearchStack = createStackNavigator();
@@ -133,6 +134,13 @@ const HomeStackScreen = ({navigation}) => (
     <HomeStack.Screen
       name="Notification"
       component={Notifications}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <HomeStack.Screen
+      name="Announcement"
+      component={Announcement}
       options={{
         headerShown: false,
       }}

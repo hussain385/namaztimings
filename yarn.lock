@@ -3702,14 +3702,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/normalize-color@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@react-native/normalize-color@npm:1.0.0"
-  checksum: 22f1af279576ffd2609dc8362054dba2a7553d055f762f6dc7f6c9082c0e83c10260a99cb046d240fecde27a3858525a53d337f8c23d549b52f714dc599a1961
-  languageName: node
-  linkType: hard
-
-"@react-native/normalize-color@npm:^2.0.0":
+"@react-native/normalize-color@npm:2.0.0, @react-native/normalize-color@npm:^2.0.0":
   version: 2.0.0
   resolution: "@react-native/normalize-color@npm:2.0.0"
   checksum: 2da373297f0d22b700edb9ab1b2cca34684e94a5dfe172e1cfd114e74ac17e139e802bc671e9868e0a580190eccbf3fa804f67be8cc1d9cbd0e216e994495931
@@ -10331,7 +10324,7 @@ __metadata:
     prettier: 2.5.1
     react: 17.0.2
     react-firebase-hooks: ^5.0.1
-    react-native: 0.66.4
+    react-native: 0.67.3
     react-native-elements: ^3.4.2
     react-native-flags: ^1.0.0
     react-native-geocoding: ^0.5.0
@@ -11331,13 +11324,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-devtools-core@npm:^4.13.0":
-  version: 4.23.0
-  resolution: "react-devtools-core@npm:4.23.0"
+"react-devtools-core@npm:4.19.1":
+  version: 4.19.1
+  resolution: "react-devtools-core@npm:4.19.1"
   dependencies:
     shell-quote: ^1.6.1
     ws: ^7
-  checksum: 16c020149171c18039f366f43e305fdf5ec5991a40841e0ef83d5360b41c9a52cb072f22915b35732dd767954adbd65b6baf4f7f1bbcc785d9ffeb7f42bc1bb4
+  checksum: 20471dde740e25a6f51b7b2b719fb1e1a9213cfb2a14d6defb44eced93646f73c9c5e376fcfdc78827c4fb587bc030ca99a14a0154a94acf7a1e1496d2b59ef6
   languageName: node
   linkType: hard
 
@@ -11372,14 +11365,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-codegen@npm:^0.0.7":
-  version: 0.0.7
-  resolution: "react-native-codegen@npm:0.0.7"
+"react-native-codegen@npm:^0.0.8":
+  version: 0.0.8
+  resolution: "react-native-codegen@npm:0.0.8"
   dependencies:
     flow-parser: ^0.121.0
     jscodeshift: ^0.11.0
     nullthrows: ^1.1.1
-  checksum: d550d6e985a0d564f0ac470b19c9a2e4e78ffc0f5769ba46992a4d10130928093e9c2ada7eda0ec8bd976db4ba4c21ef410280e979226f11844aa0215335cde5
+  checksum: c5ccdcb2a2f249756aca8e729cf96737368c8d33673b08d4c928a469bcb58ff37fbf3c7a070398f33b19846c4261948e2c5107c561934a41ac034620f7207bbd
   languageName: node
   linkType: hard
 
@@ -11629,16 +11622,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native@npm:0.66.4":
-  version: 0.66.4
-  resolution: "react-native@npm:0.66.4"
+"react-native@npm:0.67.3":
+  version: 0.67.3
+  resolution: "react-native@npm:0.67.3"
   dependencies:
     "@jest/create-cache-key-function": ^27.0.1
     "@react-native-community/cli": ^6.0.0
     "@react-native-community/cli-platform-android": ^6.0.0
     "@react-native-community/cli-platform-ios": ^6.0.0
     "@react-native/assets": 1.0.0
-    "@react-native/normalize-color": 1.0.0
+    "@react-native/normalize-color": 2.0.0
     "@react-native/polyfills": 2.0.0
     abort-controller: ^3.0.0
     anser: ^1.4.9
@@ -11647,7 +11640,6 @@ __metadata:
     hermes-engine: ~0.9.0
     invariant: ^2.2.4
     jsc-android: ^250230.2.1
-    metro-babel-register: 0.66.2
     metro-react-native-babel-transformer: 0.66.2
     metro-runtime: 0.66.2
     metro-source-map: 0.66.2
@@ -11655,8 +11647,8 @@ __metadata:
     pretty-format: ^26.5.2
     promise: ^8.0.3
     prop-types: ^15.7.2
-    react-devtools-core: ^4.13.0
-    react-native-codegen: ^0.0.7
+    react-devtools-core: 4.19.1
+    react-native-codegen: ^0.0.8
     react-refresh: ^0.4.0
     regenerator-runtime: ^0.13.2
     scheduler: ^0.20.2
@@ -11668,7 +11660,7 @@ __metadata:
     react: 17.0.2
   bin:
     react-native: cli.js
-  checksum: fccfe21339fe88f3cfb38a9495fb42687c6dcc9837b0e4f161083d89936492dcc31a1b5cf1b0194615f5b0d04c5620e3647a02d3264f8bf086289a9c38580874
+  checksum: 340b2364a3541f21fe73cf3bf6aada79a40c206868d9419156f8505ae096312a4f2cad0078e45e65ce156e2061e978d8ba3cdd0ed0c4f68b0196586297b86124
   languageName: node
   linkType: hard
 

@@ -118,7 +118,7 @@ const CustomDrawerContent = ({navigation}) => {
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-        // onPress={() => navigation.navigate('Notifications')}
+        onPress={() => navigation.navigate('Announcement')}
         style={{
           paddingHorizontal: 20,
           flexDirection: 'row',

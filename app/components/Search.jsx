@@ -32,7 +32,6 @@ const Search = props => {
   const [result, setResult] = useState(null);
   const dispatch = useDispatch();
   const masjidData = sortMasjidData1(masjid, location);
-  console.log(masjidData, '<==== masjidData from search');
 
   function onChangeSearch(text) {
     const fuse = new Fuse(masjidData, {

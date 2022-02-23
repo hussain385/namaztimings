@@ -1,5 +1,5 @@
 import moment from 'moment';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   Image,
@@ -15,13 +15,37 @@ import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {headerStyles, textStyles} from '../theme/styles/Base';
 import Edit from './Edit';
 import CoText from './Text/Text';
+import {isNil} from 'lodash';
+import {useSelector} from 'react-redux';
 
 const AdminView = ({navigation, route}) => {
   const {masjidId, isSingle = false, Masjid} = route.params;
   const pastTime = moment(Masjid.timeStamp?.seconds * 1000);
   const now = moment();
+  const [count, setCount] = useState(0);
+  const {requests} = useSelector(state => state.firestore.ordered);
 
-  // console.log(Masjid, '==> masjid info');
+  // console.log(requests, 'from admin view == requests');
+  // if (!isNil(Masjid.requests)) {
+  //   Masjid.requests.forEach(value => {
+  //     if (!value.isRead) {
+  //       setCount(prevState => prevState + 1);
+  //     }
+  //   });
+  // }
+
+  useEffect(() => {
+    if (!isNil(Masjid.requests)) {
+      setCount(0);
+      Masjid.requests.forEach(value => {
+        if (!value.isRead) {
+          setCount(prevState => prevState + 1);
+        }
+      });
+    }
+  }, [Masjid.requests, requests]);
+
+  console.log(isSingle, '==> masjid info');
 
   return (
     <>
@@ -33,7 +57,7 @@ const AdminView = ({navigation, route}) => {
         leftComponent={
           <TouchableOpacity
             onPress={() =>
-              isSingle ? navigation.openDrawer : navigation.goBack()
+              isSingle ? navigation.openDrawer() : navigation.goBack()
             }>
             <Icon
               name={isSingle ? 'bars' : 'arrow-left'}
@@ -62,6 +86,7 @@ const AdminView = ({navigation, route}) => {
             onPress={() =>
               navigation.navigate('adminNotification', {
                 masjid: masjidId,
+                masjidData: Masjid,
               })
             }
             style={{
@@ -74,7 +99,7 @@ const AdminView = ({navigation, route}) => {
                     textStyles.simple,
                     {fontSize: 10, color: '#1F441E'},
                   ]}
-                  text={Masjid.requestList?.length || 0}
+                  text={count}
                 />
               </View>
               <MaterialIcons name="bell" size={28} color="white" />
