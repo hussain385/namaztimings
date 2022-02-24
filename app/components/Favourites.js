@@ -38,6 +38,7 @@ const Favourites = ({navigation}) => {
     GetDataFavMasjid: GetData,
   } = GetFavMasjidData();
   const favoriteId = useSelector(useFavorites);
+
   async function onRefresh() {
     setRefreshing(true);
     await GetData();
@@ -47,8 +48,12 @@ const Favourites = ({navigation}) => {
   useEffect(() => {
     async function fetchData() {
       await GetData();
+      // await onRefresh();
     }
-    fetchData();
+
+    fetchData().then(r => {
+      console.log(r);
+    });
     // const willFocusSubscription = navigation.addListener('focus', () => {
     //   GetData();
     // });
@@ -58,6 +63,7 @@ const Favourites = ({navigation}) => {
 
   const Item = ({
     item: {
+      donationInfo,
       pictureURL: url,
       name: title,
       distance,
@@ -90,6 +96,7 @@ const Favourites = ({navigation}) => {
         onPress={() =>
           navigation.navigate('More Info', {
             masjid: {
+              donationInfo,
               pictureURL: url,
               name: title,
               distance,
@@ -153,6 +160,7 @@ const Favourites = ({navigation}) => {
             onPress={() =>
               navigation.navigate('More Info', {
                 masjid: {
+                  donationInfo,
                   pictureURL: url,
                   name: title,
                   distance,

@@ -1,6 +1,6 @@
 import storage from '@react-native-firebase/storage';
 import {Formik} from 'formik';
-import _ from 'lodash';
+import _, {isEmpty} from 'lodash';
 import React, {useState} from 'react';
 import {
   Alert,
@@ -36,7 +36,7 @@ const ERROR = {
 const AddMasjidSchema = Yup.object().shape({
   name: Yup.string().required('Masjid name is required'),
   gLink: Yup.string().url().required('Masjid address link is required'),
-  pictureURL: Yup.string().required('Masjid picture is required'),
+  // pictureURL: Yup.string().required('Masjid picture is required'),
   userEmail: Yup.string().email().required('Email is required'),
   userName: Yup.string().required('Your name is required'),
   userPhone: Yup.string()
@@ -128,7 +128,6 @@ export const AddMasjid = ({navigation}) => {
         setImage(response.assets[0]);
         handleChange(uri);
         value.pictureURL = uri;
-        // setImageLoading(true);
       }
     });
   };
@@ -160,14 +159,19 @@ export const AddMasjid = ({navigation}) => {
         onSubmit={async values => {
           const data = _.omit(values, ['userName', 'userEmail', 'userPhone']);
           setLoading(true);
-          const filename = image.uri.substring(image.uri.lastIndexOf('/') + 1);
-          const uploadUri =
-            Platform.OS === 'ios'
-              ? image.uri.replace('file://', '')
-              : image.uri;
-          const ref = storage().ref('/masjid/' + filename);
-          await ref.putFile(uploadUri);
-          const url = await ref.getDownloadURL();
+          let filename;
+          let url = '';
+          if (isEmpty(image) === '') {
+            console.log(image, 'inside');
+            filename = image?.uri.substring(image.uri.lastIndexOf('/') + 1);
+            let uploadUri =
+              Platform.OS === 'ios'
+                ? image.uri.replace('file://', '')
+                : image.uri;
+            let ref = storage().ref('/masjid/' + filename);
+            await ref.putFile(uploadUri);
+            url = await ref.getDownloadURL();
+          }
           const token = await getFcmToken();
           await firestore
             .collection('newMasjid')
@@ -724,14 +728,14 @@ export const AddMasjid = ({navigation}) => {
                     </View>
                   </>
                 )}
-                {errors.pictureURL && (
-                  <Text style={ERROR}>{errors.pictureURL}</Text>
-                )}
+                {/*{errors.pictureURL && (*/}
+                {/*  <Text style={ERROR}>{errors.pictureURL}</Text>*/}
+                {/*)}*/}
               </View>
               <View style={{alignItems: 'center', marginVertical: 15}}>
                 <TouchableOpacity
                   onPress={handleSubmit}
-                  disabled={loading}
+                  // disabled={loading}
                   style={{
                     alignItems: 'center',
                     backgroundColor: '#1F441E',

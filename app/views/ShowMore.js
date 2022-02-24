@@ -36,6 +36,7 @@ const Item = props => {
         onPress={() =>
           props.nav.navigate('More Info', {
             masjid: {
+              donationInfo: props.donationInfo,
               name: props.title,
               pictureURL: props.url,
               address: props.address,
@@ -235,6 +236,7 @@ const ShowMore = ({navigation}) => {
       title={item.name}
       address={item.address}
       url={item.pictureURL}
+      donationInfo={item.donationInfo}
       timings={item.timing}
       nav={navigation}
       distance={item.distance}

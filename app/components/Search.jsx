@@ -63,23 +63,7 @@ const Search = props => {
       });
   }, [dispatch]);
 
-  const renderItem = ({item}) => (
-    <MasjidCard
-      // title={item.name}
-      // address={item.address}
-      // url={item.pictureURL}
-      // timings={item.timing}
-      masjid={item}
-      nav={navigation}
-      // distance={item.distance}
-      // favId={item.key}
-      // latitude={item.g.geopoint.latitude}
-      // longitude={item.g.geopoint.longitude}
-      // user={item.user}
-      // gLink={item.gLink}
-      // timeStamp={item.timeStamp}
-    />
-  );
+  const renderItem = ({item}) => <MasjidCard masjid={item} nav={navigation} />;
   const renderItem1 = ({item}) => (
     <MasjidCard
       // title={item.item.name}

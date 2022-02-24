@@ -21,11 +21,9 @@ export const getCurrentLocation = async () => {
     return;
   }
 
-  return new Promise(() =>
-    Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.Balanced,
-    }),
-  );
+  return Location.getCurrentPositionAsync({
+    accuracy: Location.Accuracy.Balanced,
+  });
 };
 
 export function modifyData(data, id, d) {
@@ -126,18 +124,10 @@ export function GetRadMasjidData1(radius = 50) {
       setLoading(true);
     }
 
-    getCurrentLocation()
-      .then(
-        value => {
-          if (_.isNull(value)) {
-            return;
-          }
-          dispatch(setLocation(value.coords));
-          console.log(value);
-        },
-        error1 => console.warn(error1),
-      )
-      .then(() => setLoading(false));
+    const location = await getCurrentLocation();
+    console.log(location, 'location');
+    dispatch(setLocation(location.coords));
+    setLoading(false);
   };
 
   async function GetDataRadMasjid() {
@@ -222,10 +212,12 @@ export function GetFavMasjidData() {
         const loc1 = data.g.geopoint;
         const d = haversine(loc1, location);
         const tempData = modifyData(data, docSnapshot.id, d);
-        const announce = tempData.announcementList?.map(async id =>
-          getAnnouncement(id),
-        );
-        tempData.announcements = await Promise.all(announce);
+        if (tempData.announcementList) {
+          const announce = tempData.announcementList?.map(async id =>
+            getAnnouncement(id),
+          );
+          tempData.announcements = await Promise.all(announce);
+        }
         const adminId = tempData.adminId;
         if (_.isEmpty(adminId)) {
           masjids.push({

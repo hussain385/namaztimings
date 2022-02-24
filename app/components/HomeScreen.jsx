@@ -34,7 +34,7 @@ function HomeScreen({navigation}) {
   const [refreshing, setRefreshing] = useState(false);
   const masjidData = masjid;
   const location = useSelector(selectCords);
-
+  console.log(masjid, loading, error);
   async function onRefresh() {
     setRefreshing(true);
     await getLocation();
@@ -43,7 +43,9 @@ function HomeScreen({navigation}) {
   }
 
   useEffect(() => {
-    onRefresh();
+    onRefresh().then(value => {
+      console.log('refreshed');
+    });
   }, [location.latitude, location.longitude]);
 
   // #E1E1E1

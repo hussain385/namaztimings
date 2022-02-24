@@ -15,6 +15,7 @@ import TopPart from './TopPart';
 
 const MasjidInfo = ({route, navigation}) => {
   const {masjid} = route.params;
+  console.log(masjid, '===>info');
   return (
     <>
       <Header
