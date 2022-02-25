@@ -1,24 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Dimensions,
-  FlatList,
-  Modal,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
 import HeaderComp from '../views/HeaderComp';
 import {GetFavMasjidData} from '../store/firebase';
-import {ActivityIndicator, Card} from 'react-native-paper';
-import moment from 'moment';
+import {ActivityIndicator} from 'react-native-paper';
 import {isEmpty} from 'lodash/lang';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import AnnoucmentCard from '../views/AnnoucmentCard';
 
 const Announcement = ({navigation}) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [noAnnoucement, setNoAnnoucement] = useState(false);
   const [announcements, setAnnoucements] = useState(null);
   const announcements1 = [];
   const {
@@ -75,96 +64,7 @@ const Announcement = ({navigation}) => {
               data={announcements}
               renderItem={({item}, key) => (
                 <View key={key}>
-                  <Card
-                    onPress={() => {
-                      setModalVisible(true);
-                    }}
-                    style={{
-                      borderRadius: 5,
-                      margin: 10,
-                      shadowOpacity: 10,
-                      elevation: 5,
-                      borderBottomColor: '#229704',
-                      borderBottomWidth: 10,
-                    }}>
-                    <Card.Actions>
-                      <View style={{width: '100%', padding: 10}}>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                          }}>
-                          <View>
-                            <Text style={{fontSize: 20}}>{item.name}</Text>
-                          </View>
-                          <View>
-                            <Text style={{marginTop: 6}}>
-                              Dated:{' '}
-                              {moment(
-                                item.announcement.createdAt?.seconds * 1000,
-                              ).format('DD/MM/YYYY')}
-                            </Text>
-                          </View>
-                        </View>
-                        <View
-                          style={{
-                            marginVertical: 7,
-                            height: 40,
-                            marginBottom: -10,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                          }}>
-                          <View>
-                            <Text
-                              numberOfLines={1}
-                              ellipsizeMode="tail"
-                              style={{
-                                fontSize: 17,
-                                width: Dimensions.get('screen').width * 0.72,
-                              }}>
-                              {item.announcement.description}
-                            </Text>
-                          </View>
-                        </View>
-                      </View>
-                    </Card.Actions>
-                  </Card>
-                  <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}>
-                    <View style={styles.centeredView}>
-                      <View style={styles.modalView}>
-                        <Text style={styles.modalText}>Namaz Timings</Text>
-                        <View
-                          style={{
-                            marginBottom: 10,
-                            backgroundColor: '#eeee',
-                            padding: 10,
-                            borderRadius: 5,
-                          }}>
-                          <ScrollView style={{maxHeight: 200}}>
-                            <Text>{item.announcement.description}</Text>
-                          </ScrollView>
-                        </View>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            width: Dimensions.get('screen').width * 0.7,
-                          }}>
-                          <Pressable
-                            style={[styles.button, styles.buttonOpen]}
-                            onPress={() => {
-                              setModalVisible(!modalVisible);
-                            }}>
-                            <Text style={styles.textStyle}>Cancel</Text>
-                          </Pressable>
-                        </View>
-                      </View>
-                    </View>
-                  </Modal>
+                  <AnnoucmentCard item={item} />
                 </View>
               )}
             />

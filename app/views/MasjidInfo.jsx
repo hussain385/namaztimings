@@ -330,7 +330,7 @@ const MasjidInfo = ({route, navigation}) => {
                   masjidId: undefined,
                   donationInfo:
                     masjid.donationInfo || 'No information set by admin',
-                  edit: true,
+                  edit: false,
                   masjidName: masjid.name,
                 })
               }>

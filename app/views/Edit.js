@@ -287,7 +287,6 @@ const Edit = ({
                               .doc(uid)
                               .get();
                             if (masjid.data().tokens) {
-                              // console.log(masjid.data().tokens);
                               for (let token of masjid.data().tokens) {
                                 await axios
                                   .post(
