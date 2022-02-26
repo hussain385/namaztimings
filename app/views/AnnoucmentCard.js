@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {memo, useState} from 'react';
 import {Card} from 'react-native-paper';
 import {
   Dimensions,
@@ -106,7 +106,8 @@ const AnnoucmentCard = ({item}) => {
   );
 };
 
-export default AnnoucmentCard;
+export default memo(AnnoucmentCard);
+
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,

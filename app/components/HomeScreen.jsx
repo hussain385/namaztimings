@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   Alert,
   Dimensions,
@@ -13,14 +13,10 @@ import {
 import {Header} from 'react-native-elements';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {useSelector} from 'react-redux';
-import {selectCords} from '../redux/locationSlicer';
 import {GetRadMasjidData1} from '../store/firebase';
 import LastUpdated from '../views/LastUpdated';
 import TopPart from '../views/TopPart';
 import {ActivityIndicator} from 'react-native-paper';
-import {headerStyles, textStyles} from '../theme/styles/Base';
-import CoText from '../views/Text/Text';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function HomeScreen({navigation}) {
@@ -33,20 +29,21 @@ function HomeScreen({navigation}) {
   } = new GetRadMasjidData1();
   const [refreshing, setRefreshing] = useState(false);
   const masjidData = masjid;
-  const location = useSelector(selectCords);
-  console.log(masjid, loading, error);
-  async function onRefresh() {
+  // const location = useSelector(selectCords);
+
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await getLocation();
     await GetData();
     setRefreshing(false);
-  }
+  }, []);
 
   useEffect(() => {
-    onRefresh().then(value => {
-      console.log('refreshed');
-    });
-  }, [location.latitude, location.longitude]);
+    (async () => {
+      await onRefresh();
+    })();
+    return () => {};
+  }, [onRefresh]);
 
   // #E1E1E1
   // console.log(masjidData);
@@ -119,12 +116,12 @@ function HomeScreen({navigation}) {
         backgroundColor="#1F441E"
       />
       <>
-        {error.message.trim().isEmpty && (
-          <View>
-            <Alert>Error: {JSON.stringify(error)}</Alert>
-          </View>
-        )}
-        {!masjidData[0] && (
+        {/*{error && (*/}
+        {/*  <View>*/}
+        {/*    <Alert>Error: {JSON.stringify(error)}</Alert>*/}
+        {/*  </View>*/}
+        {/*)}*/}
+        {loading && (
           <View
             style={{
               height: Dimensions.get('screen').height * 0.8,

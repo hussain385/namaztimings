@@ -22,7 +22,7 @@ export const getCurrentLocation = async () => {
   }
 
   return Location.getCurrentPositionAsync({
-    accuracy: Location.Accuracy.Balanced,
+    accuracy: Location.Accuracy.High,
   });
 };
 
@@ -124,9 +124,8 @@ export function GetRadMasjidData1(radius = 50) {
       setLoading(true);
     }
 
-    const location = await getCurrentLocation();
-    console.log(location, 'location');
-    dispatch(setLocation(location.coords));
+    const location1 = await getCurrentLocation();
+    dispatch(setLocation(location1.coords));
     setLoading(false);
   };
 
@@ -143,7 +142,7 @@ export function GetRadMasjidData1(radius = 50) {
       .then(async snapshot => {
         // console.log(snapshot);
         const masjids1 = await sortMasjidData(snapshot, location);
-        setMasjid(masjids1, '<====GetDataRadMasjid');
+        setMasjid(masjids1);
         setLoading(false);
       })
       .catch(e => {

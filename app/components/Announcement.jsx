@@ -1,53 +1,52 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
 import HeaderComp from '../views/HeaderComp';
 import {GetFavMasjidData} from '../store/firebase';
 import {ActivityIndicator} from 'react-native-paper';
-import {isEmpty} from 'lodash/lang';
+import {isEmpty} from 'lodash';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AnnoucmentCard from '../views/AnnoucmentCard';
 
 const Announcement = ({navigation}) => {
-  const [announcements, setAnnoucements] = useState(null);
-  const announcements1 = [];
+  const [announcements, setAnnoucements] = useState([]);
   const {
     masjid: masjidData,
     loading,
-    error,
     GetDataFavMasjid: GetData,
   } = GetFavMasjidData();
 
-  useEffect(() => {
-    let isSubscribed = true;
-
-    async function fetchData() {
-      await GetData();
-    }
-
-    fetchData().then(r => {
-      // if (announcements === undefined) {
-      //   setNoAnnoucement(true);
-      // }
-      console.log(r);
-    });
-    return () => (isSubscribed = false);
-  }, []);
-
-  useEffect(() => {
-    masjidData.map(masjid => {
+  // const announcements1 = [];
+  useMemo(() => {
+    setAnnoucements([]);
+    masjidData.forEach(masjid => {
       if (masjid.announcements) {
-        masjid.announcements.map(announcement =>
-          announcements1.push({name: masjid.name, announcement}),
+        masjid.announcements.forEach(announcement =>
+          setAnnoucements(prev => [
+            ...prev,
+            {
+              name: masjid.name,
+              announcement,
+            },
+          ]),
         );
-        setAnnoucements(announcements1);
       }
     });
   }, [masjidData]);
 
+  useEffect(() => {
+    async function fetchData() {
+      await GetData();
+    }
+    fetchData().then(r => {
+      console.log(r);
+    });
+    return () => {};
+  }, []);
+
   return (
     <View>
       <HeaderComp navigation={navigation} heading="Announcements" />
-      {!loading && isEmpty(announcements) ? (
+      {isEmpty(announcements) ? (
         <View
           style={{
             alignItems: 'center',
@@ -62,6 +61,7 @@ const Announcement = ({navigation}) => {
             <FlatList
               style={{height: Dimensions.get('screen').height * 0.82}}
               data={announcements}
+              keyExtractor={item => item.announcement.id}
               renderItem={({item}, key) => (
                 <View key={key}>
                   <AnnoucmentCard item={item} />
@@ -86,6 +86,7 @@ const Announcement = ({navigation}) => {
 };
 
 export default Announcement;
+
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,

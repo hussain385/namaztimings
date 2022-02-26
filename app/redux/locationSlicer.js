@@ -1,13 +1,13 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {GeoCoordinates} from 'react-native-geolocation-service';
 import _ from 'lodash';
+import {LocationObject} from 'expo-location';
 
 // interface LocationState {
 //   latitude: number,
 //   longitude: number
 // }
 
-const initialState: GeoCoordinates = {
+const initialState: LocationObject = {
   latitude: 0,
   longitude: 0,
   accuracy: 0,
@@ -21,7 +21,7 @@ const locationSlice = createSlice({
   name: 'geolocation',
   initialState,
   reducers: {
-    setLocation: (state, action: PayloadAction<GeoCoordinates>) => {
+    setLocation: (state, action: PayloadAction<LocationObject>) => {
       if (!_.isNull(action.payload)) {
         state = action.payload;
       }
