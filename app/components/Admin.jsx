@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React from 'react';
+import React, {useMemo} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -45,10 +45,14 @@ const Admin = ({navigation}) => {
   ]);
   const snapshot = populate(firestore, 'myMasjids', populates);
 
-  const adminMasjid = _.map(snapshot, (doc, id) => {
-    return {...doc, id};
-  });
-  console.log(adminMasjid, '===> new');
+  const adminMasjid = useMemo(
+    () =>
+      _.map(snapshot, (doc, id) => {
+        return {...doc, id};
+      }),
+    [snapshot],
+  );
+
   return (
     <SafeAreaView>
       {adminMasjid.length > 1 && (

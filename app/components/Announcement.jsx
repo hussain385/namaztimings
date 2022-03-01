@@ -1,37 +1,30 @@
+import _, {isEmpty} from 'lodash';
 import React, {useEffect, useState} from 'react';
 import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
-import HeaderComp from '../views/HeaderComp';
-import {GetFavMasjidData} from '../store/firebase';
 import {ActivityIndicator} from 'react-native-paper';
-import {isEmpty} from 'lodash/lang';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {GetFavMasjidData} from '../store/firebase';
 import AnnoucmentCard from '../views/AnnoucmentCard';
-import _ from 'lodash';
+import HeaderComp from '../views/HeaderComp';
 
 const Announcement = ({navigation}) => {
-  const [announcements, setAnnoucements] = useState(null);
-  const announcements1 = [];
+  const [announcements, setAnnoucements] = useState([]);
   const {
     masjid: masjidData,
     loading,
-    error,
     GetDataFavMasjid: GetData,
   } = GetFavMasjidData();
 
-  useEffect(() => {
-    let isSubscribed = true;
+  const announcements1 = [];
 
+  useEffect(() => {
     async function fetchData() {
       await GetData();
     }
-
     fetchData().then(r => {
-      // if (announcements === undefined) {
-      //   setNoAnnoucement(true);
-      // }
       console.log(r);
     });
-    return () => (isSubscribed = false);
+    return () => {};
   }, []);
 
   useEffect(() => {
@@ -52,7 +45,7 @@ const Announcement = ({navigation}) => {
   return (
     <View>
       <HeaderComp navigation={navigation} heading="Announcements" />
-      {!loading && isEmpty(announcements) ? (
+      {isEmpty(announcements) && !loading ? (
         <View
           style={{
             alignItems: 'center',
@@ -91,6 +84,7 @@ const Announcement = ({navigation}) => {
 };
 
 export default Announcement;
+
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
