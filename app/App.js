@@ -5,7 +5,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import * as React from 'react';
-import myNotification, {navigationRef} from './push';
+import myNotification, {navigate, navigationRef} from './push';
 import {Text, TouchableOpacity, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -497,15 +497,18 @@ export default function App() {
 
   React.useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log(remoteMessage.notification.body);
       myNotification(
         remoteMessage.notification.title,
         remoteMessage.notification.body,
       );
       console.log();
     });
+    const unsubcribe1 = messaging().onNotificationOpenedApp(remoteMessage => {
+      navigate('Announcement');
+    });
 
     return () => {
+      unsubcribe1();
       unsubscribe();
       messaging().onTokenRefresh(token => {
         saveToken(token);

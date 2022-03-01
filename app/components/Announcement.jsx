@@ -21,6 +21,7 @@ const Announcement = ({navigation}) => {
     async function fetchData() {
       await GetData();
     }
+
     fetchData().then(r => {
       console.log(r);
     });
@@ -60,11 +61,8 @@ const Announcement = ({navigation}) => {
             <FlatList
               style={{height: Dimensions.get('screen').height * 0.82}}
               data={_.orderBy(announcements, 'createdAt', 'desc')}
-              renderItem={({item}, key) => (
-                <View key={key}>
-                  <AnnoucmentCard item={item} />
-                </View>
-              )}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => <AnnoucmentCard item={item} />}
             />
           ) : (
             <View
