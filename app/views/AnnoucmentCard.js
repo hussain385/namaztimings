@@ -38,11 +38,13 @@ const AnnoucmentCard = ({item}) => {
                 <Text style={{fontSize: 20}}>{item.name}</Text>
               </View>
               <View>
-                <Text style={{marginTop: 6}}>
+                <Text style={{marginTop: -6}}>
                   Dated:{' '}
-                  {moment(item.announcement.createdAt?.seconds * 1000).format(
-                    'DD/MM/YYYY',
-                  )}
+                  {moment(item.createdAt?.seconds * 1000).format('DD/MM/YYYY')}
+                </Text>
+                <Text>
+                  Time:{'  '}
+                  {moment(item.createdAt?.seconds * 1000).format('hh:mm a')}
                 </Text>
               </View>
             </View>
@@ -62,7 +64,7 @@ const AnnoucmentCard = ({item}) => {
                     fontSize: 17,
                     width: Dimensions.get('screen').width * 0.72,
                   }}>
-                  {item.announcement.description}
+                  {item.description}
                 </Text>
               </View>
             </View>
@@ -81,7 +83,7 @@ const AnnoucmentCard = ({item}) => {
                 borderRadius: 5,
               }}>
               <ScrollView style={{maxHeight: 200}}>
-                <Text>{item.announcement.description}</Text>
+                <Text>{item.description}</Text>
               </ScrollView>
             </View>
             <View

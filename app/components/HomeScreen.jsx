@@ -19,8 +19,6 @@ import {GetRadMasjidData1} from '../store/firebase';
 import LastUpdated from '../views/LastUpdated';
 import TopPart from '../views/TopPart';
 import {ActivityIndicator} from 'react-native-paper';
-import {headerStyles, textStyles} from '../theme/styles/Base';
-import CoText from '../views/Text/Text';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function HomeScreen({navigation}) {
@@ -35,6 +33,7 @@ function HomeScreen({navigation}) {
   const masjidData = masjid;
   const location = useSelector(selectCords);
   console.log(masjid, loading, error);
+
   async function onRefresh() {
     setRefreshing(true);
     await getLocation();

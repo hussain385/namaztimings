@@ -2,7 +2,7 @@
 # Manual changes might be lost - proceed with caution!
 
 __metadata:
-  version: 5
+  version: 6
   cacheKey: 8
 
 "@ampproject/remapping@npm:^2.1.0":
@@ -10272,6 +10272,7 @@ __metadata:
     react-native-maps: 0.29.4
     react-native-modal-datetime-picker: ^10.2.0
     react-native-paper: ^4.11.2
+    react-native-push-notification: ^8.1.1
     react-native-reanimated: ~2.3.2
     react-native-safe-area-context: 3.3.2
     react-native-screens: ~3.10.2
@@ -11467,6 +11468,16 @@ __metadata:
     react-native: "*"
     react-native-vector-icons: "*"
   checksum: 7326405f0c7cf55d1fde1e0fd87b605aa4f68fab8b726177e72c1ebf30c15121596ec6d3a0146de235e575d520428a7fbc9a99a0e97b61e05b8a8e53b0fec7e7
+  languageName: node
+  linkType: hard
+
+"react-native-push-notification@npm:^8.1.1":
+  version: 8.1.1
+  resolution: "react-native-push-notification@npm:8.1.1"
+  peerDependencies:
+    "@react-native-community/push-notification-ios": ^1.10.1
+    react-native: ">=0.33"
+  checksum: 64d500c1163eaa4eee549e6e2f8204cac643f91ae918a227e9d93f8261afdebbdaa7ba5d12da0039155cbf6a599032dd15be4ebe53737cbeeadec4469893f00d
   languageName: node
   linkType: hard
 

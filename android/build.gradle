@@ -6,6 +6,8 @@ buildscript {
         minSdkVersion = 21
         compileSdkVersion = 30
         targetSdkVersion = 30
+        firebaseMessagingVersion = "21.1.0" // default: "21.1.0"
+        googlePlayServicesVersion = "+"
         ndkVersion = "21.4.7075529"
         playServicesVersion = "17.0.0" // or find latest version
         androidMapsUtilsVersion = "2.2.0"

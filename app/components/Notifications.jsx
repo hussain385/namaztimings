@@ -69,7 +69,7 @@ const Notification = ({navigation, route: {params}}) => {
       {firestore1.status.requested.tempAnnouncement && data.length >= 1 ? (
         <FlatList
           style={{height: Dimensions.get('screen').height * 0.82}}
-          data={data}
+          data={data.reverse()}
           renderItem={({item}) => (
             <NotificationCard
               data={item}

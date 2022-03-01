@@ -1,10 +1,13 @@
 import React, {useState} from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import {Dimensions, SafeAreaView, Text} from 'react-native';
 import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {useSelector} from 'react-redux';
 import {populate, useFirestoreConnect} from 'react-redux-firebase';
 import {selectFirestore, sortMasjidData1} from '../store/firebase';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+
+const window = Dimensions.get('window');
+const {width, height} = window;
+const LATITUD_DELTA = 0.0052;
 
 const Map = ({navigation, route}) => {
   const [titleShow, setTitleShow] = useState('');
@@ -33,8 +36,8 @@ const Map = ({navigation, route}) => {
         initialRegion={{
           latitude: Number(latitude),
           longitude: Number(longitude),
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: LATITUD_DELTA,
+          longitudeDelta: (LATITUD_DELTA * width) / height,
         }}>
         {masjidData !== null
           ? masjidData.map((masjid1, id) => (

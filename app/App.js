@@ -5,6 +5,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import * as React from 'react';
+import myNotification, {navigationRef} from './push';
 import {Text, TouchableOpacity, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -496,16 +497,12 @@ export default function App() {
 
   React.useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      toast.show(
-        `${remoteMessage.notification.title} namaz timings are updated`,
-        {
-          type: 'success',
-          position: 'top',
-          duration: 4000,
-          offset: 30,
-          animationType: 'slide-in',
-        },
+      console.log(remoteMessage.notification.body);
+      myNotification(
+        remoteMessage.notification.title,
+        remoteMessage.notification.body,
       );
+      console.log();
     });
 
     return () => {
@@ -520,7 +517,7 @@ export default function App() {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <ReactReduxFirebaseProvider {...rrfProps}>
-          <NavigationContainer>
+          <NavigationContainer ref={navigationRef}>
             <ToastProvider>
               <RootStackScreen />
             </ToastProvider>

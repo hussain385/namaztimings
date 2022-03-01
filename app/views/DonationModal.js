@@ -2,10 +2,6 @@ import React, {useState} from 'react';
 import {
   Alert,
   Dimensions,
-  Modal,
-  Pressable,
-  SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -41,58 +37,56 @@ const DonationModal = props => {
         ]);
       });
   };
+  console.log(donationInfo);
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={props.modalVisible}>
-      <View style={styles.centeredView}>
-        <ScrollView>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Namaz Timings</Text>
-            <TextInput
-              value={donationInfo}
-              name="info"
-              placeholder="Your donation information"
-              multiline={true}
-              onChangeText={event => {
-                setDonationInfo(event);
-              }}
-              style={{
-                padding: 10,
-                fontSize: 17,
-                borderColor: 'grey',
-                borderWidth: 1,
-                width: '100%',
-                borderRadius: 5,
-                height: Dimensions.get('screen').height * 0.5,
-                textAlignVertical: 'top',
-              }}
-            />
-            <View style={{flexDirection: 'row', marginTop: 10}}>
-              <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={() => {
-                  props.setModalVisible(!props.modalVisible);
-                }}>
-                <Text style={styles.textStyle}>Cancel</Text>
-              </Pressable>
-              {props.editable && (
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={onSubmit}>
-                  {isSubmiting ? (
-                    <ActivityIndicator size={18} color="white" />
-                  ) : (
-                    <Text style={styles.textStyle}>Save</Text>
-                  )}
-                </TouchableOpacity>
+    // <Modal
+    //   animationType="slide"
+    //   transparent={true}
+    //   visible={props.modalVisible}>
+    //   <View style={styles.centeredView}>
+    //     <ScrollView>
+    <View style={styles.modalView}>
+      {donationInfo !== 'No information set by admin' && (
+        <>
+          <TextInput
+            value={donationInfo}
+            name="info"
+            placeholder="Your donation information"
+            multiline={true}
+            editable={props.editable}
+            onChangeText={event => {
+              setDonationInfo(event);
+            }}
+            style={{
+              padding: 10,
+              fontSize: 17,
+              color: 'black',
+              borderColor: '#bbbbbb',
+              borderWidth: 1,
+              textAlign: 'center',
+              width: '100%',
+              borderRadius: 5,
+              height: Dimensions.get('screen').height * 0.5,
+              textAlignVertical: 'top',
+            }}
+          />
+          {props.editable && (
+            <TouchableOpacity
+              style={[styles.button, styles.buttonClose]}
+              onPress={onSubmit}>
+              {isSubmiting ? (
+                <ActivityIndicator size={18} color="white" />
+              ) : (
+                <Text style={styles.textStyle}>Save</Text>
               )}
-            </View>
-          </View>
-        </ScrollView>
-      </View>
-    </Modal>
+            </TouchableOpacity>
+          )}
+        </>
+      )}
+    </View>
+    //     </ScrollView>
+    //   </View>
+    // </Modal>
   );
 };
 
@@ -106,12 +100,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#00000071',
   },
   modalView: {
-    marginTop: 30,
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
-    width: Window_Width * 0.9,
+    width: Window_Width,
   },
   modalText: {
     marginBottom: 15,
@@ -119,6 +112,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
+    marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,

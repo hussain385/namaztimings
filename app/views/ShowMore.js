@@ -43,8 +43,12 @@ const Item = props => {
               timing: props.timings,
               key: props.favId,
               distance: props.distance,
-              latitude: props.latitude,
-              longitude: props.longitude,
+              g: {
+                geopoint: {
+                  latitude: props.latitude,
+                  longitude: props.longitude,
+                },
+              },
               user: props.user,
               gLink: props.gLink,
               timeStamp: props.timeStamp,
