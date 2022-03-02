@@ -6,7 +6,6 @@ import {
   ImageBackground,
   Linking,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -15,6 +14,7 @@ import {GetFavMasjidData} from '../store/firebase';
 import Favbtn from '../views/Favbtn';
 import HeaderComp from '../views/HeaderComp';
 import {useFavorites} from '../redux/favSlicer';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 // title={item.name}
 // address={item.address}

@@ -50,7 +50,7 @@ export function sortMasjidData1(snapshot, {latitude, longitude}) {
   }
 
   _.forEach(snapshot, (data, key) => {
-    console.log(data, 'sortMasjidData1');
+    // console.log(data, 'sortMasjidData1');
     if (_.isNil(data)) {
       return;
     }
