@@ -1,7 +1,11 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import {Dimensions, SafeAreaView} from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+
+const window = Dimensions.get('window');
+const {width, height} = window;
+const LATITUD_DELTA = 0.0052;
 
 const Maps1 = ({route}) => {
   const {longitude} = route.params;
@@ -17,13 +21,13 @@ const Maps1 = ({route}) => {
         initialRegion={{
           latitude: Number(latitude),
           longitude: Number(longitude),
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: LATITUD_DELTA,
+          longitudeDelta: (LATITUD_DELTA * width) / height,
         }}>
         <SafeAreaView>
           <Marker
             title={`${name}`}
-            icon={require('./images/mosque5.png')}
+            icon={require('./images/mosque2.png')}
             coordinate={{
               latitude: Number(latitude),
               longitude: Number(longitude),

@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
-  Alert,
   Dimensions,
   RefreshControl,
   SafeAreaView,
@@ -11,13 +10,13 @@ import {
   View,
 } from 'react-native';
 import {Header} from 'react-native-elements';
+import {ActivityIndicator} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {GetRadMasjidData1} from '../store/firebase';
 import LastUpdated from '../views/LastUpdated';
 import TopPart from '../views/TopPart';
-import {ActivityIndicator} from 'react-native-paper';
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function HomeScreen({navigation}) {
   const {

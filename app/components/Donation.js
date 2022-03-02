@@ -52,21 +52,21 @@ const Donation = ({navigation, route}) => {
             laying foundations for your own spiritual rewards in this life and
             the next.
           </Text>
-          <TouchableOpacity
-            style={{
-              alignItems: 'center',
-              backgroundColor: '#1F441E',
-              padding: 10,
-              borderRadius: 5,
-              width: '70%',
-              marginTop: 20,
-              marginHorizontal: 10,
-            }}
-            onPress={() => setModalVisible(!modalVisible)}>
-            <Text style={{color: '#CEE6B4', fontSize: 16}}>
-              Donation Details
-            </Text>
-          </TouchableOpacity>
+          {/*<TouchableOpacity*/}
+          {/*  style={{*/}
+          {/*    alignItems: 'center',*/}
+          {/*    backgroundColor: '#1F441E',*/}
+          {/*    padding: 10,*/}
+          {/*    borderRadius: 5,*/}
+          {/*    width: '70%',*/}
+          {/*    marginTop: 20,*/}
+          {/*    marginHorizontal: 10,*/}
+          {/*  }}*/}
+          {/*  onPress={() => setModalVisible(!modalVisible)}>*/}
+          {/*  <Text style={{color: '#CEE6B4', fontSize: 16}}>*/}
+          {/*    Donation Details*/}
+          {/*  </Text>*/}
+          {/*</TouchableOpacity>*/}
           <DonationModal
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}

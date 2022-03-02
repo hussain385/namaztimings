@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
+import {navigate} from '../push';
 
 export const getFcmToken = async () => {
   let fcmToken = await AsyncStorage.getItem('fcmToken');
@@ -25,10 +26,7 @@ export const saveToken = async fcmToken => {
 
 export const notificationListener = async () => {
   messaging().onNotificationOpenedApp(remoteMessage => {
-    console.log(
-      'Notification caused app to open from background state:',
-      remoteMessage.notification,
-    );
+    navigate('Announcement');
   });
   messaging()
     .getInitialNotification()

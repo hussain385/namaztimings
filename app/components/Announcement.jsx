@@ -1,11 +1,11 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import _, {isEmpty} from 'lodash';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
-import HeaderComp from '../views/HeaderComp';
-import {GetFavMasjidData} from '../store/firebase';
 import {ActivityIndicator} from 'react-native-paper';
-import {isEmpty} from 'lodash';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import {GetFavMasjidData} from '../store/firebase';
 import AnnoucmentCard from '../views/AnnoucmentCard';
+import HeaderComp from '../views/HeaderComp';
 
 const Announcement = ({navigation}) => {
   const [announcements, setAnnoucements] = useState([]);
@@ -15,38 +15,38 @@ const Announcement = ({navigation}) => {
     GetDataFavMasjid: GetData,
   } = GetFavMasjidData();
 
-  // const announcements1 = [];
-  useMemo(() => {
-    setAnnoucements([]);
-    masjidData.forEach(masjid => {
-      if (masjid.announcements) {
-        masjid.announcements.forEach(announcement =>
-          setAnnoucements(prev => [
-            ...prev,
-            {
-              name: masjid.name,
-              announcement,
-            },
-          ]),
-        );
-      }
-    });
-  }, [masjidData]);
+  const announcements1 = [];
 
   useEffect(() => {
     async function fetchData() {
       await GetData();
     }
+
     fetchData().then(r => {
       console.log(r);
     });
     return () => {};
   }, []);
 
+  useEffect(() => {
+    masjidData.map(masjid => {
+      if (masjid.announcements) {
+        masjid.announcements.map(announcement =>
+          announcements1.push({
+            name: masjid.name,
+            createdAt: announcement.createdAt,
+            description: announcement.description,
+          }),
+        );
+        setAnnoucements(announcements1);
+      }
+    });
+  }, [masjidData]);
+
   return (
     <View>
       <HeaderComp navigation={navigation} heading="Announcements" />
-      {isEmpty(announcements) ? (
+      {isEmpty(announcements) && !loading ? (
         <View
           style={{
             alignItems: 'center',
@@ -60,13 +60,9 @@ const Announcement = ({navigation}) => {
           {!isEmpty(announcements) ? (
             <FlatList
               style={{height: Dimensions.get('screen').height * 0.82}}
-              data={announcements}
-              keyExtractor={item => item.announcement.id}
-              renderItem={({item}, key) => (
-                <View key={key}>
-                  <AnnoucmentCard item={item} />
-                </View>
-              )}
+              data={_.orderBy(announcements, 'createdAt', 'desc')}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => <AnnoucmentCard item={item} />}
             />
           ) : (
             <View

@@ -1,6 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 import _ from 'lodash';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   Alert,
   Dimensions,
@@ -159,6 +159,7 @@ const AdminNotification = ({navigation, route}) => {
                   <Text
                     style={{
                       fontSize: 17,
+                      color: `${isRead ? 'grey' : '#1F441E'}`,
                       fontWeight: `${isRead ? 200 : 700}`,
                     }}>
                     Requestor Name: {userName}
@@ -170,6 +171,7 @@ const AdminNotification = ({navigation, route}) => {
                   <Text
                     style={{
                       fontSize: 17,
+                      color: `${isRead ? 'grey' : '#1F441E'}`,
                       fontWeight: `${isRead ? 200 : 700}`,
                     }}>
                     Requestor Contact: {userPhone}
@@ -196,6 +198,7 @@ const AdminNotification = ({navigation, route}) => {
                       style={{
                         textAlign: 'center',
                         fontSize: 14,
+                        color: `${isRead ? 'grey' : '#1F441E'}`,
                         fontWeight: `${isRead ? 200 : 700}`,
                       }}>
                       Fajar
@@ -204,6 +207,7 @@ const AdminNotification = ({navigation, route}) => {
                       style={{
                         textAlign: 'center',
                         fontSize: 14,
+                        color: `${isRead ? 'grey' : '#1F441E'}`,
                         fontWeight: `${isRead ? 200 : 700}`,
                       }}>
                       {timing.fajar.substring(0, 5)}
@@ -214,6 +218,7 @@ const AdminNotification = ({navigation, route}) => {
                       style={{
                         textAlign: 'center',
                         fontSize: 14,
+                        color: `${isRead ? 'grey' : '#1F441E'}`,
                         fontWeight: `${isRead ? 200 : 700}`,
                       }}>
                       Zohar
@@ -222,6 +227,7 @@ const AdminNotification = ({navigation, route}) => {
                       style={{
                         textAlign: 'center',
                         fontSize: 14,
+                        color: `${isRead ? 'grey' : '#1F441E'}`,
                         fontWeight: `${isRead ? 200 : 700}`,
                       }}>
                       {timing.zohar.substring(0, 5)}
@@ -232,6 +238,7 @@ const AdminNotification = ({navigation, route}) => {
                       style={{
                         textAlign: 'center',
                         fontSize: 14,
+                        color: `${isRead ? 'grey' : '#1F441E'}`,
                         fontWeight: `${isRead ? 200 : 700}`,
                       }}>
                       Asar
@@ -240,6 +247,7 @@ const AdminNotification = ({navigation, route}) => {
                       style={{
                         textAlign: 'center',
                         fontSize: 14,
+                        color: `${isRead ? 'grey' : '#1F441E'}`,
                         fontWeight: `${isRead ? 200 : 700}`,
                       }}>
                       {timing.asar.substring(0, 5)}
@@ -250,6 +258,7 @@ const AdminNotification = ({navigation, route}) => {
                       style={{
                         textAlign: 'center',
                         fontSize: 14,
+                        color: `${isRead ? 'grey' : '#1F441E'}`,
                         fontWeight: `${isRead ? 200 : 700}`,
                       }}>
                       Magrib
@@ -258,6 +267,7 @@ const AdminNotification = ({navigation, route}) => {
                       style={{
                         textAlign: 'center',
                         fontSize: 14,
+                        color: `${isRead ? 'grey' : '#1F441E'}`,
                         fontWeight: `${isRead ? 200 : 700}`,
                       }}>
                       {timing.magrib.substring(0, 5)}
@@ -268,6 +278,7 @@ const AdminNotification = ({navigation, route}) => {
                       style={{
                         textAlign: 'center',
                         fontSize: 14,
+                        color: `${isRead ? 'grey' : '#1F441E'}`,
                         fontWeight: `${isRead ? 200 : 700}`,
                       }}>
                       Isha
@@ -276,6 +287,7 @@ const AdminNotification = ({navigation, route}) => {
                       style={{
                         textAlign: 'center',
                         fontSize: 14,
+                        color: `${isRead ? 'grey' : '#1F441E'}`,
                         fontWeight: `${isRead ? 200 : 700}`,
                       }}>
                       {timing.isha.substring(0, 5)}
