@@ -174,7 +174,6 @@ const Search = props => {
         renderItem={result.length > 0 ? renderItem1 : renderItem}
         keyExtractor={item => item.key || item.item.key}
         style={{marginBottom: 140}}
-        disableScrollViewPanResponder={true}
         initialNumToRender={5}
       />
       {isLoaded(masjid) && (
