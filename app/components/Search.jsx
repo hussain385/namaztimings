@@ -1,6 +1,6 @@
 import {compose} from '@reduxjs/toolkit';
 import Fuse from 'fuse.js';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -19,7 +19,7 @@ import {getCurrentLocation, sortMasjidData1} from '../store/firebase';
 import MasjidCard from '../views/MasjidCard';
 import {selectCords, setLocation} from '../redux/locationSlicer';
 import {ActivityIndicator} from 'react-native-paper';
-import Animated, {FadeOut, Layout} from 'react-native-reanimated';
+import Animated, {Layout} from 'react-native-reanimated';
 
 const populates = [
   {child: 'adminId', root: 'users', childAlias: 'user'}, // replace owner with user object
@@ -29,9 +29,12 @@ const Search = props => {
   const {navigation, masjid} = props;
   const [textSearch, setTextSearch] = useState('');
   const location = useSelector(selectCords);
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState([]);
   const dispatch = useDispatch();
-  const masjidData = sortMasjidData1(masjid, location);
+  const masjidData = useMemo(
+    () => sortMasjidData1(masjid, location),
+    [location, masjid],
+  );
 
   function onChangeSearch(text) {
     const fuse = new Fuse(masjidData, {
@@ -46,9 +49,9 @@ const Search = props => {
       minMatchCharLength: 5,
     });
     const resultf = fuse.search(text);
+    console.log(resultf, 'resultf');
     setTextSearch(text);
     setResult(resultf);
-    console.log(resultf, text);
   }
 
   useEffect(() => {
@@ -64,6 +67,7 @@ const Search = props => {
   }, [dispatch]);
 
   const renderItem = ({item}) => <MasjidCard masjid={item} nav={navigation} />;
+
   const renderItem1 = ({item}) => (
     <MasjidCard
       // title={item.item.name}
@@ -165,45 +169,14 @@ const Search = props => {
           <ActivityIndicator color="#1F441E" size="large" />
         </Animated.View>
       )}
-      {(() => {
-        if (result === null) {
-          return (
-            <FlatList
-              data={masjidData}
-              renderItem={renderItem}
-              keyExtractor={item => item.key}
-              style={{marginBottom: 140}}
-              initialNumToRender={5}
-            />
-          );
-        } else {
-          return (
-            <View>
-              {(() => {
-                if (textSearch !== '') {
-                  return (
-                    <FlatList
-                      data={result}
-                      renderItem={renderItem1}
-                      keyExtractor={result.key}
-                      style={{height: Dimensions.get('window').height - 240}}
-                    />
-                  );
-                } else {
-                  return (
-                    <FlatList
-                      data={masjidData}
-                      renderItem={renderItem}
-                      keyExtractor={item => item.id}
-                      style={{height: Dimensions.get('window').height - 240}}
-                    />
-                  );
-                }
-              })()}
-            </View>
-          );
-        }
-      })()}
+      <FlatList
+        data={result.length > 0 ? result : masjidData}
+        renderItem={result.length > 0 ? renderItem1 : renderItem}
+        keyExtractor={item => item.key || item.item.key}
+        style={{marginBottom: 140}}
+        disableScrollViewPanResponder={true}
+        initialNumToRender={5}
+      />
       {isLoaded(masjid) && (
         <View
           style={{

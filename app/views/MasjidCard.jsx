@@ -1,14 +1,9 @@
 import React, {PureComponent} from 'react';
-import {
-  ImageBackground,
-  Linking,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {ImageBackground, Linking, Text, View} from 'react-native';
 import Favbtn from './Favbtn';
 import Animated, {Layout, ZoomIn, ZoomOut} from 'react-native-reanimated';
 import styled from 'styled-components/native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Card = styled(Animated.View)`
   margin: 10px;
