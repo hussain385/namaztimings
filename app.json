@@ -17,7 +17,12 @@
     },
     "android": {
       "package": "com.namaztimings",
-      "googleServicesFile": "./google-services.json"
+      "googleServicesFile": "./google-services.json",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCrsNBX-pWunuPeL-ziP99aXhetdZL2VKs"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
