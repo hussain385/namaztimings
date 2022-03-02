@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "84116374184",
+    "project_id": "fir-c232b",
+    "storage_bucket": "fir-c232b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84116374184:android:cf1c016ceee47772dd389d",
+        "android_client_info": {
+          "package_name": "com.namaztimings"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "84116374184-621stcf4l1s10euio9skdu86u03st485.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkXlq9SMOKmBcpJsQRQ8wZ7uLh8YNK668"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "84116374184-621stcf4l1s10euio9skdu86u03st485.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84116374184:android:cf853be81697c924dd389d",
+        "android_client_info": {
+          "package_name": "com.tango.NamazTimings"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "84116374184-621stcf4l1s10euio9skdu86u03st485.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkXlq9SMOKmBcpJsQRQ8wZ7uLh8YNK668"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "84116374184-621stcf4l1s10euio9skdu86u03st485.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
