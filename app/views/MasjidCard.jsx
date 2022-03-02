@@ -1,5 +1,12 @@
 import React, {PureComponent} from 'react';
-import {ImageBackground, Linking, Text, View} from 'react-native';
+import {
+  Dimensions,
+  ImageBackground,
+  Linking,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import Favbtn from './Favbtn';
 import Animated, {Layout, ZoomIn, ZoomOut} from 'react-native-reanimated';
 import styled from 'styled-components/native';
@@ -91,30 +98,14 @@ export default class MasjidCard extends PureComponent {
                   masjid: this.props.masjid,
                 })
               }
-              style={{
-                alignItems: 'center',
-                backgroundColor: '#1F441E',
-                padding: 10,
-                borderRadius: 5,
-                width: '47%',
-                marginVertical: 10,
-                marginHorizontal: 10,
-              }}>
+              style={[styles.btnStyles, {backgroundColor: '#1F441E'}]}>
               <Text style={{color: '#CEE6B4'}}>More Info</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={async () => {
                 await Linking.openURL(`${this.props.masjid.gLink}`);
               }}
-              style={{
-                alignItems: 'center',
-                padding: 10,
-                borderRadius: 5,
-                width: '47%',
-                marginVertical: 10,
-                marginHorizontal: 10,
-                backgroundColor: '#CEE6B4',
-              }}>
+              style={styles.btnStyles}>
               <Text
                 style={{
                   color: '#1F441E',
@@ -128,3 +119,14 @@ export default class MasjidCard extends PureComponent {
     );
   }
 }
+const styles = StyleSheet.create({
+  btnStyles: {
+    alignItems: 'center',
+    backgroundColor: '#CEE6B4',
+    padding: 10,
+    marginHorizontal: 10,
+    borderRadius: 5,
+    marginVertical: 10,
+    width: Dimensions.get('screen').width * 0.43,
+  },
+});

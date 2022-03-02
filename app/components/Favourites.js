@@ -2,9 +2,11 @@ import _ from 'lodash';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  Dimensions,
   FlatList,
   ImageBackground,
   Linking,
+  StyleSheet,
   Text,
   View,
 } from 'react-native';
@@ -182,30 +184,14 @@ const Favourites = ({navigation}) => {
                 },
               })
             }
-            style={{
-              alignItems: 'center',
-              backgroundColor: '#1F441E',
-              padding: 10,
-              borderRadius: 5,
-              width: '47%',
-              marginVertical: 10,
-              marginHorizontal: 10,
-            }}>
+            style={[styles.btnStyles, {backgroundColor: '#1F441E'}]}>
             <Text style={{color: '#CEE6B4'}}>More Info</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={async () => {
               await Linking.openURL(`${gLink}`);
             }}
-            style={{
-              alignItems: 'center',
-              padding: 10,
-              borderRadius: 5,
-              width: '47%',
-              marginVertical: 10,
-              marginHorizontal: 10,
-              backgroundColor: '#CEE6B4',
-            }}>
+            style={styles.btnStyles}>
             <Text
               style={{
                 color: '#1F441E',
@@ -260,23 +246,16 @@ const Favourites = ({navigation}) => {
   );
 };
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     marginBottom: 60,
-//   },
-//   mncontainer: {
-//     flex: 1,
-//     marginTop: 30,
-//   },
-//   navigationContainer: {
-//     backgroundColor: '#1F441E',
-//   },
-//   paragraph: {
-//     padding: 16,
-//     fontSize: 15,
-//     textAlign: 'center',
-//   },
-// });
+const styles = StyleSheet.create({
+  btnStyles: {
+    alignItems: 'center',
+    backgroundColor: '#CEE6B4',
+    padding: 10,
+    marginHorizontal: 10,
+    borderRadius: 5,
+    marginVertical: 10,
+    width: Dimensions.get('screen').width * 0.43,
+  },
+});
 
 export default Favourites;
