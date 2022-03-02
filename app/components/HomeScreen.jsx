@@ -1,5 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  Alert,
   Dimensions,
   RefreshControl,
   SafeAreaView,
@@ -10,13 +11,15 @@ import {
   View,
 } from 'react-native';
 import {Header} from 'react-native-elements';
-import {ActivityIndicator} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useSelector} from 'react-redux';
+import {selectCords} from '../redux/locationSlicer';
 import {GetRadMasjidData1} from '../store/firebase';
 import LastUpdated from '../views/LastUpdated';
 import TopPart from '../views/TopPart';
+import {ActivityIndicator} from 'react-native-paper';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function HomeScreen({navigation}) {
   const {
@@ -28,21 +31,21 @@ function HomeScreen({navigation}) {
   } = new GetRadMasjidData1();
   const [refreshing, setRefreshing] = useState(false);
   const masjidData = masjid;
-  // const location = useSelector(selectCords);
+  const location = useSelector(selectCords);
+  console.log(masjid, loading, error);
 
-  const onRefresh = useCallback(async () => {
+  async function onRefresh() {
     setRefreshing(true);
     await getLocation();
     await GetData();
     setRefreshing(false);
-  }, []);
+  }
 
   useEffect(() => {
-    (async () => {
-      await onRefresh();
-    })();
-    return () => {};
-  }, [onRefresh]);
+    onRefresh().then(value => {
+      console.log('refreshed');
+    });
+  }, [location.latitude, location.longitude]);
 
   // #E1E1E1
   // console.log(masjidData);
@@ -115,12 +118,12 @@ function HomeScreen({navigation}) {
         backgroundColor="#1F441E"
       />
       <>
-        {/*{error && (*/}
-        {/*  <View>*/}
-        {/*    <Alert>Error: {JSON.stringify(error)}</Alert>*/}
-        {/*  </View>*/}
-        {/*)}*/}
-        {loading && (
+        {error.message.trim().isEmpty && (
+          <View>
+            <Alert>Error: {JSON.stringify(error)}</Alert>
+          </View>
+        )}
+        {!masjidData[0] && (
           <View
             style={{
               height: Dimensions.get('screen').height * 0.8,
