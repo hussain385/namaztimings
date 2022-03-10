@@ -46,7 +46,7 @@ const DonationModal = props => {
     //   <View style={styles.centeredView}>
     //     <ScrollView>
     <View style={styles.modalView}>
-      {donationInfo !== 'No information set by admin' && (
+      {(donationInfo !== 'No information set by admin' || props.adminView) && (
         <>
           <TextInput
             value={donationInfo}

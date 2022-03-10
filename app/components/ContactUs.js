@@ -96,7 +96,8 @@ const ContactUs = ({navigation}) => {
                   value={values.userName}
                   onBlur={handleBlur('userName')}
                   style={{
-                    paddingHorizontal: 10,
+                    padding: 10,
+                    borderRadius: 10,
                     backgroundColor: '#EEEEEE',
                     color: 'black',
                   }}
@@ -127,7 +128,8 @@ const ContactUs = ({navigation}) => {
                   value={values.userEmail}
                   onBlur={handleBlur('userEmail')}
                   style={{
-                    paddingHorizontal: 10,
+                    padding: 10,
+                    borderRadius: 10,
                     backgroundColor: '#EEEEEE',
                     color: 'black',
                   }}

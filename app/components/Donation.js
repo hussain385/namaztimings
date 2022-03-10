@@ -14,7 +14,13 @@ const Window_Height = Dimensions.get('screen').height;
 const Window_Width = Dimensions.get('screen').width;
 
 const Donation = ({navigation, route}) => {
-  const {masjidId: masjidID, edit, donationInfo, masjidName} = route.params;
+  const {
+    masjidId: masjidID,
+    edit,
+    donationInfo,
+    masjidName,
+    adminView = false,
+  } = route.params;
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <>
@@ -72,6 +78,7 @@ const Donation = ({navigation, route}) => {
             setModalVisible={setModalVisible}
             editable={edit}
             masjidId={masjidID}
+            adminView={adminView}
             donationInfo={donationInfo}
           />
         </View>

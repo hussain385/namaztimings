@@ -70,7 +70,10 @@ const deleteFunc = (masjidId, reqId, uid) => {
                 .delete()
                 .then(
                   value1 => {
-                    console.log('deleted', value1);
+                    Alert.alert(
+                      'Successful',
+                      'This request has been deleted successfully',
+                    );
                   },
                   reason => {
                     console.warn(reason.message, 'from requests');

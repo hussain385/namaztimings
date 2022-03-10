@@ -168,11 +168,7 @@ const CustomDrawerContent = ({navigation}) => {
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() =>
-          Linking.openURL(
-            'https://masjid-finder-pakistan.web.app/term_conditions',
-          )
-        }
+        onPress={() => Linking.openURL('https://namaz-timings.surge.sh/')}
         style={{
           paddingHorizontal: 20,
           flexDirection: 'row',

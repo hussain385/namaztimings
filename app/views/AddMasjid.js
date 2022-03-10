@@ -9,8 +9,10 @@ import {
   Platform,
   Text,
   TextInput,
+  StyleSheet,
   TouchableOpacity,
   View,
+  SafeAreaView,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import * as ImagePicker from 'react-native-image-picker';
@@ -23,6 +25,7 @@ import {selectFirebase} from '../store/firebase';
 import Edit from './Edit';
 import HeaderComp from './HeaderComp';
 import {getFcmToken} from '../store/token';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
@@ -133,7 +136,7 @@ export const AddMasjid = ({navigation}) => {
   };
 
   return (
-    <>
+    <SafeAreaView style={{backgroundColor: 'white'}}>
       <HeaderComp navigation={navigation} heading="Add Masjid" />
       <View style={{alignItems: 'center'}}>
         <Text style={{fontSize: 20}}>Enter Masjid Details</Text>
@@ -141,7 +144,7 @@ export const AddMasjid = ({navigation}) => {
       <Formik
         initialValues={{
           name: '',
-          gLink: '',
+          gLink: 'https://goo.gl/maps/94ak36xXvKERYNL56',
           pictureURL: '',
           userEmail: auth.email || '',
           userName: profile.name || '',
@@ -261,11 +264,7 @@ export const AddMasjid = ({navigation}) => {
                   onChangeText={handleChange('name')}
                   value={values.name}
                   onBlur={handleBlur('name')}
-                  style={{
-                    paddingHorizontal: 10,
-                    backgroundColor: '#EEEEEE',
-                    color: 'black',
-                  }}
+                  style={styles.inputStyle}
                   placeholder="Enter Masjid Name..."
                   placeholderTextColor="grey"
                 />
@@ -292,11 +291,7 @@ export const AddMasjid = ({navigation}) => {
                   onChangeText={handleChange('userName')}
                   value={values.userName}
                   onBlur={handleBlur('userName')}
-                  style={{
-                    paddingHorizontal: 10,
-                    backgroundColor: '#EEEEEE',
-                    color: 'black',
-                  }}
+                  style={styles.inputStyle}
                   placeholder="Enter Your Name..."
                   placeholderTextColor="grey"
                 />
@@ -323,11 +318,7 @@ export const AddMasjid = ({navigation}) => {
                   onChangeText={handleChange('userEmail')}
                   value={values.userEmail}
                   onBlur={handleBlur('userEmail')}
-                  style={{
-                    paddingHorizontal: 10,
-                    backgroundColor: '#EEEEEE',
-                    color: 'black',
-                  }}
+                  style={styles.inputStyle}
                   placeholder="Enter Your Email..."
                   placeholderTextColor="grey"
                 />
@@ -357,11 +348,7 @@ export const AddMasjid = ({navigation}) => {
                   value={values.userPhone}
                   keyboardType="number-pad"
                   onBlur={handleBlur('userPhone')}
-                  style={{
-                    paddingHorizontal: 10,
-                    backgroundColor: '#EEEEEE',
-                    color: 'black',
-                  }}
+                  style={styles.inputStyle}
                   placeholder="Enter Your Phone Number..."
                   placeholderTextColor="grey"
                 />
@@ -390,11 +377,7 @@ export const AddMasjid = ({navigation}) => {
                   onChangeText={handleChange('gLink')}
                   value={values.gLink}
                   onBlur={handleBlur('gLink')}
-                  style={{
-                    paddingHorizontal: 10,
-                    backgroundColor: '#EEEEEE',
-                    color: 'black',
-                  }}
+                  style={styles.inputStyle}
                   placeholder="Enter Masjid Address Google Link..."
                   placeholderTextColor="grey"
                 />
@@ -666,8 +649,8 @@ export const AddMasjid = ({navigation}) => {
                   </>
                 ) : (
                   <>
-                    <MaterialIcons
-                      name="photo-camera-back"
+                    <FontAwesome5
+                      name="mosque"
                       size={100}
                       color="white"
                       style={{marginVertical: '10%'}}
@@ -761,6 +744,15 @@ export const AddMasjid = ({navigation}) => {
           </View>
         )}
       </Formik>
-    </>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  inputStyle: {
+    padding: 10,
+    backgroundColor: 'white',
+    color: 'black',
+    borderRadius: 10,
+  },
+});
