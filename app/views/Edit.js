@@ -25,6 +25,7 @@ import axios from 'axios';
 import {getFcmToken} from '../store/token';
 
 const Edit = ({
+  masjidName,
   timing,
   uid,
   adminId = '',
@@ -183,8 +184,6 @@ const Edit = ({
                 }}
                 onSubmit={async (values, {setSubmitting}) => {
                   setSubmitting(true);
-                  console.log(values, uid, 'in onSubmit');
-
                   if (_.isEqual(values.timing, timing) && isRequest) {
                     console.log(isRequest);
                     Alert.alert(
@@ -217,20 +216,51 @@ const Edit = ({
                                 ),
                               })
                               .then(
-                                () => {
-                                  setSubmitting(false);
-                                  Alert.alert(
-                                    'Request Send!',
-                                    'Jazak Allah u Khairan, your namaz timings updates are sent to admin, he will review and approve in 24 hours.',
-                                    [
-                                      {
-                                        text: 'Ok',
-                                        onPress: () =>
-                                          setModalVisible(!modalVisible),
-                                      },
-                                    ],
-                                    {cancelable: false},
-                                  );
+                                async () => {
+                                  console.log(adminId, 'aafa');
+                                  if (adminId === '') {
+                                    await axios
+                                      .post(
+                                        'https://namaz-timings-pakistan.herokuapp.com/email',
+                                        {
+                                          to: 'juzer.shabbir@gmail.com',
+                                          body: `Dear Admin,\n${masjidName} has received an time edit request from ${values.userName}`,
+                                          title: 'Admin Notification',
+                                        },
+                                      )
+                                      .then(() => {
+                                        setSubmitting(false);
+                                        Alert.alert(
+                                          'Request Send!',
+                                          'Jazak Allah u Khairan, your namaz timings updates are sent to admin, he will review and approve in 24 hours.',
+                                          [
+                                            {
+                                              text: 'Ok',
+                                              onPress: () =>
+                                                setModalVisible(!modalVisible),
+                                            },
+                                          ],
+                                          {cancelable: false},
+                                        );
+                                      })
+                                      .catch(e => {
+                                        console.log(e);
+                                      });
+                                  } else {
+                                    setSubmitting(false);
+                                    Alert.alert(
+                                      'Request Send!',
+                                      'Jazak Allah u Khairan, your namaz timings updates are sent to admin, he will review and approve in 24 hours.',
+                                      [
+                                        {
+                                          text: 'Ok',
+                                          onPress: () =>
+                                            setModalVisible(!modalVisible),
+                                        },
+                                      ],
+                                      {cancelable: false},
+                                    );
+                                  }
                                 },
                                 reason => {
                                   firestore()

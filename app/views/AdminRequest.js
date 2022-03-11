@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useFirestore} from 'react-redux-firebase';
 import * as Yup from 'yup';
 import {getFcmToken} from '../store/token';
+import axios from 'axios';
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
@@ -35,7 +36,7 @@ const AdminRequestSchema = Yup.object().shape({
     .required('Your Phone no. is required'),
 });
 
-const AdminRequest = ({id}) => {
+const AdminRequest = ({id, masjidName}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const firestore = useFirestore();
   const [loading, setLoading] = useState(false);
@@ -73,20 +74,32 @@ const AdminRequest = ({id}) => {
                 await firestore
                   .collection('adminRequest')
                   .add({...values, token})
-                  .then(() =>
-                    Alert.alert(
-                      'Request send successfully',
-                      'Jazak Allah u Khairan for your contribution. Admin will review and contact you in 24 hours.',
-                      [
-                        {
-                          text: 'Ok',
-                          onPress: () => {
-                            setModalVisible(!modalVisible);
-                            setLoading(false);
+                  .then(
+                    async () =>
+                      await axios
+                        .post(
+                          'https://namaz-timings-pakistan.herokuapp.com/email',
+                          {
+                            to: 'juzer.shabbir@gmail.com',
+                            body: `Dear Admin,\n${masjidName} has received an admin request from ${values.userName}`,
+                            title: 'Admin Notification',
                           },
-                        },
-                      ],
-                    ),
+                        )
+                        .then(() => {
+                          Alert.alert(
+                            'Request send successfully',
+                            'Jazak Allah u Khairan for your contribution. Admin will review and contact you in 24 hours.',
+                            [
+                              {
+                                text: 'Ok',
+                                onPress: () => {
+                                  setModalVisible(!modalVisible);
+                                  setLoading(false);
+                                },
+                              },
+                            ],
+                          );
+                        }),
                   );
               }}>
               {({

@@ -242,6 +242,7 @@ const AdminView = ({navigation, route}) => {
               </Text>
             </View>
             <Edit
+              masjidName={Masjid.name}
               timing={Masjid.timing}
               uid={masjidId}
               isRequest={false}

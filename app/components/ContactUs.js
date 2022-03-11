@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {useState} from 'react';
 import HeaderComp from '../views/HeaderComp';
-import {Divider, Menu, Provider} from 'react-native-paper';
+import {ActivityIndicator, Divider, Menu, Provider} from 'react-native-paper';
 import {Formik} from 'formik';
 import {
-  ActivityIndicator,
   Alert,
   Dimensions,
   ScrollView,
@@ -17,6 +16,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import * as Yup from 'yup';
 import firestore from '@react-native-firebase/firestore';
 import {getFcmToken} from '../store/token';
+import axios from 'axios';
 
 const ERROR = {
   color: 'darkred',
@@ -46,30 +46,40 @@ const ContactUs = ({navigation}) => {
         }}
         validationSchema={AddContactSchema}
         onSubmit={async (values, {resetForm}) => {
+          setLoading(true);
           const token = await getFcmToken();
           await firestore()
             .collection('contactForm')
             .add({...values, token})
-            .then(a => {
-              setLoading(false);
-              Alert.alert(
-                'Request send successfully',
-                'Jazak Allah u Khairan for your message. Admin will review and reply in 24 hours.',
-                [
-                  {
-                    text: 'OK',
-                    onPress: () => {
-                      resetForm();
-                    },
-                  },
-                ],
-              );
+            .then(async () => {
+              await axios
+                .post('https://namaz-timings-pakistan.herokuapp.com/email', {
+                  to: 'juzer.shabbir@gmail.com',
+                  body: `Dear Admin,\n${values.userName} have send you a ${values.options} please check admin panel to reply him.`,
+                  title: 'Admin Notification',
+                })
+                .then(() => {
+                  setLoading(false);
+                  Alert.alert(
+                    'Message send successfully',
+                    'Jazak Allah u Khairan for your message. Admin will review and reply in 24 hours.',
+                    [
+                      {
+                        text: 'OK',
+                        onPress: () => {
+                          resetForm();
+                        },
+                      },
+                    ],
+                  );
+                });
             });
         }}>
         {({
           handleChange,
           handleBlur,
           handleSubmit,
+          isSubmitting,
           touched,
           values,
           errors,
@@ -149,7 +159,7 @@ const ContactUs = ({navigation}) => {
                 visible={visible}
                 onDismiss={closeMenu}
                 anchor={
-                  <View
+                  <TouchableOpacity
                     style={{
                       margin: 10,
                       borderRadius: 10,
@@ -165,7 +175,8 @@ const ContactUs = ({navigation}) => {
                       shadowOpacity: 0.34,
                       shadowRadius: 6.27,
                       elevation: 5,
-                    }}>
+                    }}
+                    onPress={openMenu}>
                     <Text style={{fontSize: 17}}>{values.options}</Text>
                     <TouchableOpacity
                       style={{
@@ -180,7 +191,7 @@ const ContactUs = ({navigation}) => {
                         name="menu-down"
                       />
                     </TouchableOpacity>
-                  </View>
+                  </TouchableOpacity>
                 }>
                 <Menu.Item
                   onPress={() => {

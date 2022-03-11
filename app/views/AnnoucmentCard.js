@@ -35,7 +35,13 @@ const AnnoucmentCard = ({item}) => {
                 justifyContent: 'space-between',
               }}>
               <View>
-                <Text style={{fontSize: 20}}>{item.name}</Text>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    width: Dimensions.get('screen').width * 0.45,
+                  }}>
+                  {item.name}
+                </Text>
               </View>
               <View>
                 <Text style={{marginTop: -6}}>
@@ -98,7 +104,7 @@ const AnnoucmentCard = ({item}) => {
                 onPress={() => {
                   setModalVisible(!modalVisible);
                 }}>
-                <Text style={styles.textStyle}>Cancel</Text>
+                <Text style={styles.textStyle}>Close</Text>
               </Pressable>
             </View>
           </View>

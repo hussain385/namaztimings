@@ -187,6 +187,7 @@ const AdminNotification = ({navigation, route}) => {
                   <View style={{flexGrow: 1}} />
                   <View>
                     <Edit
+                      masjidName="N/A"
                       timing={timing}
                       uid={masjid}
                       isRequest={false}

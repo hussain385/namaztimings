@@ -7,17 +7,16 @@ import {
   Dimensions,
   Image,
   Platform,
+  SafeAreaView,
+  StyleSheet,
   Text,
   TextInput,
-  StyleSheet,
   TouchableOpacity,
   View,
-  SafeAreaView,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import * as ImagePicker from 'react-native-image-picker';
 import {ActivityIndicator} from 'react-native-paper';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useSelector} from 'react-redux';
 import {useFirestore} from 'react-redux-firebase';
 import * as Yup from 'yup';
@@ -26,6 +25,7 @@ import Edit from './Edit';
 import HeaderComp from './HeaderComp';
 import {getFcmToken} from '../store/token';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import axios from 'axios';
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
@@ -189,23 +189,31 @@ export const AddMasjid = ({navigation}) => {
               timing,
               token,
             })
-            .then(() =>
-              Alert.alert(
-                'Request send successfully',
-                'Jazak Allah u Khairan for your contribution. Admin will review and approve the newly added masjid in 24 hours.',
-                [
-                  {
-                    text: 'Ok',
-                    onPress: () => {
-                      navigation.navigate('SearchStackScreen', {
-                        screen: 'Find Masjid',
-                      });
-                      setLoading(false);
-                    },
-                  },
-                ],
-              ),
-            );
+            .then(async () => {
+              await axios
+                .post('https://namaz-timings-pakistan.herokuapp.com/email', {
+                  to: 'juzer.shabbir@gmail.com',
+                  body: `Dear Admin,\n${values.name} has received an masjid add request from ${values.userName}`,
+                  title: 'Admin Notification',
+                })
+                .then(() => {
+                  Alert.alert(
+                    'Request send successfully',
+                    'Jazak Allah u Khairan for your contribution. Admin will review and approve the newly added masjid in 24 hours.',
+                    [
+                      {
+                        text: 'Ok',
+                        onPress: () => {
+                          navigation.navigate('SearchStackScreen', {
+                            screen: 'Find Masjid',
+                          });
+                          setLoading(false);
+                        },
+                      },
+                    ],
+                  );
+                });
+            });
           // .then(
           //   snapshot => {
           //     console.log(snapshot);
@@ -406,6 +414,7 @@ export const AddMasjid = ({navigation}) => {
                   </Text>
                 </View>
                 <Edit
+                  masjidName={values.name}
                   timing={timing}
                   isAdd={true}
                   userInfo={false}

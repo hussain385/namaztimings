@@ -101,6 +101,7 @@ const MasjidInfo = ({route, navigation}) => {
                 </Text>
               </View>
               <Edit
+                masjidName={masjid.name}
                 timing={masjid.timing}
                 uid={masjid.key}
                 adminId={masjid.user.id}

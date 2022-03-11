@@ -69,7 +69,7 @@ const TopPart = ({masjidData}) => {
               color="#1F441E"
               size={20}
             />
-            <AdminRequest id={masjidData.key} />
+            <AdminRequest id={masjidData.key} masjidName={masjidData.name} />
           </View>
         )}
       </View>
