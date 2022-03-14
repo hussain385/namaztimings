@@ -149,14 +149,6 @@ export const AddMasjid = ({navigation}) => {
           userEmail: auth.email || '',
           userName: profile.name || '',
           userPhone: profile.phone || '',
-          // timing: {
-          //   isha: '',
-          //   fajar: '',
-          //   zohar: '',
-          //   asar: '',
-          //   magrib: '',
-          //   jummuah: '',
-          // },
         }}
         validationSchema={AddMasjidSchema}
         onSubmit={async values => {
@@ -164,7 +156,8 @@ export const AddMasjid = ({navigation}) => {
           setLoading(true);
           let filename;
           let url = '';
-          if (isEmpty(image) === '') {
+          console.log(isEmpty(image), 'sas');
+          if (!isEmpty(image)) {
             console.log(image, 'inside');
             filename = image?.uri.substring(image.uri.lastIndexOf('/') + 1);
             let uploadUri =
@@ -214,31 +207,6 @@ export const AddMasjid = ({navigation}) => {
                   );
                 });
             });
-          // .then(
-          //   snapshot => {
-          //     console.log(snapshot);
-          // firestore
-          //   .collection('newMasjid')
-          //   .add({...values, pictureURL: values, timing})
-          //   .then(
-          //     value1 => {
-          //       console.log('the new masjid data has been sent', value1);
-          //     },
-          //     reason => {
-          //       console.error(
-          //         'caught error while submitting new masjid data',
-          //         reason,
-          //       );
-          //     },
-          //   );
-          //   },
-          //   reason => {
-          //     console.error(
-          //       'caught error while submitting new masjid data',
-          //       reason,
-          //     );
-          //   },
-          // );
         }}>
         {({
           handleChange,
