@@ -191,7 +191,7 @@ const Notification = ({navigation, route: {params}}) => {
               }) => (
                 <View style={styles.centeredView}>
                   <View style={styles.modalView}>
-                    <Text style={styles.modalText}>New Notification</Text>
+                    <Text style={styles.modalText}>New Announcement</Text>
                     <View
                       style={{
                         width: Dimensions.get('screen').width * 0.75,

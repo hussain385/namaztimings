@@ -107,25 +107,27 @@ const MasjidInfo = ({route, navigation}) => {
                 adminId={masjid.user.id}
               />
             </View>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                marginTop: 10,
-              }}>
+            {masjid.timing.fajar !== '00:00 AM' && (
               <View
                 style={{
-                  paddingLeft: 10,
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  marginTop: 10,
                 }}>
-                <Text style={{fontSize: 17}}>Fajr</Text>
+                <View
+                  style={{
+                    paddingLeft: 10,
+                  }}>
+                  <Text style={{fontSize: 17}}>Fajr</Text>
+                </View>
+                <View
+                  style={{
+                    paddingRight: 10,
+                  }}>
+                  <Text style={{fontSize: 17}}>{masjid.timing.fajar}</Text>
+                </View>
               </View>
-              <View
-                style={{
-                  paddingRight: 10,
-                }}>
-                <Text style={{fontSize: 17}}>{masjid.timing.fajar}</Text>
-              </View>
-            </View>
+            )}
             <View
               style={{
                 justifyContent: 'space-between',
@@ -145,25 +147,27 @@ const MasjidInfo = ({route, navigation}) => {
                 <Text style={{fontSize: 17}}>{masjid.timing.zohar}</Text>
               </View>
             </View>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                marginTop: 10,
-              }}>
+            {masjid.timing.asar !== '00:00 AM' && (
               <View
                 style={{
-                  paddingLeft: 10,
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  marginTop: 10,
                 }}>
-                <Text style={{fontSize: 17}}>Asr</Text>
+                <View
+                  style={{
+                    paddingLeft: 10,
+                  }}>
+                  <Text style={{fontSize: 17}}>Asr</Text>
+                </View>
+                <View
+                  style={{
+                    paddingRight: 10,
+                  }}>
+                  <Text style={{fontSize: 17}}>{masjid.timing.asar}</Text>
+                </View>
               </View>
-              <View
-                style={{
-                  paddingRight: 10,
-                }}>
-                <Text style={{fontSize: 17}}>{masjid.timing.asar}</Text>
-              </View>
-            </View>
+            )}
             <View
               style={{
                 justifyContent: 'space-between',
@@ -183,26 +187,28 @@ const MasjidInfo = ({route, navigation}) => {
                 <Text style={{fontSize: 17}}>{masjid.timing.magrib}</Text>
               </View>
             </View>
-            <View
-              style={{
-                justifyContent: 'space-between',
-                flexDirection: 'row',
-                marginTop: 10,
-              }}>
+            {masjid.timing.isha !== '00:00 AM' && (
               <View
                 style={{
-                  paddingLeft: 10,
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  marginTop: 10,
                 }}>
-                <Text style={{fontSize: 17}}>Isha</Text>
+                <View
+                  style={{
+                    paddingLeft: 10,
+                  }}>
+                  <Text style={{fontSize: 17}}>Isha</Text>
+                </View>
+                <View
+                  style={{
+                    paddingRight: 10,
+                  }}>
+                  <Text style={{fontSize: 17}}>{masjid.timing.isha}</Text>
+                </View>
               </View>
-              <View
-                style={{
-                  paddingRight: 10,
-                }}>
-                <Text style={{fontSize: 17}}>{masjid.timing.isha}</Text>
-              </View>
-            </View>
-            {masjid.timing.jummah && (
+            )}
+            {masjid.timing.jummah && masjid.timing.jummah !== '00:00 AM' && (
               <View
                 style={{
                   justifyContent: 'space-between',
@@ -226,7 +232,7 @@ const MasjidInfo = ({route, navigation}) => {
               </View>
             )}
 
-            {masjid.timing.eidUlFitr && (
+            {masjid.timing.eidUlFitr && masjid.timing.eidUlFitr !== '00:00 AM' && (
               <View
                 style={{
                   justifyContent: 'space-between',
@@ -249,29 +255,30 @@ const MasjidInfo = ({route, navigation}) => {
                 </View>
               </View>
             )}
-            {masjid.timing.eidUlAddah && (
-              <View
-                style={{
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  marginTop: 10,
-                }}>
+            {masjid.timing.eidUlAddah &&
+              masjid.timing.eidUlAddah !== '00:00 AM' && (
                 <View
                   style={{
-                    paddingLeft: 10,
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    marginTop: 10,
                   }}>
-                  <Text style={{fontSize: 17}}>Eid Ul Adha</Text>
+                  <View
+                    style={{
+                      paddingLeft: 10,
+                    }}>
+                    <Text style={{fontSize: 17}}>Eid Ul Adha</Text>
+                  </View>
+                  <View
+                    style={{
+                      paddingRight: 10,
+                    }}>
+                    <Text style={{fontSize: 17}}>
+                      {masjid.timing.eidUlAddah || '--'}
+                    </Text>
+                  </View>
                 </View>
-                <View
-                  style={{
-                    paddingRight: 10,
-                  }}>
-                  <Text style={{fontSize: 17}}>
-                    {masjid.timing.eidUlAddah || '--'}
-                  </Text>
-                </View>
-              </View>
-            )}
+              )}
           </View>
           <View
             style={{

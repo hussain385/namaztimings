@@ -20,10 +20,12 @@ function myNotification(title, message) {
         console.log('NOTIFICATION:', notification);
         console.log('Clicked on Notification');
 
-        try {
-          navigate('Announcement');
-        } catch {
-          console.log('No Route');
+        if (message !== 'Timings has been updated') {
+          try {
+            navigate('Announcement');
+          } catch {
+            console.log('No Route');
+          }
         }
       },
 

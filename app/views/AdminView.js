@@ -261,7 +261,11 @@ const AdminView = ({navigation, route}) => {
               style={{
                 paddingRight: 10,
               }}>
-              <Text style={{fontSize: 17}}>{Masjid.timing.fajar}</Text>
+              <Text style={{fontSize: 17}}>
+                {Masjid.timing.fajar === '00:00 AM'
+                  ? '--'
+                  : Masjid.timing.fajar}
+              </Text>
             </View>
           </View>
           <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -291,7 +295,9 @@ const AdminView = ({navigation, route}) => {
               style={{
                 paddingRight: 10,
               }}>
-              <Text style={{fontSize: 17}}>{Masjid.timing.asar}</Text>
+              <Text style={{fontSize: 17}}>
+                {Masjid.timing.asar === '00:00 AM' ? '--' : Masjid.timing.asar}
+              </Text>
             </View>
           </View>
           <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -321,7 +327,9 @@ const AdminView = ({navigation, route}) => {
               style={{
                 paddingRight: 10,
               }}>
-              <Text style={{fontSize: 17}}>{Masjid.timing.isha}</Text>
+              <Text style={{fontSize: 17}}>
+                {Masjid.timing.isha === '00:00 AM' ? '--' : Masjid.timing.isha}
+              </Text>
             </View>
           </View>
           <View

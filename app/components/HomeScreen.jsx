@@ -164,23 +164,25 @@ function HomeScreen({navigation}) {
                     </Text>
                   </View>
                 </View>
-                <View style={{flexDirection: 'row', marginTop: 10}}>
-                  <View
-                    style={{
-                      flexGrow: 1,
-                      paddingLeft: 10,
-                    }}>
-                    <Text style={{fontSize: 17}}>Fajr</Text>
+                {masjidData[0].timing.fajar !== '00:00 AM' && (
+                  <View style={{flexDirection: 'row', marginTop: 10}}>
+                    <View
+                      style={{
+                        flexGrow: 1,
+                        paddingLeft: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>Fajr</Text>
+                    </View>
+                    <View
+                      style={{
+                        paddingRight: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>
+                        {masjidData[0].timing.fajar}
+                      </Text>
+                    </View>
                   </View>
-                  <View
-                    style={{
-                      paddingRight: 10,
-                    }}>
-                    <Text style={{fontSize: 17}}>
-                      {masjidData[0].timing.fajar}
-                    </Text>
-                  </View>
-                </View>
+                )}
                 <View style={{flexDirection: 'row', marginTop: 10}}>
                   <View
                     style={{
@@ -198,23 +200,25 @@ function HomeScreen({navigation}) {
                     </Text>
                   </View>
                 </View>
-                <View style={{flexDirection: 'row', marginTop: 10}}>
-                  <View
-                    style={{
-                      flexGrow: 1,
-                      paddingLeft: 10,
-                    }}>
-                    <Text style={{fontSize: 17}}>Asr</Text>
+                {masjidData[0].timing.asar !== '00:00 AM' && (
+                  <View style={{flexDirection: 'row', marginTop: 10}}>
+                    <View
+                      style={{
+                        flexGrow: 1,
+                        paddingLeft: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>Asr</Text>
+                    </View>
+                    <View
+                      style={{
+                        paddingRight: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>
+                        {masjidData[0].timing.asar}
+                      </Text>
+                    </View>
                   </View>
-                  <View
-                    style={{
-                      paddingRight: 10,
-                    }}>
-                    <Text style={{fontSize: 17}}>
-                      {masjidData[0].timing.asar}
-                    </Text>
-                  </View>
-                </View>
+                )}
                 <View style={{flexDirection: 'row', marginTop: 10}}>
                   <View
                     style={{
@@ -232,23 +236,25 @@ function HomeScreen({navigation}) {
                     </Text>
                   </View>
                 </View>
-                <View style={{flexDirection: 'row', marginTop: 10}}>
-                  <View
-                    style={{
-                      flexGrow: 1,
-                      paddingLeft: 10,
-                    }}>
-                    <Text style={{fontSize: 17}}>Isha</Text>
+                {masjidData[0].timing.isha !== '00:00 AM' && (
+                  <View style={{flexDirection: 'row', marginTop: 10}}>
+                    <View
+                      style={{
+                        flexGrow: 1,
+                        paddingLeft: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>Isha</Text>
+                    </View>
+                    <View
+                      style={{
+                        paddingRight: 10,
+                      }}>
+                      <Text style={{fontSize: 17}}>
+                        {masjidData[0].timing.isha}
+                      </Text>
+                    </View>
                   </View>
-                  <View
-                    style={{
-                      paddingRight: 10,
-                    }}>
-                    <Text style={{fontSize: 17}}>
-                      {masjidData[0].timing.isha}
-                    </Text>
-                  </View>
-                </View>
+                )}
                 <View
                   style={{
                     margin: 15,

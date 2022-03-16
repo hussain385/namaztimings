@@ -126,20 +126,6 @@ const HomeStackScreen = ({navigation}) => (
       }}
     />
     <HomeStack.Screen
-      name="adminNotification"
-      component={AdminNotification}
-      options={{
-        headerShown: false,
-      }}
-    />
-    <HomeStack.Screen
-      name="Notification"
-      component={Notifications}
-      options={{
-        headerShown: false,
-      }}
-    />
-    <HomeStack.Screen
       name="Announcement"
       component={Announcement}
       options={{
@@ -247,14 +233,6 @@ const HomeStackScreen = ({navigation}) => (
     <HomeStack.Screen
       name="Forgot"
       component={ForgotPassword}
-      options={{
-        title: 'Forgot',
-        headerShown: false,
-      }}
-    />
-    <HomeStack.Screen
-      name="Donation"
-      component={Donation}
       options={{
         title: 'Forgot',
         headerShown: false,
@@ -379,7 +357,27 @@ function MyDrawer() {
       <Drawer.Screen name="login" component={Login} />
       <Drawer.Screen name="Admin view" component={Admin} />
       <Drawer.Screen name="Admin" component={AdminView} />
-      {/* <Drawer.Screen name="More Info" component={MasjidInfo} /> */}
+      <Drawer.Screen
+        name="adminNotification"
+        component={AdminNotification}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="Notification"
+        component={Notifications}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen
+        name="Donation"
+        component={Donation}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Drawer.Navigator>
   );
 }
@@ -504,7 +502,11 @@ export default function App() {
       console.log();
     });
     const unsubcribe1 = messaging().onNotificationOpenedApp(remoteMessage => {
-      navigate('Announcement');
+      if (remoteMessage.notification.body !== 'Timings has been updated') {
+        navigate('Announcement');
+      } else {
+        navigate('home');
+      }
     });
 
     return () => {

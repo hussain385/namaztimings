@@ -370,7 +370,7 @@ const AdminNotification = ({navigation, route}) => {
           elevation: 50,
         }}
         leftComponent={
-          <TouchableOpacity onPress={() => navigation.navigate('Admin view')}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon
               name="arrow-left"
               color="#ffff"

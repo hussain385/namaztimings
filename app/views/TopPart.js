@@ -1,8 +1,17 @@
 import React, {useState} from 'react';
-import {Dimensions, Image, Linking, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  Linking,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Favbtn from './Favbtn';
 import AdminRequest from './AdminRequest';
+import {isEmpty} from 'lodash';
 
 const TopPart = ({masjidData}) => {
   const [more, setMore] = useState(false);
@@ -51,15 +60,27 @@ const TopPart = ({masjidData}) => {
               />
               <Text>{masjidData.user.name || 'hussain'}</Text>
             </View>
-            <View style={styles.elementStyle}>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(
+                  `tel:${masjidData.user.phone || '+920000000000'}`,
+                )
+              }
+              style={styles.elementStyle}>
               <Icon
                 style={styles.iconStyle}
                 name="phone-alt"
                 color="#5C5C5C"
                 size={20}
               />
-              <Text>{masjidData.user.phone || '+920000000000'}</Text>
-            </View>
+              <Text
+                style={{
+                  color: 'rgba(13,104,161,0.83)',
+                  textDecorationLine: 'underline',
+                }}>
+                {masjidData.user.phone || '+920000000000'}
+              </Text>
+            </TouchableOpacity>
           </>
         ) : (
           <View style={styles.elementStyle}>
@@ -96,8 +117,9 @@ const TopPart = ({masjidData}) => {
           <Image
             source={{
               uri: `${
-                masjidData.pictureURL ||
-                'https://www.freepnglogos.com/uploads/masjid-png/masjid-png-clipart-best-3.png'
+                isEmpty(masjidData.pictureURL)
+                  ? 'https://www.freepnglogos.com/uploads/masjid-png/masjid-png-clipart-best-3.png'
+                  : masjidData.pictureURL
               }`,
             }}
             style={{

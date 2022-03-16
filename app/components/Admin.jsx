@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -28,6 +28,7 @@ const populates = [
 ];
 
 const Admin = ({navigation}) => {
+  const [MasjidData, setMasjidData] = useState(null);
   const {auth, profile} = useSelector(selectFirebase);
   const firestore = useSelector(selectFirestore);
   useFirestoreConnect([
@@ -102,9 +103,12 @@ const Admin = ({navigation}) => {
         <>
           {_.map(snapshot, (doc, id) => {
             const data = modifyData(doc, id, 0);
+            setMasjidData(data);
             return (
               <AdminView
-                route={{params: {Masjid: data, masjidId: id, isSingle: true}}}
+                route={{
+                  params: {Masjid: MasjidData, masjidId: id, isSingle: true},
+                }}
                 navigation={navigation}
               />
             );
