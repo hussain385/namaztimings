@@ -47,8 +47,6 @@ function HomeScreen({navigation}) {
     });
   }, [location.latitude, location.longitude]);
 
-  // #E1E1E1
-  // console.log(masjidData);
   return (
     <>
       <Header
@@ -164,7 +162,7 @@ function HomeScreen({navigation}) {
                     </Text>
                   </View>
                 </View>
-                {masjidData[0].timing.fajar !== '00:00 AM' && (
+                {masjidData[0].timing.fajar !== '12:00 AM' && (
                   <View style={{flexDirection: 'row', marginTop: 10}}>
                     <View
                       style={{
@@ -200,7 +198,7 @@ function HomeScreen({navigation}) {
                     </Text>
                   </View>
                 </View>
-                {masjidData[0].timing.asar !== '00:00 AM' && (
+                {masjidData[0].timing.asar !== '12:00 AM' && (
                   <View style={{flexDirection: 'row', marginTop: 10}}>
                     <View
                       style={{
@@ -236,7 +234,7 @@ function HomeScreen({navigation}) {
                     </Text>
                   </View>
                 </View>
-                {masjidData[0].timing.isha !== '00:00 AM' && (
+                {masjidData[0].timing.isha !== '12:00 AM' && (
                   <View style={{flexDirection: 'row', marginTop: 10}}>
                     <View
                       style={{

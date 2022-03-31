@@ -107,7 +107,7 @@ const MasjidInfo = ({route, navigation}) => {
                 adminId={masjid.user.id}
               />
             </View>
-            {masjid.timing.fajar !== '00:00 AM' && (
+            {masjid.timing.fajar !== '12:00 AM' && (
               <View
                 style={{
                   justifyContent: 'space-between',
@@ -147,7 +147,7 @@ const MasjidInfo = ({route, navigation}) => {
                 <Text style={{fontSize: 17}}>{masjid.timing.zohar}</Text>
               </View>
             </View>
-            {masjid.timing.asar !== '00:00 AM' && (
+            {masjid.timing.asar !== '12:00 AM' && (
               <View
                 style={{
                   justifyContent: 'space-between',
@@ -187,7 +187,7 @@ const MasjidInfo = ({route, navigation}) => {
                 <Text style={{fontSize: 17}}>{masjid.timing.magrib}</Text>
               </View>
             </View>
-            {masjid.timing.isha !== '00:00 AM' && (
+            {masjid.timing.isha !== '12:00 AM' && (
               <View
                 style={{
                   justifyContent: 'space-between',
@@ -208,7 +208,7 @@ const MasjidInfo = ({route, navigation}) => {
                 </View>
               </View>
             )}
-            {masjid.timing.jummah && masjid.timing.jummah !== '00:00 AM' && (
+            {masjid.timing.jummah && masjid.timing.jummah !== '12:00 AM' && (
               <View
                 style={{
                   justifyContent: 'space-between',
@@ -232,7 +232,7 @@ const MasjidInfo = ({route, navigation}) => {
               </View>
             )}
 
-            {masjid.timing.eidUlFitr && masjid.timing.eidUlFitr !== '00:00 AM' && (
+            {masjid.timing.eidUlFitr && masjid.timing.eidUlFitr !== '12:00 AM' && (
               <View
                 style={{
                   justifyContent: 'space-between',
@@ -256,7 +256,7 @@ const MasjidInfo = ({route, navigation}) => {
               </View>
             )}
             {masjid.timing.eidUlAddah &&
-              masjid.timing.eidUlAddah !== '00:00 AM' && (
+              masjid.timing.eidUlAddah !== '12:00 AM' && (
                 <View
                   style={{
                     justifyContent: 'space-between',

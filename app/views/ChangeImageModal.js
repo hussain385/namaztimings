@@ -16,6 +16,7 @@ import * as ImagePicker from 'react-native-image-picker';
 import {isEmpty} from 'lodash';
 
 const ChangeImageModal = props => {
+  console.log(props);
   const [image, setImage] = useState('');
   const firestore = useFirestore();
 
