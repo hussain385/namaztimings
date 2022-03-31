@@ -156,7 +156,6 @@ export const AddMasjid = ({navigation}) => {
           setLoading(true);
           let filename;
           let url = '';
-          console.log(isEmpty(image), 'sas');
           if (!isEmpty(image)) {
             console.log(image, 'inside');
             filename = image?.uri.substring(image.uri.lastIndexOf('/') + 1);

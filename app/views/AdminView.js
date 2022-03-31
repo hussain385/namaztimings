@@ -17,8 +17,10 @@ import Edit from './Edit';
 import CoText from './Text/Text';
 import {isNil} from 'lodash';
 import {useSelector} from 'react-redux';
+import ChangeImageModal from './ChangeImageModal';
 
 const AdminView = ({navigation, route}) => {
+  const [imageChangeModal, setImageChangeModal] = useState(false);
   const {masjidId, isSingle = false, Masjid} = route.params;
   const pastTime = moment(Masjid.timeStamp?.seconds * 1000);
   const now = moment();
@@ -184,7 +186,7 @@ const AdminView = ({navigation, route}) => {
                 {Masjid.admin && Masjid.admin.phone}
               </Text>
             </View>
-            <View>
+            <TouchableOpacity onPress={() => setImageChangeModal(true)}>
               <Image
                 source={{
                   uri: `${
@@ -200,7 +202,7 @@ const AdminView = ({navigation, route}) => {
                   borderRadius: 8,
                 }}
               />
-            </View>
+            </TouchableOpacity>
           </View>
           <View style={{flexDirection: 'row', marginTop: 10}}>
             <View
@@ -454,6 +456,12 @@ const AdminView = ({navigation, route}) => {
             </TouchableOpacity>
           </View>
         </View>
+        <ChangeImageModal
+          pictureURL={Masjid.pictureURL}
+          uid={masjidId}
+          imageChangeModal={imageChangeModal}
+          setImageChangeModal={setImageChangeModal}
+        />
       </ScrollView>
     </>
   );
