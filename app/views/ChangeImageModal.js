@@ -10,10 +10,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import storage from '@react-native-firebase/storage';
 import {useFirestore} from 'react-redux-firebase';
 import * as ImagePicker from 'react-native-image-picker';
 import {isEmpty} from 'lodash';
+import storage from '@react-native-firebase/storage';
 
 const ChangeImageModal = props => {
   console.log(props);
@@ -21,6 +21,7 @@ const ChangeImageModal = props => {
   const firestore = useFirestore();
 
   const chooseImage = () => {
+    const oldImage = props.pictureURL;
     let options = {
       title: 'Select Image',
       customButtons: [
@@ -35,6 +36,7 @@ const ChangeImageModal = props => {
       if (response.didCancel) {
         return;
       }
+      console.log(response?.assets);
       if (response?.assets[0]?.error) {
         return Alert.alert(
           'An error occurred: ',
@@ -42,31 +44,35 @@ const ChangeImageModal = props => {
         );
       } else if (response?.assets[0]?.uri) {
         const {uri} = response.assets[0];
-        setImage(response.assets[0]);
+        // setImage(response.assets[0]);
         let filename;
         let url = '';
-        if (!isEmpty(image)) {
-          console.log(image, 'inside');
-          filename = image?.uri.substring(image.uri.lastIndexOf('/') + 1);
+        if (!isEmpty(uri)) {
+          console.log(uri, 'inside');
+          filename = uri.substring(uri.lastIndexOf('/') + 1);
           let uploadUri =
-            Platform.OS === 'ios'
-              ? image.uri.replace('file://', '')
-              : image.uri;
+            Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
           let ref = storage().ref('/masjid/' + filename);
           await ref.putFile(uploadUri);
           url = await ref.getDownloadURL();
+          console.log(url);
           setImage(url);
+          return url;
         }
       }
     }).then(r => {
-      console.log(image, 'sasc');
-      firestore()
+      console.log(image, r, 'sasc');
+      firestore
         .collection('Masjid')
         .doc(props.uid)
         .update({
           pictureURL: image,
         })
-        .then(() => alert('Confirm'))
+        .then(async () => {
+          console.log(oldImage);
+          const ref = storage().refFromURL(oldImage);
+          await ref.delete();
+        })
         .catch(e => console.log(e, 'sas'));
     });
   };
