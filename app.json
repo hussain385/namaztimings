@@ -21,7 +21,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.jpeg",
-        "backgroundColor": "green"
+        "backgroundColor": "#008000"
       },
       "package": "com.namaztimings",
       "googleServicesFile": "./google-services.json",
