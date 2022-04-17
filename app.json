@@ -19,6 +19,10 @@
       "expo-location"
     ],
     "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.jpeg",
+        "backgroundColor": "green"
+      },
       "package": "com.namaztimings",
       "googleServicesFile": "./google-services.json",
       "jsEngine": "hermes"
