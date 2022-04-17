@@ -27,7 +27,7 @@ const populates = [
 
 const Search = props => {
   const {navigation, masjid} = props;
-  const [textSearch, setTextSearch] = useState('');
+  // const [textSearch, setTextSearch] = useState('');
   const location = useSelector(selectCords);
   const [result, setResult] = useState([]);
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const Search = props => {
     });
     const resultf = fuse.search(text);
     console.log(resultf, 'resultf');
-    setTextSearch(text);
+    // setTextSearch(text);
     setResult(resultf);
   }
 
@@ -69,22 +69,9 @@ const Search = props => {
   const renderItem = ({item}) => <MasjidCard masjid={item} nav={navigation} />;
 
   const renderItem1 = ({item}) => (
-    <MasjidCard
-      // title={item.item.name}
-      // address={item.item.address}
-      // url={item.item.pictureURL}
-      // timings={item.item.timing}
-      masjid={item.item}
-      nav={navigation}
-      // distance={item.item.distance}
-      // favId={item.item.key}
-      // latitude={item.item.g.geopoint.latitude}
-      // user={item.item.user}
-      // gLink={item.item.gLink}
-      // timeStamp={item.item.timeStamp}
-      // longitude={item.item.g.geopoint.longitude}
-    />
+    <MasjidCard masjid={item.item} nav={navigation} />
   );
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -120,7 +107,7 @@ const Search = props => {
               }}>
               <TextInput
                 onChangeText={onChangeSearch}
-                value={textSearch}
+                // value={textSearch}
                 placeholder="Enter City/Area e.g Karachi/Nazimabad..."
                 style={{
                   backgroundColor: '#eeee',
@@ -171,7 +158,7 @@ const Search = props => {
         renderItem={result.length > 0 ? renderItem1 : renderItem}
         keyExtractor={item => item.key || item.item.key}
         style={{marginBottom: 140}}
-        initialNumToRender={20}
+        initialNumToRender={6}
       />
       {isLoaded(masjid) && (
         <View

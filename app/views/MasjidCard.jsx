@@ -80,7 +80,15 @@ export default class MasjidCard extends PureComponent {
             </View>
             <View>
               <Text
-                onPress={() => Linking.openURL(`${this.props.masjid.gLink ? this.props.masjid.gLink : `https://maps.google.com/?q=${this.props.masjid.g.geopoint.latitude},${this.props.masjid.g.geopoint.longitude}`}`)}
+                onPress={() =>
+                  Linking.openURL(
+                    `${
+                      this.props.masjid.gLink
+                        ? this.props.masjid.gLink
+                        : `https://maps.google.com/?q=${this.props.masjid.g.geopoint.latitude},${this.props.masjid.g.geopoint.longitude}`
+                    }`,
+                  )
+                }
                 style={{color: '#900000', textDecorationLine: 'underline'}}>
                 {this.props.masjid.distance}KM AWAY
               </Text>
@@ -102,7 +110,15 @@ export default class MasjidCard extends PureComponent {
               <Text style={{color: '#CEE6B4'}}>More Info</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => Linking.openURL(`${this.props.masjid.gLink ? this.props.masjid.gLink : `https://maps.google.com/?q=${this.props.masjid.g.geopoint.latitude},${this.props.masjid.g.geopoint.longitude}`}`)}
+              onPress={() =>
+                Linking.openURL(
+                  `${
+                    this.props.masjid.gLink
+                      ? this.props.masjid.gLink
+                      : `https://maps.google.com/?q=${this.props.masjid.g.geopoint.latitude},${this.props.masjid.g.geopoint.longitude}`
+                  }`,
+                )
+              }
               style={styles.btnStyles}>
               <Text
                 style={{
