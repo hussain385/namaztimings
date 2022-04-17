@@ -62,6 +62,7 @@ const Announcement = ({navigation}) => {
               style={{height: Dimensions.get('screen').height * 0.82}}
               data={_.orderBy(announcements, 'createdAt', 'desc')}
               keyExtractor={item => item.id}
+              initialNumToRender={15}
               renderItem={({item}) => <AnnoucmentCard item={item} />}
             />
           ) : (
