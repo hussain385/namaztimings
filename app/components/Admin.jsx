@@ -120,7 +120,7 @@ const Admin = ({navigation}) => {
           renderItem={item => (
             <AdminCard nav={navigation} masjid={item.item} key={item.item.id} />
           )}
-          initialNumToRender={20}
+          initialNumToRender={5}
           keyExtractor={item => item.id}
           style={{
             height: Dimensions.get('window').height - 80,
