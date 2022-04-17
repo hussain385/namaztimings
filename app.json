@@ -4,24 +4,27 @@
     "slug": "NamazTimings",
     "version": "1.1.0",
     "orientation": "portrait",
+    "icon": "./assets/icon.jpeg",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
     "plugins": [
       "@react-native-firebase/app",
       "expo-location"
     ],
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "supportsTablet": true
-    },
     "android": {
       "package": "com.namaztimings",
       "googleServicesFile": "./google-services.json",
       "jsEngine": "hermes"
     },
     "web": {
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/favicon.png"
     }
   }
 }

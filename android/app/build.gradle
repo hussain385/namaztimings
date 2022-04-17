@@ -212,7 +212,7 @@ dependencies {
             implementation 'com.facebook.fresco:animated-webp:2.0.0'
         }
     }
-
+    
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
@@ -244,4 +244,3 @@ apply from: new File(["node", "--print", "require.resolve('@react-native-communi
 applyNativeModulesAppBuildGradle(project)
 
 apply plugin: 'com.google.gms.google-services'
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
