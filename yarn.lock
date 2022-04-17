@@ -3599,14 +3599,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-async-storage/async-storage@npm:~1.16.3":
-  version: 1.16.3
-  resolution: "@react-native-async-storage/async-storage@npm:1.16.3"
+"@react-native-async-storage/async-storage@npm:~1.17.3":
+  version: 1.17.3
+  resolution: "@react-native-async-storage/async-storage@npm:1.17.3"
   dependencies:
     merge-options: ^3.0.4
   peerDependencies:
-    react-native: ^0.0.0-0 || 0.60 - 0.67 || 1000.0.0
-  checksum: d67137750f66149201f0315ae5590bbaed216ec8ff77b0e8e373035572d6e755d18a96a34cd87c4c735835015fdfec696afa9c3616a772bb75c0c2a7915f46ea
+    react-native: ^0.0.0-0 || 0.60 - 0.68 || 1000.0.0
+  checksum: a83adad1b648a0e8238546cb4da269695701384bb4daf0ff821e1f3e1287733697682d4a7ecf739bdebf25950efd75a53ed67bcbf1f6691be11c8b89389effa5
   languageName: node
   linkType: hard
 
@@ -4388,15 +4388,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@voximplant/react-native-foreground-service@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@voximplant/react-native-foreground-service@npm:2.0.0"
-  peerDependencies:
-    react-native: ">= 0.41.2"
-  checksum: d9fc58a12bd4bb3716f681249995a88064929e95a67c1cc88d2668c758b0df4c61d866992ea9aa41409dc1577cf0831aea1b95e4f3a411a89fe8fc2c280a0bb4
-  languageName: node
-  linkType: hard
-
 "@xmldom/xmldom@npm:~0.7.0":
   version: 0.7.3
   resolution: "@xmldom/xmldom@npm:0.7.3"
@@ -4877,12 +4868,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.25.0":
-  version: 0.25.0
-  resolution: "axios@npm:0.25.0"
+"axios@npm:^0.26.1":
+  version: 0.26.1
+  resolution: "axios@npm:0.26.1"
   dependencies:
-    follow-redirects: ^1.14.7
-  checksum: 2a8a3787c05f2a0c9c3878f49782357e2a9f38945b93018fb0c4fd788171c43dceefbb577988628e09fea53952744d1ecebde234b561f1e703aa43e0a598a3ad
+    follow-redirects: ^1.14.8
+  checksum: d9eb58ff4bc0b36a04783fc9ff760e9245c829a5a1052ee7ca6013410d427036b1d10d04e7380c02f3508c5eaf3485b1ae67bd2adbfec3683704745c8d7a6e1a
   languageName: node
   linkType: hard
 
@@ -5999,13 +5990,6 @@ __metadata:
     js-yaml: ^3.13.1
     parse-json: ^4.0.0
   checksum: 8b6f1d3c8a5ffdf663a952f17af0761adf210b7a5933d0fe8988f3ca3a1f0e1e5cbbb74d5b419c15933dd2fdcaec31dbc5cc85cb8259a822342b93b529eff89c
-  languageName: node
-  linkType: hard
-
-"country-list@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "country-list@npm:2.2.0"
-  checksum: 17b2dee70e0376235bb780582e23a64936b4cfa57764001cddf2224176739f1e55171d49d1801cce5d8a07031b729e87e1fdd1ff8dfa5d5f4bfd598567817cda
   languageName: node
   linkType: hard
 
@@ -7508,13 +7492,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.7":
-  version: 1.14.7
-  resolution: "follow-redirects@npm:1.14.7"
+"follow-redirects@npm:^1.14.8":
+  version: 1.14.9
+  resolution: "follow-redirects@npm:1.14.9"
   peerDependenciesMeta:
     debug:
       optional: true
-  checksum: f6d03e5e30877431065bca0d1b2e3db93949eb799d368a5c07ea8a4b71205f0349a3f8f0191bf13a07c93885522834dca1dc8e527dc99a772c6911fba24edc5f
+  checksum: f5982e0eb481818642492d3ca35a86989c98af1128b8e1a62911a3410621bc15d2b079e8170b35b19d3bdee770b73ed431a257ed86195af773771145baa57845
   languageName: node
   linkType: hard
 
@@ -7737,13 +7721,6 @@ __metadata:
   version: 1.0.0-beta.2
   resolution: "gensync@npm:1.0.0-beta.2"
   checksum: a7437e58c6be12aa6c90f7730eac7fa9833dc78872b4ad2963d2031b00a3367a93f98aec75f9aaac7220848e4026d67a8655e870b24f20a543d103c0d65952ec
-  languageName: node
-  linkType: hard
-
-"geofire-common@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "geofire-common@npm:5.2.0"
-  checksum: 21011f7db4c400706651169431569e52b3a0356ae527dd45ec9cd6265e9d7e5269e5e4d2ee96f8f556f931d53ec5a56c6c6fdb31ca5af8dde2bba41af5e227f8
   languageName: node
   linkType: hard
 
@@ -10719,10 +10696,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.29.1":
-  version: 2.29.1
-  resolution: "moment@npm:2.29.1"
-  checksum: 1e14d5f422a2687996be11dd2d50c8de3bd577c4a4ca79ba5d02c397242a933e5b941655de6c8cb90ac18f01cc4127e55b4a12ae3c527a6c0a274e455979345e
+"moment@npm:^2.29.3":
+  version: 2.29.3
+  resolution: "moment@npm:2.29.3"
+  checksum: 2e780e36d9a1823c08a1b6313cbb08bd01ecbb2a9062095820a34f42c878991ccba53abaa6abb103fd5c01e763724f295162a8c50b7e95b4f1c992ef0772d3f0
   languageName: node
   linkType: hard
 
@@ -10772,7 +10749,7 @@ __metadata:
     "@babel/core": ^7.12.9
     "@babel/preset-typescript": ^7.16.7
     "@babel/runtime": ^7.14.8
-    "@react-native-async-storage/async-storage": ~1.16.3
+    "@react-native-async-storage/async-storage": ~1.17.3
     "@react-native-community/datetimepicker": 4.0.1
     "@react-native-community/eslint-config": 3.0.1
     "@react-native-community/masked-view": ^0.1.11
@@ -10786,11 +10763,9 @@ __metadata:
     "@react-navigation/native": ^5.9.8
     "@react-navigation/stack": ^5.14.9
     "@reduxjs/toolkit": ^1.8.1
-    "@voximplant/react-native-foreground-service": ^2.0.0
-    axios: ^0.25.0
+    axios: ^0.26.1
     babel-eslint: ^10.1.0
     babel-jest: ^27.0.6
-    country-list: ^2.2.0
     eslint: ^7.32.0
     eslint-plugin-prettier: 4.0.0
     eslint-plugin-react: ^7.29.4
@@ -10801,35 +10776,28 @@ __metadata:
     expo-status-bar: ~1.2.0
     formik: ^2.2.9
     fuse.js: ^6.5.3
-    geofire-common: ^5.2.0
     geofirestore: ^5.0.0
     haversine: ^1.1.1
     jest: ^26.6.3
     lodash: ^4.17.21
     metro-react-native-babel-preset: ^0.66.2
-    moment: ^2.29.1
-    ngeohash: ^0.6.3
-    prettier: 2.6.1
+    moment: ^2.29.3
+    prettier: 2.6.2
     react: 17.0.2
     react-dom: 17.0.2
-    react-firebase-hooks: ^5.0.3
     react-native: 0.64.3
     react-native-elements: ^3.4.2
-    react-native-flags: ^1.0.0
-    react-native-geocoding: ^0.5.0
-    react-native-geolocation-service: 5.3.0-beta.4
     react-native-gesture-handler: ~2.1.3
     react-native-get-location: ^2.2.1
-    react-native-google-places-autocomplete: ^2.4.1
     react-native-image-picker: ^4.7.3
     react-native-maps: 0.29.4
+    react-native-mmkv: ^2.3.1
     react-native-modal-datetime-picker: ^10.2.0
     react-native-paper: ^4.12.0
     react-native-push-notification: ^8.1.1
     react-native-reanimated: ~2.3.3
     react-native-safe-area-context: 3.3.2
     react-native-screens: ~3.10.2
-    react-native-searchable-country-dropdown: ^1.0.1
     react-native-toast-notifications: ^3.2.3
     react-native-vector-icons: ^8.1.0
     react-native-web: 0.17.1
@@ -10898,13 +10866,6 @@ __metadata:
   version: 2.6.2
   resolution: "neo-async@npm:2.6.2"
   checksum: deac9f8d00eda7b2e5cd1b2549e26e10a0faa70adaa6fdadca701cc55f49ee9018e427f424bac0c790b7c7e2d3068db97f3093f1093975f2acb8f8818b936ed9
-  languageName: node
-  linkType: hard
-
-"ngeohash@npm:^0.6.3":
-  version: 0.6.3
-  resolution: "ngeohash@npm:0.6.3"
-  checksum: 563a6c403514237111a3524991640deaf962a49eb920e4426030c6aa4b084f4e8ed766aa53f060ade7914cfe77eb6103b8f7e1488de53e5214bbeb5dbc81d340
   languageName: node
   linkType: hard
 
@@ -11730,12 +11691,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:2.6.1":
-  version: 2.6.1
-  resolution: "prettier@npm:2.6.1"
+"prettier@npm:2.6.2":
+  version: 2.6.2
+  resolution: "prettier@npm:2.6.2"
   bin:
     prettier: bin-prettier.js
-  checksum: 78be1f8a3ddfad7c3d8a854b6c8941a3bb1ddfca4225c38d778e0fe1029a55368f71b3bbefff82c689015fbb4d391ec44add957f01308ad2725e01a7c1f37cb6
+  checksum: 48d08dde8e9fb1f5bccdd205baa7f192e9fc8bc98f86e1b97d919de804e28c806b0e6cc685e4a88211aa7987fa9668f30baae19580d87ced3ed0f2ec6572106f
   languageName: node
   linkType: hard
 
@@ -11912,13 +11873,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qs@npm:~6.9.1":
-  version: 6.9.6
-  resolution: "qs@npm:6.9.6"
-  checksum: cb6df402bb8a3dbefa4bd46eba0dfca427079baca923e6b8d28a03e6bfb16a5c1dcdb96e69388f9c5813ac8ff17bb8bbca22f2ecd31fe1e344a55cb531b5fabf
-  languageName: node
-  linkType: hard
-
 "query-string@npm:^6.13.6":
   version: 6.14.1
   resolution: "query-string@npm:6.14.1"
@@ -11982,16 +11936,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-firebase-hooks@npm:^5.0.3":
-  version: 5.0.3
-  resolution: "react-firebase-hooks@npm:5.0.3"
-  peerDependencies:
-    firebase: ">= 9.0.0"
-    react: ">= 16.8.0"
-  checksum: 80e704f1839d44894017d7227dcea8ec02cf5f1b64045de3214a87cfda9b38906765c35ec19657486ca301b251801588cd556c7a8ebbf41eee4d0b0dbadb2eea
-  languageName: node
-  linkType: hard
-
 "react-freeze@npm:^1.0.0":
   version: 1.0.0
   resolution: "react-freeze@npm:1.0.0"
@@ -12045,27 +11989,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-flags@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "react-native-flags@npm:1.0.0"
-  checksum: c6d36aa9307714b7b22fe1546c65a009ca815f00c78be943fbffce4b8303a47b416bdd830d1e4a5deb4d283b2c208319524c07acbed5661043afc9464f2291a0
-  languageName: node
-  linkType: hard
-
-"react-native-geocoding@npm:^0.5.0":
-  version: 0.5.0
-  resolution: "react-native-geocoding@npm:0.5.0"
-  checksum: a33e9dc87d104abe19206660e9fa0782090909ca8b58c70eae4690faa92194817724833086b29c57387500cdd9ecd0febd6ccbbd0f4eac0e11a93696429cf9d2
-  languageName: node
-  linkType: hard
-
-"react-native-geolocation-service@npm:5.3.0-beta.4":
-  version: 5.3.0-beta.4
-  resolution: "react-native-geolocation-service@npm:5.3.0-beta.4"
-  checksum: d4effe6dd7cbdb9a694a12abfeb107cbb25c4cd17f1f2d353b922593e164c2016b220fd1fa1e7a6e432e816b27229b17d803b665bcd57fad9ef659b7dd3521b5
-  languageName: node
-  linkType: hard
-
 "react-native-gesture-handler@npm:~2.1.3":
   version: 2.1.3
   resolution: "react-native-gesture-handler@npm:2.1.3"
@@ -12085,19 +12008,6 @@ __metadata:
   peerDependencies:
     react-native: ">=0.60"
   checksum: 3b25590029160318c136360c647610189306cca5f371f2a5255d9c085d8f63b957b46c80ed7a304e52f473a25510f1b934f2b6b9214a115a8971bdc802561a3a
-  languageName: node
-  linkType: hard
-
-"react-native-google-places-autocomplete@npm:^2.4.1":
-  version: 2.4.1
-  resolution: "react-native-google-places-autocomplete@npm:2.4.1"
-  dependencies:
-    lodash.debounce: ^4.0.8
-    prop-types: ^15.7.2
-    qs: ~6.9.1
-  peerDependencies:
-    react-native: ">= 0.59"
-  checksum: 704ab3917dbf43b5b0504791f80494b266aa0659a2cce8b9db7979efecb1d45d207bca800d79d429f67be3a7ef1e628e63ff198b20cf69e6684b8e74a8e0b6ca
   languageName: node
   linkType: hard
 
@@ -12130,6 +12040,16 @@ __metadata:
     react-native: ">= 0.51"
     react-native-web: ">= 0.11"
   checksum: 6b5bf56149bf92f60ca3eac1e27bcdaae523f6cd9d83cf357745745286b9f7bfda08227f1b063dea0a8467b6973842fb6d13017bcf69b44771690850fd7136a0
+  languageName: node
+  linkType: hard
+
+"react-native-mmkv@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "react-native-mmkv@npm:2.3.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 414b54affe16864a069c7e5078b35c2d188c4be49d797641b6b041d730ee8a4d73fe303dac94ab78e80c697d69561dc2c69f42b81f99bd1058fa1ab956ce06a6
   languageName: node
   linkType: hard
 
@@ -12233,16 +12153,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 9b20b0c8ab6b9b03fb2bfdd9edbc5bdba93eec415095d121dd9444a930bc5c76774a4e169901f9fe3f3180cb7fb04fd9f66367f70e7a4397a1787bfd87b6e336
-  languageName: node
-  linkType: hard
-
-"react-native-searchable-country-dropdown@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "react-native-searchable-country-dropdown@npm:1.0.1"
-  dependencies:
-    country-list: ^2.2.0
-    react-native-flags: ^1.0.0
-  checksum: b55f25851ddb7eba77f6a4fe5246eff1b87480ae2b28e1ebc72722da55a1c0d7260a582544fa6d9b8e9879e4f6cd69b1a7b1883989ba42a8019bfe35c516868d
   languageName: node
   linkType: hard
 

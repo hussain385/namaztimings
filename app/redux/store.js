@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {
   FLUSH,
@@ -17,7 +16,24 @@ import {
   getFirebase,
 } from 'react-redux-firebase';
 import {constants as rfConstants, firestoreReducer} from 'redux-firestore';
+import {MMKV} from 'react-native-mmkv';
 
+const storage = new MMKV();
+
+export const reduxStorage = {
+  setItem: (key, value) => {
+    storage.set(key, value);
+    return Promise.resolve(true);
+  },
+  getItem: key => {
+    const value = storage.getString(key);
+    return Promise.resolve(value);
+  },
+  removeItem: key => {
+    storage.delete(key);
+    return Promise.resolve();
+  },
+};
 const reducer = combineReducers({
   favorites: favoriteReducer,
   firebase: firebaseReducer,
@@ -27,7 +43,7 @@ const reducer = combineReducers({
 
 const persistConfig = {
   key: 'root',
-  storage: AsyncStorage,
+  storage: reduxStorage,
   whitelist: ['favorites', 'location'],
 };
 

@@ -2,11 +2,11 @@
   "expo": {
     "name": "Namaz Timings",
     "slug": "NamazTimings",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
-    "jsEngine": "hermes",
     "plugins": [
-      "@react-native-firebase/app"
+      "@react-native-firebase/app",
+      "expo-location"
     ],
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -18,11 +18,7 @@
     "android": {
       "package": "com.namaztimings",
       "googleServicesFile": "./google-services.json",
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyCrsNBX-pWunuPeL-ziP99aXhetdZL2VKs"
-        }
-      }
+      "jsEngine": "hermes"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
