@@ -102,9 +102,7 @@ export default class MasjidCard extends PureComponent {
               <Text style={{color: '#CEE6B4'}}>More Info</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={async () => {
-                await Linking.openURL(`${this.props.masjid.gLink}`);
-              }}
+              onPress={() => Linking.openURL(`${this.props.masjid.gLink ? this.props.masjid.gLink : `https://maps.google.com/?q=${this.props.masjid.g.geopoint.latitude},${this.props.masjid.g.geopoint.longitude}`}`)}
               style={styles.btnStyles}>
               <Text
                 style={{

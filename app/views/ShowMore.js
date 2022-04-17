@@ -309,6 +309,7 @@ const ShowMore = ({navigation}) => {
         data={masjidData}
         renderItem={renderItem}
         keyExtractor={item => item.key}
+        initialNumToRender={20}
         style={{marginBottom: 85}}
       />
     </View>

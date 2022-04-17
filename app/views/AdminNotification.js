@@ -413,7 +413,7 @@ const AdminNotification = ({navigation, route}) => {
         style={{
           height: Dimensions.get('window').height - 80,
         }}
-        initialNumToRender={5}
+        initialNumToRender={15}
       />
     </SafeAreaView>
   );

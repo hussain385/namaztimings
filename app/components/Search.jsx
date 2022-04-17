@@ -154,9 +154,6 @@ const Search = props => {
         }
         backgroundColor="#1F441E"
       />
-      {/* <View>
-      </View> */}
-
       {!isLoaded(masjid) && (
         <Animated.View
           style={{
@@ -174,7 +171,7 @@ const Search = props => {
         renderItem={result.length > 0 ? renderItem1 : renderItem}
         keyExtractor={item => item.key || item.item.key}
         style={{marginBottom: 140}}
-        initialNumToRender={5}
+        initialNumToRender={20}
       />
       {isLoaded(masjid) && (
         <View
