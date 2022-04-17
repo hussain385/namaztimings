@@ -189,7 +189,7 @@ const Favourites = ({navigation}) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={async () => {
-              await Linking.openURL(`${gLink}`);
+              await Linking.openURL(`${gLink ? gLink : `https://maps.google.com/?q=${latitude},${longitude}`}`);
             }}
             style={styles.btnStyles}>
             <Text
@@ -231,6 +231,7 @@ const Favourites = ({navigation}) => {
                   keyExtractor={x => x.key}
                   style={{marginBottom: 70, flex: 1}}
                   onRefresh={onRefresh}
+                  initialNumToRender={20}
                   refreshing={refreshing}
                 />
               );
