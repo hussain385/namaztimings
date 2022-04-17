@@ -182,29 +182,28 @@ export const AddMasjid = ({navigation}) => {
               token,
             })
             .then(async () => {
-              await axios
-                .post('https://namaz-timings-pakistan.herokuapp.com/email', {
-                  to: 'juzer.shabbir@gmail.com',
-                  body: `Dear Admin,\n${values.name} has received an masjid add request from ${values.userName}`,
-                  title: 'Admin Notification',
-                })
-                .then(() => {
-                  Alert.alert(
-                    'Request send successfully',
-                    'Jazak Allah u Khairan for your contribution. Admin will review and approve the newly added masjid in 24 hours.',
-                    [
-                      {
-                        text: 'Ok',
-                        onPress: () => {
-                          navigation.navigate('SearchStackScreen', {
-                            screen: 'Find Masjid',
-                          });
-                          setLoading(false);
+              Alert.alert(
+                'Request send successfully',
+                'Jazak Allah u Khairan for your contribution. Admin will review and approve the newly added masjid in 24 hours.',
+                [
+                  {
+                    text: 'Ok',
+                    onPress: async () => {
+                      navigation.navigate('SearchStackScreen', {
+                        screen: 'Find Masjid',
+                      });
+                      setLoading(false);
+                      await axios
+                        .post('https://namaz-timings-pakistan.herokuapp.com/email', {
+                          to: 'juzer.shabbir@gmail.com',
+                          body: `Dear Admin,\n${values.name} has received an masjid add request from ${values.userName}`,
+                          title: 'Admin Notification',
                         },
-                      },
-                    ],
-                  );
-                });
+                      );
+                    },
+                  },
+                ],
+              );
             });
         }}>
         {({

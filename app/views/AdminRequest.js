@@ -74,33 +74,29 @@ const AdminRequest = ({id, masjidName}) => {
                 await firestore
                   .collection('adminRequest')
                   .add({...values, token})
-                  .then(
-                    async () =>
-                      await axios
-                        .post(
-                          'https://namaz-timings-pakistan.herokuapp.com/email',
-                          {
-                            to: 'juzer.shabbir@gmail.com',
-                            body: `Dear Admin,\n${masjidName} has received an admin request from ${values.userName}`,
-                            title: 'Admin Notification',
-                          },
-                        )
-                        .then(() => {
-                          Alert.alert(
-                            'Request send successfully',
-                            'Jazak Allah u Khairan for your contribution. Admin will review and contact you in 24 hours.',
-                            [
+                  .then(async () => {
+                    Alert.alert(
+                      'Request send successfully',
+                      'Jazak Allah u Khairan for your contribution. Admin will review and contact you in 24 hours.',
+                      [
+                        {
+                          text: 'Ok',
+                          onPress: async () => {
+                            setModalVisible(!modalVisible);
+                            setLoading(false);
+                            await axios.post(
+                              'https://namaz-timings-pakistan.herokuapp.com/email',
                               {
-                                text: 'Ok',
-                                onPress: () => {
-                                  setModalVisible(!modalVisible);
-                                  setLoading(false);
-                                },
+                                to: 'juzer.shabbir@gmail.com',
+                                body: `Dear Admin,\n${masjidName} has received an admin request from ${values.userName}`,
+                                title: 'Admin Notification',
                               },
-                            ],
-                          );
-                        }),
-                  );
+                            );
+                          },
+                        },
+                      ],
+                    );
+                  });
               }}>
               {({
                 handleChange,

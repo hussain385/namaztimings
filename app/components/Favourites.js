@@ -150,7 +150,7 @@ const Favourites = ({navigation}) => {
           <View>
             <Text
               onPress={async () => {
-                await Linking.openURL(`${gLink}`);
+                await Linking.openURL(`${gLink ? gLink : `https://maps.google.com/?q=${latitude},${longitude}`}`);
               }}
               style={{color: '#900000', textDecorationLine: 'underline'}}>
               {distance}KM AWAY
@@ -210,7 +210,16 @@ const Favourites = ({navigation}) => {
       <>
         {(() => {
           if (error) {
-            return <Text>{JSON.stringify(error, null, 2)}</Text>;
+            return (
+              <View
+                style={{
+                  alignItems: 'center',
+                  marginVertical: '50%',
+                }}>
+                <AntDesign name="folder1" size={70} />
+                <Text>404 Error</Text>
+              </View>
+            );
           }
           if (!loading) {
             if (!_.isNull(masjidData) && !_.isEmpty(masjidData)) {

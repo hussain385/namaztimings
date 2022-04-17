@@ -79,7 +79,7 @@ const Item = props => {
             <TouchableOpacity>
               <Text
                 onPress={async () => {
-                  await Linking.openURL(`${props.gLink}`);
+                  await Linking.openURL(`${props.gLink ? props.gLink : `https://maps.google.com/?q=${props.latitude},${props.longitude}`}`);
                 }}
                 style={{color: '#900000', textDecorationLine: 'underline'}}>
                 {props.distance}KM AWAY
@@ -308,7 +308,7 @@ const ShowMore = ({navigation}) => {
       <FlatList
         data={masjidData}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.key}
         style={{marginBottom: 85}}
       />
     </View>

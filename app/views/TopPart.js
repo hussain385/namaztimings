@@ -108,7 +108,7 @@ const TopPart = ({masjidData}) => {
           <Text
             style={{textDecorationLine: 'underline', color: 'darkred'}}
             onPress={async () => {
-              await Linking.openURL(`${masjidData.gLink}`);
+              await Linking.openURL(`${masjidData.gLink ? masjidData.gLink : `https://maps.google.com/?q=${masjidData.g.geopoint.latitude},${masjidData.g.geopoint.longitude}`}`);
             }}>
             {masjidData.distance} Km Away
           </Text>

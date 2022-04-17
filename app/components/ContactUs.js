@@ -52,27 +52,27 @@ const ContactUs = ({navigation}) => {
             .collection('contactForm')
             .add({...values, token})
             .then(async () => {
-              await axios
-                .post('https://namaz-timings-pakistan.herokuapp.com/email', {
-                  to: 'juzer.shabbir@gmail.com',
-                  body: `Dear Admin,\n${values.userName} have send you a ${values.options} please check admin panel to reply him.`,
-                  title: 'Admin Notification',
-                })
-                .then(() => {
-                  setLoading(false);
-                  Alert.alert(
-                    'Message send successfully',
-                    'Jazak Allah u Khairan for your message. Admin will review and reply in 24 hours.',
-                    [
-                      {
-                        text: 'OK',
-                        onPress: () => {
-                          resetForm();
+              setLoading(false);
+              Alert.alert(
+                'Message send successfully',
+                'Jazak Allah u Khairan for your message. Admin will review and reply in 24 hours.',
+                [
+                  {
+                    text: 'OK',
+                    onPress: async () => {
+                      resetForm();
+                      await axios.post(
+                        'https://namaz-timings-pakistan.herokuapp.com/email',
+                        {
+                          to: 'juzer.shabbir@gmail.com',
+                          body: `Dear Admin,\n${values.userName} have send you a ${values.options} please check admin panel to reply him.`,
+                          title: 'Admin Notification',
                         },
-                      },
-                    ],
-                  );
-                });
+                      );
+                    },
+                  },
+                ],
+              );
             });
         }}>
         {({
