@@ -69,7 +69,13 @@ const Search = props => {
 
   const renderItem = ({item}) => (
     <>
-      <View style={{flexDirection: 'row', position: 'absolute', zIndex: 1, top: 20}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          position: 'absolute',
+          zIndex: 1,
+          top: 20,
+        }}>
         <View style={{flexGrow: 1}} />
         <View style={{right: 20}}>
           <Favbtn favId={item.key} isBig={true} />
@@ -81,7 +87,13 @@ const Search = props => {
 
   const renderItem1 = ({item}) => (
     <>
-      <View style={{flexDirection: 'row', position: 'absolute', zIndex: 1, top: 20}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          position: 'absolute',
+          zIndex: 1,
+          top: 20,
+        }}>
         <View style={{flexGrow: 1}} />
         <View style={{right: 20}}>
           <Favbtn favId={item.item.key} isBig={true} />
@@ -176,7 +188,7 @@ const Search = props => {
         renderItem={result.length > 0 ? renderItem1 : renderItem}
         keyExtractor={item => item.key || item.item.key}
         style={{marginBottom: 140}}
-        initialNumToRender={15}
+        initialNumToRender={6}
       />
       {isLoaded(masjid) && (
         <View

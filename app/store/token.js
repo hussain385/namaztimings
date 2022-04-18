@@ -1,16 +1,16 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
-import {navigate} from '../push';
+// import {navigate} from '../push';
+import {storage} from '../redux/store';
 
 export const getFcmToken = async () => {
-  let fcmToken = await AsyncStorage.getItem('fcmToken');
+  let fcmToken = storage.getString('fcmToken');
   console.log(fcmToken, 'the old token');
   if (!fcmToken) {
     try {
       fcmToken = await messaging().getToken();
       if (fcmToken) {
         console.log(fcmToken, 'Generated new token');
-        await saveToken(fcmToken);
+        saveToken(fcmToken);
       }
     } catch (error) {
       console.log(error, 'error raised in fcmToken');
@@ -19,24 +19,24 @@ export const getFcmToken = async () => {
   return fcmToken;
 };
 
-export const saveToken = async fcmToken => {
+export const saveToken = fcmToken => {
   console.log('saving token ', fcmToken);
-  await AsyncStorage.setItem('fcmToken', fcmToken);
+  storage.set('fcmToken', fcmToken);
 };
 
-export const notificationListener = async () => {
-  messaging().onNotificationOpenedApp(remoteMessage => {
-    navigate('Announcement');
-  });
-  messaging()
-    .getInitialNotification()
-    .then(remoteMessage => {
-      if (remoteMessage) {
-        console.log(
-          'Notification caused app to open from quit state:',
-          remoteMessage.notification,
-        );
-        // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
-      }
-    });
-};
+// export const notificationListener = async () => {
+//   messaging().onNotificationOpenedApp(remoteMessage => {
+//     navigate('Announcement');
+//   });
+//   messaging()
+//     .getInitialNotification()
+//     .then(remoteMessage => {
+//       if (remoteMessage) {
+//         console.log(
+//           'Notification caused app to open from quit state:',
+//           remoteMessage.notification,
+//         );
+//         // setInitialRoute(remoteMessage.data.type); // e.g. "Settings"
+//       }
+//     });
+// };

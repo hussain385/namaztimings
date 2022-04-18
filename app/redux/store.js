@@ -18,7 +18,7 @@ import {
 import {constants as rfConstants, firestoreReducer} from 'redux-firestore';
 import {MMKV} from 'react-native-mmkv';
 
-const storage = new MMKV();
+export const storage = new MMKV();
 
 export const reduxStorage = {
   setItem: (key, value) => {
