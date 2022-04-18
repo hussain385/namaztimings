@@ -35,7 +35,6 @@ export default class MasjidCard extends PureComponent {
           },
           shadowOpacity: 0.34,
           shadowRadius: 6.27,
-          elevation: 5,
         }}>
         <TouchableOpacity
           onPress={() =>
@@ -57,12 +56,6 @@ export default class MasjidCard extends PureComponent {
               width: '100%',
               height: 200,
             }}>
-            <View style={{flexDirection: 'row'}}>
-              <View style={{flexGrow: 1}} />
-              <View style={{top: -65, right: 10}}>
-                <Favbtn favId={this.props.masjid.key} isBig={true} />
-              </View>
-            </View>
           </ImageBackground>
         </TouchableOpacity>
 

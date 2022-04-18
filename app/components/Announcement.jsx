@@ -53,7 +53,7 @@ const Announcement = ({navigation}) => {
             marginVertical: '50%',
           }}>
           <AntDesign name="folder1" size={50} />
-          <Text>No Favourites</Text>
+          <Text>No Announcements</Text>
         </View>
       ) : (
         <>

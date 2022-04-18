@@ -20,6 +20,7 @@ import MasjidCard from '../views/MasjidCard';
 import {selectCords, setLocation} from '../redux/locationSlicer';
 import {ActivityIndicator} from 'react-native-paper';
 import Animated from 'react-native-reanimated';
+import Favbtn from '../views/Favbtn';
 
 const populates = [
   {child: 'adminId', root: 'users', childAlias: 'user'}, // replace owner with user object
@@ -66,10 +67,28 @@ const Search = props => {
       });
   }, [dispatch]);
 
-  const renderItem = ({item}) => <MasjidCard masjid={item} nav={navigation} />;
+  const renderItem = ({item}) => (
+    <>
+      <View style={{flexDirection: 'row', position: 'absolute', zIndex: 1, top: 20}}>
+        <View style={{flexGrow: 1}} />
+        <View style={{right: 20}}>
+          <Favbtn favId={item.key} isBig={true} />
+        </View>
+      </View>
+      <MasjidCard masjid={item} nav={navigation} />
+    </>
+  );
 
   const renderItem1 = ({item}) => (
-    <MasjidCard masjid={item.item} nav={navigation} />
+    <>
+      <View style={{flexDirection: 'row', position: 'absolute', zIndex: 1, top: 20}}>
+        <View style={{flexGrow: 1}} />
+        <View style={{right: 20}}>
+          <Favbtn favId={item.item.key} isBig={true} />
+        </View>
+      </View>
+      <MasjidCard masjid={item.item} nav={navigation} />
+    </>
   );
 
   return (
@@ -157,7 +176,7 @@ const Search = props => {
         renderItem={result.length > 0 ? renderItem1 : renderItem}
         keyExtractor={item => item.key || item.item.key}
         style={{marginBottom: 140}}
-        initialNumToRender={6}
+        initialNumToRender={15}
       />
       {isLoaded(masjid) && (
         <View
