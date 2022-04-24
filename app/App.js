@@ -151,27 +151,6 @@ const HomeStackScreen = ({navigation}) => (
               style={{marginHorizontal: 15, marginTop: 7}}>
               <Icon name="arrow-left" color="#1F441E" size={25} />
             </TouchableOpacity>
-            {/* <GooglePlacesAutocomplete
-              styles={{
-                textInput: {
-                  width: Dimensions.get('window').width - 60,
-                  color: '#5d5d5d',
-                  fontSize: 16,
-                  zIndex: 1,
-                },
-              }}
-              placeholder="Search"
-              placeholderTextColor="grey"
-              onPress={(data, details = null) => {
-                console.log(data, details);
-              }}
-              onFail={error => console.error(error)}
-              query={{
-                key: 'AIzaSyCrsNBX-pWunuPeL-ziP99aXhetdZL2VKs',
-                language: 'en',
-                types: '(cities)',
-              }}
-            /> */}
           </View>
         ),
       }}
@@ -196,27 +175,6 @@ const HomeStackScreen = ({navigation}) => (
               style={{marginHorizontal: 15, marginTop: 7}}>
               <Icon name="arrow-left" color="#1F441E" size={25} />
             </TouchableOpacity>
-            {/* <GooglePlacesAutocomplete
-              styles={{
-                textInput: {
-                  width: Dimensions.get('window').width - 60,
-                  color: '#5d5d5d',
-                  fontSize: 16,
-                  zIndex: 1,
-                },
-              }}
-              placeholder="Search"
-              onPress={(data, details = null) => {
-                // 'details' is provided when fetchDetails = true
-                console.log(data, details);
-              }}
-              onFail={error => console.error(error)}
-              query={{
-                key: 'AIzaSyCrsNBX-pWunuPeL-ziP99aXhetdZL2VKs',
-                language: 'en',
-                types: '(cities)',
-              }}
-            /> */}
           </View>
         ),
       }}
