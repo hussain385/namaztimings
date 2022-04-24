@@ -25,7 +25,12 @@
       },
       "package": "com.namaztimings",
       "googleServicesFile": "./google-services.json",
-      "jsEngine": "hermes"
+      "jsEngine": "hermes",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCrsNBX-pWunuPeL-ziP99aXhetdZL2VKs"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

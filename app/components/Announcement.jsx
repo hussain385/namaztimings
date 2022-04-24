@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {GetFavMasjidData} from '../store/firebase';
+import {useGetFavMasjidData} from '../store/firebase';
 import AnnoucmentCard from '../views/AnnoucmentCard';
 import HeaderComp from '../views/HeaderComp';
 
@@ -13,7 +13,7 @@ const Announcement = ({navigation}) => {
     masjid: masjidData,
     loading,
     GetDataFavMasjid: GetData,
-  } = GetFavMasjidData();
+  } = useGetFavMasjidData();
 
   const announcements1 = [];
 

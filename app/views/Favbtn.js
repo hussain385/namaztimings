@@ -10,7 +10,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Favbtn = ({favId, isBig = true}) => {
   // const [isFav, setIsFav] = useState(false);
-  const [isFound, setIsFound] = useState(false); // is Fav already exist in storage?
+  // const [isFound, setIsFound] = useState(false); // is Fav already exist in storage?
   const favoriteId = useSelector(useFavorites);
   const dispatch = useDispatch();
 
@@ -21,7 +21,7 @@ const Favbtn = ({favId, isBig = true}) => {
     }
 
     const token = await getFcmToken();
-    if (isFound) {
+    if (_.includes(favoriteId, favId)) {
       try {
         await firestore()
           .collection('Masjid')
@@ -48,18 +48,18 @@ const Favbtn = ({favId, isBig = true}) => {
     }
   };
 
-  useEffect(() => {
-    if (!_.isEmpty(favoriteId)) {
-      if (_.includes(favoriteId, favId)) {
-        setIsFound(true);
-      } else {
-        setIsFound(false);
-      }
-    } else {
-      console.log('empty Fav Id', favoriteId);
-      setIsFound(false);
-    }
-  }, [favId, favoriteId]);
+  // useEffect(() => {
+  //   if (!_.isEmpty(favoriteId)) {
+  //     if (_.includes(favoriteId, favId)) {
+  //       setIsFound(true);
+  //     } else {
+  //       setIsFound(false);
+  //     }
+  //   } else {
+  //     console.log('empty Fav Id', favoriteId);
+  //     setIsFound(false);
+  //   }
+  // }, [favId, favoriteId]);
 
   return (
     <>
@@ -70,7 +70,7 @@ const Favbtn = ({favId, isBig = true}) => {
           <Entypo
             style={{padding: 15}}
             name="star"
-            color={isFound ? '#8D2828' : '#5C5C5C'}
+            color={_.includes(favoriteId, favId) ? '#8D2828' : '#5C5C5C'}
             size={30}
           />
         </TouchableOpacity>
@@ -82,7 +82,7 @@ const Favbtn = ({favId, isBig = true}) => {
           <Entypo
             name="star"
             style={{padding: 10}}
-            color={isFound ? '#8D2828' : '#5C5C5C'}
+            color={_.includes(favoriteId, favId) ? '#8D2828' : '#5C5C5C'}
             size={25}
           />
           {/*</Animated.View>*/}

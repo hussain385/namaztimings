@@ -173,7 +173,7 @@ function GetUsers() {
   });
 }
 
-export function GetFavMasjidData() {
+export function useGetFavMasjidData() {
   const [loading, setLoading] = useState(true);
   const [masjid, setMasjid] = useState([]);
   const [error, setError] = useState(null);

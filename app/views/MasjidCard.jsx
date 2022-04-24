@@ -7,7 +7,6 @@ import {
   Text,
   View,
 } from 'react-native';
-import Favbtn from './Favbtn';
 import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -55,8 +54,8 @@ export default class MasjidCard extends PureComponent {
               justifyContent: 'center',
               width: '100%',
               height: 200,
-            }}>
-          </ImageBackground>
+            }}
+          />
         </TouchableOpacity>
 
         <View style={{padding: 5}}>

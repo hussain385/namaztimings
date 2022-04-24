@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useSelector} from 'react-redux';
-import {GetFavMasjidData} from '../store/firebase';
+import {useGetFavMasjidData} from '../store/firebase';
 import Favbtn from '../views/Favbtn';
 import HeaderComp from '../views/HeaderComp';
 import {useFavorites} from '../redux/favSlicer';
@@ -33,12 +33,13 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 const Favourites = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
   //   const [masjidData, loading, error] = GetRadMasjidData();
+
   const {
     masjid: masjidData,
     loading,
     error,
     GetDataFavMasjid: GetData,
-  } = GetFavMasjidData();
+  } = useGetFavMasjidData();
   const favoriteId = useSelector(useFavorites);
 
   async function onRefresh() {
@@ -150,7 +151,13 @@ const Favourites = ({navigation}) => {
           <View>
             <Text
               onPress={async () => {
-                await Linking.openURL(`${gLink ? gLink : `https://maps.google.com/?q=${latitude},${longitude}`}`);
+                await Linking.openURL(
+                  `${
+                    gLink
+                      ? gLink
+                      : `https://maps.google.com/?q=${latitude},${longitude}`
+                  }`,
+                );
               }}
               style={{color: '#900000', textDecorationLine: 'underline'}}>
               {distance}KM AWAY
@@ -189,7 +196,13 @@ const Favourites = ({navigation}) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={async () => {
-              await Linking.openURL(`${gLink ? gLink : `https://maps.google.com/?q=${latitude},${longitude}`}`);
+              await Linking.openURL(
+                `${
+                  gLink
+                    ? gLink
+                    : `https://maps.google.com/?q=${latitude},${longitude}`
+                }`,
+              );
             }}
             style={styles.btnStyles}>
             <Text
