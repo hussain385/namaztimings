@@ -195,7 +195,7 @@ export const AddMasjid = ({navigation}) => {
                       setLoading(false);
                       await axios
                         .post('https://namaz-timings-pakistan.herokuapp.com/email', {
-                          to: 'juzer.shabbir@gmail.com',
+                          to: 'namaz.timing.pakistan@gmail.com',
                           body: `Dear Admin,\n${values.name} has received an masjid add request from ${values.userName}`,
                           title: 'Admin Notification',
                         },

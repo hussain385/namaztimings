@@ -29,6 +29,7 @@ const Edit = ({
   timing,
   uid,
   adminId = '',
+  adminEmail= '',
   isRequest = true,
   value = 'Edit',
   isAdd = false,
@@ -217,7 +218,6 @@ const Edit = ({
                               })
                               .then(
                                 async () => {
-                                  console.log(adminId, 'aafa');
                                   if (adminId === '') {
                                     setSubmitting(false);
                                     Alert.alert(
@@ -231,7 +231,7 @@ const Edit = ({
                                             await axios.post(
                                               'https://namaz-timings-pakistan.herokuapp.com/email',
                                               {
-                                                to: 'juzer.shabbir@gmail.com',
+                                                to: 'namaz.timing.pakistan@gmail.com',
                                                 body: `Dear Admin,\n${masjidName} has received an time edit request from ${values.userName}`,
                                                 title: 'Admin Notification',
                                               },
@@ -249,8 +249,17 @@ const Edit = ({
                                       [
                                         {
                                           text: 'Ok',
-                                          onPress: () =>
-                                            setModalVisible(!modalVisible),
+                                          onPress: async () => {
+                                            setModalVisible(!modalVisible);
+                                            await axios.post(
+                                              'https://namaz-timings-pakistan.herokuapp.com/email',
+                                              {
+                                                to: adminEmail,
+                                                body: `Dear Admin,\n${masjidName} has received an time edit request from ${values.userName}`,
+                                                title: 'Admin Notification',
+                                              },
+                                            );
+                                          },
                                         },
                                       ],
                                       {cancelable: false},

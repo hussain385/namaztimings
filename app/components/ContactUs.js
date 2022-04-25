@@ -64,7 +64,7 @@ const ContactUs = ({navigation}) => {
                       await axios.post(
                         'https://namaz-timings-pakistan.herokuapp.com/email',
                         {
-                          to: 'juzer.shabbir@gmail.com',
+                          to: 'namaz.timing.pakistan@gmail.com',
                           body: `Dear Admin,\n${values.userName} have send you a ${values.options} please check admin panel to reply him.`,
                           title: 'Admin Notification',
                         },

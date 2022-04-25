@@ -5,6 +5,7 @@
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
+    "android:release": "cd android; ./gradlew clean;./gradlew assembleRelease;cd ..;",
     "web": "expo start --web",
     "eject": "expo eject"
   },

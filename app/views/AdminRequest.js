@@ -87,7 +87,7 @@ const AdminRequest = ({id, masjidName}) => {
                             await axios.post(
                               'https://namaz-timings-pakistan.herokuapp.com/email',
                               {
-                                to: 'juzer.shabbir@gmail.com',
+                                to: 'namaz.timing.pakistan@gmail.com',
                                 body: `Dear Admin,\n${masjidName} has received an admin request from ${values.userName}`,
                                 title: 'Admin Notification',
                               },
