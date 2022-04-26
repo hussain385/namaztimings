@@ -248,7 +248,7 @@ const Edit = ({
                                       'Jazak Allah u Khairan, your namaz timings updates are sent to admin, he will review and approve in 24 hours.',
                                       [
                                         {
-                                          text: 'O',
+                                          text: 'Ok',
                                           onPress: async () => {
                                             setModalVisible(!modalVisible);
                                             await axios.post(
