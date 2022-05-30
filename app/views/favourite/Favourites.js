@@ -18,18 +18,6 @@ import HeaderComp from '../../components/header/HeaderComp';
 import {useFavorites} from '../../redux/favSlicer';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-// title={item.name}
-// address={item.address}
-// url={item.pictureURL}
-// timing={item.timing}
-// nav={navigation}
-// distance={item.distance}
-// favId={item.key}
-// onRefresh={onRefresh}
-// longitude={item.g.geopoint.longitude}
-// user={item.user}
-// latitude={item.g.geopoint.latitude}
-
 const Favourites = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
   //   const [masjidData, loading, error] = GetRadMasjidData();
