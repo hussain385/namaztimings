@@ -153,6 +153,9 @@ const Notification = ({navigation, route: {params}}) => {
                                       title: masjidTokens.data().name,
                                       body: values.description,
                                     },
+                                    data: {
+                                      announcement: true,
+                                    }
                                   },
                                   {
                                     headers: {

@@ -20,6 +20,8 @@ import LastUpdated from '../../components/masjidInfo/LastUpdated';
 import TopPart from '../../components/masjidInfo/TopPart';
 import {ActivityIndicator} from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from "@react-native-community/async-storage";
+import {isNull} from 'lodash';
 
 function HomeScreen({navigation}) {
   const {
@@ -30,6 +32,7 @@ function HomeScreen({navigation}) {
     GetDataRadMasjid: GetData,
   } = new GetRadMasjidData1();
   const [refreshing, setRefreshing] = useState(false);
+  const [notificationDot, setNotificationDot] = useState(false);
   const masjidData = masjid;
   const location = useSelector(selectCords);
   console.log(masjid, loading, error);
@@ -46,6 +49,21 @@ function HomeScreen({navigation}) {
       console.log('refreshed');
     });
   }, [location.latitude, location.longitude]);
+
+  useEffect(() => {
+    notificationIcon();
+  }, []);
+
+
+
+  async function notificationIcon() {
+    const status = await AsyncStorage.getItem('notification');
+    if (!isNull(status)) {
+      setNotificationDot(true);
+    } else {
+      setNotificationDot(false);
+    }
+  }
 
   return (
     <>
@@ -83,8 +101,9 @@ function HomeScreen({navigation}) {
             style={{
               paddingRight: 10,
             }}>
-            <View>
+            <View style={{flexDirection: 'row'}}>
               <MaterialIcons name="bell" size={28} color="white" />
+              {notificationDot && <View style={styles.statusIndicator} />}
             </View>
           </TouchableOpacity>
         }
@@ -325,6 +344,15 @@ const styles = StyleSheet.create({
     padding: 16,
     fontSize: 15,
     textAlign: 'center',
+  },
+  statusIndicator: {
+    height: 15,
+    width: 15,
+    backgroundColor: "#74ff1c",
+    borderRadius: 1000,
+    borderWidth: 3,
+    borderColor: "#1F441E",
+    marginLeft: -10,
   },
 });
 

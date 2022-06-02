@@ -13,6 +13,7 @@ import messaging from "@react-native-firebase/messaging";
 import { saveToken } from "./store/token";
 import Announcement from "./views/announcement/Announcement";
 import DrawerStackScreen from "./navigation/DrawerStackScreen";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export default function App() {
   const persistor = persistStore(store);
@@ -29,6 +30,9 @@ export default function App() {
 
   React.useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
+      if (remoteMessage.data.announcement) {
+        await AsyncStorage.setItem('notification', 'true');
+      }
       myNotification(
         remoteMessage.notification.title,
         remoteMessage.notification.body,
