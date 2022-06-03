@@ -11,15 +11,16 @@ import {
 import {Header} from 'react-native-elements';
 import {Card} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
 import {selectCords, setLocation} from '../../redux/locationSlicer';
 import {
   getCurrentLocation,
   selectFirestore,
   sortMasjidData1,
-} from '../../store/firebase';
+} from '../../hooks/firebase';
 import moment from 'moment';
+import {useAppSelector} from '../../hooks/redux';
 
 const Item = props => {
   const pastTime = moment(props.timeStamp?.seconds * 1000);
@@ -79,7 +80,13 @@ const Item = props => {
             <TouchableOpacity>
               <Text
                 onPress={async () => {
-                  await Linking.openURL(`${props.gLink ? props.gLink : `https://maps.google.com/?q=${props.latitude},${props.longitude}`}`);
+                  await Linking.openURL(
+                    `${
+                      props.gLink
+                        ? props.gLink
+                        : `https://maps.google.com/?q=${props.latitude},${props.longitude}`
+                    }`,
+                  );
                 }}
                 style={{color: '#900000', textDecorationLine: 'underline'}}>
                 {props.distance}KM AWAY
@@ -221,8 +228,8 @@ const ShowMore = ({navigation}) => {
       populates,
     },
   ]);
-  const location = useSelector(selectCords);
-  const firestore = useSelector(selectFirestore);
+  const location = useAppSelector(selectCords);
+  const firestore = useAppSelector(selectFirestore);
   const masjid = populate(firestore, 'Masjid', populates);
   const dispatch = useDispatch();
   const masjidData = sortMasjidData1(masjid, location);

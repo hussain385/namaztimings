@@ -14,7 +14,7 @@ import {
 import {Card} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 import {useFirestore} from 'react-redux-firebase';
-import {selectFirebase} from '../../store/firebase';
+import {selectFirebase} from '../../hooks/firebase';
 
 const NotificationCard = ({data, masjidName, masjidId, adminId}) => {
   const [modalVisible, setModalVisible] = useState(false);

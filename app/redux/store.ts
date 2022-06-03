@@ -21,15 +21,15 @@ import {MMKV} from 'react-native-mmkv';
 export const storage = new MMKV();
 
 export const reduxStorage = {
-  setItem: (key, value) => {
+  setItem: (key: string, value: string | number | boolean) => {
     storage.set(key, value);
     return Promise.resolve(true);
   },
-  getItem: key => {
+  getItem: (key: string) => {
     const value = storage.getString(key);
     return Promise.resolve(value);
   },
-  removeItem: key => {
+  removeItem: (key: string) => {
     storage.delete(key);
     return Promise.resolve();
   },
@@ -73,3 +73,8 @@ export const store = configureStore({
       thunk: {extraArgument: {getFirebase}},
     }),
 });
+
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>;
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch;

@@ -1,27 +1,23 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import _ from 'lodash';
-import {LocationObject} from 'expo-location';
+import {LocationObjectCoords} from 'expo-location';
+import {RootState} from './store';
 
-// interface LocationState {
-//   latitude: number,
-//   longitude: number
-// }
-
-const initialState: LocationObject = {
+const initialState: LocationObjectCoords = {
   latitude: 0,
   longitude: 0,
-  accuracy: 0,
-  altitude: undefined,
-  altitudeAccuracy: undefined,
-  heading: undefined,
-  speed: undefined,
+  altitude: null,
+  heading: null,
+  speed: null,
+  accuracy: null,
+  altitudeAccuracy: null,
 };
 
 const locationSlice = createSlice({
   name: 'geolocation',
   initialState,
   reducers: {
-    setLocation: (state, action: PayloadAction<LocationObject>) => {
+    setLocation: (state, action: PayloadAction<LocationObjectCoords>) => {
       if (!_.isNull(action.payload)) {
         state = action.payload;
       }
@@ -33,6 +29,6 @@ const locationSlice = createSlice({
 
 export const {setLocation} = locationSlice.actions;
 // Other code such as selectors can use the imported `RootState` type
-export const selectCords = state => state.location;
+export const selectCords = (state: RootState) => state.location;
 
 export default locationSlice.reducer;

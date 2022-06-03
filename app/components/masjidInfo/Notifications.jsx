@@ -1,7 +1,7 @@
 import {Formik} from 'formik';
 import _ from 'lodash';
 import firestore from '@react-native-firebase/firestore';
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   Alert,
   Dimensions,
@@ -24,9 +24,9 @@ import {
 import * as Yup from 'yup';
 import HeaderComp from '../header/HeaderComp';
 import NotificationCard from '../cards/NotificationCard';
-import {selectFirebase, selectFirestore} from '../../store/firebase';
+import {selectFirebase, selectFirestore} from '../../hooks/firebase';
 import axios from 'axios';
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Notification = ({navigation, route: {params}}) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -65,7 +65,7 @@ const Notification = ({navigation, route: {params}}) => {
   useEffect(() => {
     AsyncStorage.setItem('notification', null);
   }, []);
-  
+
   // console.log(auth.uid === adminId);
 
   return (
@@ -160,7 +160,7 @@ const Notification = ({navigation, route: {params}}) => {
                                     },
                                     data: {
                                       announcement: true,
-                                    }
+                                    },
                                   },
                                   {
                                     headers: {

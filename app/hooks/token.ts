@@ -1,5 +1,4 @@
 import messaging from '@react-native-firebase/messaging';
-// import {navigate} from '../push';
 import {storage} from '../redux/store';
 
 export const getFcmToken = async () => {
@@ -19,7 +18,7 @@ export const getFcmToken = async () => {
   return fcmToken;
 };
 
-export const saveToken = fcmToken => {
+export const saveToken = (fcmToken: string | number | boolean) => {
   console.log('saving token ', fcmToken);
   storage.set('fcmToken', fcmToken);
 };

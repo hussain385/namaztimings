@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {useGetFavMasjidData} from '../../store/firebase';
+import {useGetFavMasjidData} from '../../hooks/firebase';
 import AnnoucmentCard from '../../components/cards/AnnoucmentCard';
 import HeaderComp from '../../components/header/HeaderComp';
 

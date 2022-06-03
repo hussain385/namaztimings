@@ -5,7 +5,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import {add, remove, useFavorites} from '../../redux/favSlicer';
 import firestore from '@react-native-firebase/firestore';
-import {getFcmToken} from '../../store/token';
+import {getFcmToken} from '../../hooks/token';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Favbtn = ({favId, isBig = true}) => {

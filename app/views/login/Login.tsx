@@ -1,5 +1,5 @@
-import {Formik} from 'formik';
-import React, {useEffect, useState} from 'react';
+import { Formik } from "formik"
+import React, { useEffect, useState } from "react"
 import {
   ActivityIndicator,
   Dimensions,
@@ -13,56 +13,59 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-} from 'react-native';
-import {Header} from 'react-native-elements';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {useSelector} from 'react-redux';
-import {isEmpty, isLoaded, useFirebase} from 'react-redux-firebase';
-import * as Yup from 'yup';
-import {btnStyles, conStyles, textIn, textStyles} from '../../theme/styles/Base';
-import CoText from '../../components/Text/Text';
-import {selectFirebase} from '../../store/firebase';
+} from "react-native"
+import { Header } from "react-native-elements"
+import { SafeAreaProvider } from "react-native-safe-area-context"
+import FontAwesome from "react-native-vector-icons/FontAwesome"
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+import { useSelector } from "react-redux"
+import { isEmpty, isLoaded, useFirebase } from "react-redux-firebase"
+import * as Yup from "yup"
+import { btnStyles, conStyles, textIn, textStyles } from "../../theme/styles/Base"
+import CoText from "../../components/Text/Text"
+import { selectFirebase } from "../../hooks/firebase"
+import { DrawerScreenProps } from "@react-navigation/drawer"
+import { DrawerStackParamList } from "../../navigation"
 
 // const HEIGHT = Dimensions.get('window').height;
-const WIDTH = Dimensions.get('window').width;
+const WIDTH = Dimensions.get("window").width
 
 const LogInSchema = Yup.object().shape({
-  email: Yup.string().email().required('Email is required'),
-  password: Yup.string().required('Password is required'),
-});
+  email: Yup.string().email().required("Email is required"),
+  password: Yup.string().required("Password is required"),
+})
 
-const Login = ({navigation}) => {
-  const forgotLoading = false;
-  const firebaseApp = useFirebase();
-  const [loading, setLoading] = useState(false);
-  const [visibility, setVisibility] = useState(true);
-  const {auth} = useSelector(selectFirebase);
-  const [error, setError] = useState(null);
-  const [iconName, setIconName] = useState('eye-off-outline');
+const Login: React.FC<DrawerScreenProps<DrawerStackParamList, "Login">> = ({ navigation }) => {
+  const forgotLoading = false
+  const firebaseApp = useFirebase()
+  const [loading, setLoading] = useState(false)
+  const [visibility, setVisibility] = useState(true)
+  const { auth } = useSelector(selectFirebase)
+  const [error, setError] = useState(null)
+  const [iconName, setIconName] = useState("eye-off-outline")
 
   const handleIcon = () => {
-    if (iconName === 'eye-off-outline') {
-      setIconName('eye-outline');
-      setVisibility(false);
+    if (iconName === "eye-off-outline") {
+      setIconName("eye-outline")
+      setVisibility(false)
     } else {
-      setIconName('eye-off-outline');
-      setVisibility(true);
+      setIconName("eye-off-outline")
+      setVisibility(true)
     }
-  };
+  }
 
   useEffect(() => {
     if (isLoaded(auth) && !isEmpty(auth)) {
-      console.log('the current user:', auth);
-      navigation.navigate('Admin view');
+      console.log("the current user:", auth)
+      navigation.navigate("Admin view")
     }
-  }, [auth, navigation]);
+  }, [auth, navigation])
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={conStyles.safeAreaMy}>
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={conStyles.safeAreaMy}
+    >
       <SafeAreaProvider>
         <Header
           containerStyle={{
@@ -71,22 +74,18 @@ const Login = ({navigation}) => {
           }}
           leftComponent={
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <FontAwesome
-                name="arrow-left"
-                color="#ffff"
-                size={26}
-                style={{paddingLeft: 10}}
-              />
+              <FontAwesome name="arrow-left" color="#ffff" size={26} style={{ paddingLeft: 10 }} />
             </TouchableOpacity>
           }
           centerComponent={
-            <View style={{textAlign: 'center'}}>
+            <View>
               <Text
                 style={{
-                  color: '#ffff',
+                  color: "#ffff",
                   fontSize: 25,
                   marginBottom: 5,
-                }}>
+                }}
+              >
                 Login
               </Text>
             </View>
@@ -95,64 +94,58 @@ const Login = ({navigation}) => {
         />
         <Formik
           initialValues={{
-            email: '',
-            password: '',
+            email: "",
+            password: "",
           }}
           validationSchema={LogInSchema}
-          onSubmit={async values => {
-            setLoading(true);
+          onSubmit={async (values) => {
+            setLoading(true)
             try {
               await firebaseApp.login({
                 email: values.email,
                 password: values.password,
-              });
-              setLoading(false);
-            } catch (e) {
-              setError(e.message);
-              setLoading(false);
+              })
+              setLoading(false)
+            } catch (e: any) {
+              setError(e.message)
+              setLoading(false)
             }
-          }}>
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            touched,
-            values,
-            errors,
-          }) => (
+          }}
+        >
+          {({ handleChange, handleBlur, handleSubmit, touched, values, errors }) => (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <View
                 style={{
                   flex: 1,
-                  backgroundColor: 'white',
-                  justifyContent: 'space-between',
+                  backgroundColor: "white",
+                  justifyContent: "space-between",
                   paddingHorizontal: 30,
                   paddingBottom: 30,
-                }}>
+                }}
+              >
                 <StatusBar backgroundColor="#2E2E2E" translucent />
                 <View
                   style={{
-                    alignItems: 'center',
+                    alignItems: "center",
                     flex: 0.5,
-                    justifyContent: 'center',
-                  }}>
-                  <CoText text="Namaz Timings" textStyles={[{fontSize: 30}]} />
+                    justifyContent: "center",
+                  }}
+                >
+                  <CoText text="Namaz Timings" textStyles={[{ fontSize: 30 }]} />
                 </View>
 
                 <View
                   style={{
-                    justifyContent: 'flex-start',
-                  }}>
+                    justifyContent: "flex-start",
+                  }}
+                >
                   <View>
-                    <CoText
-                      textStyles={[textStyles.simple, {fontSize: 20}]}
-                      text="SIGN IN"
-                    />
+                    <CoText textStyles={[textStyles.simple, { fontSize: 20 }]} text="SIGN IN" />
                   </View>
                   <View style={textIn.Flabel}>
                     <View>
                       <CoText
-                        textStyles={[textStyles.simple, {color: '#5C5C5C'}]}
+                        textStyles={[textStyles.simple, { color: "#5C5C5C" }]}
                         text="Email address"
                       />
                     </View>
@@ -161,8 +154,8 @@ const Login = ({navigation}) => {
                         style={textIn.input}
                         autoCapitalize="none"
                         keyboardType="email-address"
-                        onChangeText={handleChange('email')}
-                        onBlur={handleBlur('email')}
+                        onChangeText={handleChange("email")}
+                        onBlur={handleBlur("email")}
                         value={values.email}
                         placeholderTextColor="grey"
                       />
@@ -174,15 +167,15 @@ const Login = ({navigation}) => {
                   <View>
                     <View style={textIn.label}>
                       <CoText
-                        textStyles={[textStyles.simple, {color: '#5C5C5C'}]}
+                        textStyles={[textStyles.simple, { color: "#5C5C5C" }]}
                         text="Password"
                       />
                     </View>
                     <TextInput
                       style={textIn.input}
                       secureTextEntry={visibility}
-                      onChangeText={handleChange('password')}
-                      onBlur={handleBlur('password')}
+                      onChangeText={handleChange("password")}
+                      onBlur={handleBlur("password")}
                       value={values.password}
                       placeholderTextColor="grey"
                     />
@@ -200,22 +193,24 @@ const Login = ({navigation}) => {
                   {forgotLoading ? (
                     <View
                       style={{
-                        justifyContent: 'flex-end',
-                        alignItems: 'flex-end',
+                        justifyContent: "flex-end",
+                        alignItems: "flex-end",
                         marginTop: 10,
-                      }}>
+                      }}
+                    >
                       <ActivityIndicator size="small" />
                     </View>
                   ) : (
                     <TouchableOpacity
-                      onPress={() => navigation.navigate('Forgot')}
+                      onPress={() => navigation.navigate("Root", { screen: "Forgot" })}
                       style={{
-                        justifyContent: 'flex-end',
-                        alignItems: 'flex-end',
+                        justifyContent: "flex-end",
+                        alignItems: "flex-end",
                         marginTop: 10,
-                      }}>
+                      }}
+                    >
                       <CoText
-                        textStyles={[textStyles.simple, {color: 'red'}]}
+                        textStyles={[textStyles.simple, { color: "red" }]}
                         text="Forgot Password?"
                       />
                     </TouchableOpacity>
@@ -223,24 +218,23 @@ const Login = ({navigation}) => {
                 </View>
                 <View
                   style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                 />
                 <View
                   style={{
-                    justifyContent: 'space-evenly',
+                    justifyContent: "space-evenly",
                     paddingHorizontal: 20,
-                  }}>
-                  <TouchableOpacity
-                    onPress={handleSubmit}
-                    style={btnStyles.basic}>
+                  }}
+                >
+                  <TouchableOpacity onPress={handleSubmit} style={btnStyles.basic}>
                     {loading ? (
                       <ActivityIndicator color="white" size="small" />
                     ) : (
                       <CoText
-                        textStyles={[textStyles.simple, {color: 'white'}]}
+                        textStyles={[textStyles.simple, { color: "white" }]}
                         text="SIGN IN "
                       />
                     )}
@@ -253,23 +247,23 @@ const Login = ({navigation}) => {
         </Formik>
       </SafeAreaProvider>
     </KeyboardAvoidingView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
-  logo: {
-    width: WIDTH / 1.5,
-    alignSelf: 'center',
+  error: {
+    color: "red",
   },
   icon: {
-    position: 'absolute',
-    padding: 10,
-    right: 0,
     bottom: 0,
+    padding: 10,
+    position: "absolute",
+    right: 0,
   },
-  error: {
-    color: 'red',
-  },
-});
+  // logo: {
+  //   alignSelf: "center",
+  //   width: WIDTH / 1.5,
+  // },
+})
 
-export default Login;
+export default Login

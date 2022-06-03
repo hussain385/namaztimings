@@ -4,35 +4,47 @@
         "node": true
     },
     "extends": [
-        "eslint:recommended",
         "plugin:react/recommended",
-        "@react-native-community"
+        "plugin:react-native/all",
+        "standard",
+        "prettier"
     ],
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
         },
-        "ecmaVersion": 12,
+        "ecmaVersion": "latest",
         "sourceType": "module"
     },
     "plugins": [
         "react",
         "react-native",
-        "prettier"
+        "@typescript-eslint"
     ],
     "rules": {
-        "linebreak-style": [
-            "error", "windows"
-        ],
-        "quotes": [
-            "error", "single"
-        ],
-        "semi": [
-            "error", "always"
-        ],
-        "prettier/prettier": "error",
+        "@typescript-eslint/ban-ts-ignore": 0,
+        "@typescript-eslint/ban-ts-comment": 0,
+        "@typescript-eslint/explicit-function-return-type": 0,
+        "@typescript-eslint/explicit-member-accessibility": 0,
+        "@typescript-eslint/explicit-module-boundary-types": 0,
+        "@typescript-eslint/indent": 0,
+        "@typescript-eslint/member-delimiter-style": 0,
+        "@typescript-eslint/no-empty-interface": 0,
+        "@typescript-eslint/no-explicit-any": 0,
+        "@typescript-eslint/no-object-literal-type-assertion": 0,
+        "@typescript-eslint/no-var-requires": 0,
+        "comma-dangle": 0,
+        "multiline-ternary": 0,
+        "no-undef": 0,
+        "no-unused-vars": 0,
+        "no-use-before-define": "off",
+        "quotes": 0,
+        "react-native/no-raw-text": 0,
+        "react/no-unescaped-entities": 0,
         "react/prop-types": "off",
-        "react/display-name": "off",
-        "react-native/no-inline-styles": 0
+        "space-before-function-paren": 0,
+        "react-native/no-inline-styles": 0,
+        "react-native/no-color-literals": 0
     }
 }

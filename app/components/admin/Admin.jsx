@@ -15,7 +15,11 @@ import {
   populate,
   useFirestoreConnect,
 } from 'react-redux-firebase';
-import {modifyData, selectFirebase, selectFirestore} from '../../store/firebase';
+import {
+  modifyData,
+  selectFirebase,
+  selectFirestore,
+} from '../../hooks/firebase';
 import AdminCard from './AdminCard';
 import AdminView from './AdminView';
 import Icon from 'react-native-vector-icons/FontAwesome5';

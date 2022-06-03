@@ -15,7 +15,7 @@ import {Card} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useSelector} from 'react-redux';
-import {selectFirebase} from '../../store/firebase';
+import {selectFirebase} from '../../hooks/firebase';
 import Edit from '../modal/Edit';
 
 const markAsRead = async reqId => {

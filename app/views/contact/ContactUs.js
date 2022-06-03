@@ -15,7 +15,7 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Yup from 'yup';
 import firestore from '@react-native-firebase/firestore';
-import {getFcmToken} from '../../store/token';
+import {getFcmToken} from '../../hooks/token';
 import axios from 'axios';
 
 const ERROR = {

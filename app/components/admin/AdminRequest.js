@@ -14,7 +14,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useFirestore} from 'react-redux-firebase';
 import * as Yup from 'yup';
-import {getFcmToken} from '../../store/token';
+import {getFcmToken} from '../../hooks/token';
 import axios from 'axios';
 
 const phoneRegExp =
