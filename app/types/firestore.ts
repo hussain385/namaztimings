@@ -29,6 +29,7 @@ export interface Masjid {
   announcements?: Announcement[]
   uid?: string
   donationInfo?: string
+  requests?: MasjidRequest[]
 }
 
 export interface Announcement {
@@ -46,4 +47,14 @@ export interface MasjidTiming {
   jummah: string
   magrib: string
   zohar: string
+}
+
+export interface MasjidRequest {
+  isRead: boolean
+  timeStamp: FirebaseFirestoreTypes.Timestamp
+  timing: MasjidTiming
+  token: string
+  userName: string
+  userPhone: string
+  uid?: string
 }

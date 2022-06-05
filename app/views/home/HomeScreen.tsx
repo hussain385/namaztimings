@@ -19,9 +19,9 @@ import LastUpdated from "../../components/masjidInfo/LastUpdated"
 import TopPart from "../../components/masjidInfo/TopPart"
 import { ActivityIndicator } from "react-native-paper"
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons"
-import AsyncStorage from "@react-native-community/async-storage"
 import { isNull } from "lodash"
 import { HomePropsType, TabPropsType } from "../../navigation"
+import { storage } from "../../redux/store"
 
 const HomeScreen: FC<TabPropsType<"Home">> = ({ navigation }) => {
   const {
@@ -52,7 +52,7 @@ const HomeScreen: FC<TabPropsType<"Home">> = ({ navigation }) => {
   }, [])
 
   async function notificationIcon() {
-    const status = await AsyncStorage.getItem("notification")
+    const status = storage.getBoolean("notification")
     if (!isNull(status)) {
       setNotificationDot(true)
     } else {

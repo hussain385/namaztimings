@@ -7,12 +7,11 @@ import { Provider } from "react-redux"
 import { ReactReduxFirebaseProvider } from "react-redux-firebase"
 import { persistStore } from "redux-persist"
 import { PersistGate } from "redux-persist/integration/react"
-import { store } from "./redux/store"
+import { storage, store } from "./redux/store"
 import { ToastProvider, useToast } from "react-native-toast-notifications"
 import messaging from "@react-native-firebase/messaging"
 import { saveToken } from "./hooks/token"
 import DrawerStackScreen from "./navigation/DrawerStackScreen"
-import AsyncStorage from "@react-native-community/async-storage"
 
 export default function App() {
   const persistor = persistStore(store)
@@ -30,7 +29,7 @@ export default function App() {
   React.useEffect(() => {
     const unsubscribe = messaging().onMessage(async (remoteMessage) => {
       if (remoteMessage.data?.announcement) {
-        await AsyncStorage.setItem("notification", "true")
+        storage.set("notification", true)
       }
       myNotification(remoteMessage.notification?.title, remoteMessage.notification?.body)
       console.log()

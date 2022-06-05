@@ -50,14 +50,14 @@ const AddMasjidSchema = Yup.object().shape({
     .min(11, "phone no. is short, please check again")
     .max(16, "phone no. is long, please check again")
     .required("Your Phone no. is required"),
-  timing: Yup.object().shape({
-    isha: Yup.string(),
-    fajar: Yup.string(),
-    zohar: Yup.string(),
-    asar: Yup.string(),
-    magrib: Yup.string(),
-    jummah: Yup.string(),
-  }),
+  // timing: Yup.object().shape({
+  //   isha: Yup.string(),
+  //   fajar: Yup.string(),
+  //   zohar: Yup.string(),
+  //   asar: Yup.string(),
+  //   magrib: Yup.string(),
+  //   jummah: Yup.string(),
+  // }),
 })
 
 export const AddMasjid: React.FC<HomePropsType<"Add Masjid">> = ({ navigation }) => {
@@ -546,7 +546,7 @@ export const AddMasjid: React.FC<HomePropsType<"Add Masjid">> = ({ navigation })
                   <Text style={{ fontSize: 17 }}>{timing.eidUlAddah || "--"}</Text>
                 </View>
               </View>
-              {errors.timing && touched.timing && <Text style={ERROR}>{errors.timing}</Text>}
+              {/* {errors.timing && touched.timing && <Text style={ERROR}>{errors.timing}</Text>} */}
               <View
                 style={{
                   marginTop: 15,

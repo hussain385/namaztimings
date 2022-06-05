@@ -24,7 +24,10 @@ import { useAppDispatch } from "../../hooks/redux"
 import { Masjid } from "../../types/firestore"
 
 const Search: FC<TabPropsType<"Search">> = ({ navigation }) => {
-  const { masjidData, masjid } = useGetMasjidPopulate()
+  const { masjidData } = useGetMasjidPopulate({
+    longitude: undefined,
+    latitude: undefined,
+  })
   const [result, setResult] = useState<Masjid[]>([])
   const dispatch = useAppDispatch()
   console.log(masjidData, "the masjid from search")
@@ -142,7 +145,7 @@ const Search: FC<TabPropsType<"Search">> = ({ navigation }) => {
         }
         backgroundColor="#1F441E"
       />
-      {!isLoaded(masjid) && (
+      {masjidData.length === 0 && (
         <Animated.View
           style={{
             height: Dimensions.get("screen").height * 0.7,
@@ -161,7 +164,7 @@ const Search: FC<TabPropsType<"Search">> = ({ navigation }) => {
         style={{ marginBottom: 140 }}
         initialNumToRender={6}
       />
-      {isLoaded(masjid) && (
+      {masjidData.length >= 1 && (
         <View
           style={{
             alignSelf: "center",

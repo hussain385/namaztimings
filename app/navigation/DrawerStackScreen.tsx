@@ -18,6 +18,10 @@ export type DrawerStackParamList = {
   "Contact Us": undefined
   Notifications: undefined
   "Admin view": undefined
+  Admin: {
+    Masjid: Masjid
+    isSingle?: boolean
+  }
   Donation: {
     masjid: Masjid
     edit: boolean
@@ -42,6 +46,7 @@ function DrawerStackScreen() {
       <Drawer.Screen name="Contact Us" component={ContactUS} />
       <Drawer.Screen name="Login" component={Login} />
       <Drawer.Screen name="Admin view" component={Admin} />
+      <Drawer.Screen name="Admin" component={AdminView} />
       <Drawer.Screen
         name="Donation"
         component={Donation}

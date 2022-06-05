@@ -1,7 +1,7 @@
-import {Formik} from 'formik';
-import _ from 'lodash';
-import firestore from '@react-native-firebase/firestore';
-import React, {useEffect, useState} from 'react';
+import { Formik } from "formik"
+import _ from "lodash"
+import firestore from "@react-native-firebase/firestore"
+import React, { useEffect, useState } from "react"
 import {
   Alert,
   Dimensions,
@@ -12,59 +12,55 @@ import {
   Text,
   TextInput,
   View,
-} from 'react-native';
-import {ActivityIndicator, FAB} from 'react-native-paper';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {useSelector} from 'react-redux';
-import {
-  populate,
-  useFirestore,
-  useFirestoreConnect,
-} from 'react-redux-firebase';
-import * as Yup from 'yup';
-import HeaderComp from '../header/HeaderComp';
-import NotificationCard from '../cards/NotificationCard';
-import {selectFirebase, selectFirestore} from '../../hooks/firebase';
-import axios from 'axios';
-import AsyncStorage from '@react-native-community/async-storage';
+} from "react-native"
+import { ActivityIndicator, FAB } from "react-native-paper"
+import AntDesign from "react-native-vector-icons/AntDesign"
+import { useSelector } from "react-redux"
+import { populate, useFirestore, useFirestoreConnect } from "react-redux-firebase"
+import * as Yup from "yup"
+import HeaderComp from "../header/HeaderComp"
+import NotificationCard from "../cards/NotificationCard"
+import { selectFirebase, selectFirestore } from "../../hooks/firebase"
+import axios from "axios"
+import { storage } from "../../redux/store"
 
-const Notification = ({navigation, route: {params}}) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const {masjidId, masjidName, adminId} = params;
-  console.log(masjidId, '====> id from noti');
-  const {auth} = useSelector(selectFirebase);
-  const firestoreData = useFirestore();
-  const [loading, setLoading] = useState(false);
+const Notification = ({ navigation, route: { params } }) => {
+  const [modalVisible, setModalVisible] = useState(false)
+  const { masjidId, masjidName, adminId } = params
+  console.log(masjidId, "====> id from noti")
+  const { auth } = useSelector(selectFirebase)
+  const firestoreData = useFirestore()
+  const [loading, setLoading] = useState(false)
   const populates = [
     {
-      child: 'announcementList',
-      root: 'announcement',
-      childAlias: 'announcement',
+      child: "announcementList",
+      root: "announcement",
+      childAlias: "announcement",
     },
-  ];
+  ]
   useFirestoreConnect([
     {
-      collection: 'Masjid',
+      collection: "Masjid",
       doc: masjidId,
       populates,
-      storeAs: 'tempAnnouncement',
+      storeAs: "tempAnnouncement",
     },
-  ]);
+  ])
 
-  const firestore1 = useSelector(selectFirestore);
-  const masjidData = populate(firestore1, 'tempAnnouncement', populates);
+  const firestore1 = useSelector(selectFirestore)
+  const masjidData = populate(firestore1, "tempAnnouncement", populates)
   // console.log(firestore.status, 'on notify');
 
-  const data = _.map(masjidData?.announcement, rawData => {
+  const data = _.map(masjidData?.announcement, (rawData) => {
     return {
       ...rawData,
       // createdAt: Date.parse(rawData.createdAt),
-    };
-  });
+    }
+  })
 
   useEffect(() => {
-    AsyncStorage.setItem('notification', null);
-  }, []);
+    storage.delete("notification")
+  }, [])
 
   // console.log(auth.uid === adminId);
 
@@ -73,9 +69,9 @@ const Notification = ({navigation, route: {params}}) => {
       <HeaderComp heading="Announcements" navigation={navigation} />
       {firestore1.status.requested.tempAnnouncement && data.length >= 1 ? (
         <FlatList
-          style={{height: Dimensions.get('screen').height * 0.82}}
+          style={{ height: Dimensions.get("screen").height * 0.82 }}
           data={data.reverse()}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <NotificationCard
               data={item}
               masjidName={masjidName}
@@ -87,71 +83,61 @@ const Notification = ({navigation, route: {params}}) => {
       ) : firestore1.status.requesting.tempAnnouncement ? (
         <View
           style={{
-            height: Dimensions.get('screen').height,
-          }}>
+            height: Dimensions.get("screen").height,
+          }}
+        >
           <ActivityIndicator size={40} color="#1F441E" />
         </View>
       ) : (
         <View
           style={{
-            height: Dimensions.get('screen').height * 0.82,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+            height: Dimensions.get("screen").height * 0.82,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <AntDesign color="#1F441E" name="folder1" size={70} />
-          <Text style={{fontSize: 20, color: '#1F441E'}}>
-            No News & Announcements
-          </Text>
+          <Text style={{ fontSize: 20, color: "#1F441E" }}>No News & Announcements</Text>
         </View>
       )}
       {auth.uid === adminId && auth.uid !== undefined && (
         <View>
-          <FAB
-            style={styles.fab}
-            small
-            icon="plus"
-            onPress={() => setModalVisible(true)}
-          />
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}>
+          <FAB style={styles.fab} small icon="plus" onPress={() => setModalVisible(true)} />
+          <Modal animationType="slide" transparent={true} visible={modalVisible}>
             <Formik
               initialValues={{
-                description: '',
+                description: "",
               }}
               validationSchema={Yup.object().shape({
-                description: Yup.string().required('description is required'),
+                description: Yup.string().required("description is required"),
               })}
-              onSubmit={values => {
-                setLoading(true);
+              onSubmit={(values) => {
+                setLoading(true)
                 firestoreData
-                  .collection('announcement')
+                  .collection("announcement")
                   .add({
-                    createdAt: new firestoreData.Timestamp.now(),
+                    createdAt: firestoreData.Timestamp.now(),
                     description: values.description,
                   })
-                  .then(async r => {
+                  .then(async (r) => {
                     firestoreData
-                      .collection('Masjid')
+                      .collection("Masjid")
                       .doc(masjidId)
                       .update({
-                        announcementList: firestoreData.FieldValue.arrayUnion(
-                          r.id,
-                        ),
+                        announcementList: firestoreData.FieldValue.arrayUnion(r.id),
                       })
                       .then(
                         async () => {
                           const masjidTokens = await firestore()
-                            .collection('Masjid')
+                            .collection("Masjid")
                             .doc(masjidId)
-                            .get();
+                            .get()
                           if (masjidTokens.data().tokens) {
-                            console.log(masjidTokens.data().tokens, '===>some');
-                            for (let token of masjidTokens.data().tokens) {
+                            console.log(masjidTokens.data().tokens, "===>some")
+                            for (const token of masjidTokens.data().tokens) {
                               await axios
                                 .post(
-                                  'https://fcm.googleapis.com/fcm/send',
+                                  "https://fcm.googleapis.com/fcm/send",
                                   {
                                     to: token,
                                     notification: {
@@ -164,53 +150,48 @@ const Notification = ({navigation, route: {params}}) => {
                                   },
                                   {
                                     headers: {
-                                      'Content-Type': 'application/json',
+                                      "Content-Type": "application/json",
                                       Authorization:
-                                        'key=AAAAE5W6Aqg:APA91bFw_t03bZFaOIdMQj-irRXr5eygS8UBqL3Vd7UYUpS9u3n96rCPxiwfTLBpyb69og2zOr7amP2bpgKVqjzY7qUdxd2Etdfkxm7qik013Z6cUrzji1P2Q-ehfl-RvcWQ91ROD_4G',
+                                        "key=AAAAE5W6Aqg:APA91bFw_t03bZFaOIdMQj-irRXr5eygS8UBqL3Vd7UYUpS9u3n96rCPxiwfTLBpyb69og2zOr7amP2bpgKVqjzY7qUdxd2Etdfkxm7qik013Z6cUrzji1P2Q-ehfl-RvcWQ91ROD_4G",
                                     },
                                   },
                                 )
                                 .then(
                                   () => {
-                                    setModalVisible(false);
-                                    setLoading(false);
+                                    setModalVisible(false)
+                                    setLoading(false)
                                   },
-                                  reason => {
-                                    console.log(reason);
+                                  (reason) => {
+                                    console.log(reason)
                                   },
-                                );
+                                )
                             }
                           }
                         },
-                        reason => {
-                          Alert.alert(reason.message);
-                          setModalVisible(!modalVisible);
+                        (reason) => {
+                          Alert.alert(reason.message)
+                          setModalVisible(!modalVisible)
                         },
-                      );
-                  });
-              }}>
-              {({
-                values,
-                handleChange,
-                errors,
-                handleBlur,
-                handleSubmit,
-                touched,
-              }) => (
+                      )
+                  })
+              }}
+            >
+              {({ values, handleChange, errors, handleBlur, handleSubmit, touched }) => (
                 <View style={styles.centeredView}>
                   <View style={styles.modalView}>
                     <Text style={styles.modalText}>New Announcement</Text>
                     <View
                       style={{
-                        width: Dimensions.get('screen').width * 0.75,
+                        width: Dimensions.get("screen").width * 0.75,
                         marginBottom: 10,
-                      }}>
+                      }}
+                    >
                       <View
                         style={{
                           borderRadius: 10,
                           marginHorizontal: 10,
                           marginTop: 5,
-                          shadowColor: '#000',
+                          shadowColor: "#000",
                           shadowOffset: {
                             width: 0,
                             height: 5,
@@ -218,19 +199,20 @@ const Notification = ({navigation, route: {params}}) => {
                           shadowOpacity: 0.34,
                           shadowRadius: 6.27,
                           elevation: 5,
-                        }}>
+                        }}
+                      >
                         <TextInput
                           multiline={true}
-                          onChangeText={handleChange('description')}
-                          onBlur={handleBlur('description')}
+                          onChangeText={handleChange("description")}
+                          onBlur={handleBlur("description")}
                           value={values.description}
                           scrollEnabled={true}
                           style={{
                             paddingHorizontal: 10,
-                            backgroundColor: '#EEEEEE',
-                            color: 'black',
+                            backgroundColor: "#EEEEEE",
+                            color: "black",
                             maxHeight: 200,
-                            overflow: 'scroll',
+                            overflow: "scroll",
                           }}
                           keyboardType="numbers-and-punctuation"
                           placeholder="Enter Your Notification..."
@@ -243,30 +225,34 @@ const Notification = ({navigation, route: {params}}) => {
                     </View>
                     <View
                       style={{
-                        flexDirection: 'row',
-                        width: '100%',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        flexDirection: "row",
+                        width: "100%",
+                        alignItems: "center",
+                        justifyContent: "center",
                         marginTop: 10,
-                      }}>
+                      }}
+                    >
                       <Pressable
                         style={[styles.button, styles.buttonOpen]}
                         onPress={() => {
-                          setModalVisible(!modalVisible);
-                          setLoading(false);
-                        }}>
+                          setModalVisible(!modalVisible)
+                          setLoading(false)
+                        }}
+                      >
                         <Text style={styles.textStyle}>Cancel</Text>
                       </Pressable>
                       <Pressable
                         disabled={loading}
                         style={[styles.button, styles.buttonClose]}
-                        onPress={handleSubmit}>
+                        onPress={handleSubmit}
+                      >
                         {!loading ? (
                           <Text
                             style={{
-                              textAlign: 'center',
-                              color: '#ffff',
-                            }}>
+                              textAlign: "center",
+                              color: "#ffff",
+                            }}
+                          >
                             Submit
                           </Text>
                         ) : (
@@ -282,73 +268,73 @@ const Notification = ({navigation, route: {params}}) => {
         </View>
       )}
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
-  fab: {
-    position: 'absolute',
-    margin: 16,
-    right: 0,
-    bottom: 0,
+  button: {
+    borderRadius: 10,
+    elevation: 2,
     padding: 10,
-    backgroundColor: '#1F441E',
+    width: "30%",
+  },
+  buttonClose: {
+    backgroundColor: "#1F441E",
+    marginLeft: 15,
+  },
+  buttonOpen: {
+    backgroundColor: "#5C5C5C",
+    marginRight: 15,
   },
   centeredView: {
+    alignItems: "center",
+    backgroundColor: "#00000071",
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#00000071',
+    justifyContent: "center",
   },
-  editTime: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 8,
-    backgroundColor: '#dddd',
+  // editTime: {
+  //   backgroundColor: "#dddd",
+  //   borderRadius: 8,
+  //   paddingHorizontal: 10,
+  //   paddingVertical: 5,
+  // },
+  fab: {
+    backgroundColor: "#1F441E",
+    bottom: 0,
+    margin: 16,
+    padding: 10,
+    position: "absolute",
+    right: 0,
+  },
+  modalText: {
+    fontSize: 20,
+    marginBottom: 15,
+    textAlign: "center",
   },
   modalView: {
-    margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 10,
+    elevation: 5,
+    margin: 20,
     padding: 35,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 10,
-    padding: 10,
-    elevation: 2,
-    width: '30%',
-  },
-  buttonOpen: {
-    backgroundColor: '#5C5C5C',
-    marginRight: 15,
-  },
-  buttonClose: {
-    backgroundColor: '#1F441E',
-    marginLeft: 15,
   },
   textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
-  textStyle1: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    fontSize: 20,
-    textAlign: 'center',
-  },
-});
+  // textStyle1: {
+  //   color: "white",
+  //   fontWeight: "bold",
+  //   textAlign: "center",
+  // },
+})
 
-export default Notification;
+export default Notification

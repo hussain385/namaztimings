@@ -2,7 +2,7 @@ import firestore from "@react-native-firebase/firestore"
 import * as geofirestore from "geofirestore"
 import haversine from "haversine"
 import _ from "lodash"
-import { useMemo, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { selectCords, setLocation } from "../redux/locationSlicer"
 import { useFavorites } from "../redux/favSlicer"
 import * as Location from "expo-location"
@@ -267,21 +267,43 @@ export function useGetMasjidPopulate({
   latitude?: number
   longitude?: number
 }) {
-  const populates = [
-    { child: "adminId", root: "users", childAlias: "user" }, // replace owner with user object
-  ]
-  useFirestoreConnect([
-    {
-      collection: "Masjid",
-      populates,
-    },
-  ])
-  const firestore = useAppSelector((state) => state.firestore)
-  const masjid = populate(firestore, "Masjid", populates)
+  // const populates = [
+  //   { child: "adminId", root: "users", childAlias: "user" }, // replace owner with user object
+  // ]
+  // useFirestoreConnect([
+  //   {
+  //     collection: "Masjid",
+  //     populates,
+  //   },
+  // ])
+  // const firestore = useAppSelector((state) => state.firestore)
+  // const masjid = populate(firestore, "Masjid", populates)
   const location = useAppSelector(selectCords)
+  const [user, setUser] = useState<User[]>([])
+  const [masjid, setMasjid] = useState<Masjid[]>([])
   const masjidData = useMemo(
     () => sortMasjidData1(masjid, latitude && longitude ? { latitude, longitude } : location),
     [location, masjid],
   )
-  return { masjid, masjidData, location, firestore }
+
+  React.useEffect(() => {
+    const subscriber = firestore()
+      .collection("Masjid")
+      .onSnapshot(async (documentSnapshot) => {
+        if (user.length === 0) {
+          const users = await firestore().collection("users").get()
+          setUser(users.docs.map((e) => e.data() as User))
+        }
+        setMasjid(
+          documentSnapshot.docs.map((e) => ({
+            ...(e.data() as Masjid),
+            user: user[e.data()?.adminId],
+            uid: e.id,
+          })),
+        )
+      })
+    return () => subscriber()
+  }, [])
+
+  return { masjid, masjidData, location }
 }
