@@ -1,6 +1,6 @@
-import firestore from '@react-native-firebase/firestore';
-import _ from 'lodash';
-import React from 'react';
+import firestore from "@react-native-firebase/firestore"
+import _ from "lodash"
+import React, { useEffect } from "react"
 import {
   Alert,
   Dimensions,
@@ -9,96 +9,66 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
-import {Header} from 'react-native-elements';
-import {Card} from 'react-native-paper';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import {useSelector} from 'react-redux';
-import {selectFirebase} from '../../hooks/firebase';
-import Edit from '../modal/Edit';
+} from "react-native"
+import { Header } from "react-native-elements"
+import { Card } from "react-native-paper"
+import AntDesign from "react-native-vector-icons/AntDesign"
+import Icon from "react-native-vector-icons/FontAwesome5"
+import { useSelector } from "react-redux"
+import { selectFirebase } from "../../hooks/firebase"
+import Edit from "../modal/Edit"
+import { HomePropsType } from "../../navigation"
+import { Masjid, MasjidRequest } from "../../types/firestore"
 
-const markAsRead = async reqId => {
-  Alert.alert(
-    'Confirmation',
-    'Do you want to change the status to mark as read?',
-    [
-      {
-        text: 'Confirm',
-        onPress: () => {
-          firestore()
-            .collection('requests')
-            .doc(reqId)
-            .update({
-              isRead: true,
-            })
-            .then(
-              value => {
-                console.log('sent', value);
-              },
-              reason => {
-                console.warn(reason.message);
-              },
-            );
-        },
-      },
-      {
-        text: 'Cancel',
-      },
-    ],
-  );
-};
-
-const deleteFunc = (masjidId, reqId, uid) => {
-  console.log(masjidId, reqId);
-  console.log(masjidId, uid, 'is equal ?', masjidId === uid);
-  Alert.alert('Confirmation', 'Do you want to delete the request?', [
+const deleteFunc = (masjid: Masjid, reqId: string, uid: string) => {
+  console.log(masjid, uid, "is equal ?", masjid.uid === uid)
+  Alert.alert("Confirmation", "Do you want to delete the request?", [
     {
-      text: 'Confirm',
+      text: "Confirm",
       onPress: () => {
         firestore()
-          .collection('Masjid')
-          .doc(masjidId)
+          .collection("Masjid")
+          .doc(masjid.uid)
           .update({
             requestList: firestore.FieldValue.arrayRemove(reqId),
           })
           .then(
             () => {
               firestore()
-                .collection('requests')
+                .collection("requests")
                 .doc(reqId)
                 .delete()
                 .then(
-                  value1 => {
-                    Alert.alert(
-                      'Successful',
-                      'This request has been deleted successfully',
-                    );
+                  () => {
+                    Alert.alert("Successful", "This request has been deleted successfully")
                   },
-                  reason => {
-                    console.warn(reason.message, 'from requests');
+                  (reason) => {
+                    console.warn(reason.message, "from requests")
                   },
-                );
+                )
             },
-            reason => {
-              console.warn(reason.message, 'from docs');
+            (reason) => {
+              console.warn(reason.message, "from docs")
             },
-          );
+          )
       },
     },
     {
-      text: 'Cancel',
+      text: "Cancel",
     },
-  ]);
-};
+  ])
+}
 
-const AdminNotification = ({navigation, route}) => {
-  const {masjid, masjidData} = route.params;
+const AdminNotification: React.FC<HomePropsType<"Admin Notification">> = ({
+  navigation,
+  route,
+}) => {
+  const { masjid } = route.params
   // const [data, setData] = useState([]);
   // const {myMasjids} = useSelector(state => state.firestore.ordered);
   // const {auth} = useSelector(state => state.firebase);
-  const {auth} = useSelector(selectFirebase);
-  console.log(masjidData, 'from notification');
+  const { auth } = useSelector(selectFirebase)
+  // console.log(masjidData, "from notification")
   // const tempData = [];
   // if (isLoaded(snapshot)) {
   //   // console.log(snapshot);
@@ -123,27 +93,33 @@ const AdminNotification = ({navigation, route}) => {
 
   // console.log(data, 'from notify');
 
-  const renderItem = ({item}) => {
-    console.log(item);
-    const {timing, id, userName, userPhone, isRead} = item;
-    if (!isRead) {
-      firestore()
-        .collection('requests')
-        .doc(id)
-        .update({
-          isRead: true,
-        })
-        .then(value => {
-          console.log('updated to read notification');
-        });
-    }
-    // useEffect(() => {
-    //   (async () => {
-    //     await firestore().collection('requests').doc(id).update({
+  const renderItem = ({ item }: { item: MasjidRequest }) => {
+    const { timing, uid, userName, userPhone, isRead } = item
+    // if (!isRead) {
+    //   firestore()
+    //     .collection("requests")
+    //     .doc(uid)
+    //     .update({
     //       isRead: true,
-    //     });
-    //   })();
-    // }, []);
+    //     })
+    //     .then(() => {
+    //       console.log("updated to read notification")
+    //     })
+    // }
+
+    useEffect(() => {
+      return () => {
+        firestore()
+          .collection("requests")
+          .doc(uid)
+          .update({
+            isRead: true,
+          })
+          .then(() => {
+            console.log("updated to read notification")
+          })
+      }
+    }, [])
 
     if (!_.isUndefined(item.timing)) {
       return (
@@ -154,146 +130,151 @@ const AdminNotification = ({navigation, route}) => {
             shadowOpacity: 10,
             elevation: 5,
           }}
-          key={item.key}>
+          key={item.uid}
+        >
           <Card.Actions>
-            <View style={{width: '100%'}}>
-              <View style={{flexDirection: 'row', margin: 5}}>
-                <View style={{flexGrow: 1}}>
+            <View style={{ width: "100%" }}>
+              <View style={{ flexDirection: "row", margin: 5 }}>
+                <View style={{ flexGrow: 1 }}>
                   <Text
                     style={{
                       fontSize: 17,
-                      color: `${isRead ? 'grey' : '#1F441E'}`,
+                      color: `${isRead ? "grey" : "#1F441E"}`,
                       fontWeight: `${isRead ? 200 : 700}`,
-                    }}>
+                    }}
+                  >
                     Requestor Name: {userName}
                   </Text>
                 </View>
               </View>
-              <View style={{flexDirection: 'row', margin: 5}}>
-                <View style={{flexGrow: 1}}>
+              <View style={{ flexDirection: "row", margin: 5 }}>
+                <View style={{ flexGrow: 1 }}>
                   <Text
                     style={{
                       fontSize: 17,
-                      color: `${isRead ? 'grey' : '#1F441E'}`,
+                      color: `${isRead ? "grey" : "#1F441E"}`,
                       fontWeight: `${isRead ? 200 : 700}`,
-                    }}>
+                    }}
+                  >
                     Requestor Contact: {userPhone}
                   </Text>
                 </View>
               </View>
-              <View
-                style={{backgroundColor: '#eeee', padding: 5, borderRadius: 8}}>
-                <View style={{flexDirection: 'row'}}>
-                  <View style={{flexGrow: 1}} />
+              <View style={{ backgroundColor: "#eeee", padding: 5, borderRadius: 8 }}>
+                <View style={{ flexDirection: "row" }}>
+                  <View style={{ flexGrow: 1 }} />
                   <View>
-                    <Edit
-                      masjidName="N/A"
-                      timing={timing}
-                      uid={masjid}
-                      isRequest={false}
-                      userInfo={false}
-                      value="View"
-                    />
+                    <Edit isRequest={false} userInfo={false} value="View" masjid={masjid} />
                   </View>
                 </View>
-                <View style={{flexDirection: 'row', marginTop: 10}}>
-                  <View style={{flexGrow: 5}}>
+                <View style={{ flexDirection: "row", marginTop: 10 }}>
+                  <View style={{ flexGrow: 5 }}>
                     <Text
                       style={{
-                        textAlign: 'center',
+                        textAlign: "center",
                         fontSize: 14,
-                        color: `${isRead ? 'grey' : '#1F441E'}`,
+                        color: `${isRead ? "grey" : "#1F441E"}`,
                         fontWeight: `${isRead ? 200 : 700}`,
-                      }}>
+                      }}
+                    >
                       Fajar
                     </Text>
                     <Text
                       style={{
-                        textAlign: 'center',
+                        textAlign: "center",
                         fontSize: 14,
-                        color: `${isRead ? 'grey' : '#1F441E'}`,
+                        color: `${isRead ? "grey" : "#1F441E"}`,
                         fontWeight: `${isRead ? 200 : 700}`,
-                      }}>
+                      }}
+                    >
                       {timing.fajar.substring(0, 5)}
                     </Text>
                   </View>
-                  <View style={{flexGrow: 5}}>
+                  <View style={{ flexGrow: 5 }}>
                     <Text
                       style={{
-                        textAlign: 'center',
+                        textAlign: "center",
                         fontSize: 14,
-                        color: `${isRead ? 'grey' : '#1F441E'}`,
+                        color: `${isRead ? "grey" : "#1F441E"}`,
                         fontWeight: `${isRead ? 200 : 700}`,
-                      }}>
+                      }}
+                    >
                       Zohar
                     </Text>
                     <Text
                       style={{
-                        textAlign: 'center',
+                        textAlign: "center",
                         fontSize: 14,
-                        color: `${isRead ? 'grey' : '#1F441E'}`,
+                        color: `${isRead ? "grey" : "#1F441E"}`,
                         fontWeight: `${isRead ? 200 : 700}`,
-                      }}>
+                      }}
+                    >
                       {timing.zohar.substring(0, 5)}
                     </Text>
                   </View>
-                  <View style={{flexGrow: 5}}>
+                  <View style={{ flexGrow: 5 }}>
                     <Text
                       style={{
-                        textAlign: 'center',
+                        textAlign: "center",
                         fontSize: 14,
-                        color: `${isRead ? 'grey' : '#1F441E'}`,
+                        color: `${isRead ? "grey" : "#1F441E"}`,
                         fontWeight: `${isRead ? 200 : 700}`,
-                      }}>
+                      }}
+                    >
                       Asar
                     </Text>
                     <Text
                       style={{
-                        textAlign: 'center',
+                        textAlign: "center",
                         fontSize: 14,
-                        color: `${isRead ? 'grey' : '#1F441E'}`,
+                        color: `${isRead ? "grey" : "#1F441E"}`,
                         fontWeight: `${isRead ? 200 : 700}`,
-                      }}>
+                      }}
+                    >
                       {timing.asar.substring(0, 5)}
                     </Text>
                   </View>
-                  <View style={{flexGrow: 5}}>
+                  <View style={{ flexGrow: 5 }}>
                     <Text
                       style={{
-                        textAlign: 'center',
+                        textAlign: "center",
                         fontSize: 14,
-                        color: `${isRead ? 'grey' : '#1F441E'}`,
+                        color: `${isRead ? "grey" : "#1F441E"}`,
                         fontWeight: `${isRead ? 200 : 700}`,
-                      }}>
+                      }}
+                    >
                       Magrib
                     </Text>
                     <Text
                       style={{
-                        textAlign: 'center',
+                        textAlign: "center",
                         fontSize: 14,
-                        color: `${isRead ? 'grey' : '#1F441E'}`,
+                        color: `${isRead ? "grey" : "#1F441E"}`,
                         fontWeight: `${isRead ? 200 : 700}`,
-                      }}>
+                      }}
+                    >
                       {timing.magrib.substring(0, 5)}
                     </Text>
                   </View>
-                  <View style={{flexGrow: 5}}>
+                  <View style={{ flexGrow: 5 }}>
                     <Text
                       style={{
-                        textAlign: 'center',
+                        textAlign: "center",
                         fontSize: 14,
-                        color: `${isRead ? 'grey' : '#1F441E'}`,
+                        color: `${isRead ? "grey" : "#1F441E"}`,
                         fontWeight: `${isRead ? 200 : 700}`,
-                      }}>
+                      }}
+                    >
                       Isha
                     </Text>
                     <Text
                       style={{
-                        textAlign: 'center',
+                        textAlign: "center",
                         fontSize: 14,
-                        color: `${isRead ? 'grey' : '#1F441E'}`,
+                        color: `${isRead ? "grey" : "#1F441E"}`,
                         fontWeight: `${isRead ? 200 : 700}`,
-                      }}>
+                      }}
+                    >
                       {timing.isha.substring(0, 5)}
                     </Text>
                   </View>
@@ -301,9 +282,10 @@ const AdminNotification = ({navigation, route}) => {
               </View>
               <View
                 style={{
-                  alignItems: 'flex-end',
+                  alignItems: "flex-end",
                   padding: 10,
-                }}>
+                }}
+              >
                 {/* <TouchableOpacity
                   disabled={isRead}
                   onPress={() => markAsRead(id)}>
@@ -315,19 +297,17 @@ const AdminNotification = ({navigation, route}) => {
                     Mark As Read
                   </Text>
                 </TouchableOpacity> */}
-                <TouchableOpacity
-                  onPress={() => deleteFunc(masjid, id, auth.uid)}>
-                  <Text style={{fontSize: 15, color: 'red'}}>
-                    Delete Message
-                  </Text>
+                <TouchableOpacity onPress={() => deleteFunc(masjid, item.uid!, auth.uid)}>
+                  <Text style={{ fontSize: 15, color: "red" }}>Delete Message</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </Card.Actions>
         </Card>
-      );
+      )
     }
-  };
+    return <View />
+  }
 
   // if (
   //   Firestore.status.requesting.myMasjidsView ||
@@ -371,24 +351,20 @@ const AdminNotification = ({navigation, route}) => {
         }}
         leftComponent={
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon
-              name="arrow-left"
-              color="#ffff"
-              size={26}
-              style={{paddingLeft: 10}}
-            />
+            <Icon name="arrow-left" color="#ffff" size={26} style={{ paddingLeft: 10 }} />
           </TouchableOpacity>
         }
         centerComponent={
-          <View style={{textAlign: 'center'}}>
+          <View>
             <Text
               style={{
-                color: '#ffff',
+                color: "#ffff",
                 fontSize: 22,
                 marginBottom: 5,
                 marginTop: 5,
-                textAlign: 'center',
-              }}>
+                textAlign: "center",
+              }}
+            >
               Requests
             </Text>
           </View>
@@ -396,27 +372,28 @@ const AdminNotification = ({navigation, route}) => {
         backgroundColor="#1F441E"
       />
       <FlatList
-        data={_.orderBy(masjidData.requests, 'timeStamp', 'desc')}
+        data={_.orderBy(masjid.requests, "timeStamp", "desc")}
         renderItem={renderItem}
         // inverted={true}
         ListEmptyComponent={() => (
           <View
             style={{
-              alignItems: 'center',
-              marginVertical: '50%',
-            }}>
+              alignItems: "center",
+              marginVertical: "50%",
+            }}
+          >
             <AntDesign name="folder1" size={80} />
-            <Text style={{fontSize: 20}}>No Requests</Text>
+            <Text style={{ fontSize: 20 }}>No Requests</Text>
           </View>
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={(item, index) => item.uid || index.toString()}
         style={{
-          height: Dimensions.get('window').height - 80,
+          height: Dimensions.get("window").height - 80,
         }}
         initialNumToRender={15}
       />
     </SafeAreaView>
-  );
-};
+  )
+}
 
-export default AdminNotification;
+export default AdminNotification

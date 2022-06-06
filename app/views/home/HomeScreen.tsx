@@ -12,16 +12,17 @@ import {
 import { Header } from "react-native-elements"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import Icon from "react-native-vector-icons/FontAwesome5"
-import { useSelector } from "react-redux"
 import { selectCords } from "../../redux/locationSlicer"
 import { useGetRadMasjidData1 } from "../../hooks/firebase"
 import LastUpdated from "../../components/masjidInfo/LastUpdated"
 import TopPart from "../../components/masjidInfo/TopPart"
 import { ActivityIndicator } from "react-native-paper"
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons"
-import { isNull } from "lodash"
-import { HomePropsType, TabPropsType } from "../../navigation"
-import { storage } from "../../redux/store"
+import { TabPropsType } from "../../navigation"
+import { headerStyles, textStyles } from "../../theme/styles/Base"
+import CoText from "../../components/Text/Text"
+import { useAppSelector } from "../../hooks/redux"
+import { AnnouncementStatus } from "../../redux/announcementSlicer"
 
 const HomeScreen: FC<TabPropsType<"Home">> = ({ navigation }) => {
   const {
@@ -32,8 +33,9 @@ const HomeScreen: FC<TabPropsType<"Home">> = ({ navigation }) => {
     GetDataRadMasjid: GetData,
   } = useGetRadMasjidData1()
   const [refreshing, setRefreshing] = useState(false)
-  const [notificationDot, setNotificationDot] = useState(false)
-  const location = useSelector(selectCords)
+  const location = useAppSelector(selectCords)
+  const localAnnouncement = useAppSelector((state) => state.announcement)
+
   async function onRefresh() {
     setRefreshing(true)
     await getLocation()
@@ -42,23 +44,10 @@ const HomeScreen: FC<TabPropsType<"Home">> = ({ navigation }) => {
   }
 
   useEffect(() => {
-    onRefresh().then((value) => {
+    onRefresh().then(() => {
       console.log("refreshed")
     })
   }, [location.latitude, location.longitude])
-
-  useEffect(() => {
-    notificationIcon()
-  }, [])
-
-  async function notificationIcon() {
-    const status = storage.getBoolean("notification")
-    if (!isNull(status)) {
-      setNotificationDot(true)
-    } else {
-      setNotificationDot(false)
-    }
-  }
 
   return (
     <>
@@ -98,8 +87,15 @@ const HomeScreen: FC<TabPropsType<"Home">> = ({ navigation }) => {
             }}
           >
             <View style={{ flexDirection: "row" }}>
+              <View style={headerStyles.cartTxt}>
+                <CoText
+                  textStyles={[textStyles.simple, { fontSize: 10, color: "#1F441E" }]}
+                  text={
+                    localAnnouncement.filter((e) => e.status === AnnouncementStatus.UnRead).length
+                  }
+                />
+              </View>
               <MaterialIcons name="bell" size={28} color="white" />
-              {notificationDot && <View style={styles.statusIndicator} />}
             </View>
           </TouchableOpacity>
         }
@@ -111,7 +107,7 @@ const HomeScreen: FC<TabPropsType<"Home">> = ({ navigation }) => {
         {/*    <Text>Error: {JSON.stringify(error)}</Text> */}
         {/*  </View> */}
         {/* )} */}
-        {!masjidData[0] && (
+        {loading && (
           <View
             style={{
               height: Dimensions.get("screen").height * 0.8,
@@ -256,11 +252,11 @@ const HomeScreen: FC<TabPropsType<"Home">> = ({ navigation }) => {
                   }}
                 >
                   <TouchableOpacity
-                    onPress={() => {
-                      // navigation.navigate("More Info", {
-                      //   masjid: masjidData[0],
-                      // })
-                    }}
+                    onPress={() =>
+                      navigation.navigate("More Info", {
+                        masjid: masjidData[0],
+                      })
+                    }
                     style={{
                       alignItems: "center",
                       backgroundColor: "#CEE6B4",
@@ -296,9 +292,7 @@ const HomeScreen: FC<TabPropsType<"Home">> = ({ navigation }) => {
                       width: "70%",
                       marginHorizontal: 10,
                     }}
-                    onPress={() => {
-                      // navigation.navigate("Show More")
-                    }}
+                    onPress={() => navigation.navigate("Show More")}
                   >
                     <Text style={{ color: "#CEE6B4" }}>Show More Masjid</Text>
                   </TouchableOpacity>
@@ -332,7 +326,7 @@ const HomeScreen: FC<TabPropsType<"Home">> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: 60,
+    // marginBottom: 40,
   },
   // mncontainer: {
   //   flex: 1,

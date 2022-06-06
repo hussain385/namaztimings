@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react"
 import {
   ActivityIndicator,
   Dimensions,
@@ -7,24 +7,22 @@ import {
   Text,
   TouchableOpacity,
   View,
-} from 'react-native';
-import {Header} from 'react-native-elements';
-import {Card} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import {useDispatch} from 'react-redux';
-import {isLoaded, populate, useFirestoreConnect} from 'react-redux-firebase';
-import {selectCords, setLocation} from '../../redux/locationSlicer';
-import {
-  getCurrentLocation,
-  selectFirestore,
-  sortMasjidData1,
-} from '../../hooks/firebase';
-import moment from 'moment';
-import {useAppSelector} from '../../hooks/redux';
+} from "react-native"
+import { Header } from "react-native-elements"
+import { Card } from "react-native-paper"
+import Icon from "react-native-vector-icons/FontAwesome5"
+import { useDispatch } from "react-redux"
+import { isLoaded, populate, useFirestoreConnect } from "react-redux-firebase"
+import { selectCords, setLocation } from "../../redux/locationSlicer"
+import { getCurrentLocation, selectFirestore, sortMasjidData1 } from "../../hooks/firebase"
+import moment from "moment"
+import { useAppSelector } from "../../hooks/redux"
+import { Masjid } from "../../types/firestore"
+import { HomePropsNavigation, HomePropsType } from "../../navigation"
 
-const Item = props => {
-  const pastTime = moment(props.timeStamp?.seconds * 1000);
-  const now = moment();
+const Item = ({ masjid, nav }: { masjid: Masjid; nav: HomePropsNavigation<"Show More"> }) => {
+  const pastTime = moment(masjid.timeStamp?.seconds * 1000)
+  const now = moment()
   return (
     <Card
       style={{
@@ -32,236 +30,201 @@ const Item = props => {
         margin: 10,
         shadowOpacity: 10,
         elevation: 20,
-      }}>
+      }}
+    >
       <TouchableOpacity
         onPress={() =>
-          props.nav.navigate('More Info', {
-            masjid: {
-              donationInfo: props.donationInfo,
-              name: props.title,
-              pictureURL: props.url,
-              address: props.address,
-              timing: props.timings,
-              key: props.favId,
-              distance: props.distance,
-              g: {
-                geopoint: {
-                  latitude: props.latitude,
-                  longitude: props.longitude,
-                },
-              },
-              user: props.user,
-              gLink: props.gLink,
-              timeStamp: props.timeStamp,
-            },
+          nav.navigate("More Info", {
+            masjid,
           })
-        }>
+        }
+      >
         <Card.Cover
           source={{
             uri: `${
-              props.url ||
-              'https://www.freepnglogos.com/uploads/masjid-png/masjid-png-clipart-best-3.png'
+              masjid.pictureURL ||
+              "https://www.freepnglogos.com/uploads/masjid-png/masjid-png-clipart-best-3.png"
             }`,
           }}
         />
       </TouchableOpacity>
 
       <Card.Actions>
-        <View style={{width: '100%'}}>
+        <View style={{ width: "100%" }}>
           <View
             style={{
-              flexDirection: 'row',
+              flexDirection: "row",
               margin: 5,
-              justifyContent: 'space-between',
-            }}>
-            <View style={{maxWidth: Dimensions.get('screen').width * 0.65}}>
-              <Text style={{fontSize: 17}}>{props.title}</Text>
+              justifyContent: "space-between",
+            }}
+          >
+            <View style={{ maxWidth: Dimensions.get("screen").width * 0.65 }}>
+              <Text style={{ fontSize: 17 }}>{masjid.name}</Text>
             </View>
             <TouchableOpacity>
               <Text
                 onPress={async () => {
                   await Linking.openURL(
                     `${
-                      props.gLink
-                        ? props.gLink
-                        : `https://maps.google.com/?q=${props.latitude},${props.longitude}`
+                      masjid.gLink
+                        ? masjid.gLink
+                        : `https://maps.google.com/?q=${masjid.g.geopoint.latitude},${masjid.g.geopoint.longitude}`
                     }`,
-                  );
+                  )
                 }}
-                style={{color: '#900000', textDecorationLine: 'underline'}}>
-                {props.distance}KM AWAY
+                style={{ color: "#900000", textDecorationLine: "underline" }}
+              >
+                {masjid.distance}KM AWAY
               </Text>
             </TouchableOpacity>
           </View>
           <View
             style={{
-              flexDirection: 'row',
-              backgroundColor: '#EDEDED',
+              flexDirection: "row",
+              backgroundColor: "#EDEDED",
               padding: 10,
               borderRadius: 10,
-            }}>
-            <View style={{flexGrow: 5}}>
+            }}
+          >
+            <View style={{ flexGrow: 5 }}>
               <Text
                 style={{
-                  textAlign: 'center',
+                  textAlign: "center",
                   fontSize: 14,
-                  color: `${
-                    now.diff(pastTime, 'days') <= 30 ? '#008000' : 'darkred'
-                  }`,
-                }}>
+                  color: `${now.diff(pastTime, "days") <= 30 ? "#008000" : "darkred"}`,
+                }}
+              >
                 Fajar
               </Text>
               <Text
                 style={{
-                  textAlign: 'center',
+                  textAlign: "center",
                   fontSize: 14,
-                  color: `${
-                    now.diff(pastTime, 'days') <= 30 ? '#008000' : 'darkred'
-                  }`,
-                }}>
-                {props.timings.fajar.substring(0, 5) || '--'}
+                  color: `${now.diff(pastTime, "days") <= 30 ? "#008000" : "darkred"}`,
+                }}
+              >
+                {masjid.timing.fajar.substring(0, 5) || "--"}
               </Text>
             </View>
-            <View style={{flexGrow: 5}}>
+            <View style={{ flexGrow: 5 }}>
               <Text
                 style={{
-                  textAlign: 'center',
+                  textAlign: "center",
                   fontSize: 14,
-                  color: `${
-                    now.diff(pastTime, 'days') <= 30 ? '#008000' : 'darkred'
-                  }`,
-                }}>
+                  color: `${now.diff(pastTime, "days") <= 30 ? "#008000" : "darkred"}`,
+                }}
+              >
                 Zohar
               </Text>
               <Text
                 style={{
-                  textAlign: 'center',
+                  textAlign: "center",
                   fontSize: 14,
-                  color: `${
-                    now.diff(pastTime, 'days') <= 30 ? '#008000' : 'darkred'
-                  }`,
-                }}>
-                {props.timings.zohar.substring(0, 5) || '--'}
+                  color: `${now.diff(pastTime, "days") <= 30 ? "#008000" : "darkred"}`,
+                }}
+              >
+                {masjid.timing.zohar.substring(0, 5) || "--"}
               </Text>
             </View>
-            <View style={{flexGrow: 5}}>
+            <View style={{ flexGrow: 5 }}>
               <Text
                 style={{
-                  textAlign: 'center',
+                  textAlign: "center",
                   fontSize: 14,
-                  color: `${
-                    now.diff(pastTime, 'days') <= 30 ? '#008000' : 'darkred'
-                  }`,
-                }}>
+                  color: `${now.diff(pastTime, "days") <= 30 ? "#008000" : "darkred"}`,
+                }}
+              >
                 Asar
               </Text>
               <Text
                 style={{
-                  textAlign: 'center',
+                  textAlign: "center",
                   fontSize: 14,
-                  color: `${
-                    now.diff(pastTime, 'days') <= 30 ? '#008000' : 'darkred'
-                  }`,
-                }}>
-                {props.timings.asar.substring(0, 5) || '--'}
+                  color: `${now.diff(pastTime, "days") <= 30 ? "#008000" : "darkred"}`,
+                }}
+              >
+                {masjid.timing.asar.substring(0, 5) || "--"}
               </Text>
             </View>
-            <View style={{flexGrow: 5}}>
+            <View style={{ flexGrow: 5 }}>
               <Text
                 style={{
-                  textAlign: 'center',
+                  textAlign: "center",
                   fontSize: 14,
-                  color: `${
-                    now.diff(pastTime, 'days') <= 30 ? '#008000' : 'darkred'
-                  }`,
-                }}>
+                  color: `${now.diff(pastTime, "days") <= 30 ? "#008000" : "darkred"}`,
+                }}
+              >
                 Magrib
               </Text>
               <Text
                 style={{
-                  textAlign: 'center',
+                  textAlign: "center",
                   fontSize: 14,
-                  color: `${
-                    now.diff(pastTime, 'days') <= 30 ? '#008000' : 'darkred'
-                  }`,
-                }}>
-                {props.timings.magrib.substring(0, 5) || '--'}
+                  color: `${now.diff(pastTime, "days") <= 30 ? "#008000" : "darkred"}`,
+                }}
+              >
+                {masjid.timing.magrib.substring(0, 5) || "--"}
               </Text>
             </View>
-            <View style={{flexGrow: 5}}>
+            <View style={{ flexGrow: 5 }}>
               <Text
                 style={{
-                  textAlign: 'center',
+                  textAlign: "center",
                   fontSize: 14,
-                  color: `${
-                    now.diff(pastTime, 'days') <= 30 ? '#008000' : 'darkred'
-                  }`,
-                }}>
+                  color: `${now.diff(pastTime, "days") <= 30 ? "#008000" : "darkred"}`,
+                }}
+              >
                 Isha
               </Text>
               <Text
                 style={{
-                  textAlign: 'center',
+                  textAlign: "center",
                   fontSize: 14,
-                  color: `${
-                    now.diff(pastTime, 'days') <= 30 ? '#008000' : 'darkred'
-                  }`,
-                }}>
-                {props.timings.isha.substring(0, 5) || '--'}
+                  color: `${now.diff(pastTime, "days") <= 30 ? "#008000" : "darkred"}`,
+                }}
+              >
+                {masjid.timing.isha.substring(0, 5) || "--"}
               </Text>
             </View>
           </View>
         </View>
       </Card.Actions>
     </Card>
-  );
-};
+  )
+}
 
-const ShowMore = ({navigation}) => {
+const ShowMore: React.FC<HomePropsType<"Show More">> = ({ navigation }) => {
   // const [masjidData, loading] = GetAllMasjidData();
   const populates = [
-    {child: 'adminId', root: 'users', childAlias: 'user'}, // replace owner with user object
-  ];
+    { child: "adminId", root: "users", childAlias: "user" }, // replace owner with user object
+  ]
   useFirestoreConnect([
     {
-      collection: 'Masjid',
+      collection: "Masjid",
       populates,
     },
-  ]);
-  const location = useAppSelector(selectCords);
-  const firestore = useAppSelector(selectFirestore);
-  const masjid = populate(firestore, 'Masjid', populates);
-  const dispatch = useDispatch();
-  const masjidData = sortMasjidData1(masjid, location);
+  ])
+  const location = useAppSelector(selectCords)
+  const firestore = useAppSelector(selectFirestore)
+  const masjid = populate(firestore, "Masjid", populates)
+  const dispatch = useDispatch()
+  const masjidData = sortMasjidData1(masjid, location)
 
   React.useEffect(() => {
     getCurrentLocation()
-      .then(loc => {
+      .then((loc) => {
         // setLocation(loc);
-        dispatch(setLocation(loc.coords));
+        if (loc?.coords) {
+          dispatch(setLocation(loc.coords))
+        }
       })
-      .catch(e => {
-        console.log(e);
-      });
-  }, [dispatch]);
+      .catch((e) => {
+        console.log(e)
+      })
+  }, [dispatch])
 
-  const renderItem = ({item}) => (
-    <Item
-      title={item.name}
-      address={item.address}
-      url={item.pictureURL}
-      donationInfo={item.donationInfo}
-      timings={item.timing}
-      nav={navigation}
-      distance={item.distance}
-      favId={item.key}
-      longitude={item.g.geopoint.longitude}
-      latitude={item.g.geopoint.latitude}
-      user={item.user}
-      gLink={item.gLink}
-      timeStamp={item.timeStamp}
-    />
-  );
+  // @ts-ignore
+  const renderItem = ({ item }: { item: Masjid }) => <Item nav={navigation} masjid={item} />
   return (
     <View>
       <Header
@@ -271,24 +234,20 @@ const ShowMore = ({navigation}) => {
         }}
         leftComponent={
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon
-              name="arrow-left"
-              color="#ffff"
-              size={26}
-              style={{paddingLeft: 10}}
-            />
+            <Icon name="arrow-left" color="#ffff" size={26} style={{ paddingLeft: 10 }} />
           </TouchableOpacity>
         }
         centerComponent={
-          <View style={{textAlign: 'center'}}>
+          <View>
             <Text
               style={{
-                color: '#ffff',
+                color: "#ffff",
                 fontSize: 22,
                 marginBottom: 5,
                 marginTop: 5,
-                textAlign: 'center',
-              }}>
+                textAlign: "center",
+              }}
+            >
               More Masjid
             </Text>
           </View>
@@ -296,16 +255,17 @@ const ShowMore = ({navigation}) => {
         rightComponent={
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate('Map', {
+              navigation.navigate("Map", {
                 latitude: location.latitude || 0.0,
                 longitude: location.longitude || 0.0,
               })
-            }>
+            }
+          >
             <Icon
               name="map-marker-alt"
               color="#ffff"
               size={26}
-              style={{paddingRight: 10, marginTop: 3}}
+              style={{ paddingRight: 10, marginTop: 3 }}
             />
           </TouchableOpacity>
         }
@@ -315,12 +275,12 @@ const ShowMore = ({navigation}) => {
       <FlatList
         data={masjidData}
         renderItem={renderItem}
-        keyExtractor={item => item.key}
+        keyExtractor={(item, index) => item.uid ?? index.toString()}
         initialNumToRender={20}
-        style={{marginBottom: 85}}
+        style={{ marginBottom: 85 }}
       />
     </View>
-  );
-};
+  )
+}
 
-export default ShowMore;
+export default ShowMore

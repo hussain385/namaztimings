@@ -15,7 +15,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native"
-import DateTimePickerModal from "react-native-modal-datetime-picker"
+// import DateTimePickerModal from "react-native-modal-datetime-picker"
+import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker"
 import { Button, HelperText, TextInput } from "react-native-paper"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
 import { useSelector } from "react-redux"
@@ -24,6 +25,7 @@ import { selectFirebase } from "../../hooks/firebase"
 import axios from "axios"
 import { getFcmToken } from "../../hooks/token"
 import { Masjid } from "../../types/firestore"
+import messaging from "@react-native-firebase/messaging"
 
 interface EditProps {
   masjid: Partial<Masjid>
@@ -133,16 +135,22 @@ const Edit: React.FC<EditProps> = ({
   }
 
   const handleConfirm = (
+    event: DateTimePickerEvent,
     newTime: moment.MomentInput,
     setFieldValue: {
       (field: string, value: any, shouldValidate?: boolean | undefined): void
       (arg0: string, arg1: string): void
     },
   ) => {
-    const timeString = moment(newTime).format("hh:mm A")
-    console.log(timeString)
-    setFieldValue("timing." + namazTime, timeString)
-    console.log("A Time has been picked: ", timeString)
+    if (event.type === "neutralButtonPressed") {
+      setFieldValue("timing." + namazTime, null)
+    } else if (event.type === "set") {
+      const timeString = moment(newTime).format("hh:mm A")
+      console.log(timeString)
+      setFieldValue("timing." + namazTime, timeString)
+      console.log("A Time has been picked: ", timeString)
+    }
+
     hideTimePicker()
   }
 
@@ -191,171 +199,185 @@ const Edit: React.FC<EditProps> = ({
                   if (_.isEqual(values.timing, masjid.timing) && isRequest) {
                     console.log(isRequest)
                     Alert.alert("Cannot Process", "Please fill the form correctly")
-                  } else {
-                    if (isAdd) {
-                      setModalVisible(!modalVisible)
-                      setSubmitting(false)
-                      return returnChange(values.timing)
-                    } else if (isRequest) {
-                      const token = await getFcmToken()
-                      await firestore()
-                        .collection("requests")
-                        .add({
-                          ...values,
-                          isRead: false,
-                          timeStamp: firestore.Timestamp.now(),
-                          token,
-                        })
-                        .then(
-                          (a) => {
-                            firestore()
-                              .collection("Masjid")
-                              .doc(masjid.uid)
-                              .update({
-                                requestList: firestore.FieldValue.arrayUnion(a.id),
-                              })
-                              .then(
-                                async () => {
-                                  if (masjid.adminId === "") {
+                  } else if (isAdd) {
+                    setModalVisible(!modalVisible)
+                    setSubmitting(false)
+                    return returnChange(values.timing)
+                  } else if (isRequest) {
+                    const token = await getFcmToken()
+                    await firestore()
+                      .collection("requests")
+                      .add({
+                        ...values,
+                        isRead: false,
+                        timeStamp: firestore.Timestamp.now(),
+                        token,
+                      })
+                      .then(
+                        (a) => {
+                          firestore()
+                            .collection("Masjid")
+                            .doc(masjid.uid)
+                            .update({
+                              requestList: firestore.FieldValue.arrayUnion(a.id),
+                            })
+                            .then(
+                              async () => {
+                                if (masjid.adminId === "") {
+                                  setSubmitting(false)
+                                  Alert.alert(
+                                    "Request Send!",
+                                    "Jazak Allah u Khairan, your namaz timings updates are sent to admin, he will review and approve in 24 hours.",
+                                    [
+                                      {
+                                        text: "Ok",
+                                        onPress: async () => {
+                                          setModalVisible(!modalVisible)
+                                          await axios.post(
+                                            "https://namaz-timings-pakistan.herokuapp.com/email",
+                                            {
+                                              to: "namaz.timing.pakistan@gmail.com",
+                                              body: `Dear Admin,\n${masjid.name} has received an time edit request from ${values.userName}`,
+                                              title: "Admin Notification",
+                                            },
+                                          )
+                                        },
+                                      },
+                                    ],
+                                    { cancelable: false },
+                                  )
+                                } else {
+                                  setSubmitting(false)
+                                  Alert.alert(
+                                    "Request Send!",
+                                    "Jazak Allah u Khairan, your namaz timings updates are sent to admin, he will review and approve in 24 hours.",
+                                    [
+                                      {
+                                        text: "Ok",
+                                        onPress: async () => {
+                                          setModalVisible(!modalVisible)
+                                          await axios.post(
+                                            "https://namaz-timings-pakistan.herokuapp.com/email",
+                                            {
+                                              to: masjid.user?.email,
+                                              body: `Dear Admin,\n${masjid.name} has received an time edit request from ${values.userName}`,
+                                              title: "Admin Notification",
+                                            },
+                                          )
+                                        },
+                                      },
+                                    ],
+                                    { cancelable: false },
+                                  )
+                                }
+                              },
+                              (reason) => {
+                                firestore()
+                                  .collection("requests")
+                                  .doc(a.id)
+                                  .delete()
+                                  .then(() => {
                                     setSubmitting(false)
+                                    console.warn(reason)
                                     Alert.alert(
-                                      "Request Send!",
-                                      "Jazak Allah u Khairan, your namaz timings updates are sent to admin, he will review and approve in 24 hours.",
+                                      "Error",
+                                      reason.message,
                                       [
                                         {
                                           text: "Ok",
-                                          onPress: async () => {
-                                            setModalVisible(!modalVisible)
-                                            await axios.post(
-                                              "https://namaz-timings-pakistan.herokuapp.com/email",
-                                              {
-                                                to: "namaz.timing.pakistan@gmail.com",
-                                                body: `Dear Admin,\n${masjid.name} has received an time edit request from ${values.userName}`,
-                                                title: "Admin Notification",
-                                              },
-                                            )
-                                          },
+                                          onPress: () => setModalVisible(!modalVisible),
                                         },
                                       ],
                                       { cancelable: false },
                                     )
-                                  } else {
-                                    setSubmitting(false)
-                                    Alert.alert(
-                                      "Request Send!",
-                                      "Jazak Allah u Khairan, your namaz timings updates are sent to admin, he will review and approve in 24 hours.",
-                                      [
-                                        {
-                                          text: "Ok",
-                                          onPress: async () => {
-                                            setModalVisible(!modalVisible)
-                                            await axios.post(
-                                              "https://namaz-timings-pakistan.herokuapp.com/email",
-                                              {
-                                                to: masjid.user?.email,
-                                                body: `Dear Admin,\n${masjid.name} has received an time edit request from ${values.userName}`,
-                                                title: "Admin Notification",
-                                              },
-                                            )
-                                          },
-                                        },
-                                      ],
-                                      { cancelable: false },
-                                    )
-                                  }
-                                },
-                                (reason) => {
-                                  firestore()
-                                    .collection("requests")
-                                    .doc(a.id)
-                                    .delete()
-                                    .then(() => {
-                                      setSubmitting(false)
-                                      console.warn(reason)
-                                      Alert.alert(
-                                        "Error",
-                                        reason.message,
-                                        [
-                                          {
-                                            text: "Ok",
-                                            onPress: () => setModalVisible(!modalVisible),
-                                          },
-                                        ],
-                                        { cancelable: false },
-                                      )
-                                    })
-                                },
-                              )
-                          },
-                          (reason) => {
-                            Alert.alert(
-                              "Error",
-                              reason.message,
-                              [
-                                {
-                                  text: "Ok",
-                                  onPress: () => setModalVisible(!modalVisible),
-                                },
-                              ],
-                              { cancelable: false },
+                                  })
+                              },
                             )
-                          },
-                        )
-                    } else {
-                      await firestore()
-                        .collection("Masjid")
-                        .doc(masjid.uid)
-                        .update({
-                          timeStamp: firestore.Timestamp.now(),
-                          timing: {
-                            ...values.timing,
-                          },
-                        })
-                        .then(
-                          async () => {
-                            const masjidData = (
-                              await firestore().collection("Masjid").doc(masjid.uid).get()
-                            ).data() as Masjid
-                            if (masjidData.tokens) {
-                              for (const token of masjidData.tokens) {
-                                await axios
-                                  .post(
-                                    "https://fcm.googleapis.com/fcm/send",
-                                    {
-                                      to: token,
-                                      notification: {
-                                        title: masjid.name,
-                                        body: "Timings has been updated",
-                                      },
+                        },
+                        (reason) => {
+                          Alert.alert(
+                            "Error",
+                            reason.message,
+                            [
+                              {
+                                text: "Ok",
+                                onPress: () => setModalVisible(!modalVisible),
+                              },
+                            ],
+                            { cancelable: false },
+                          )
+                        },
+                      )
+                  } else {
+                    await firestore()
+                      .collection("Masjid")
+                      .doc(masjid.uid)
+                      .update({
+                        timeStamp: firestore.Timestamp.now(),
+                        timing: {
+                          ...values.timing,
+                        },
+                      })
+                      .then(
+                        async () => {
+                          const masjidData = (
+                            await firestore().collection("Masjid").doc(masjid.uid).get()
+                          ).data() as Masjid
+                          if (masjidData.tokens) {
+                            for (const token of masjidData.tokens) {
+                              // await messaging()
+                              //   .sendMessage({
+                              //     to: token,
+                              //     data: {
+                              //       title: "masjid.name",
+                              //       body: "Timings has been updated",
+                              //     },
+                              //   })
+                              await axios
+                                .post(
+                                  "https://fcm.googleapis.com/fcm/send",
+                                  {
+                                    to: token,
+                                    notification: {
+                                      title: masjid.name,
+                                      body: "Timings has been updated",
                                     },
-                                    {
-                                      headers: {
-                                        "Content-Type": "application/json",
-                                        Authorization:
-                                          "key=AAAAE5W6Aqg:APA91bFw_t03bZFaOIdMQj-irRXr5eygS8UBqL3Vd7UYUpS9u3n96rCPxiwfTLBpyb69og2zOr7amP2bpgKVqjzY7qUdxd2Etdfkxm7qik013Z6cUrzji1P2Q-ehfl-RvcWQ91ROD_4G",
-                                      },
+                                  },
+                                  {
+                                    headers: {
+                                      "Content-Type": "application/json",
+                                      Authorization:
+                                        "key=AAAAE5W6Aqg:APA91bFw_t03bZFaOIdMQj-irRXr5eygS8UBqL3Vd7UYUpS9u3n96rCPxiwfTLBpyb69og2zOr7amP2bpgKVqjzY7qUdxd2Etdfkxm7qik013Z6cUrzji1P2Q-ehfl-RvcWQ91ROD_4G",
                                     },
-                                  )
-                                  .then(
-                                    (value1) => {
-                                      console.log(value1.data, "response from axios")
-                                    },
-                                    (reason) => {
-                                      console.log(reason)
-                                    },
-                                  )
-                              }
+                                  },
+                                )
+                                .then(
+                                  (value1) => {
+                                    // console.log(value1.data, "response from axios")
+                                    Alert.alert(
+                                      "Notifications",
+                                      "Successfully sent notifications to the users",
+                                    )
+                                  },
+                                  (reason) => {
+                                    console.log(reason)
+                                    Alert.alert(
+                                      "Notifications",
+                                      "Couldn't sent notifications to the users",
+                                    )
+                                  },
+                                )
                             }
-                            setSubmitting(false)
-                            console.log("data sent")
-                            setModalVisible(!modalVisible)
-                          },
-                          (reason) => {
-                            Alert.alert(reason.message)
-                            setModalVisible(!modalVisible)
-                          },
-                        )
-                    }
+                          }
+                          setSubmitting(false)
+                          console.log("data sent")
+                          setModalVisible(!modalVisible)
+                        },
+                        (reason) => {
+                          Alert.alert(reason.message)
+                          setModalVisible(!modalVisible)
+                        },
+                      )
                   }
                 }}
                 validationSchema={Yup.object().shape({
@@ -475,7 +497,9 @@ const Edit: React.FC<EditProps> = ({
                       </View>
                       <View style={styles.editTime}>
                         <Pressable onPress={() => showTimePicker("fajar")}>
-                          <Text style={{ fontSize: 17 }}>{values.timing.fajar}</Text>
+                          <Text style={{ fontSize: 17, textAlign: "center" }}>
+                            {values.timing.fajar || "-- : --"}
+                          </Text>
                         </Pressable>
                       </View>
                     </View>
@@ -490,7 +514,9 @@ const Edit: React.FC<EditProps> = ({
                       </View>
                       <View style={styles.editTime}>
                         <Pressable onPress={() => showTimePicker("zohar")}>
-                          <Text style={{ fontSize: 17 }}>{values.timing.zohar}</Text>
+                          <Text style={{ fontSize: 17, textAlign: "center" }}>
+                            {values.timing.zohar || "-- : --"}
+                          </Text>
                         </Pressable>
                       </View>
                     </View>
@@ -505,7 +531,9 @@ const Edit: React.FC<EditProps> = ({
                       </View>
                       <View style={styles.editTime}>
                         <Pressable onPress={() => showTimePicker("asar")}>
-                          <Text style={{ fontSize: 17 }}>{values.timing.asar}</Text>
+                          <Text style={{ fontSize: 17, textAlign: "center" }}>
+                            {values.timing.asar || "-- : --"}
+                          </Text>
                         </Pressable>
                       </View>
                     </View>
@@ -520,7 +548,9 @@ const Edit: React.FC<EditProps> = ({
                       </View>
                       <View style={styles.editTime}>
                         <Pressable onPress={() => showTimePicker("magrib")}>
-                          <Text style={{ fontSize: 17 }}>{values.timing.magrib}</Text>
+                          <Text style={{ fontSize: 17, textAlign: "center" }}>
+                            {values.timing.magrib || "-- : --"}
+                          </Text>
                         </Pressable>
                       </View>
                     </View>
@@ -535,7 +565,9 @@ const Edit: React.FC<EditProps> = ({
                       </View>
                       <View style={styles.editTime}>
                         <Pressable onPress={() => showTimePicker("isha")}>
-                          <Text style={{ fontSize: 17 }}>{values.timing.isha}</Text>
+                          <Text style={{ fontSize: 17, textAlign: "center" }}>
+                            {values.timing.isha || "-- : --"}
+                          </Text>
                         </Pressable>
                       </View>
                     </View>
@@ -553,7 +585,9 @@ const Edit: React.FC<EditProps> = ({
                           onPress={() => showTimePicker("jummah")}
                           style={{ minWidth: 70 }}
                         >
-                          <Text style={{ fontSize: 17 }}>{values.timing.jummah}</Text>
+                          <Text style={{ fontSize: 17, textAlign: "center" }}>
+                            {values.timing.jummah || "-- : --"}
+                          </Text>
                         </Pressable>
                       </View>
                     </View>
@@ -571,7 +605,9 @@ const Edit: React.FC<EditProps> = ({
                           onPress={() => showTimePicker("eidUlAddah")}
                           style={{ minWidth: 70 }}
                         >
-                          <Text style={{ fontSize: 17 }}>{values.timing.eidUlAddah}</Text>
+                          <Text style={{ fontSize: 17, textAlign: "center" }}>
+                            {values.timing.eidUlAddah || "-- : --"}
+                          </Text>
                         </Pressable>
                       </View>
                     </View>
@@ -589,7 +625,9 @@ const Edit: React.FC<EditProps> = ({
                           onPress={() => showTimePicker("eidUlFitr")}
                           style={{ minWidth: 70 }}
                         >
-                          <Text style={{ fontSize: 17 }}>{values.timing.eidUlFitr}</Text>
+                          <Text style={{ fontSize: 17, textAlign: "center" }}>
+                            {values.timing.eidUlFitr || "-- : --"}
+                          </Text>
                         </Pressable>
                       </View>
                     </View>
@@ -620,14 +658,19 @@ const Edit: React.FC<EditProps> = ({
                         {!isAdd ? (isRequest ? "Request" : "Confirm") : "Confirm"}
                       </Button>
                     </View>
-                    <DateTimePickerModal
-                      is24Hour={false}
-                      isVisible={isTimePickerVisible}
-                      mode="time"
-                      locale="en_GB"
-                      onConfirm={(e) => handleConfirm(e, setFieldValue)}
-                      onCancel={hideTimePicker}
-                    />
+                    {isTimePickerVisible && (
+                      <DateTimePicker
+                        is24Hour={false}
+                        mode="time"
+                        neutralButtonLabel={"Delete"}
+                        locale="en_GB"
+                        // onConfirm={(e) => handleConfirm(e, setFieldValue)}
+                        onChange={(event, date) => handleConfirm(event, date, setFieldValue)}
+                        // onTouchCancel={hideTimePicker}
+                        // onCancel={hideTimePicker}
+                        value={new Date(Date.now())}
+                      />
+                    )}
                   </>
                 )}
               </Formik>

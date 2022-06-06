@@ -1,5 +1,4 @@
-import storage from "@react-native-firebase/storage"
-import { Formik, FormikErrors } from "formik"
+import { Formik } from "formik"
 import _, { isEmpty } from "lodash"
 import React, { useState } from "react"
 import {
@@ -7,7 +6,6 @@ import {
   Dimensions,
   GestureResponderEvent,
   Image,
-  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -21,7 +19,7 @@ import { ActivityIndicator } from "react-native-paper"
 import { useSelector } from "react-redux"
 import { useFirestore } from "react-redux-firebase"
 import * as Yup from "yup"
-import { selectFirebase } from "../../hooks/firebase"
+import { selectFirebase, uploadImageAsync } from "../../hooks/firebase"
 import Edit from "../../components/modal/Edit"
 import HeaderComp from "../../components/header/HeaderComp"
 import { getFcmToken } from "../../hooks/token"
@@ -50,14 +48,6 @@ const AddMasjidSchema = Yup.object().shape({
     .min(11, "phone no. is short, please check again")
     .max(16, "phone no. is long, please check again")
     .required("Your Phone no. is required"),
-  // timing: Yup.object().shape({
-  //   isha: Yup.string(),
-  //   fajar: Yup.string(),
-  //   zohar: Yup.string(),
-  //   asar: Yup.string(),
-  //   magrib: Yup.string(),
-  //   jummah: Yup.string(),
-  // }),
 })
 
 export const AddMasjid: React.FC<HomePropsType<"Add Masjid">> = ({ navigation }) => {
@@ -137,7 +127,7 @@ export const AddMasjid: React.FC<HomePropsType<"Add Masjid">> = ({ navigation })
 
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
-      <HeaderComp navigation={navigation} heading="Add Masjid" />
+      <HeaderComp heading="Add Masjid" />
       <View style={{ alignItems: "center" }}>
         <Text style={{ fontSize: 20 }}>Enter Masjid Details</Text>
       </View>
@@ -154,7 +144,6 @@ export const AddMasjid: React.FC<HomePropsType<"Add Masjid">> = ({ navigation })
         onSubmit={async (values) => {
           const data = _.omit(values, ["userName", "userEmail", "userPhone"])
           setLoading(true)
-          let filename
           let url = ""
           if (!isEmpty(image)) {
             console.log(image, "inside")
@@ -717,34 +706,3 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 })
-
-async function uploadImageAsync(uri: string) {
-  // Why are we using XMLHttpRequest? See:
-  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
-  const blob: any = await new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest()
-    xhr.onload = function () {
-      resolve(xhr.response)
-    }
-    xhr.onerror = function (e) {
-      console.log(e)
-      reject(new TypeError("Network request failed"))
-    }
-    xhr.responseType = "blob"
-    xhr.open("GET", uri, true)
-    xhr.send(null)
-  })
-
-  const filename = uri?.substring(uri.lastIndexOf("/") + 1)
-  // const uploadUri = Platform.OS === "ios" ? image.replace("file://", "") : image
-  const ref = storage().ref("/masjid/" + filename)
-  await ref.putFile(blob)
-
-  // const fileRef = ref(getStorage(), uuid.v4())
-  // const result = await uploadBytes(fileRef, blob)
-
-  // We're done with the blob, close and release it
-  blob.close()
-
-  return await ref.getDownloadURL()
-}

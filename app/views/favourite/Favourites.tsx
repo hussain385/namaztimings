@@ -19,6 +19,8 @@ import { useFavorites } from "../../redux/favSlicer"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { TabPropsType } from "../../navigation"
 import { Masjid } from "../../types/firestore"
+import { Header } from "react-native-elements"
+import Icon from "react-native-vector-icons/FontAwesome5"
 
 const Favourites: FC<TabPropsType<"Favourite">> = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false)
@@ -88,7 +90,7 @@ const Favourites: FC<TabPropsType<"Favourite">> = ({ navigation }) => {
           <View style={{ flexDirection: "row" }}>
             <View style={{ flexGrow: 1 }} />
             <View style={{ top: -60, right: 10 }}>
-              <Favbtn favId={item.uid} isBig={true} />
+              <Favbtn favId={item.uid!} isBig={true} />
             </View>
           </View>
         </ImageBackground>
@@ -166,7 +168,32 @@ const Favourites: FC<TabPropsType<"Favourite">> = ({ navigation }) => {
 
   return (
     <>
-      <HeaderComp navigation={navigation} heading="Favourites" />
+      <Header
+        containerStyle={{
+          shadowOpacity: 30,
+          elevation: 10,
+        }}
+        leftComponent={
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <Icon name="bars" color="#ffff" size={26} style={{ paddingLeft: 10 }} />
+          </TouchableOpacity>
+        }
+        centerComponent={
+          <View>
+            <Text
+              style={{
+                color: "#ffff",
+                fontSize: 22,
+                marginBottom: 5,
+                textAlign: "center",
+              }}
+            >
+              Favourites
+            </Text>
+          </View>
+        }
+        backgroundColor="#1F441E"
+      />
       <>
         {(() => {
           if (error) {
@@ -190,7 +217,7 @@ const Favourites: FC<TabPropsType<"Favourite">> = ({ navigation }) => {
                   data={masjidData}
                   renderItem={Item}
                   keyExtractor={(x, index) => x.uid || index.toString()}
-                  style={{ marginBottom: 70, flex: 1 }}
+                  style={{ flex: 1 }}
                   onRefresh={onRefresh}
                   initialNumToRender={20}
                   refreshing={refreshing}

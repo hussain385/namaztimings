@@ -24,13 +24,13 @@ import { useAppDispatch } from "../../hooks/redux"
 import { Masjid } from "../../types/firestore"
 
 const Search: FC<TabPropsType<"Search">> = ({ navigation }) => {
-  const { masjidData } = useGetMasjidPopulate({
+  const { masjidData, location } = useGetMasjidPopulate({
     longitude: undefined,
     latitude: undefined,
   })
   const [result, setResult] = useState<Masjid[]>([])
   const dispatch = useAppDispatch()
-  console.log(masjidData, "the masjid from search")
+  // console.log(masjidData, "the masjid from search")
 
   function onChangeSearch(text: string) {
     const fuse = new Fuse(masjidData, {
@@ -73,7 +73,7 @@ const Search: FC<TabPropsType<"Search">> = ({ navigation }) => {
       >
         <View style={{ flexGrow: 1 }} />
         <View style={{ right: 20 }}>
-          <Favbtn favId={item.uid} isBig={true} />
+          <Favbtn favId={item.uid!} isBig={true} />
         </View>
       </View>
       <MasjidCard masjid={item} nav={navigation} />
@@ -84,8 +84,8 @@ const Search: FC<TabPropsType<"Search">> = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <Header
         leftComponent={
-          <TouchableOpacity onPress={() => navigation.goBack()} style={{ zIndex: 1 }}>
-            <Icon name="arrow-left" color="#ffff" size={26} style={{ paddingLeft: 10 }} />
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <Icon name="bars" color="#ffff" size={26} style={{ paddingLeft: 10 }} />
           </TouchableOpacity>
         }
         centerComponent={
@@ -104,7 +104,7 @@ const Search: FC<TabPropsType<"Search">> = ({ navigation }) => {
               style={{
                 flexDirection: "row",
                 alignSelf: "center",
-                width: "200%",
+                width: "170%",
                 marginTop: 10,
               }}
             >
@@ -129,10 +129,10 @@ const Search: FC<TabPropsType<"Search">> = ({ navigation }) => {
         rightComponent={
           <TouchableOpacity
             onPress={() => {
-              // navigation.navigate("Map", {
-              //   latitude: location.latitude || 0.0,
-              //   longitude: location.longitude || 0.0,
-              // })
+              navigation.navigate("Map", {
+                latitude: location.latitude || 0.0,
+                longitude: location.longitude || 0.0,
+              })
             }}
           >
             <Icon

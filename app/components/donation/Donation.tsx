@@ -2,21 +2,17 @@ import React, { useState } from "react"
 import HeaderComp from "../header/HeaderComp"
 import { Dimensions, Image, ScrollView, Text, View } from "react-native"
 import DonationModal from "../modal/DonationModal"
-import { DrawerScreenProps } from "@react-navigation/drawer"
-import { DrawerStackParamList } from "../../navigation"
+import { HomePropsType } from "../../navigation"
 
 const windowHeight = Dimensions.get("screen").height
 const windowWidth = Dimensions.get("screen").width
 
-const Donation: React.FC<DrawerScreenProps<DrawerStackParamList, "Donation">> = ({
-  navigation,
-  route,
-}) => {
+const Donation: React.FC<HomePropsType<"Donation">> = ({ route }) => {
   const { masjid, edit, adminView = false } = route.params
   const [modalVisible, setModalVisible] = useState(false)
   return (
     <>
-      <HeaderComp navigation={navigation} heading="Donation Info" />
+      <HeaderComp heading="Donation Info" />
       <ScrollView>
         <View
           style={{

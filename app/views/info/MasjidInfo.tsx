@@ -303,11 +303,9 @@ const MasjidInfo: React.FC<HomePropsType<"More Info">> = ({ route, navigation })
           >
             <TouchableOpacity
               onPress={() => {
-                // navigation.navigate("Notification", {
-                //   masjidId: masjid.key,
-                //   masjidName: masjid.name,
-                //   adminId: masjid.user.id,
-                // })
+                navigation.navigate("Notifications", {
+                  masjid,
+                })
               }}
               style={{
                 alignItems: "center",

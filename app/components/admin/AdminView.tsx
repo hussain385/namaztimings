@@ -17,29 +17,29 @@ import Edit from "../modal/Edit"
 import CoText from "../Text/Text"
 import { isNil } from "lodash"
 import ChangeImageModal from "../modal/ChangeImageModal"
-import { DrawerScreenProps } from "@react-navigation/drawer"
-import { DrawerStackParamList } from "../../navigation"
-import { useAppSelector } from "../../hooks/redux"
+import { HomePropsType } from "../../navigation"
+import firestore from "@react-native-firebase/firestore"
+import { Masjid } from "../../types/firestore"
 
-const AdminView: React.FC<DrawerScreenProps<DrawerStackParamList, "Admin">> = ({
-  navigation,
-  route,
-}) => {
+const AdminView: React.FC<HomePropsType<"Admin">> = ({ navigation, route }) => {
   const [imageChangeModal, setImageChangeModal] = useState(false)
-  const { isSingle = false, Masjid } = route.params
+  const { Masjid: masjidParam } = route.params
+  const [Masjid, setMasjidSnapshot] = useState(masjidParam)
   const pastTime = moment(Masjid.timeStamp?.seconds * 1000)
   const now = moment()
   const [count, setCount] = useState(0)
-  const { requests } = useAppSelector((state) => state.firestore.ordered)
+  // const { requests } = useAppSelector((state) => state.firestore.ordered)
 
-  // console.log(requests, 'from admin view == requests');
-  // if (!isNil(Masjid.requests)) {
-  //   Masjid.requests.forEach(value => {
-  //     if (!value.isRead) {
-  //       setCount(prevState => prevState + 1);
-  //     }
-  //   });
-  // }
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection("Masjid")
+      .doc(masjidParam.uid)
+      .onSnapshot((documentSnapshot) => {
+        setMasjidSnapshot({ ...(documentSnapshot.data() as Masjid), uid: documentSnapshot.id })
+      })
+
+    return () => subscriber()
+  }, [])
 
   useEffect(() => {
     if (!isNil(Masjid.requests)) {
@@ -50,9 +50,7 @@ const AdminView: React.FC<DrawerScreenProps<DrawerStackParamList, "Admin">> = ({
         }
       })
     }
-  }, [Masjid.requests, requests])
-
-  console.log(isSingle, "==> masjid info")
+  }, [Masjid.requests])
 
   return (
     <>
@@ -62,15 +60,8 @@ const AdminView: React.FC<DrawerScreenProps<DrawerStackParamList, "Admin">> = ({
           elevation: 50,
         }}
         leftComponent={
-          <TouchableOpacity
-            onPress={() => (isSingle ? navigation.openDrawer() : navigation.navigate("Admin view"))}
-          >
-            <Icon
-              name={isSingle ? "bars" : "arrow-left"}
-              color="#ffff"
-              size={26}
-              style={{ paddingLeft: 10 }}
-            />
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon name={"arrow-left"} color="#ffff" size={26} style={{ paddingLeft: 10 }} />
           </TouchableOpacity>
         }
         centerComponent={
@@ -90,11 +81,11 @@ const AdminView: React.FC<DrawerScreenProps<DrawerStackParamList, "Admin">> = ({
         }
         rightComponent={
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("adminNotification", {
-                masjidData: Masjid,
+            onPress={() => {
+              navigation.navigate("Admin Notification", {
+                masjid: Masjid,
               })
-            }
+            }}
             style={{
               paddingRight: 10,
             }}
@@ -422,10 +413,8 @@ const AdminView: React.FC<DrawerScreenProps<DrawerStackParamList, "Admin">> = ({
                 marginHorizontal: 10,
               }}
               onPress={() =>
-                navigation.navigate("Notification", {
-                  masjidId,
-                  masjidName: Masjid.name,
-                  adminId: Masjid.admin.id,
+                navigation.navigate("Notifications", {
+                  masjid: Masjid,
                 })
               }
             >
@@ -461,8 +450,7 @@ const AdminView: React.FC<DrawerScreenProps<DrawerStackParamList, "Admin">> = ({
           </View>
         </View>
         <ChangeImageModal
-          pictureURL={Masjid.pictureURL}
-          uid={Masjid.uid}
+          masjid={Masjid}
           imageChangeModal={imageChangeModal}
           setImageChangeModal={setImageChangeModal}
         />

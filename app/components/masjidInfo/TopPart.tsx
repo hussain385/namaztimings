@@ -58,13 +58,13 @@ const TopPart = ({ masjidData }: { masjidData: Masjid }) => {
         ) : (
           <View style={styles.elementStyle}>
             <Icon style={styles.iconStyle} name="user-alt" color="#1F441E" size={20} />
-            <AdminRequest id={masjidData.uid} masjidName={masjidData.name} />
+            <AdminRequest masjid={masjidData} />
           </View>
         )}
       </View>
       <View style={styles.mainView4}>
         <View style={{ alignItems: "flex-end" }}>
-          <Favbtn favId={masjidData.uid} isBig={false} />
+          <Favbtn favId={masjidData.uid!} isBig={false} />
         </View>
         <View style={styles.direction}>
           <Icon name="directions" color="#900000" size={24} style={{ marginRight: 5 }} />

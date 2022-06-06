@@ -1,5 +1,4 @@
 import { Formik } from "formik"
-import _ from "lodash"
 import firestore from "@react-native-firebase/firestore"
 import React, { useEffect, useState } from "react"
 import {
@@ -16,78 +15,85 @@ import {
 import { ActivityIndicator, FAB } from "react-native-paper"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import { useSelector } from "react-redux"
-import { populate, useFirestore, useFirestoreConnect } from "react-redux-firebase"
 import * as Yup from "yup"
 import HeaderComp from "../header/HeaderComp"
 import NotificationCard from "../cards/NotificationCard"
-import { selectFirebase, selectFirestore } from "../../hooks/firebase"
+import { selectFirebase } from "../../hooks/firebase"
 import axios from "axios"
 import { storage } from "../../redux/store"
+import { HomePropsType } from "../../navigation"
+import { Announcement, Masjid } from "../../types/firestore"
 
-const Notification = ({ navigation, route: { params } }) => {
+const Notification: React.FC<HomePropsType<"Notifications">> = ({
+  navigation,
+  route: { params },
+}) => {
   const [modalVisible, setModalVisible] = useState(false)
-  const { masjidId, masjidName, adminId } = params
-  console.log(masjidId, "====> id from noti")
-  const { auth } = useSelector(selectFirebase)
-  const firestoreData = useFirestore()
+  const { masjid } = params
+  const { auth, profile } = useSelector(selectFirebase)
+  const [announcements, setAnnouncements] = useState<Announcement[]>([])
+  // const firestoreData = useFirestore()
   const [loading, setLoading] = useState(false)
-  const populates = [
-    {
-      child: "announcementList",
-      root: "announcement",
-      childAlias: "announcement",
-    },
-  ]
-  useFirestoreConnect([
-    {
-      collection: "Masjid",
-      doc: masjidId,
-      populates,
-      storeAs: "tempAnnouncement",
-    },
-  ])
-
-  const firestore1 = useSelector(selectFirestore)
-  const masjidData = populate(firestore1, "tempAnnouncement", populates)
+  // const populates = [
+  //   {
+  //     child: "announcementList",
+  //     root: "announcement",
+  //     childAlias: "announcement",
+  //   },
+  // ]
+  // useFirestoreConnect([
+  //   {
+  //     collection: "Masjid",
+  //     doc: masjid.uid,
+  //     populates,
+  //     storeAs: "tempAnnouncement",
+  //   },
+  // ])
+  // const firestore1 = useSelector(selectFirestore)
+  //
+  // const masjidData = populate(firestore1, "tempAnnouncement", populates)
+  // console.log(masjidData, "====> id from noti")
   // console.log(firestore.status, 'on notify');
 
-  const data = _.map(masjidData?.announcement, (rawData) => {
-    return {
-      ...rawData,
-      // createdAt: Date.parse(rawData.createdAt),
-    }
-  })
+  // const data: Announcement[] = _.map(masjidData?.announcement, (rawData) => {
+  //   return {
+  //     ...rawData,
+  //     // createdAt: Date.parse(rawData.createdAt),
+  //   }
+  // })
+  console.log(auth.uid === masjid.adminId, auth.uid !== undefined, "<==== from notification")
 
   useEffect(() => {
     storage.delete("notification")
+    const subscriber = firestore()
+      .collection("Masjid")
+      .doc(masjid.uid)
+      .onSnapshot(async (snapshot) => {
+        const data = snapshot.data() as Masjid
+        const announcementsData = data.announcementList?.map(async (value) => {
+          const annData = await firestore().collection("announcement").doc(value).get()
+          return { ...(annData.data() as Announcement), id: annData.id }
+        })
+        if (announcementsData) {
+          const doc = await Promise.all(announcementsData)
+          setAnnouncements(doc)
+        }
+      })
+
+    return () => subscriber()
   }, [])
 
   // console.log(auth.uid === adminId);
 
   return (
     <View>
-      <HeaderComp heading="Announcements" navigation={navigation} />
-      {firestore1.status.requested.tempAnnouncement && data.length >= 1 ? (
+      <HeaderComp heading="Announcements" />
+      {announcements.length >= 1 ? (
         <FlatList
           style={{ height: Dimensions.get("screen").height * 0.82 }}
-          data={data.reverse()}
-          renderItem={({ item }) => (
-            <NotificationCard
-              data={item}
-              masjidName={masjidName}
-              masjidId={masjidId}
-              adminId={adminId}
-            />
-          )}
+          data={announcements.reverse()}
+          renderItem={({ item }) => <NotificationCard masjid={masjid} announcement={item} />}
         />
-      ) : firestore1.status.requesting.tempAnnouncement ? (
-        <View
-          style={{
-            height: Dimensions.get("screen").height,
-          }}
-        >
-          <ActivityIndicator size={40} color="#1F441E" />
-        </View>
       ) : (
         <View
           style={{
@@ -100,7 +106,7 @@ const Notification = ({ navigation, route: { params } }) => {
           <Text style={{ fontSize: 20, color: "#1F441E" }}>No News & Announcements</Text>
         </View>
       )}
-      {auth.uid === adminId && auth.uid !== undefined && (
+      {auth.uid !== undefined && (auth.uid === masjid.adminId || profile.isAdmin) && (
         <View>
           <FAB style={styles.fab} small icon="plus" onPress={() => setModalVisible(true)} />
           <Modal animationType="slide" transparent={true} visible={modalVisible}>
@@ -113,39 +119,39 @@ const Notification = ({ navigation, route: { params } }) => {
               })}
               onSubmit={(values) => {
                 setLoading(true)
-                firestoreData
+                firestore()
                   .collection("announcement")
                   .add({
-                    createdAt: firestoreData.Timestamp.now(),
+                    createdAt: firestore.Timestamp.now(),
                     description: values.description,
                   })
                   .then(async (r) => {
-                    firestoreData
+                    firestore()
                       .collection("Masjid")
-                      .doc(masjidId)
+                      .doc(masjid.uid)
                       .update({
-                        announcementList: firestoreData.FieldValue.arrayUnion(r.id),
+                        announcementList: firestore.FieldValue.arrayUnion(r.id),
                       })
                       .then(
                         async () => {
-                          const masjidTokens = await firestore()
-                            .collection("Masjid")
-                            .doc(masjidId)
-                            .get()
-                          if (masjidTokens.data().tokens) {
-                            console.log(masjidTokens.data().tokens, "===>some")
-                            for (const token of masjidTokens.data().tokens) {
+                          if (masjid.tokens) {
+                            console.log(masjid.tokens, "===>some")
+                            for (const token of masjid.tokens) {
                               await axios
                                 .post(
                                   "https://fcm.googleapis.com/fcm/send",
                                   {
                                     to: token,
                                     notification: {
-                                      title: masjidTokens.data().name,
+                                      title: masjid.name,
                                       body: values.description,
                                     },
                                     data: {
                                       announcement: true,
+                                      id: r.id,
+                                      createdAt: firestore.Timestamp.now(),
+                                      description: values.description,
+                                      masjidId: masjid.uid,
                                     },
                                   },
                                   {
@@ -218,7 +224,7 @@ const Notification = ({ navigation, route: { params } }) => {
                           placeholder="Enter Your Notification..."
                           placeholderTextColor="grey"
                         />
-                        {errors.description && touched.email && (
+                        {errors.description && (
                           <Text style={styles.error}>{errors.description}</Text>
                         )}
                       </View>
@@ -292,12 +298,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
-  // editTime: {
-  //   backgroundColor: "#dddd",
-  //   borderRadius: 8,
-  //   paddingHorizontal: 10,
-  //   paddingVertical: 5,
-  // },
+  error: {
+    color: "red",
+  },
   fab: {
     backgroundColor: "#1F441E",
     bottom: 0,
@@ -330,11 +333,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  // textStyle1: {
-  //   color: "white",
-  //   fontWeight: "bold",
-  //   textAlign: "center",
-  // },
 })
 
 export default Notification

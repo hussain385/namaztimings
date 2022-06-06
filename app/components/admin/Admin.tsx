@@ -1,26 +1,26 @@
 import _ from "lodash"
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Dimensions, FlatList, SafeAreaView, Text, TouchableOpacity, View } from "react-native"
 import { useSelector } from "react-redux"
-import { isEmpty, isLoaded, populate, useFirestoreConnect } from "react-redux-firebase"
-import { modifyData, selectFirebase, selectFirestore } from "../../hooks/firebase"
+import { isEmpty, isLoaded } from "react-redux-firebase"
+import { modifyData, selectFirebase } from "../../hooks/firebase"
 import AdminCard from "./AdminCard"
 import AdminView from "./AdminView"
-import Icon from "react-native-vector-icons/FontAwesome5"
 import { Header } from "react-native-elements"
 import { ActivityIndicator } from "react-native-paper"
-import { DrawerScreenProps } from "@react-navigation/drawer"
-import { DrawerStackParamList } from "../../navigation"
-import { Masjid, MasjidRequest, User } from "../../types/firestore"
+import { HomePropsType } from "../../navigation"
+import { Masjid } from "../../types/firestore"
 import firestore from "@react-native-firebase/firestore"
+import FontAwesome from "react-native-vector-icons/FontAwesome"
 
 // const populates = [
 //   { child: "requestList", root: "requests", childAlias: "requests" },
 //   { child: "adminId", root: "users", childAlias: "admin" },
 // ]
 
-const Admin: React.FC<DrawerScreenProps<DrawerStackParamList, "Admin view">> = ({ navigation }) => {
+const Admin: React.FC<HomePropsType<"Admin view">> = ({ navigation }) => {
   const { auth, profile } = useSelector(selectFirebase)
+  const [loading, setLoading] = useState(true)
   // const firestore = useSelector(selectFirestore)
   // useFirestoreConnect([
   //   {
@@ -38,8 +38,13 @@ const Admin: React.FC<DrawerScreenProps<DrawerStackParamList, "Admin view">> = (
   // const snapshot = populate(firestore, "myMasjids", populates)
   const [snapshot, setSnapshot] = useState<Masjid[]>([])
   useEffect(() => {
-    firestore()
-      .collection("Masjid")
+    setLoading(true)
+    const collection = profile.isAdmin
+      ? firestore().collection("Masjid")
+      : firestore()
+          .collection("Masjid")
+          .where("adminId", "==", isLoaded(auth) && !isEmpty(auth) ? auth.uid : "")
+    collection
       .get()
       .then((e) => e.docs.map((x) => ({ ...(x.data() as Masjid), uid: x.id })))
       // .then(async (masjid) => {
@@ -59,40 +64,41 @@ const Admin: React.FC<DrawerScreenProps<DrawerStackParamList, "Admin view">> = (
       //     admin: users.find((userData) => userData.uid === masjidData.adminId),
       //   })) as Masjid[]
       // })
-      .then((value) => setSnapshot(value))
-  }, [])
+      .then((value) => setSnapshot(_.sortBy(value, "name")))
+      .then(() => setLoading(false))
+  }, [profile.isAdmin])
 
   return (
     <SafeAreaView>
-      {snapshot.length > 1 && (
-        <Header
-          containerStyle={{
-            shadowOpacity: 50,
-            elevation: 50,
-          }}
-          leftComponent={
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
-              <Icon name="bars" color="#ffff" size={26} style={{ paddingLeft: 10 }} />
-            </TouchableOpacity>
-          }
-          centerComponent={
-            <View>
-              <Text
-                style={{
-                  color: "#ffff",
-                  fontSize: 22,
-                  marginBottom: 5,
-                  textAlign: "center",
-                }}
-              >
-                Admin
-              </Text>
-            </View>
-          }
-          backgroundColor="#1F441E"
-        />
-      )}
-      {!isLoaded(snapshot) && (
+      {/* {snapshot.length > 1 && ( */}
+      <Header
+        containerStyle={{
+          shadowOpacity: 50,
+          elevation: 50,
+        }}
+        leftComponent={
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <FontAwesome name="arrow-left" color="#ffff" size={26} style={{ paddingLeft: 10 }} />
+          </TouchableOpacity>
+        }
+        centerComponent={
+          <View>
+            <Text
+              style={{
+                color: "#ffff",
+                fontSize: 22,
+                marginBottom: 5,
+                textAlign: "center",
+              }}
+            >
+              Admin
+            </Text>
+          </View>
+        }
+        backgroundColor="#1F441E"
+      />
+      {/* )} */}
+      {loading && (
         <View
           style={{
             height: Dimensions.get("screen").height * 0.8,
@@ -111,7 +117,7 @@ const Admin: React.FC<DrawerScreenProps<DrawerStackParamList, "Admin view">> = (
             return (
               <AdminView
                 route={{
-                  params: { Masjid: data, masjidId: doc.uid, isSingle: true },
+                  params: { Masjid: data },
                 }}
                 navigation={navigation}
               />

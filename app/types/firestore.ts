@@ -33,7 +33,7 @@ export interface Masjid {
 }
 
 export interface Announcement {
-  id?: string
+  id: string
   createdAt: FirebaseFirestoreTypes.Timestamp
   description: string
 }

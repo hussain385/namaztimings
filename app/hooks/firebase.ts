@@ -12,6 +12,7 @@ import { Announcement, Masjid, User } from "../types/firestore"
 import { useAppDispatch, useAppSelector } from "./redux"
 import firebase from "@react-native-firebase/app"
 import { populate, useFirestoreConnect } from "react-redux-firebase"
+import storage from "@react-native-firebase/storage"
 
 // @ts-ignore
 const GeoFirestore = geofirestore.initializeApp(firebase.firestore())
@@ -62,14 +63,14 @@ export function sortMasjidData1(
     return []
   }
 
-  _.forEach(snapshot, (data: Masjid, key: string) => {
+  _.forEach(snapshot, (data: Masjid) => {
     // console.log(data, 'sortMasjidData1');
     if (_.isNil(data)) {
       return
     }
     const loc1 = data.g.geopoint
     const d = haversine(loc1, { latitude, longitude })
-    const tempData = modifyData(data, key, d)
+    const tempData = modifyData(data, data.uid!, d)
     // console.log(data, tempData, '<======== tempData');
     const adminId = tempData.adminId
     // console.log(adminId, _.isEmpty(adminId), typeof adminId);
@@ -164,7 +165,7 @@ export function useGetRadMasjidData1(radius = 50) {
     geoCollection
       .near({
         center: new firestore.GeoPoint(location.latitude, location.longitude),
-        radius: 5000,
+        radius,
       })
       .get()
       .then(
@@ -176,6 +177,7 @@ export function useGetRadMasjidData1(radius = 50) {
         (reason) => {
           setError(reason)
           console.log(reason)
+          setLoading(false)
         },
       )
   }
@@ -306,4 +308,36 @@ export function useGetMasjidPopulate({
   }, [])
 
   return { masjid, masjidData, location }
+}
+
+export async function uploadImageAsync(uri: string) {
+  // Why are we using XMLHttpRequest? See:
+  // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+  const blob: any = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.onload = function () {
+      resolve(xhr.response)
+    }
+    xhr.onerror = function (e) {
+      console.log(e)
+      reject(new TypeError("Network request failed"))
+    }
+    xhr.responseType = "blob"
+    xhr.open("GET", uri, true)
+    xhr.send(null)
+  })
+
+  const filename = uri?.substring(uri.lastIndexOf("/") + 1)
+  // const uploadUri = Platform.OS === "ios" ? image.replace("file://", "") : image
+  const ref = storage().ref("/masjid/" + filename)
+  await ref.putFile(uri)
+  return await ref.getDownloadURL()
+
+  // const fileRef = ref(getStorage(), uuid.v4())
+  // const result = await uploadBytes(fileRef, blob)
+
+  // We're done with the blob, close and release it
+  // blob.close()
+
+  // return await ref.getDownloadURL()
 }

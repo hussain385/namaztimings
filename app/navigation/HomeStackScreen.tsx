@@ -8,12 +8,25 @@ import Maps1 from "../views/maps/Maps1"
 import ShowMore from "../views/showMore/ShowMore"
 import ForgotPassword from "../views/login/ForgotPassword"
 import * as React from "react"
-import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
+import {
+  createStackNavigator,
+  StackNavigationProp,
+  StackScreenProps,
+} from "@react-navigation/stack"
 import TabStackScreen, { TabStackParamList } from "./TabStackScreen"
-import { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native"
-import { DrawerScreenProps } from "@react-navigation/drawer"
+import {
+  CompositeNavigationProp,
+  CompositeScreenProps,
+  NavigatorScreenParams,
+} from "@react-navigation/native"
+import { DrawerNavigationProp, DrawerScreenProps } from "@react-navigation/drawer"
 import { DrawerStackParamList } from "./DrawerStackScreen"
 import { Masjid } from "../types/firestore"
+import Admin from "../components/admin/Admin"
+import AdminView from "../components/admin/AdminView"
+import Notifications from "../components/masjidInfo/Notifications"
+import Donation from "../components/donation/Donation"
+import AdminNotification from "../components/admin/AdminNotification"
 
 export type HomeStackParamList = {
   Tabs: NavigatorScreenParams<TabStackParamList>
@@ -29,6 +42,21 @@ export type HomeStackParamList = {
   }
   "Show More": undefined
   Forgot: undefined
+  "Admin view": undefined
+  Admin: {
+    Masjid: Masjid
+  }
+  Notifications: {
+    masjid: Masjid
+  }
+  Donation: {
+    masjid: Masjid
+    edit: boolean
+    adminView?: boolean
+  }
+  "Admin Notification": {
+    masjid: Masjid
+  }
 }
 
 const HomeStack = createStackNavigator<HomeStackParamList>()
@@ -36,6 +64,11 @@ const HomeStack = createStackNavigator<HomeStackParamList>()
 export type HomePropsType<Name extends keyof HomeStackParamList> = CompositeScreenProps<
   StackScreenProps<HomeStackParamList, Name>,
   DrawerScreenProps<DrawerStackParamList, "Root">
+>
+
+export type HomePropsNavigation<Name extends keyof HomeStackParamList> = CompositeNavigationProp<
+  StackNavigationProp<HomeStackParamList, Name>,
+  DrawerNavigationProp<DrawerStackParamList, "Root">
 >
 
 const HomeStackScreen: React.FC<DrawerScreenProps<DrawerStackParamList, "Root">> = ({
@@ -130,6 +163,41 @@ const HomeStackScreen: React.FC<DrawerScreenProps<DrawerStackParamList, "Root">>
       component={ForgotPassword}
       options={{
         title: "Forgot",
+        headerShown: false,
+      }}
+    />
+    <HomeStack.Screen
+      options={{
+        headerShown: false,
+      }}
+      name="Admin view"
+      component={Admin}
+    />
+    <HomeStack.Screen
+      options={{
+        headerShown: false,
+      }}
+      name="Admin"
+      component={AdminView}
+    />
+    <HomeStack.Screen
+      options={{
+        headerShown: false,
+      }}
+      name="Notifications"
+      component={Notifications}
+    />
+    <HomeStack.Screen
+      name="Donation"
+      component={Donation}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <HomeStack.Screen
+      name="Admin Notification"
+      component={AdminNotification}
+      options={{
         headerShown: false,
       }}
     />

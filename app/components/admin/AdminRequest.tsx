@@ -11,11 +11,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native"
-import Icon from "react-native-vector-icons/FontAwesome5"
 import { useFirestore } from "react-redux-firebase"
 import * as Yup from "yup"
 import { getFcmToken } from "../../hooks/token"
 import axios from "axios"
+import { Masjid } from "../../types/firestore"
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/
@@ -36,7 +36,7 @@ const AdminRequestSchema = Yup.object().shape({
     .required("Your Phone no. is required"),
 })
 
-const AdminRequest = ({ id, masjidName }) => {
+const AdminRequest = ({ masjid }: { masjid: Masjid }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const firestore = useFirestore()
   const [loading, setLoading] = useState(false)
@@ -66,7 +66,7 @@ const AdminRequest = ({ id, masjidName }) => {
                 userEmail: "",
                 userName: "",
                 userPhone: "",
-                masjidID: `${id}`,
+                masjidID: `${masjid.uid}`,
               }}
               validationSchema={AdminRequestSchema}
               onSubmit={async (values) => {
@@ -88,7 +88,7 @@ const AdminRequest = ({ id, masjidName }) => {
                             setLoading(false)
                             await axios.post("https://namaz-timings-pakistan.herokuapp.com/email", {
                               to: "namaz.timing.pakistan@gmail.com",
-                              body: `Dear Admin,\n${masjidName} has received an admin request from ${values.userName}`,
+                              body: `Dear Admin,\n${masjid.name} has received an admin request from ${values.userName}`,
                               title: "Admin Notification",
                             })
                           },
@@ -252,15 +252,34 @@ const AdminRequest = ({ id, masjidName }) => {
 }
 
 const styles = StyleSheet.create({
+  button: {
+    borderRadius: 10,
+    elevation: 2,
+    padding: 10,
+    width: "30%",
+  },
+  buttonClose: {
+    backgroundColor: "#1F441E",
+    marginLeft: 15,
+  },
+  buttonOpen: {
+    backgroundColor: "#5C5C5C",
+    marginRight: 15,
+  },
+  centeredView: {
+    alignItems: "center",
+    backgroundColor: "#00000071",
+    flex: 1,
+    justifyContent: "center",
+  },
   container: {
     width: "130%",
   },
-  // centeredView: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   backgroundColor: '#00000071',
-  // },
+  modalText: {
+    fontSize: 20,
+    marginBottom: 15,
+    textAlign: "center",
+  },
   modalView: {
     alignItems: "center",
     backgroundColor: "white",
@@ -276,20 +295,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
   },
-  // button: {
-  //   borderRadius: 10,
-  //   padding: 10,
-  //   elevation: 2,
-  //   width: '30%',
-  // },
-  buttonOpen: {
-    backgroundColor: "#5C5C5C",
-    marginRight: 15,
-  },
-  buttonClose: {
-    backgroundColor: "#1F441E",
-    marginLeft: 15,
-  },
   textStyle: {
     color: "white",
     fontWeight: "bold",
@@ -298,11 +303,6 @@ const styles = StyleSheet.create({
   textStyle1: {
     color: "#CEE6B4",
     fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    fontSize: 20,
-    marginBottom: 15,
     textAlign: "center",
   },
 })

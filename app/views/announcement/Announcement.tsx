@@ -1,6 +1,6 @@
 import _, { isEmpty } from "lodash"
 import React, { useEffect, useState } from "react"
-import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native"
+import { Dimensions, FlatList, Text, View } from "react-native"
 import { ActivityIndicator } from "react-native-paper"
 import AntDesign from "react-native-vector-icons/AntDesign"
 import { useGetFavMasjidData } from "../../hooks/firebase"
@@ -10,9 +10,12 @@ import { HomePropsType } from "../../navigation"
 import { Announcement } from "../../types/firestore"
 
 const AnnouncementView: React.FC<HomePropsType<"Announcement">> = ({ navigation }) => {
-  const [announcements, setAnnoucements] = useState<Announcement[]>([])
+  const [announcements, setAnnoucements] = useState<
+    (Announcement & { name: string; masjidId: string })[]
+  >([])
   const { masjid: masjidData, loading, GetDataFavMasjid: GetData } = useGetFavMasjidData()
-  const announcements1: Announcement[] = []
+  const announcements1: typeof announcements = []
+
   useEffect(() => {
     async function fetchData() {
       await GetData()
@@ -25,12 +28,15 @@ const AnnouncementView: React.FC<HomePropsType<"Announcement">> = ({ navigation 
   }, [])
 
   useEffect(() => {
-    masjidData.map((masjid) => {
+    masjidData.forEach((masjid) => {
       if (masjid.announcements) {
-        masjid.announcements.map((announcement) =>
+        masjid.announcements.forEach((announcement) =>
           announcements1.push({
+            id: announcement.id,
+            name: masjid.name,
             createdAt: announcement.createdAt,
             description: announcement.description,
+            masjidId: masjid.uid!,
           }),
         )
         setAnnoucements(announcements1)
@@ -41,7 +47,7 @@ const AnnouncementView: React.FC<HomePropsType<"Announcement">> = ({ navigation 
 
   return (
     <View>
-      <HeaderComp navigation={navigation} heading="Announcements" />
+      <HeaderComp heading="Announcements" />
       {isEmpty(announcements) && !loading ? (
         <View
           style={{

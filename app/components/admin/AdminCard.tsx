@@ -1,12 +1,11 @@
 import React, { PureComponent } from "react"
 import { ImageBackground, Linking, Text, TouchableOpacity, View } from "react-native"
 import { Masjid } from "../../types/firestore"
-import { DrawerStackParamList } from "../../navigation"
-import { DrawerNavigationProp } from "@react-navigation/drawer/src/types"
+import { HomePropsNavigation } from "../../navigation"
 
 interface AdminCardProps {
   masjid: Masjid
-  nav: DrawerNavigationProp<DrawerStackParamList, "Admin view">
+  nav: HomePropsNavigation<"Admin view">
 }
 
 export default class AdminCard extends PureComponent<AdminCardProps> {
