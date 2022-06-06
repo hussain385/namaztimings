@@ -22,6 +22,7 @@ import {
   AnnouncementStatus,
   useAnnouncements,
 } from "../../redux/announcementSlicer"
+import firestore from "@react-native-firebase/firestore"
 
 const NotificationCard = ({
   masjid,
@@ -32,19 +33,19 @@ const NotificationCard = ({
 }) => {
   const [modalVisible, setModalVisible] = useState(false)
   const [loading, setLoading] = useState(false)
-  const firestore = useFirestore()
   const { auth, profile } = useAppSelector(selectFirebase)
   const localAnnouncement = useAppSelector(useAnnouncements)
   const dispatch = useAppDispatch()
 
   const Delete = async () => {
+    console.log(masjid.uid, announcement.id, "the Delete")
     setLoading(true)
-    await firestore
+    await firestore()
       .collection("announcement")
       .doc(announcement.id)
       .delete()
       .then(() => {
-        firestore
+        firestore()
           .collection("Masjid")
           .doc(masjid.uid)
           .update({
