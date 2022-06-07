@@ -340,15 +340,15 @@ const styles = StyleSheet.create({
   //   padding: 16,
   //   textAlign: "center",
   // },
-  statusIndicator: {
-    backgroundColor: "#74ff1c",
-    borderColor: "#1F441E",
-    borderRadius: 1000,
-    borderWidth: 3,
-    height: 15,
-    marginLeft: -10,
-    width: 15,
-  },
+  // statusIndicator: {
+  //   backgroundColor: "#74ff1c",
+  //   borderColor: "#1F441E",
+  //   borderRadius: 1000,
+  //   borderWidth: 3,
+  //   height: 15,
+  //   marginLeft: -10,
+  //   width: 15,
+  // },
 })
 
 export default HomeScreen

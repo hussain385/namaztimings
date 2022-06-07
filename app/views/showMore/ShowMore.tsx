@@ -11,12 +11,10 @@ import {
 import { Header } from "react-native-elements"
 import { Card } from "react-native-paper"
 import Icon from "react-native-vector-icons/FontAwesome5"
-import { useDispatch } from "react-redux"
-import { isLoaded, populate, useFirestoreConnect } from "react-redux-firebase"
-import { selectCords, setLocation } from "../../redux/locationSlicer"
-import { getCurrentLocation, selectFirestore, sortMasjidData1 } from "../../hooks/firebase"
+import { setLocation } from "../../redux/locationSlicer"
+import { getCurrentLocation, useGetMasjidPopulate } from "../../hooks/firebase"
 import moment from "moment"
-import { useAppSelector } from "../../hooks/redux"
+import { useAppDispatch } from "../../hooks/redux"
 import { Masjid } from "../../types/firestore"
 import { HomePropsNavigation, HomePropsType } from "../../navigation"
 
@@ -194,21 +192,11 @@ const Item = ({ masjid, nav }: { masjid: Masjid; nav: HomePropsNavigation<"Show 
 }
 
 const ShowMore: React.FC<HomePropsType<"Show More">> = ({ navigation }) => {
-  // const [masjidData, loading] = GetAllMasjidData();
-  const populates = [
-    { child: "adminId", root: "users", childAlias: "user" }, // replace owner with user object
-  ]
-  useFirestoreConnect([
-    {
-      collection: "Masjid",
-      populates,
-    },
-  ])
-  const location = useAppSelector(selectCords)
-  const firestore = useAppSelector(selectFirestore)
-  const masjid = populate(firestore, "Masjid", populates)
-  const dispatch = useDispatch()
-  const masjidData = sortMasjidData1(masjid, location)
+  const { masjidData, location } = useGetMasjidPopulate({
+    longitude: undefined,
+    latitude: undefined,
+  })
+  const dispatch = useAppDispatch()
 
   React.useEffect(() => {
     getCurrentLocation()
@@ -221,7 +209,7 @@ const ShowMore: React.FC<HomePropsType<"Show More">> = ({ navigation }) => {
       .catch((e) => {
         console.log(e)
       })
-  }, [dispatch])
+  }, [])
 
   // @ts-ignore
   const renderItem = ({ item }: { item: Masjid }) => <Item nav={navigation} masjid={item} />
@@ -271,7 +259,7 @@ const ShowMore: React.FC<HomePropsType<"Show More">> = ({ navigation }) => {
         }
         backgroundColor="#1F441E"
       />
-      {!isLoaded(masjid) && <ActivityIndicator color="#1F441E" size="large" />}
+      {masjidData.length === 0 && <ActivityIndicator color="#1F441E" size="large" />}
       <FlatList
         data={masjidData}
         renderItem={renderItem}

@@ -1,4 +1,4 @@
-import firestore, { FirebaseFirestoreTypes } from "@react-native-firebase/firestore"
+import firestore from "@react-native-firebase/firestore"
 import * as geofirestore from "geofirestore"
 import haversine from "haversine"
 import _, { isArray } from "lodash"
@@ -11,7 +11,6 @@ import { GeoQuerySnapshot } from "geofirestore-core"
 import { Announcement, Masjid, User } from "../types/firestore"
 import { useAppDispatch, useAppSelector } from "./redux"
 import firebase from "@react-native-firebase/app"
-import { populate, useFirestoreConnect } from "react-redux-firebase"
 import storage from "@react-native-firebase/storage"
 import axios from "axios"
 
@@ -25,9 +24,9 @@ export const selectFirestore = (state: RootState) => state.firestore
 export const getCurrentLocation = async () => {
   const { status } = await Location.requestForegroundPermissionsAsync()
 
-  if (status !== "granted") {
-    return
-  }
+  // if (status !== "granted") {
+  //   return
+  // }
 
   return Location.getCurrentPositionAsync({
     accuracy: Location.Accuracy.High,

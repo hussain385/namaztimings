@@ -24,7 +24,7 @@ import * as Yup from "yup"
 import { pushNotification, selectFirebase } from "../../hooks/firebase"
 import axios from "axios"
 import { getFcmToken } from "../../hooks/token"
-import { Masjid } from "../../types/firestore"
+import { Masjid, User } from "../../types/firestore"
 
 interface EditProps {
   masjid: Partial<Masjid>
@@ -187,7 +187,7 @@ const Edit: React.FC<EditProps> = ({
   }
 
   async function onRequest(
-    values: { userName: string },
+    values: any,
     setSubmitting: { (isSubmitting: boolean): void; (arg0: boolean): void },
   ) {
     const token = await getFcmToken()
@@ -219,11 +219,15 @@ const Edit: React.FC<EditProps> = ({
                         text: "Ok",
                         onPress: async () => {
                           setModalVisible(!modalVisible)
-                          await axios.post("https://namaz-timings-pakistan.herokuapp.com/email", {
-                            to: "namaz.timing.pakistan@gmail.com",
-                            body: `Dear Admin,\n${masjid.name} has received an time edit request from ${values.userName}`,
-                            title: "Admin Notification",
-                          })
+                          await axios
+                            .post("https://namaz-timings-pakistan.herokuapp.com/email", {
+                              to: "namaz.timing.pakistan@gmail.com",
+                              body: `Dear Admin,\n${masjid.name} has received an time edit request from ${values.userName}`,
+                              title: "Admin Notification",
+                            })
+                            .catch((e) => {
+                              console.log(e)
+                            })
                         },
                       },
                     ],
@@ -236,14 +240,14 @@ const Edit: React.FC<EditProps> = ({
                     .get()
                     .then((value1) => {
                       return pushNotification({
-                        to: value1.data()?.token,
+                        to: (value1.data() as User).token || "",
                         notification: {
                           title: "Request",
                           body: `You got request of namaz timings from ${masjid.name}`,
                         },
                       })
                     })
-                    .then((value1) => {
+                    .then(() => {
                       setSubmitting(false)
                       Alert.alert(
                         "Request Send!",
@@ -253,23 +257,22 @@ const Edit: React.FC<EditProps> = ({
                             text: "Ok",
                             onPress: async () => {
                               setModalVisible(!modalVisible)
-                              await axios.post(
-                                "https://namaz-timings-pakistan.herokuapp.com/email",
-                                {
+
+                              await axios
+                                .post("https://namaz-timings-pakistan.herokuapp.com/email", {
                                   to: masjid.user?.email,
                                   body: `Dear Admin,\n${masjid.name} has received an time edit request from ${values.userName}`,
                                   title: "Admin Notification",
-                                },
-                              )
+                                })
+                                .catch((e) => {
+                                  console.log(e)
+                                })
                             },
                           },
                         ],
                         { cancelable: false },
                       )
                     })
-                  // .catch((reason) => {
-                  //   console.log(reason, "the Error from Edit")
-                  // })
                 }
               },
               (reason) => {
@@ -346,7 +349,7 @@ const Edit: React.FC<EditProps> = ({
                   body: "Timings has been updated",
                 },
               }).then(
-                (value1) => {
+                () => {
                   // console.log(value1.data, "response from axios")
                   Alert.alert("Notifications", "Successfully sent notifications to the users")
                 },

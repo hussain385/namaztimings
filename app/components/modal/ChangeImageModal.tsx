@@ -159,18 +159,16 @@ const ChangeImageModal = ({
                       console.log(masjid.pictureURL)
                       if (masjid.pictureURL != null) {
                         const ref = storage().refFromURL(masjid.pictureURL)
-                        ref
-                          .delete()
-                          .then(() =>
-                            firestore()
-                              .collection("Masjid")
-                              .doc(masjid.uid)
-                              .update({
-                                pictureURL: "",
-                              })
-                              .then(async () => {}),
-                          )
-                          .catch((e) => console.log(e, "sas"))
+                        ref.delete().finally(() => {
+                          console.log("in Finally")
+                          firestore()
+                            .collection("Masjid")
+                            .doc(masjid.uid)
+                            .update({
+                              pictureURL: null,
+                            })
+                            .then(() => setImageChangeModal(false))
+                        })
                       }
                     },
                   },
