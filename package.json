@@ -7,7 +7,8 @@
     "ios": "expo run:ios",
     "android:release": "cd android; ./gradlew clean;./gradlew assembleRelease;cd ..;",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "postinstall": "husky install"
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "6.1.2",
@@ -83,5 +84,9 @@
   "resolutions": {
     "@types/react": "17.0.45"
   },
-  "private": true
+  "private": true,
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --fix",
+    "*.{js,jsx,ts,tsx,md,html,css}": "prettier --write"
+  }
 }
