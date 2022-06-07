@@ -35,7 +35,11 @@ const AdminView: React.FC<HomePropsType<"Admin">> = ({ navigation, route }) => {
       .collection("Masjid")
       .doc(masjidParam.uid)
       .onSnapshot((documentSnapshot) => {
-        setMasjidSnapshot({ ...(documentSnapshot.data() as Masjid), uid: documentSnapshot.id })
+        setMasjidSnapshot({
+          ...(documentSnapshot.data() as Masjid),
+          uid: documentSnapshot.id,
+          user: masjidParam.user,
+        })
       })
 
     return () => subscriber()

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { Dimensions, FlatList, SafeAreaView, Text, TouchableOpacity, View } from "react-native"
 import { useSelector } from "react-redux"
 import { isEmpty, isLoaded } from "react-redux-firebase"
-import { modifyData, selectFirebase } from "../../hooks/firebase"
+import { modifyData, selectFirebase, sortMasjidData } from "../../hooks/firebase"
 import AdminCard from "./AdminCard"
 import AdminView from "./AdminView"
 import { Header } from "react-native-elements"
@@ -12,6 +12,7 @@ import { HomePropsType } from "../../navigation"
 import { Masjid } from "../../types/firestore"
 import firestore from "@react-native-firebase/firestore"
 import FontAwesome from "react-native-vector-icons/FontAwesome"
+import { useAppSelector } from "../../hooks/redux"
 
 // const populates = [
 //   { child: "requestList", root: "requests", childAlias: "requests" },
@@ -19,8 +20,9 @@ import FontAwesome from "react-native-vector-icons/FontAwesome"
 // ]
 
 const Admin: React.FC<HomePropsType<"Admin view">> = ({ navigation }) => {
-  const { auth, profile } = useSelector(selectFirebase)
+  const { auth, profile } = useAppSelector(selectFirebase)
   const [loading, setLoading] = useState(true)
+  const location = useAppSelector((state) => state.location)
   // const firestore = useSelector(selectFirestore)
   // useFirestoreConnect([
   //   {
@@ -64,6 +66,7 @@ const Admin: React.FC<HomePropsType<"Admin view">> = ({ navigation }) => {
       //     admin: users.find((userData) => userData.uid === masjidData.adminId),
       //   })) as Masjid[]
       // })
+      .then((masjids) => sortMasjidData(masjids, location))
       .then((value) => setSnapshot(_.sortBy(value, "name")))
       .then(() => setLoading(false))
   }, [profile.isAdmin])

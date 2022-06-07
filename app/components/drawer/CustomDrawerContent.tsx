@@ -14,6 +14,9 @@ const CustomDrawerContent: FC<DrawerContentComponentProps> = ({ navigation }) =>
 
   async function handleSignOut() {
     console.log("logging Out...", auth)
+    await firebaseApp.updateProfile({
+      token: null,
+    })
     await firebaseApp.logout()
     navigation.navigate("Home")
   }

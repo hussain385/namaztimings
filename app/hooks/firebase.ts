@@ -1,7 +1,7 @@
-import firestore from "@react-native-firebase/firestore"
+import firestore, { FirebaseFirestoreTypes } from "@react-native-firebase/firestore"
 import * as geofirestore from "geofirestore"
 import haversine from "haversine"
-import _ from "lodash"
+import _, { isArray } from "lodash"
 import React, { useMemo, useState } from "react"
 import { selectCords, setLocation } from "../redux/locationSlicer"
 import { useFavorites } from "../redux/favSlicer"
@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "./redux"
 import firebase from "@react-native-firebase/app"
 import { populate, useFirestoreConnect } from "react-redux-firebase"
 import storage from "@react-native-firebase/storage"
+import axios from "axios"
 
 // @ts-ignore
 const GeoFirestore = geofirestore.initializeApp(firebase.firestore())
@@ -68,6 +69,7 @@ export function sortMasjidData1(
     if (_.isNil(data)) {
       return
     }
+    // console.log(data.name, "sortMasjidData1")
     const loc1 = data.g.geopoint
     const d = haversine(loc1, { latitude, longitude })
     const tempData = modifyData(data, data.uid!, d)
@@ -116,27 +118,35 @@ function sortMasjidDataHandle(tempData: Masjid, users: User[]): Masjid[] {
       })
     }
   }
-  console.log(masjids, "from sortMasjidDataHandle")
+  // console.log(masjids, "from sortMasjidDataHandle")
   return masjids
 }
 
 export async function sortMasjidData(
-  snapshot: GeoQuerySnapshot,
+  snapshot: GeoQuerySnapshot | Masjid[],
   { latitude, longitude }: { latitude: number; longitude: number },
 ) {
   const masjids: Masjid[] = []
   const users = await GetUsers()
-  console.log(snapshot)
-  console.log(snapshot.docs, "users from sortMasjidData")
-  _.forEach(snapshot.docs, (docSnapshot) => {
-    const data = docSnapshot.data()
-    console.log(data, "data from sortMasjidData")
-    const loc1 = data.g.geopoint
-    const d = haversine(loc1, { latitude, longitude })
-    const tempData = modifyData(data, docSnapshot.id, d)
-    console.log(tempData, "tempData from sortMasjidData")
-    masjids.push(...sortMasjidDataHandle(tempData, users))
-  })
+  if (isArray(snapshot)) {
+    _.forEach(snapshot, (data) => {
+      // console.log(data.name, "asd", data)
+      const loc1 = data.g.geopoint
+      const d = haversine(loc1, { latitude, longitude })
+      const tempData = modifyData(data, data.uid!, d)
+      masjids.push(...sortMasjidDataHandle(tempData, users))
+    })
+  } else {
+    _.forEach(snapshot.docs, (docSnapshot) => {
+      const data = docSnapshot.data()
+      // console.log(data.name, docSnapshot.id)
+      const loc1 = data.g.geopoint
+      const d = haversine(loc1, { latitude, longitude })
+      const tempData = modifyData(data, docSnapshot.id, d)
+      masjids.push(...sortMasjidDataHandle(tempData, users))
+    })
+  }
+
   return _.sortBy(masjids, "distance")
 }
 
@@ -150,18 +160,20 @@ export function useGetRadMasjidData1(radius = 50) {
   const location = useAppSelector(selectCords)
 
   const getLocation = async () => {
-    if (_.isNull(masjid)) {
-      setLoading(true)
-    }
-
-    const location1 = await getCurrentLocation()
-    if (location1) {
-      dispatch(setLocation(location1.coords))
-    }
-    setLoading(false)
+    await getCurrentLocation().then(
+      (value) => {
+        if (value) {
+          dispatch(setLocation(value.coords))
+        }
+      },
+      (reason) => {
+        console.log(reason, "From getLocation useGetRadMasjidData1")
+      },
+    )
   }
 
   async function GetDataRadMasjid() {
+    setLoading(true)
     geoCollection
       .near({
         center: new firestore.GeoPoint(location.latitude, location.longitude),
@@ -340,4 +352,31 @@ export async function uploadImageAsync(uri: string) {
   // blob.close()
 
   // return await ref.getDownloadURL()
+}
+
+interface PushProps {
+  to: string
+  notification: {
+    title: string
+    body: string
+  }
+  data?: any
+}
+
+export function pushNotification({ to, notification, data }: PushProps) {
+  return axios.post(
+    "https://fcm.googleapis.com/fcm/send",
+    {
+      to,
+      notification,
+      data,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "key=AAAAE5W6Aqg:APA91bFw_t03bZFaOIdMQj-irRXr5eygS8UBqL3Vd7UYUpS9u3n96rCPxiwfTLBpyb69og2zOr7amP2bpgKVqjzY7qUdxd2Etdfkxm7qik013Z6cUrzji1P2Q-ehfl-RvcWQ91ROD_4G",
+      },
+    },
+  )
 }

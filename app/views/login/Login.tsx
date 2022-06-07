@@ -26,6 +26,7 @@ import CoText from "../../components/Text/Text"
 import { selectFirebase } from "../../hooks/firebase"
 import { DrawerScreenProps } from "@react-navigation/drawer"
 import { DrawerStackParamList } from "../../navigation"
+import { getFcmToken } from "../../hooks/token"
 
 // const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get("window").width
@@ -54,10 +55,19 @@ const Login: React.FC<DrawerScreenProps<DrawerStackParamList, "Login">> = ({ nav
     }
   }
 
+  async function updateTokenAndNavigate() {
+    const token = await getFcmToken()
+    await firebaseApp.updateProfile({
+      token,
+    })
+    navigation.navigate("Root", {
+      screen: "Admin view",
+    })
+  }
+
   useEffect(() => {
     if (isLoaded(auth) && !isEmpty(auth)) {
-      console.log("the current user:", auth)
-      navigation.navigate("Admin view")
+      updateTokenAndNavigate()
     }
   }, [auth, navigation])
 

@@ -7,6 +7,7 @@ export interface User {
   phone: string
   id?: string
   uid?: string
+  token?: string
 }
 
 export interface Masjid {

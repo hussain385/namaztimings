@@ -14,20 +14,20 @@ import DrawerStackScreen from "./navigation/DrawerStackScreen"
 export default function App() {
   const persistor = persistStore(store)
 
-  const rrfConfig = {
-    userProfile: "users",
-    useFirestoreForProfile: true,
-  }
-  const rrfProps = {
-    firebase,
-    config: rrfConfig,
-    dispatch: store.dispatch,
-  }
-
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <ReactReduxFirebaseProvider {...rrfProps}>
+        <ReactReduxFirebaseProvider
+          firebase={firebase}
+          dispatch={store.dispatch}
+          config={{
+            updateProfileOnLogin: true,
+            userProfile: "users",
+            useFirestoreForProfile: true,
+            enableRedirectHandling: false,
+            logErrors: true,
+          }}
+        >
           <NavigationContainer ref={navigationRef}>
             <ToastProvider>
               <DrawerStackScreen />

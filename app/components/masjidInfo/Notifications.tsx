@@ -18,7 +18,7 @@ import { useSelector } from "react-redux"
 import * as Yup from "yup"
 import HeaderComp from "../header/HeaderComp"
 import NotificationCard from "../cards/NotificationCard"
-import { selectFirebase } from "../../hooks/firebase"
+import { pushNotification, selectFirebase } from "../../hooks/firebase"
 import axios from "axios"
 import { storage } from "../../redux/store"
 import { HomePropsType } from "../../navigation"
@@ -137,40 +137,28 @@ const Notification: React.FC<HomePropsType<"Notifications">> = ({
                           if (masjid.tokens) {
                             console.log(masjid.tokens, "===>some")
                             for (const token of masjid.tokens) {
-                              await axios
-                                .post(
-                                  "https://fcm.googleapis.com/fcm/send",
-                                  {
-                                    to: token,
-                                    notification: {
-                                      title: masjid.name,
-                                      body: values.description,
-                                    },
-                                    data: {
-                                      announcement: true,
-                                      id: r.id,
-                                      createdAt: firestore.Timestamp.now(),
-                                      description: values.description,
-                                      masjidId: masjid.uid,
-                                    },
-                                  },
-                                  {
-                                    headers: {
-                                      "Content-Type": "application/json",
-                                      Authorization:
-                                        "key=AAAAE5W6Aqg:APA91bFw_t03bZFaOIdMQj-irRXr5eygS8UBqL3Vd7UYUpS9u3n96rCPxiwfTLBpyb69og2zOr7amP2bpgKVqjzY7qUdxd2Etdfkxm7qik013Z6cUrzji1P2Q-ehfl-RvcWQ91ROD_4G",
-                                    },
-                                  },
-                                )
-                                .then(
-                                  () => {
-                                    setModalVisible(false)
-                                    setLoading(false)
-                                  },
-                                  (reason) => {
-                                    console.log(reason)
-                                  },
-                                )
+                              await pushNotification({
+                                to: token,
+                                notification: {
+                                  title: masjid.name,
+                                  body: values.description,
+                                },
+                                data: {
+                                  announcement: true,
+                                  id: r.id,
+                                  createdAt: firestore.Timestamp.now(),
+                                  description: values.description,
+                                  masjidId: masjid.uid,
+                                },
+                              }).then(
+                                () => {
+                                  setModalVisible(false)
+                                  setLoading(false)
+                                },
+                                (reason) => {
+                                  console.log(reason)
+                                },
+                              )
                             }
                           }
                         },
