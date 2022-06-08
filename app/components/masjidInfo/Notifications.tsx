@@ -32,7 +32,6 @@ const Notification: React.FC<HomePropsType<"Notifications">> = ({
   const { masjid } = params
   const { auth, profile } = useSelector(selectFirebase)
   const [announcements, setAnnouncements] = useState<Announcement[]>([])
-  // const firestoreData = useFirestore()
   const [loading, setLoading] = useState(false)
   // const populates = [
   //   {

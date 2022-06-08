@@ -17,7 +17,6 @@ import { ScrollView } from "react-native-gesture-handler"
 import * as ImagePicker from "expo-image-picker"
 import { ActivityIndicator } from "react-native-paper"
 import { useSelector } from "react-redux"
-import { useFirestore } from "react-redux-firebase"
 import * as Yup from "yup"
 import { selectFirebase, uploadImageAsync } from "../../hooks/firebase"
 import Edit from "../../components/modal/Edit"
@@ -27,6 +26,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 import axios from "axios"
 import { HomePropsType } from "../../navigation"
 import { MasjidTiming } from "../../types/firestore"
+import firestore from "@react-native-firebase/firestore"
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/
@@ -51,7 +51,6 @@ const AddMasjidSchema = Yup.object().shape({
 })
 
 export const AddMasjid: React.FC<HomePropsType<"Add Masjid">> = ({ navigation }) => {
-  const firestore = useFirestore()
   const [image, setImage] = useState("")
   // const [imageLoading, setImageLoading] = useState(false);
   const [loading, setLoading] = useState(false)
@@ -148,27 +147,24 @@ export const AddMasjid: React.FC<HomePropsType<"Add Masjid">> = ({ navigation })
           if (!isEmpty(image)) {
             console.log(image, "inside")
             url = await uploadImageAsync(image)
-            // filename = image?.substring(image.lastIndexOf("/") + 1)
-            // const uploadUri = Platform.OS === "ios" ? image.replace("file://", "") : image
-            // const ref = storage().ref("/masjid/" + filename)
-            // await ref.putFile(uploadUri)
-            // url = await ref.getDownloadURL()
           }
-          const token = await getFcmToken()
-          await firestore
-            .collection("newMasjid")
-            .add({
-              ...data,
-              user: {
-                email: values.userEmail,
-                name: values.userName,
-                phone: values.userPhone,
-              },
-              pictureURL: url,
-              timing,
-              token,
-            })
-            .then(async () => {
+          getFcmToken()
+            .then((token) =>
+              firestore()
+                .collection("newMasjid")
+                .add({
+                  ...data,
+                  user: {
+                    email: values.userEmail,
+                    name: values.userName,
+                    phone: values.userPhone,
+                  },
+                  pictureURL: url,
+                  timing,
+                  token,
+                }),
+            )
+            .then(async () =>
               Alert.alert(
                 "Request send successfully",
                 "Jazak Allah u Khairan for your contribution. Admin will review and approve the newly added masjid in 24 hours.",
@@ -191,7 +187,11 @@ export const AddMasjid: React.FC<HomePropsType<"Add Masjid">> = ({ navigation })
                     },
                   },
                 ],
-              )
+              ),
+            )
+            .catch((reason) => {
+              setLoading(false)
+              console.log(reason.message)
             })
         }}
       >

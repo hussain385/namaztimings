@@ -38,6 +38,19 @@ function DrawerStackScreen() {
       myNotification(remoteMessage.notification?.title, remoteMessage.notification?.body)
       console.log(remoteMessage.data, "The Data from Message")
     })
+
+    messaging().setBackgroundMessageHandler(async (message) => {
+      if (message.data?.announcement) {
+        dispatch(
+          addOrModifyAnnouncement({
+            masjidId: message.data.masjidId,
+            status: AnnouncementStatus.UnRead,
+            id: message.data.id,
+          }),
+        )
+      }
+    })
+
     const unsubcribe1 = messaging().onNotificationOpenedApp((remoteMessage) => {
       if (remoteMessage.notification?.body !== "Timings has been updated") {
         navigate("Announcement")

@@ -11,11 +11,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native"
-import { useFirestore } from "react-redux-firebase"
 import * as Yup from "yup"
 import { getFcmToken } from "../../hooks/token"
 import axios from "axios"
 import { Masjid } from "../../types/firestore"
+import firestore from "@react-native-firebase/firestore"
 
 const phoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/
@@ -38,7 +38,6 @@ const AdminRequestSchema = Yup.object().shape({
 
 const AdminRequest = ({ masjid }: { masjid: Masjid }) => {
   const [modalVisible, setModalVisible] = useState(false)
-  const firestore = useFirestore()
   const [loading, setLoading] = useState(false)
 
   return (
@@ -73,7 +72,7 @@ const AdminRequest = ({ masjid }: { masjid: Masjid }) => {
                 console.log(values)
                 setLoading(true)
                 const token = await getFcmToken()
-                await firestore
+                await firestore()
                   .collection("adminRequest")
                   .add({ ...values, token })
                   .then(async () => {

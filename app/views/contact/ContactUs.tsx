@@ -74,191 +74,187 @@ const ContactUs = () => {
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, isSubmitting, touched, values, errors }) => (
-          <>
-            <ScrollView>
-              <Text style={{ marginLeft: 10, marginTop: 10 }}>User Name</Text>
-              <View
+          <ScrollView>
+            <Text style={{ marginLeft: 10, marginTop: 10 }}>User Name</Text>
+            <View
+              style={{
+                borderRadius: 10,
+                marginHorizontal: 10,
+                marginTop: 5,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 5,
+                },
+                shadowOpacity: 0.34,
+                shadowRadius: 6.27,
+                elevation: 5,
+              }}
+            >
+              <TextInput
+                onChangeText={handleChange("userName")}
+                value={values.userName}
+                onBlur={handleBlur("userName")}
                 style={{
+                  padding: 10,
                   borderRadius: 10,
-                  marginHorizontal: 10,
-                  marginTop: 5,
-                  shadowColor: "#000",
-                  shadowOffset: {
-                    width: 0,
-                    height: 5,
-                  },
-                  shadowOpacity: 0.34,
-                  shadowRadius: 6.27,
-                  elevation: 5,
+                  backgroundColor: "#EEEEEE",
+                  color: "black",
                 }}
-              >
-                <TextInput
-                  onChangeText={handleChange("userName")}
-                  value={values.userName}
-                  onBlur={handleBlur("userName")}
-                  style={{
-                    padding: 10,
-                    borderRadius: 10,
-                    backgroundColor: "#EEEEEE",
-                    color: "black",
-                  }}
-                  placeholder="Enter Your Name..."
-                  placeholderTextColor="grey"
-                />
-              </View>
-              {errors.userName && touched.userName && <Text style={ERROR}>{errors.userName}</Text>}
-              <Text style={{ marginLeft: 10, marginTop: 10 }}>User Email</Text>
-              <View
+                placeholder="Enter Your Name..."
+                placeholderTextColor="grey"
+              />
+            </View>
+            {errors.userName && touched.userName && <Text style={ERROR}>{errors.userName}</Text>}
+            <Text style={{ marginLeft: 10, marginTop: 10 }}>User Email</Text>
+            <View
+              style={{
+                borderRadius: 10,
+                marginHorizontal: 10,
+                marginTop: 5,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 5,
+                },
+                shadowOpacity: 0.34,
+                shadowRadius: 6.27,
+                elevation: 5,
+              }}
+            >
+              <TextInput
+                onChangeText={handleChange("userEmail")}
+                value={values.userEmail}
+                onBlur={handleBlur("userEmail")}
                 style={{
+                  padding: 10,
                   borderRadius: 10,
-                  marginHorizontal: 10,
-                  marginTop: 5,
-                  shadowColor: "#000",
-                  shadowOffset: {
-                    width: 0,
-                    height: 5,
-                  },
-                  shadowOpacity: 0.34,
-                  shadowRadius: 6.27,
-                  elevation: 5,
+                  backgroundColor: "#EEEEEE",
+                  color: "black",
                 }}
-              >
-                <TextInput
-                  onChangeText={handleChange("userEmail")}
-                  value={values.userEmail}
-                  onBlur={handleBlur("userEmail")}
+                placeholder="Enter Your Email..."
+                placeholderTextColor="grey"
+              />
+            </View>
+            {errors.userEmail && touched.userEmail && <Text style={ERROR}>{errors.userEmail}</Text>}
+            <Text style={{ marginLeft: 10, marginTop: 10 }}>Form Type</Text>
+            <Menu
+              contentStyle={{
+                marginTop: 80,
+                width: Dimensions.get("screen").width * 0.96,
+              }}
+              visible={visible}
+              onDismiss={closeMenu}
+              anchor={
+                <TouchableOpacity
                   style={{
-                    padding: 10,
+                    margin: 10,
                     borderRadius: 10,
-                    backgroundColor: "#EEEEEE",
-                    color: "black",
+                    backgroundColor: "#EDEDED",
+                    padding: 10,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 5,
+                    },
+                    shadowOpacity: 0.34,
+                    shadowRadius: 6.27,
+                    elevation: 5,
                   }}
-                  placeholder="Enter Your Email..."
-                  placeholderTextColor="grey"
-                />
-              </View>
-              {errors.userEmail && touched.userEmail && (
-                <Text style={ERROR}>{errors.userEmail}</Text>
-              )}
-              <Text style={{ marginLeft: 10, marginTop: 10 }}>Form Type</Text>
-              <Menu
-                contentStyle={{
-                  marginTop: 80,
-                  width: Dimensions.get("screen").width * 0.96,
-                }}
-                visible={visible}
-                onDismiss={closeMenu}
-                anchor={
+                  onPress={openMenu}
+                >
+                  <Text style={{ fontSize: 17 }}>{values.options}</Text>
                   <TouchableOpacity
                     style={{
-                      margin: 10,
+                      backgroundColor: "#1F441E",
+                      padding: 5,
                       borderRadius: 10,
-                      backgroundColor: "#EDEDED",
-                      padding: 10,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      shadowColor: "#000",
-                      shadowOffset: {
-                        width: 0,
-                        height: 5,
-                      },
-                      shadowOpacity: 0.34,
-                      shadowRadius: 6.27,
-                      elevation: 5,
                     }}
                     onPress={openMenu}
                   >
-                    <Text style={{ fontSize: 17 }}>{values.options}</Text>
-                    <TouchableOpacity
-                      style={{
-                        backgroundColor: "#1F441E",
-                        padding: 5,
-                        borderRadius: 10,
-                      }}
-                      onPress={openMenu}
-                    >
-                      <MaterialCommunityIcons color={"white"} size={20} name="menu-down" />
-                    </TouchableOpacity>
+                    <MaterialCommunityIcons color={"white"} size={20} name="menu-down" />
                   </TouchableOpacity>
-                }
-              >
-                <Menu.Item
-                  onPress={() => {
-                    values.options = "Feedback"
-                    closeMenu()
-                  }}
-                  title="Feedback"
-                />
-                <Divider />
-                <Menu.Item
-                  onPress={() => {
-                    values.options = "Report a bug"
-                    closeMenu()
-                  }}
-                  title="Report a bug"
-                />
-                <Divider />
-                <Menu.Item
-                  onPress={() => {
-                    values.options = "Queries"
-                    closeMenu()
-                  }}
-                  title="Queries"
-                />
-              </Menu>
-              <Text style={{ marginLeft: 10 }}>Description</Text>
-              <TextInput
-                style={{
-                  paddingLeft: 10,
-                  backgroundColor: "#EDEDED",
-                  margin: 10,
-                  borderRadius: 10,
-                  height: Dimensions.get("screen").height * 0.4,
-                  textAlignVertical: "top",
-                  shadowColor: "#000",
-                  shadowOffset: {
-                    width: 0,
-                    height: 5,
-                  },
-                  shadowOpacity: 0.34,
-                  shadowRadius: 6.27,
-                  elevation: 5,
-                }}
-                onChangeText={handleChange("message")}
-                onBlur={handleBlur("message")}
-                value={values.message}
-                placeholderTextColor="grey"
-                placeholder="Type Your Message Here"
-              />
-              <View style={{ alignItems: "center", marginVertical: 15 }}>
-                <TouchableOpacity
-                  onPress={handleSubmit}
-                  disabled={loading}
-                  style={{
-                    alignItems: "center",
-                    backgroundColor: "#CEE6B4",
-                    padding: 10,
-                    borderRadius: 5,
-                    width: "95%",
-                    marginHorizontal: 10,
-                  }}
-                >
-                  {!loading ? (
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        color: "#1F441E",
-                      }}
-                    >
-                      Submit
-                    </Text>
-                  ) : (
-                    <ActivityIndicator color="#1F441E" size="small" />
-                  )}
                 </TouchableOpacity>
-              </View>
-            </ScrollView>
-          </>
+              }
+            >
+              <Menu.Item
+                onPress={() => {
+                  values.options = "Feedback"
+                  closeMenu()
+                }}
+                title="Feedback"
+              />
+              <Divider />
+              <Menu.Item
+                onPress={() => {
+                  values.options = "Report a bug"
+                  closeMenu()
+                }}
+                title="Report a bug"
+              />
+              <Divider />
+              <Menu.Item
+                onPress={() => {
+                  values.options = "Queries"
+                  closeMenu()
+                }}
+                title="Queries"
+              />
+            </Menu>
+            <Text style={{ marginLeft: 10 }}>Description</Text>
+            <TextInput
+              style={{
+                paddingLeft: 10,
+                backgroundColor: "#EDEDED",
+                margin: 10,
+                borderRadius: 10,
+                height: Dimensions.get("screen").height * 0.4,
+                textAlignVertical: "top",
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 5,
+                },
+                shadowOpacity: 0.34,
+                shadowRadius: 6.27,
+                elevation: 5,
+              }}
+              onChangeText={handleChange("message")}
+              onBlur={handleBlur("message")}
+              value={values.message}
+              placeholderTextColor="grey"
+              placeholder="Type Your Message Here"
+            />
+            <View style={{ alignItems: "center", marginVertical: 15 }}>
+              <TouchableOpacity
+                onPress={() => handleSubmit()}
+                disabled={loading}
+                style={{
+                  alignItems: "center",
+                  backgroundColor: "#CEE6B4",
+                  padding: 10,
+                  borderRadius: 5,
+                  width: "95%",
+                  marginHorizontal: 10,
+                }}
+              >
+                {!loading ? (
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "#1F441E",
+                    }}
+                  >
+                    Submit
+                  </Text>
+                ) : (
+                  <ActivityIndicator color="#1F441E" size="small" />
+                )}
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         )}
       </Formik>
     </Provider>

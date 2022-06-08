@@ -1,9 +1,7 @@
 import React, { useState } from "react"
 import { Dimensions, SafeAreaView, Text } from "react-native"
 import MapView, { Callout, Marker, PROVIDER_GOOGLE } from "react-native-maps"
-import { useSelector } from "react-redux"
-import { populate, useFirestoreConnect } from "react-redux-firebase"
-import { selectFirestore, sortMasjidData1, useGetMasjidPopulate } from "../../hooks/firebase"
+import { useGetMasjidPopulate } from "../../hooks/firebase"
 import { HomePropsType } from "../../navigation"
 
 const window = Dimensions.get("window")

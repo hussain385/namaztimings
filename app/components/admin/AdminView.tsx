@@ -19,7 +19,7 @@ import { isNil } from "lodash"
 import ChangeImageModal from "../modal/ChangeImageModal"
 import { HomePropsType } from "../../navigation"
 import firestore from "@react-native-firebase/firestore"
-import { Masjid } from "../../types/firestore"
+import { Masjid, MasjidRequest } from "../../types/firestore"
 
 const AdminView: React.FC<HomePropsType<"Admin">> = ({ navigation, route }) => {
   const [imageChangeModal, setImageChangeModal] = useState(false)
@@ -46,15 +46,25 @@ const AdminView: React.FC<HomePropsType<"Admin">> = ({ navigation, route }) => {
   }, [])
 
   useEffect(() => {
-    if (!isNil(Masjid.requests)) {
+    if (!isNil(Masjid.requestList)) {
       setCount(0)
-      Masjid.requests.forEach((value) => {
-        if (!value.isRead) {
-          setCount((prevState) => prevState + 1)
-        }
+      Masjid.requestList.forEach((value) => {
+        firestore()
+          .collection("requests")
+          .doc(value)
+          .get()
+          .then((value1) => {
+            const data = value1.data() as MasjidRequest
+            Masjid.requests
+              ? Masjid.requests.push({ ...data, uid: value1.id })
+              : (Masjid.requests = [{ ...data, uid: value1.id }])
+            if (!data.isRead) {
+              setCount((prevState) => prevState + 1)
+            }
+          })
       })
     }
-  }, [Masjid.requests])
+  }, [Masjid.requestList])
 
   return (
     <>

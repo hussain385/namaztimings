@@ -12,8 +12,6 @@ import {
   View,
 } from "react-native"
 import { Card } from "react-native-paper"
-import { useSelector } from "react-redux"
-import { useFirestore } from "react-redux-firebase"
 import { selectFirebase } from "../../hooks/firebase"
 import { Announcement, Masjid } from "../../types/firestore"
 import { useAppDispatch, useAppSelector } from "../../hooks/redux"

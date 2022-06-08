@@ -10,9 +10,18 @@ import { PersistGate } from "redux-persist/integration/react"
 import { store } from "./redux/store"
 import { ToastProvider } from "react-native-toast-notifications"
 import DrawerStackScreen from "./navigation/DrawerStackScreen"
+import { useEffect } from "react"
 
 export default function App() {
   const persistor = persistStore(store)
+
+  useEffect(() => {
+    firebase.firestore().settings({
+      persistence: true,
+      cacheSizeBytes: 300 * 1000000,
+    })
+    return () => {}
+  }, [])
 
   return (
     <Provider store={store}>
