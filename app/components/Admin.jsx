@@ -28,7 +28,6 @@ const populates = [
 ];
 
 const Admin = ({navigation}) => {
-  const [MasjidData, setMasjidData] = useState(null);
   const {auth, profile} = useSelector(selectFirebase);
   const firestore = useSelector(selectFirestore);
   useFirestoreConnect([
@@ -103,11 +102,10 @@ const Admin = ({navigation}) => {
         <>
           {_.map(snapshot, (doc, id) => {
             const data = modifyData(doc, id, 0);
-            setMasjidData(data);
             return (
               <AdminView
                 route={{
-                  params: {Masjid: MasjidData, masjidId: id, isSingle: true},
+                  params: {Masjid: data, masjidId: id, isSingle: true},
                 }}
                 navigation={navigation}
               />
@@ -120,7 +118,7 @@ const Admin = ({navigation}) => {
           renderItem={item => (
             <AdminCard nav={navigation} masjid={item.item} key={item.item.id} />
           )}
-          initialNumToRender={20}
+          initialNumToRender={5}
           keyExtractor={item => item.id}
           style={{
             height: Dimensions.get('window').height - 80,

@@ -19,7 +19,8 @@ import {getCurrentLocation, sortMasjidData1} from '../store/firebase';
 import MasjidCard from '../views/MasjidCard';
 import {selectCords, setLocation} from '../redux/locationSlicer';
 import {ActivityIndicator} from 'react-native-paper';
-import Animated, {Layout} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
+import Favbtn from '../views/Favbtn';
 
 const populates = [
   {child: 'adminId', root: 'users', childAlias: 'user'}, // replace owner with user object
@@ -27,7 +28,7 @@ const populates = [
 
 const Search = props => {
   const {navigation, masjid} = props;
-  const [textSearch, setTextSearch] = useState('');
+  // const [textSearch, setTextSearch] = useState('');
   const location = useSelector(selectCords);
   const [result, setResult] = useState([]);
   const dispatch = useDispatch();
@@ -50,7 +51,7 @@ const Search = props => {
     });
     const resultf = fuse.search(text);
     console.log(resultf, 'resultf');
-    setTextSearch(text);
+    // setTextSearch(text);
     setResult(resultf);
   }
 
@@ -66,25 +67,42 @@ const Search = props => {
       });
   }, [dispatch]);
 
-  const renderItem = ({item}) => <MasjidCard masjid={item} nav={navigation} />;
+  const renderItem = ({item}) => (
+    <>
+      <View
+        style={{
+          flexDirection: 'row',
+          position: 'absolute',
+          zIndex: 1,
+          top: 20,
+        }}>
+        <View style={{flexGrow: 1}} />
+        <View style={{right: 20}}>
+          <Favbtn favId={item.key} isBig={true} />
+        </View>
+      </View>
+      <MasjidCard masjid={item} nav={navigation} />
+    </>
+  );
 
   const renderItem1 = ({item}) => (
-    <MasjidCard
-      // title={item.item.name}
-      // address={item.item.address}
-      // url={item.item.pictureURL}
-      // timings={item.item.timing}
-      masjid={item.item}
-      nav={navigation}
-      // distance={item.item.distance}
-      // favId={item.item.key}
-      // latitude={item.item.g.geopoint.latitude}
-      // user={item.item.user}
-      // gLink={item.item.gLink}
-      // timeStamp={item.item.timeStamp}
-      // longitude={item.item.g.geopoint.longitude}
-    />
+    <>
+      <View
+        style={{
+          flexDirection: 'row',
+          position: 'absolute',
+          zIndex: 1,
+          top: 20,
+        }}>
+        <View style={{flexGrow: 1}} />
+        <View style={{right: 20}}>
+          <Favbtn favId={item.item.key} isBig={true} />
+        </View>
+      </View>
+      <MasjidCard masjid={item.item} nav={navigation} />
+    </>
   );
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
@@ -120,7 +138,7 @@ const Search = props => {
               }}>
               <TextInput
                 onChangeText={onChangeSearch}
-                value={textSearch}
+                // value={textSearch}
                 placeholder="Enter City/Area e.g Karachi/Nazimabad..."
                 style={{
                   backgroundColor: '#eeee',
@@ -161,8 +179,7 @@ const Search = props => {
             justifyContent: 'center',
             alignItems: 'center',
             alignContent: 'center',
-          }}
-          layout={Layout}>
+          }}>
           <ActivityIndicator color="#1F441E" size="large" />
         </Animated.View>
       )}
@@ -171,7 +188,7 @@ const Search = props => {
         renderItem={result.length > 0 ? renderItem1 : renderItem}
         keyExtractor={item => item.key || item.item.key}
         style={{marginBottom: 140}}
-        initialNumToRender={20}
+        initialNumToRender={6}
       />
       {isLoaded(masjid) && (
         <View

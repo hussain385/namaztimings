@@ -7,8 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import Favbtn from './Favbtn';
-import Animated, {Layout, ZoomIn, ZoomOut} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -20,6 +19,7 @@ const Card = styled(Animated.View)`
 
 export default class MasjidCard extends PureComponent {
   render() {
+    console.log('Render Card', this.props.masjid.name);
     return (
       <Card
         key={this.props.masjid.key}
@@ -34,11 +34,7 @@ export default class MasjidCard extends PureComponent {
           },
           shadowOpacity: 0.34,
           shadowRadius: 6.27,
-          elevation: 5,
-        }}
-        entering={ZoomIn}
-        exiting={ZoomOut}
-        layout={Layout.delay(200)}>
+        }}>
         <TouchableOpacity
           onPress={() =>
             this.props.nav.navigate('More Info', {
@@ -58,14 +54,8 @@ export default class MasjidCard extends PureComponent {
               justifyContent: 'center',
               width: '100%',
               height: 200,
-            }}>
-            <View style={{flexDirection: 'row'}}>
-              <View style={{flexGrow: 1}} />
-              <View style={{top: -65, right: 10}}>
-                <Favbtn favId={this.props.masjid.key} isBig={true} />
-              </View>
-            </View>
-          </ImageBackground>
+            }}
+          />
         </TouchableOpacity>
 
         <View style={{padding: 5}}>
@@ -80,7 +70,15 @@ export default class MasjidCard extends PureComponent {
             </View>
             <View>
               <Text
-                onPress={() => Linking.openURL(`${this.props.masjid.gLink ? this.props.masjid.gLink : `https://maps.google.com/?q=${this.props.masjid.g.geopoint.latitude},${this.props.masjid.g.geopoint.longitude}`}`)}
+                onPress={() =>
+                  Linking.openURL(
+                    `${
+                      this.props.masjid.gLink
+                        ? this.props.masjid.gLink
+                        : `https://maps.google.com/?q=${this.props.masjid.g.geopoint.latitude},${this.props.masjid.g.geopoint.longitude}`
+                    }`,
+                  )
+                }
                 style={{color: '#900000', textDecorationLine: 'underline'}}>
                 {this.props.masjid.distance}KM AWAY
               </Text>
@@ -102,7 +100,15 @@ export default class MasjidCard extends PureComponent {
               <Text style={{color: '#CEE6B4'}}>More Info</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => Linking.openURL(`${this.props.masjid.gLink ? this.props.masjid.gLink : `https://maps.google.com/?q=${this.props.masjid.g.geopoint.latitude},${this.props.masjid.g.geopoint.longitude}`}`)}
+              onPress={() =>
+                Linking.openURL(
+                  `${
+                    this.props.masjid.gLink
+                      ? this.props.masjid.gLink
+                      : `https://maps.google.com/?q=${this.props.masjid.g.geopoint.latitude},${this.props.masjid.g.geopoint.longitude}`
+                  }`,
+                )
+              }
               style={styles.btnStyles}>
               <Text
                 style={{

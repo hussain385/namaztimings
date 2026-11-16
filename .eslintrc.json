@@ -1,0 +1,38 @@
+{
+    "env": {
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "@react-native-community"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "react-native",
+        "prettier"
+    ],
+    "rules": {
+        "linebreak-style": [
+            "error", "windows"
+        ],
+        "quotes": [
+            "error", "single"
+        ],
+        "semi": [
+            "error", "always"
+        ],
+        "prettier/prettier": "error",
+        "react/prop-types": "off",
+        "react/display-name": "off",
+        "react-native/no-inline-styles": 0
+    }
+}

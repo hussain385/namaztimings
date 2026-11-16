@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from "react";
 import {Formik} from 'formik';
-import {Text, TextInput, TouchableOpacity, View} from 'react-native';
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import * as Yup from 'yup';
 import {btnStyles, textIn, textStyles} from '../theme/styles/Base';
 import CoText from './Text/Text';
@@ -10,6 +10,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Header} from 'react-native-elements';
 
 const ForgotPassword = ({navigation}) => {
+  const [loading, setLoading] = useState(false);
   const firebase = useFirebase();
 
   return (
@@ -37,7 +38,7 @@ const ForgotPassword = ({navigation}) => {
                 fontSize: 25,
                 marginBottom: 5,
               }}>
-              Forgot
+              Forgot Password
             </Text>
           </View>
         }
@@ -49,8 +50,21 @@ const ForgotPassword = ({navigation}) => {
         })}
         initialValues={{email: ''}}
         onSubmit={values => {
+          setLoading(true)
           firebase.resetPassword(values.email).then(() => {
-            navigation.goBack();
+            Alert.alert(
+              'Successfull',
+              'Check you email to your password reset password!',
+              [
+                {
+                  text: 'Ok',
+                  onPress: () => {
+                    navigation.navigate('login');
+                    setLoading(false)
+                  },
+                },
+              ],
+            );
           });
         }}>
         {({
@@ -97,7 +111,10 @@ const ForgotPassword = ({navigation}) => {
                 paddingHorizontal: 20,
                 paddingTop: 20,
               }}>
-              <TouchableOpacity onPress={handleSubmit} style={btnStyles.basic}>
+              <TouchableOpacity
+                disable={loading}
+                onPress={handleSubmit}
+                style={btnStyles.basic}>
                 <CoText
                   textStyles={[textStyles.simple, {color: 'white'}]}
                   text="Send"
