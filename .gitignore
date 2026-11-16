@@ -82,6 +82,3 @@ web-build/
 dist/
 
 # @end expo-cli
-branch_structure.json
-temp_auto_push.bat
-temp_interactive_push.bat
